@@ -55,7 +55,6 @@ function MedicalHealthInsuranceView() {
 
   const [modalShow, setModalShow] = useState(false);
   const modalClose = () => setModalShow(false);
-  const [selectedMember, setSelectedMember] = useState(null);
 
   // Form states
   const [relation, setRelation] = useState("");
