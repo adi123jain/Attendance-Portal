@@ -95,31 +95,148 @@ function DgmAuthorizationStatus() {
   }, [sessionEmp]);
 
   const [actionValues, setActionValues] = useState({});
+  const [remarkValues, setRemarkValues] = useState({});
+
   const [errors, setErrors] = useState({});
   const selectRefs = useRef({});
 
+  const handleRemarkChange = (index, value) => {
+    setRemarkValues((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        remark: false, // clear remark error
+      },
+    }));
+  };
+
   // Handle select change
+  // const handleSelectChange = (index, value) => {
+  //   setActionValues((prev) => ({ ...prev, [index]: value }));
+  //   setErrors((prev) => ({ ...prev, [index]: false }));
+  // };
+
   const handleSelectChange = (index, value) => {
     setActionValues((prev) => ({ ...prev, [index]: value }));
-    setErrors((prev) => ({ ...prev, [index]: false }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        select: false,
+      },
+    }));
   };
 
   // On update click
+  // const updateStatus = async (index, id) => {
+  //   const selectedValue = actionValues[index];
+  //   const remarkValue = remarkValues[index];
+
+  //   let hasError = false;
+
+  //   // Select validation
+  //   if (!selectedValue) {
+  //     hasError = true;
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       [index]: {
+  //         ...(prev[index] || {}),
+  //         select: true,
+  //       },
+  //     }));
+
+  //     const ref = selectRefs.current[index];
+  //     if (ref) ref.focus();
+  //   }
+
+  //   // Remark validation
+  //   if (!remarkValue || remarkValue.trim() === "") {
+  //     hasError = true;
+  //     setErrors((prev) => ({
+  //       ...prev,
+  //       [index]: {
+  //         ...(prev[index] || {}),
+  //         remark: true,
+  //       },
+  //     }));
+  //   }
+
+  //   if (hasError) return;
+
+  //   try {
+  //     setOpenBackdrop(true);
+
+  //     const response = await updateSsoSatusByDgm(
+  //       selectedValue,
+  //       id,
+  //       remarkValue
+  //     );
+  //     console.log("Update API Response:", response);
+
+  //     if (response?.data?.code === "200") {
+  //       alert("Successfully Updated!");
+  //       window.location.reload();
+  //     } else {
+  //       alert(response?.data?.message || "Update failed!");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating status:", error);
+  //     alert("Something went wrong. Please try again later.");
+  //   } finally {
+  //     setOpenBackdrop(false);
+  //   }
+  // };
+
   const updateStatus = async (index, id) => {
     const selectedValue = actionValues[index];
+    const remarkValue = remarkValues[index];
 
-    //  Validation check
+    let hasError = false;
+
+    // ---- Validate Select ----
     if (!selectedValue) {
-      setErrors((prev) => ({ ...prev, [index]: true }));
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          select: true,
+        },
+      }));
+
       const ref = selectRefs.current[index];
       if (ref) ref.focus();
-      return;
     }
+
+    // ---- Validate Remark ----
+    if (!remarkValue || remarkValue.trim() === "") {
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          remark: true,
+        },
+      }));
+    }
+
+    if (hasError) return;
 
     try {
       setOpenBackdrop(true);
 
-      const response = await updateSsoSatusByDgm(selectedValue, id);
+      const response = await updateSsoSatusByDgm(
+        selectedValue,
+        id,
+        remarkValue
+      );
+
       console.log("Update API Response:", response);
 
       if (response?.data?.code === "200") {
@@ -176,7 +293,11 @@ function DgmAuthorizationStatus() {
                     <StyledTableCell>11KV</StyledTableCell>
                     <StyledTableCell>33KV</StyledTableCell>
                     <StyledTableCell>DC Name</StyledTableCell>
+                    <StyledTableCell>JE Remark</StyledTableCell>
+                    {/* <StyledTableCell>DGM Remark</StyledTableCell> */}
+                    {/* <StyledTableCell>GM Remark</StyledTableCell> */}
                     <StyledTableCell>Action</StyledTableCell>
+                    <StyledTableCell>Remark</StyledTableCell>
                     <StyledTableCell>Update Status</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -199,6 +320,17 @@ function DgmAuthorizationStatus() {
                           {item.status33KV || "-"}
                         </StyledTableCell>
                         <StyledTableCell>{item.dcName || "-"}</StyledTableCell>
+                        <StyledTableCell>
+                          {item.jeRemark || "-"}
+                        </StyledTableCell>
+
+                        {/* <StyledTableCell>
+                          {item.dgmRemark || "-"}
+                        </StyledTableCell> */}
+
+                        {/* <StyledTableCell>
+                          {item.gmRemark || "-"}
+                        </StyledTableCell> */}
 
                         {/* Action Select */}
                         <StyledTableCell>
@@ -232,6 +364,22 @@ function DgmAuthorizationStatus() {
                           </FormControl>
                         </StyledTableCell>
 
+                        <StyledTableCell>
+                          <TextField
+                            fullWidth
+                            size="small"
+                            placeholder="Enter remark"
+                            value={remarkValues[index] || ""}
+                            error={errors[index]?.remark}
+                            helperText={
+                              errors[index]?.remark ? "Remark is required" : ""
+                            }
+                            onChange={(e) =>
+                              handleRemarkChange(index, e.target.value)
+                            }
+                          />
+                        </StyledTableCell>
+
                         {/* Update Button */}
                         <StyledTableCell>
                           <Tooltip title="Update Status" arrow>
@@ -247,7 +395,14 @@ function DgmAuthorizationStatus() {
                                     "linear-gradient(90deg, #1E88E5, #1AA7E5)",
                                 },
                               }}
-                              onClick={() => updateStatus(index, item.id)}
+                              // onClick={() => updateStatus(index, item.id)}
+                              onClick={() =>
+                                updateStatus(
+                                  index,
+                                  item.id,
+                                  remarkValues[index]
+                                )
+                              }
                             >
                               <VerifiedIcon fontSize="small" />
                             </Button>
@@ -257,7 +412,7 @@ function DgmAuthorizationStatus() {
                     ))
                   ) : (
                     <StyledTableRow>
-                      <StyledTableCell colSpan={10}>
+                      <StyledTableCell colSpan={12}>
                         <Typography variant="body1" sx={{ py: 2 }}>
                           No data found
                         </Typography>

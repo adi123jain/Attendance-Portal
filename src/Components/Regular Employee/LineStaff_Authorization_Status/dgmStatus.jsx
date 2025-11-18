@@ -100,29 +100,94 @@ function DgmLineStaffStatus() {
   const [actionValues, setActionValues] = useState({});
   const [errors, setErrors] = useState({});
   const selectRefs = useRef({});
+  const [remarkValues, setRemarkValues] = useState({});
 
-  // Handle select change
-  const handleSelectChange = (index, value) => {
-    setActionValues((prev) => ({ ...prev, [index]: value }));
-    setErrors((prev) => ({ ...prev, [index]: false }));
+  const handleRemarkChange = (index, value) => {
+    setRemarkValues((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        remark: false, // clear remark error
+      },
+    }));
   };
 
+  // Handle select change
+  // const handleSelectChange = (index, value) => {
+  //   setActionValues((prev) => ({ ...prev, [index]: value }));
+  //   setErrors((prev) => ({ ...prev, [index]: false }));
+  // };
+
+  const handleSelectChange = (index, value) => {
+    setActionValues((prev) => ({ ...prev, [index]: value }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        select: false,
+      },
+    }));
+  };
   // On update click
   const updateStatus = async (index, id) => {
-    const selectedValue = actionValues[index];
+    // const selectedValue = actionValues[index];
 
-    //  Validation check
+    // //  Validation check
+    // if (!selectedValue) {
+    //   setErrors((prev) => ({ ...prev, [index]: true }));
+    //   const ref = selectRefs.current[index];
+    //   if (ref) ref.focus();
+    //   return;
+    // }
+
+    const selectedValue = actionValues[index];
+    const remarkValue = remarkValues[index];
+
+    let hasError = false;
+
+    // ---- Validate Select ----
     if (!selectedValue) {
-      setErrors((prev) => ({ ...prev, [index]: true }));
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          select: true,
+        },
+      }));
+
       const ref = selectRefs.current[index];
       if (ref) ref.focus();
-      return;
     }
+
+    // ---- Validate Remark ----
+    if (!remarkValue || remarkValue.trim() === "") {
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          remark: true,
+        },
+      }));
+    }
+
+    if (hasError) return;
 
     try {
       setOpenBackdrop(true);
 
-      const response = await updateLineSatusByDgm(selectedValue, id);
+      const response = await updateLineSatusByDgm(
+        selectedValue,
+        id,
+        remarkValue
+      );
       console.log("Update API Response:", response);
 
       if (response?.data?.code === "200") {
@@ -178,8 +243,11 @@ function DgmLineStaffStatus() {
                     <StyledTableCell>DGM Status</StyledTableCell>
                     <StyledTableCell>11KV</StyledTableCell>
                     <StyledTableCell>33KV</StyledTableCell>
+                    <StyledTableCell>JE Remark</StyledTableCell>
+
                     <StyledTableCell>DC Name</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
+                    <StyledTableCell>Remark</StyledTableCell>
                     <StyledTableCell>Update Status</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -202,6 +270,9 @@ function DgmLineStaffStatus() {
                         </StyledTableCell>
                         <StyledTableCell>
                           {item.status33KV || "-"}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {item.jeRemark || "-"}
                         </StyledTableCell>
                         <StyledTableCell>{item.dcName || "-"}</StyledTableCell>
 
@@ -235,6 +306,22 @@ function DgmLineStaffStatus() {
                               </FormHelperText>
                             )}
                           </FormControl>
+                        </StyledTableCell>
+
+                        <StyledTableCell>
+                          <TextField
+                            fullWidth
+                            size="small"
+                            placeholder="Enter remark"
+                            value={remarkValues[index] || ""}
+                            error={errors[index]?.remark}
+                            helperText={
+                              errors[index]?.remark ? "Remark is required" : ""
+                            }
+                            onChange={(e) =>
+                              handleRemarkChange(index, e.target.value)
+                            }
+                          />
                         </StyledTableCell>
 
                         {/* Update Button */}

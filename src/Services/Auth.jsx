@@ -1,7 +1,7 @@
 import axios from "axios";
 // Base API URL
-// const base_url = "https://attendance.mpcz.in:8888/E-Attendance/api";
 const base_url = "https://attendance.mpcz.in:8888/E-Attendance/api";
+// const base_url = "http://172.16.17.79:8084/e-Attendance/api";
 const sessionEmpCode = sessionStorage.getItem("empCode");
 
 // 1.Get Daily Attendance Records
@@ -788,12 +788,14 @@ export const getSsoSatusByDgm = () => {
 };
 
 // 129. Update Sso Authorization status for DGM
-export const updateSsoSatusByDgm = (value, id) => {
+export const updateSsoSatusByDgm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateDgmAuthorizationStatusSSO?status=${encodeURIComponent(
         value
-      )}&authorizationId=${encodeURIComponent(id)}`
+      )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
+        remark
+      )}`
   );
 };
 
@@ -805,12 +807,14 @@ export const getSsoSatusByGm = () => {
 };
 
 // 131. Update Sso Authorization status for GM
-export const updateSsoSatusByGm = (value, id) => {
+export const updateSsoSatusByGm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateGmAuthorizationStatusSSO?status=${encodeURIComponent(
         value
-      )}&authorizationId=${encodeURIComponent(id)}
+      )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
+        remark
+      )}
       `
   );
 };
@@ -823,12 +827,14 @@ export const getLineSatusByDgm = () => {
 };
 
 // 133. Update Line Staff status for DGM
-export const updateLineSatusByDgm = (value, id) => {
+export const updateLineSatusByDgm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateDgmAuthorizationStatusLine?status=${encodeURIComponent(
         value
-      )}&authorizationId=${encodeURIComponent(id)}`
+      )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
+        remark
+      )}`
   );
 };
 
@@ -840,12 +846,14 @@ export const getLineSatusByGm = () => {
 };
 
 // 135. Update Line Staff status for GM
-export const updateLineSatusByGm = (value, id) => {
+export const updateLineSatusByGm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateGmAuthorizationStatusLine?status=${encodeURIComponent(
         value
-      )}&authorizationId=${encodeURIComponent(id)}`
+      )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
+        remark
+      )}`
   );
 };
 

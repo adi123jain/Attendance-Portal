@@ -126,19 +126,21 @@ function SsoAuthorization() {
 
   const [is11kv, setIs11kv] = useState("No");
   const [is33kv, setIs33kv] = useState("No");
-
+  const [remark, setRemark] = useState("");
   const [errors, setErrors] = useState({});
 
   const SsoRef = useRef(null);
   const dgmRef = useRef(null);
   const kv11Ref = useRef(null);
   const kv33Ref = useRef(null);
+  const remarkRef = useRef(null);
 
   const validate = () => {
     const newErrors = {};
     if (!selectSso) newErrors.selectSso = "SSO is required";
     if (!is11kv && !is33kv) newErrors.voltage = "Select at least one voltage";
     if (!selectDgm) newErrors.selectDgm = "DGM is required";
+    if (!remark) newErrors.remark = "Remark is required";
     setErrors(newErrors);
 
     // focus on first invalid
@@ -146,6 +148,7 @@ function SsoAuthorization() {
       if (newErrors.selectSso && SsoRef.current) SsoRef.current.focus();
       else if (newErrors.voltage && kv11Ref.current) kv11Ref.current.focus();
       else if (newErrors.selectDgm && dgmRef.current) dgmRef.current.focus();
+      else if (newErrors.remark && remarkRef.current) remarkRef.current.focus();
       return false;
     }
     return true;
@@ -161,6 +164,7 @@ function SsoAuthorization() {
       status33KV: is33kv,
       dcID: sessionDcId,
       dgmEmpCode: selectDgm,
+      jeRemark: remark,
     };
 
     try {
@@ -181,10 +185,17 @@ function SsoAuthorization() {
     }
   };
 
-  const downloadPDF = () => {
+  const downloadApprovedPDF = () => {
     // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
     window.open(
       `https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}`,
+      "_blank"
+    );
+  };
+
+  const downloadPendingsPDF = () => {
+    window.open(
+      `http://172.16.17.79:8084/e-Attendance/api/OnM/getAuthPendingSsoPdfByDcId?dcId=${sessionDcId}`,
       "_blank"
     );
   };
@@ -233,9 +244,8 @@ function SsoAuthorization() {
               >
                 Records
               </Typography>
-
               <Tooltip
-                title="Download Authorization Chart"
+                title="Approved Authorization Chart"
                 arrow
                 placement="top"
               >
@@ -251,7 +261,30 @@ function SsoAuthorization() {
                       boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
                     },
                   }}
-                  onClick={() => downloadPDF()}
+                  onClick={() => downloadApprovedPDF()}
+                >
+                  <CloudDownloadIcon fontSize="small" />
+                </Button>
+              </Tooltip>
+              &nbsp;
+              <Tooltip
+                title="Pending Authorization Chart"
+                arrow
+                placement="top"
+              >
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{
+                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
+                    color: "#fff",
+                    boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
+                    "&:hover": {
+                      background: "linear-gradient(90deg, #1B5E20, #43A047)",
+                      boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
+                    },
+                  }}
+                  onClick={() => downloadPendingsPDF()}
                 >
                   <CloudDownloadIcon fontSize="small" />
                 </Button>
@@ -274,6 +307,9 @@ function SsoAuthorization() {
                       <StyledTableCell>33KV</StyledTableCell>
                       <StyledTableCell>Updated On</StyledTableCell>
                       <StyledTableCell>DC Name</StyledTableCell>
+                      <StyledTableCell>JE Remark</StyledTableCell>
+                      <StyledTableCell>DGM Remark</StyledTableCell>
+                      <StyledTableCell>GM Remark</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
                   <TableBody>
@@ -313,11 +349,23 @@ function SsoAuthorization() {
                           <StyledTableCell>
                             {item.dcName || "-"}
                           </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.jeRemark || "-"}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.dgmRemark || "-"}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.gmRemark || "-"}
+                          </StyledTableCell>
                         </StyledTableRow>
                       ))
                     ) : (
                       <StyledTableRow>
-                        <StyledTableCell colSpan={13}>
+                        <StyledTableCell colSpan={14}>
                           Data Not Found
                         </StyledTableCell>
                       </StyledTableRow>
@@ -350,7 +398,7 @@ function SsoAuthorization() {
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
                 {/* Select SSO */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select SSO</Card.Header>
                     <Card.Body>
@@ -377,7 +425,7 @@ function SsoAuthorization() {
                 </Col>
 
                 {/* 11KV Checkbox */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Voltage</Card.Header>
                     <Card.Body>
@@ -411,7 +459,7 @@ function SsoAuthorization() {
                 </Col>
 
                 {/* Select DGM */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select DGM</Card.Header>
                     <Card.Body>
@@ -432,6 +480,27 @@ function SsoAuthorization() {
                       </Form.Select>
                       <Form.Control.Feedback type="invalid" className="d-block">
                         {errors.selectDgm}
+                      </Form.Control.Feedback>
+                    </Card.Body>
+                  </Card>
+                </Col>
+
+                {/* Enter Remark */}
+                <Col xs={12} md={3}>
+                  <Card>
+                    <Card.Header>Remark</Card.Header>
+                    <Card.Body>
+                      <Form.Control
+                        as="textarea"
+                        rows={2}
+                        placeholder="Enter Remark..."
+                        ref={remarkRef}
+                        value={remark}
+                        onChange={(e) => setRemark(e.target.value)}
+                        isInvalid={!!errors.remark}
+                      />
+                      <Form.Control.Feedback type="invalid" className="d-block">
+                        {errors.remark}
                       </Form.Control.Feedback>
                     </Card.Body>
                   </Card>

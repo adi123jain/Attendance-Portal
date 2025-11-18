@@ -121,26 +121,29 @@ function LineStaffAuthorization() {
     fetchDgm();
   }, []);
 
-  // 🔹 State
+  //  State
   // const [selectLine, setSelectLine] = useState("");
   const [is11kv, setIs11kv] = useState("No");
   const [is33kv, setIs33kv] = useState("No");
   // const [selectDgm, setSelectDgm] = useState("");
   const [errors, setErrors] = useState({});
+  const [remark, setRemark] = useState("");
 
-  // 🔹 Refs
+  //  Refs
   const lineRef = useRef(null);
   const dgmRef = useRef(null);
   const kv11Ref = useRef(null);
   const kv33Ref = useRef(null);
+  const remarkRef = useRef(null);
 
-  // 🔹 Validation
+  //  Validation
   const validate = () => {
     const newErrors = {};
     if (!selectLine) newErrors.selectLine = "Line Staff is required";
     if (is11kv === "No" && is33kv === "No")
       newErrors.voltage = "Select at least one voltage";
     if (!selectDgm) newErrors.selectDgm = "DGM is required";
+    if (!remark) newErrors.remark = "Remark is required";
     setErrors(newErrors);
 
     // Focus on first invalid
@@ -148,6 +151,7 @@ function LineStaffAuthorization() {
       if (newErrors.selectLine && lineRef.current) lineRef.current.focus();
       else if (newErrors.voltage && kv11Ref.current) kv11Ref.current.focus();
       else if (newErrors.selectDgm && dgmRef.current) dgmRef.current.focus();
+      else if (newErrors.remark && remarkRef.current) remarkRef.current.focus();
       return false;
     }
     return true;
@@ -161,10 +165,11 @@ function LineStaffAuthorization() {
     const payload = {
       jeEmpCode: sessionEmp,
       lineEmpCode: selectLine,
-      status11KV: is11kv, // "Yes" or "No"
-      status33KV: is33kv, // "Yes" or "No"
+      status11KV: is11kv,
+      status33KV: is33kv,
       dcID: sessionDcId,
       dgmEmpCode: selectDgm,
+      jeRemark: remark,
     };
 
     try {
@@ -185,10 +190,18 @@ function LineStaffAuthorization() {
     }
   };
 
-  const downloadPDF = () => {
+  const downloadApprovedPDF = () => {
     // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
     window.open(
       `https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationLinePdfByDcId?dcId=${sessionDcId}`,
+      "_blank"
+    );
+  };
+
+  const downloadPendingPDF = () => {
+    // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
+    window.open(
+      `http://172.16.17.79:8084/e-Attendance/api/OnM/getAuthPendingLinePdfByDcId?dcId=${sessionDcId}`,
       "_blank"
     );
   };
@@ -237,9 +250,8 @@ function LineStaffAuthorization() {
               >
                 Records
               </Typography>
-
               <Tooltip
-                title="Download Authorization Chart"
+                title="Approved Authorization Chart"
                 arrow
                 placement="top"
               >
@@ -255,7 +267,30 @@ function LineStaffAuthorization() {
                       boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
                     },
                   }}
-                  onClick={() => downloadPDF()}
+                  onClick={() => downloadApprovedPDF()}
+                >
+                  <CloudDownloadIcon fontSize="small" />
+                </Button>
+              </Tooltip>
+              &nbsp;
+              <Tooltip
+                title="Pendings Authorization Chart"
+                arrow
+                placement="top"
+              >
+                <Button
+                  variant="contained"
+                  size="small"
+                  sx={{
+                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
+                    color: "#fff",
+                    boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
+                    "&:hover": {
+                      background: "linear-gradient(90deg, #1B5E20, #43A047)",
+                      boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
+                    },
+                  }}
+                  onClick={() => downloadPendingPDF()}
                 >
                   <CloudDownloadIcon fontSize="small" />
                 </Button>
@@ -278,6 +313,9 @@ function LineStaffAuthorization() {
                       <StyledTableCell>33KV</StyledTableCell>
                       <StyledTableCell>Updated On</StyledTableCell>
                       <StyledTableCell>DC Name</StyledTableCell>
+                      <StyledTableCell>JE Remark</StyledTableCell>
+                      <StyledTableCell>DGM Remark</StyledTableCell>
+                      <StyledTableCell>GM Remark</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
                   <TableBody>
@@ -317,11 +355,23 @@ function LineStaffAuthorization() {
                           <StyledTableCell>
                             {item.dcName || "-"}
                           </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.jeRemark || "-"}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.dgmRemark || "-"}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.gmRemark || "-"}
+                          </StyledTableCell>
                         </StyledTableRow>
                       ))
                     ) : (
                       <StyledTableRow>
-                        <StyledTableCell colSpan={13}>
+                        <StyledTableCell colSpan={14}>
                           Data Not Found
                         </StyledTableCell>
                       </StyledTableRow>
@@ -354,7 +404,7 @@ function LineStaffAuthorization() {
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
                 {/* Select Line Staff */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Line Staff</Card.Header>
                     <Card.Body>
@@ -381,7 +431,7 @@ function LineStaffAuthorization() {
                 </Col>
 
                 {/* Select Voltage */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Voltage</Card.Header>
                     <Card.Body>
@@ -415,7 +465,7 @@ function LineStaffAuthorization() {
                 </Col>
 
                 {/* Select DGM */}
-                <Col xs={12} md={4}>
+                <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select DGM</Card.Header>
                     <Card.Body>
@@ -436,6 +486,26 @@ function LineStaffAuthorization() {
                       </Form.Select>
                       <Form.Control.Feedback type="invalid" className="d-block">
                         {errors.selectDgm}
+                      </Form.Control.Feedback>
+                    </Card.Body>
+                  </Card>
+                </Col>
+
+                <Col xs={12} md={3}>
+                  <Card>
+                    <Card.Header>Remark</Card.Header>
+                    <Card.Body>
+                      <Form.Control
+                        as="textarea"
+                        rows={2}
+                        placeholder="Enter Remark..."
+                        ref={remarkRef}
+                        value={remark}
+                        onChange={(e) => setRemark(e.target.value)}
+                        isInvalid={!!errors.remark}
+                      />
+                      <Form.Control.Feedback type="invalid" className="d-block">
+                        {errors.remark}
                       </Form.Control.Feedback>
                     </Card.Body>
                   </Card>

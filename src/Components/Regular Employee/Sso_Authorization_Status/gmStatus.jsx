@@ -96,30 +96,93 @@ function GmAuthorizationStatus() {
 
   const [actionValues, setActionValues] = useState({});
   const [errors, setErrors] = useState({});
+  const [remarkValues, setRemarkValues] = useState({});
+
   const selectRefs = useRef({});
 
   // Handle select change
+  // const handleSelectChange = (index, value) => {
+  //   setActionValues((prev) => ({ ...prev, [index]: value }));
+  //   setErrors((prev) => ({ ...prev, [index]: false }));
+  // };
+
   const handleSelectChange = (index, value) => {
     setActionValues((prev) => ({ ...prev, [index]: value }));
-    setErrors((prev) => ({ ...prev, [index]: false }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        select: false,
+      },
+    }));
+  };
+
+  const handleRemarkChange = (index, value) => {
+    setRemarkValues((prev) => ({
+      ...prev,
+      [index]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [index]: {
+        ...(prev[index] || {}),
+        remark: false, // clear remark error
+      },
+    }));
   };
 
   // On update click
   const updateGmStatus = async (index, id) => {
-    const selectedValue = actionValues[index];
+    // const selectedValue = actionValues[index];
 
-    //  Validation check
+    // //  Validation check
+    // if (!selectedValue) {
+    //   setErrors((prev) => ({ ...prev, [index]: true }));
+    //   const ref = selectRefs.current[index];
+    //   if (ref) ref.focus();
+    //   return;
+    // }
+
+    const selectedValue = actionValues[index];
+    const remarkValue = remarkValues[index];
+
+    let hasError = false;
+
+    // ---- Validate Select ----
     if (!selectedValue) {
-      setErrors((prev) => ({ ...prev, [index]: true }));
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          select: true,
+        },
+      }));
+
       const ref = selectRefs.current[index];
       if (ref) ref.focus();
-      return;
     }
+
+    // ---- Validate Remark ----
+    if (!remarkValue || remarkValue.trim() === "") {
+      hasError = true;
+      setErrors((prev) => ({
+        ...prev,
+        [index]: {
+          ...(prev[index] || {}),
+          remark: true,
+        },
+      }));
+    }
+
+    if (hasError) return;
 
     try {
       setOpenBackdrop(true);
 
-      const response = await updateSsoSatusByGm(selectedValue, id);
+      const response = await updateSsoSatusByGm(selectedValue, id, remarkValue);
       console.log("Update API Response:", response);
 
       if (response?.data?.code === "200") {
@@ -177,8 +240,12 @@ function GmAuthorizationStatus() {
                     <StyledTableCell>GM Status</StyledTableCell>
                     <StyledTableCell>11KV</StyledTableCell>
                     <StyledTableCell>33KV</StyledTableCell>
+                    <StyledTableCell>JE Remark</StyledTableCell>
+                    <StyledTableCell>DGM Remark</StyledTableCell>
+                    {/* <StyledTableCell>GM Remark</StyledTableCell> */}
                     <StyledTableCell>DC Name</StyledTableCell>
                     <StyledTableCell>Action</StyledTableCell>
+                    <StyledTableCell>Remark</StyledTableCell>
                     <StyledTableCell>Update Status</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -206,6 +273,19 @@ function GmAuthorizationStatus() {
                         <StyledTableCell>
                           {item.status33KV || "-"}
                         </StyledTableCell>
+
+                        <StyledTableCell>
+                          {item.jeRemark || "-"}
+                        </StyledTableCell>
+
+                        <StyledTableCell>
+                          {item.dgmRemark || "-"}
+                        </StyledTableCell>
+
+                        {/* <StyledTableCell>
+                          {item.gmRemark || "-"}
+                        </StyledTableCell> */}
+
                         <StyledTableCell>{item.dcName || "-"}</StyledTableCell>
 
                         {/* Action Select */}
@@ -238,6 +318,22 @@ function GmAuthorizationStatus() {
                               </FormHelperText>
                             )}
                           </FormControl>
+                        </StyledTableCell>
+
+                        <StyledTableCell>
+                          <TextField
+                            fullWidth
+                            size="small"
+                            placeholder="Enter remark"
+                            value={remarkValues[index] || ""}
+                            error={errors[index]?.remark}
+                            helperText={
+                              errors[index]?.remark ? "Remark is required" : ""
+                            }
+                            onChange={(e) =>
+                              handleRemarkChange(index, e.target.value)
+                            }
+                          />
                         </StyledTableCell>
 
                         {/* Update Button */}
