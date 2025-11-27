@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Card, Row, Col, Container, Form } from "react-bootstrap";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Card, Row, Col, Container, Form } from 'react-bootstrap';
 import {
   Typography,
   Tooltip,
@@ -18,28 +18,29 @@ import {
   MenuItem,
   InputLabel,
   Select,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { PropagateLoader } from "react-spinners";
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { PropagateLoader } from 'react-spinners';
 import {
   currentGradePay,
   submitMedicalReimbursement,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 function MedicalReimbirsement() {
-  const sessionRegion = sessionStorage.getItem("regionName");
-  const sessionCircle = sessionStorage.getItem("circleName");
-  const sessionDivision = sessionStorage.getItem("divisionName");
-  const sessionSubdivision = sessionStorage.getItem("subdivisionName");
-  const sessionDc = sessionStorage.getItem("dcId");
-  const designationName = sessionStorage.getItem("designationName");
-  const sessionEmpCode = sessionStorage.getItem("empCode");
-  const sessionEmpName = sessionStorage.getItem("fullName");
-  const departmentName = sessionStorage.getItem("departmentName");
+  const sessionRegion = sessionStorage.getItem('regionName');
+  const sessionCircle = sessionStorage.getItem('circleName');
+  const sessionDivision = sessionStorage.getItem('divisionName');
+  const sessionSubdivision = sessionStorage.getItem('subdivisionName');
+  const sessionDc = sessionStorage.getItem('dcName');
+  const designationName = sessionStorage.getItem('designationName');
+  const sessionEmpCode = sessionStorage.getItem('empCode');
+  const sessionEmpName = sessionStorage.getItem('fullName');
+  const departmentName = sessionStorage.getItem('departmentName');
+  const empAddress = sessionStorage.getItem('address');
 
-  const isValid = (val) => val !== null && val !== "null" && val !== "";
+  const isValid = (val) => val !== null && val !== 'null' && val !== '';
 
   let officeName = null;
 
@@ -60,69 +61,89 @@ function MedicalReimbirsement() {
   }
 
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [formType, setFormType] = useState("OPD");
+  const [formType, setFormType] = useState('OPD');
 
   const [formData, setFormData] = useState({
     // empName: "",
     // empDesignation: "",
     // empOfficeAddress: "",
     // empDepartment: "",
-    empResAddress: "",
-    childDOB: "",
-    birthOrder: "",
-    totalChildren: "",
-    patientName: "",
-    patientRelation: "",
-    opdNo: "",
-    opdDate: "",
-    diseaseName: "",
-    diseaseDuration: "",
-    doctorName: "",
-    doctorDesignation: "",
-    certificateNo: "",
-    certificateDate: "",
-    totalAmountClaimed: "",
+    // empResAddress: '',
+    childDOB: '',
+    birthOrder: '',
+    totalChildren: '',
+    patientName: '',
+    patientRelation: '',
+    opdNo: '',
+    opdDate: '',
+    diseaseName: '',
+    diseaseDuration: '',
+    doctorName: '',
+    doctorDesignation: '',
+    certificateNo: '',
+    certificateDate: '',
+    totalAmountClaimed: '',
 
-    hospitalName: "",
-    hospitalAddress: "",
-    registrationNo: "",
-    registrationValidity: "",
-    packageClaimed: "",
+    hospitalName: '',
+    hospitalAddress: '',
+    registrationNo: '',
+    registrationValidity: '',
+    packageClaimed: '',
     // emoluments: "",
-    testHospital: "",
-    testOnAdvice: "",
-    accommodationFile: "",
-    diet: "",
-    surgery: "",
-    pathologyHospital: "",
-    pathologyCertificate: "",
-    nursing: "",
+    testHospital: '',
+    testOnAdvice: '',
+    accommodationFile: '',
+    diet: '',
+    surgery: '',
+    pathologyHospital: '',
+    pathologyCertificate: '',
+    nursing: '',
     // specialNursing: "",
-    otherCharges: "",
-    enclosures: "",
-    essentialityCertificate: "",
-    essentialityCertificateNo: "",
-    essentialityCertificateDate: "",
-    placeOfIllness: "",
-    prolongedTreatment: "",
+    otherCharges: '',
+    enclosures: '',
+    essentialityCertificate: '',
+    essentialityCertificateNo: '',
+    essentialityCertificateDate: '',
+    placeOfIllness: '',
+    prolongedTreatment: '',
   });
+
+  const [opdClaimFor, setOpdClaimFor] = useState('');
+
+  const handleOPDClaimChange = (value) => {
+    setOpdClaimFor(value);
+
+    if (value === 'Self') {
+      setFormData({
+        ...formData,
+        patientName: sessionEmpName || '',
+        patientRelation: 'Self',
+      });
+    } else {
+      setFormData({
+        ...formData,
+        patientName: '',
+        patientRelation: '',
+      });
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "file" ? files[0] : value,
+      [name]: type === 'file' ? files[0] : value,
     });
   };
 
   const [drugEntries, setDrugEntries] = useState([
     {
-      shopName: "",
-      cashMemoNo: "",
-      cashMemoDate: "",
-      drugName: "",
-      quantity: "",
-      totalValue: "",
+      shopName: '',
+      cashMemoNo: '',
+      cashMemoDate: '',
+      drugName: '',
+      quantity: '',
+      totalValue: '',
       uploadMemo: null,
     },
   ]);
@@ -140,12 +161,12 @@ function MedicalReimbirsement() {
     setDrugEntries([
       ...drugEntries,
       {
-        shopName: "",
-        cashMemoNo: "",
-        cashMemoDate: "",
-        drugName: "",
-        quantity: "",
-        totalValue: "",
+        shopName: '',
+        cashMemoNo: '',
+        cashMemoDate: '',
+        drugName: '',
+        quantity: '',
+        totalValue: '',
         uploadMemo: null,
       },
     ]);
@@ -159,16 +180,16 @@ function MedicalReimbirsement() {
   };
 
   const [gradePays, setGradePays] = useState([]);
-  const [selectedGradePay, setSelectedGradePay] = useState("");
+  const [selectedGradePay, setSelectedGradePay] = useState('');
   useEffect(() => {
     const fetchGradePay = async () => {
       try {
         const response = await currentGradePay();
-        console.log("API Response:", response);
+        // console.log('API Response:', response);
 
         setGradePays(response.data.list || []);
       } catch (err) {
-        console.error("Error fetching grade pay:", err);
+        console.error('Error fetching grade pay:', err);
       }
     };
     fetchGradePay();
@@ -178,83 +199,115 @@ function MedicalReimbirsement() {
     const dataToSend = new FormData();
     setOpenBackdrop(true);
     // Employee & Patient Info
-    dataToSend.append("empCode", sessionStorage.getItem("empCode") || "");
-    dataToSend.append("presentAddress", formData.empResAddress || "");
-    dataToSend.append("childDob", formData.childDOB || "");
-    dataToSend.append("noInBirthOrder", formData.birthOrder || "");
-    dataToSend.append("noOfLivingChildren", formData.totalChildren || "");
-    dataToSend.append("patientName", formData.patientName || "");
-    dataToSend.append("patientRelation", formData.patientRelation || "");
-    dataToSend.append("opdNo", formData.opdNo || "");
-    dataToSend.append("opdDate", formData.opdDate || "");
-    dataToSend.append("natureOfIllness", formData.diseaseName || "");
-    dataToSend.append("illnessDuration", formData.diseaseDuration || "");
-    dataToSend.append("doctorName", formData.doctorName || "");
-    dataToSend.append("doctorDesignation", formData.doctorDesignation || "");
-    dataToSend.append("totalAmount", formData.totalAmountClaimed);
-    dataToSend.append("gradePay", selectedGradePay || "");
-    dataToSend.append("placeOfIllness", formData.placeOfIllness || "");
+    dataToSend.append('empCode', sessionEmpCode || '');
+    dataToSend.append('presentAddress', empAddress || '');
+    dataToSend.append('childDob', formData.childDOB || '');
+    dataToSend.append('noInBirthOrder', formData.birthOrder || '');
+    dataToSend.append('noOfLivingChildren', formData.totalChildren || '');
+    dataToSend.append('patientName', formData.patientName || '');
+    dataToSend.append('patientRelation', formData.patientRelation || '');
+    dataToSend.append('opdNo', formData.opdNo || '');
+    dataToSend.append('opdDate', formData.opdDate || '');
+    dataToSend.append('natureOfIllness', formData.diseaseName || '');
+    dataToSend.append('illnessDuration', formData.diseaseDuration || '');
+    dataToSend.append('doctorName', formData.doctorName || '');
+    dataToSend.append('doctorDesignation', formData.doctorDesignation || '');
+    dataToSend.append('totalAmount', formData.totalAmountClaimed);
+    dataToSend.append('gradePay', selectedGradePay || '');
+    dataToSend.append('placeOfIllness', formData.placeOfIllness || '');
     dataToSend.append(
-      "essentialityCertificateNo",
-      formData.essentialityCertificateNo || ""
+      'essentialityCertificateNo',
+      formData.essentialityCertificateNo || ''
     );
     if (formData.essentialityCertificate)
       dataToSend.append(
-        "essentialityCertificatePdf",
-        formData.essentialityCertificate || ""
+        'essentialityCertificatePdf',
+        formData.essentialityCertificate || ''
       );
     dataToSend.append(
-      "essentialityCertificateDate",
-      formData.essentialityCertificateDate || ""
+      'essentialityCertificateDate',
+      formData.essentialityCertificateDate || ''
     );
 
     // Hospital & Doctor Info
-    dataToSend.append("hospitalName", formData.hospitalName || "");
-    dataToSend.append("hospitalAddress", formData.hospitalAddress || "");
-    dataToSend.append("registrationNo", formData.registrationNo || "");
+    dataToSend.append('hospitalName', formData.hospitalName || '');
+    dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
+    dataToSend.append('registrationNo', formData.registrationNo || '');
     dataToSend.append(
-      "registrationValidity",
-      formData.registrationValidity || ""
+      'registrationValidity',
+      formData.registrationValidity || ''
     );
 
-    dataToSend.append("packageType", formData.packageClaimed || "");
-    dataToSend.append("testingHosLabName", formData.testHospital || "");
-    dataToSend.append("test1AuthorizedByDoctor", formData.testOnAdvice || "");
+    dataToSend.append('packageType', formData.packageClaimed || '');
+    dataToSend.append('testingHosLabName', formData.testHospital || '');
+    dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
 
     if (formData.accommodationFile)
-      dataToSend.append("accommodationPdf", formData.accommodationFile);
-    dataToSend.append("dietCost", formData.diet);
-    dataToSend.append("surgicalMedicalCharges", formData.surgery);
+      dataToSend.append('accommodationPdf', formData.accommodationFile);
+    dataToSend.append('dietCost', formData.diet);
+    dataToSend.append('surgicalMedicalCharges', formData.surgery);
     // dataToSend.append("anyTest", formData.anyTest || "");
-    dataToSend.append("testHosLabName", formData.pathologyHospital || "");
+    dataToSend.append('testHosLabName', formData.pathologyHospital || '');
     if (formData.pathologyCertificate)
-      dataToSend.append("testPrescriptionDoc", formData.pathologyCertificate);
-    dataToSend.append("nursuingDetail", formData.nursing || "");
-    dataToSend.append("anyOther", formData.otherCharges || "");
+      dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
+    dataToSend.append('nursuingDetail', formData.nursing || '');
+    dataToSend.append('anyOther', formData.otherCharges || '');
     if (formData.enclosures)
-      dataToSend.append("enclosureDoc", formData.enclosures || "");
+      dataToSend.append('enclosureDoc', formData.enclosures || '');
 
-    dataToSend.append("type", formType);
+    dataToSend.append('type', formType);
 
     if (formData.prolongedTreatment)
       dataToSend.append(
-        "prolongedTreatment",
-        formData.prolongedTreatment || ""
+        'prolongedTreatment',
+        formData.prolongedTreatment || ''
       );
 
     // Add medicines (drug entries)
+    // drugEntries.forEach((entry, index) => {
+    //   dataToSend.append(`medi[${index}].shopName`, entry.shopName || '');
+    //   dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || '');
+    //   dataToSend.append(
+    //     `medi[${index}].cashMemoDate`,
+    //     entry.cashMemoDate || ''
+    //   );
+    //   dataToSend.append(`medi[${index}].drugName`, entry.drugName || '');
+    //   dataToSend.append(`medi[${index}].quantity`, entry.quantity || '');
+    //   dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || '');
+    //   if (entry.uploadMemo)
+    //     dataToSend.append(`medi[${index}].memoDoc`, entry.uploadMemo);
+    // });
+
     drugEntries.forEach((entry, index) => {
-      dataToSend.append(`medi[${index}].shopName`, entry.shopName || "");
-      dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || "");
+      // Only index 0 should send shop/memo details
+      if (index === 0) {
+        dataToSend.append(`medi[0].shopName`, entry.shopName || '');
+        dataToSend.append(`medi[0].cashMemoNo`, entry.cashMemoNo || '');
+        dataToSend.append(`medi[0].cashMemoDate`, entry.cashMemoDate || '');
+
+        if (entry.uploadMemo) {
+          dataToSend.append(`medi[0].memoDoc`, entry.uploadMemo);
+        }
+      }
+
+      // These fields should always be sent for all rows
+      // dataToSend.append(`medi[${index}].memoList[0].refNo`, entry.refNo || '');
       dataToSend.append(
-        `medi[${index}].cashMemoDate`,
-        entry.cashMemoDate || ""
+        `medi[0].memoList[${index}].cashMemoNo`,
+        entry.cashMemoNo || ''
       );
-      dataToSend.append(`medi[${index}].drugName`, entry.drugName || "");
-      dataToSend.append(`medi[${index}].quantity`, entry.quantity || "");
-      dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || "");
-      if (entry.uploadMemo)
-        dataToSend.append(`medi[${index}].memoDoc`, entry.uploadMemo);
+      dataToSend.append(
+        `medi[0].memoList[${index}].drugName`,
+        entry.drugName || ''
+      );
+      dataToSend.append(
+        `medi[0].memoList[${index}].quantity`,
+        entry.quantity || ''
+      );
+      dataToSend.append(
+        `medi[0].memoList[${index}].totalValue`,
+        entry.totalValue || ''
+      );
     });
 
     // Debug: check FormData
@@ -264,19 +317,30 @@ function MedicalReimbirsement() {
     // }
     try {
       const response = await submitMedicalReimbursement(dataToSend);
-      console.log("MR response", response);
-      if (response.data.code == "200") {
-        alert("Successfully Submitted!!");
+      console.log('MR response', response);
+      if (response.data.code == '200') {
+        alert('Successfully Submitted!!');
         setOpenBackdrop(false);
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
       setOpenBackdrop(false);
     }
   };
+
+  const today = new Date().toISOString().split('T')[0];
+
+  const sixMonthsAgo = new Date();
+  sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+  const minDate = sixMonthsAgo.toISOString().split('T')[0];
+
+  const [shopName, setShopName] = useState('');
+  const [cashMemoNo, setCashMemoNo] = useState('');
+  const [cashMemoDate, setCashMemoDate] = useState('');
+  const [uploadMemo, setUploadMemo] = useState(null);
 
   return (
     <>
@@ -293,11 +357,11 @@ function MedicalReimbirsement() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Medical Reimbursement
@@ -345,7 +409,7 @@ function MedicalReimbirsement() {
           <div className="my-4">
             <Card className="mb-3 shadow-sm">
               <Card.Body>
-                <Row xs={1} md={4} className="g-3">
+                <Row xs={1} md={5} className="g-3">
                   <Col>
                     <Card>
                       <Card.Header>Name of Govt. Employee</Card.Header>
@@ -386,6 +450,106 @@ function MedicalReimbirsement() {
                       </Card.Body>
                     </Card>
                   </Col>
+
+                  <Col>
+                    <Card className="h-100">
+                      <Card.Header>
+                        Residential Address of Govt. Employee
+                      </Card.Header>
+                      <Card.Body>
+                        <Form.Control disabled value={empAddress} />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+            {/* ================== PATIENT INFO ================== */}
+            <Card className="mb-3 shadow-sm">
+              <Card.Body>
+                <Row xs={1} md={5} className="g-3">
+                  <Col>
+                    <Card>
+                      <Card.Header>OPD Claiming for</Card.Header>
+                      <Card.Body>
+                        <Form.Select
+                          value={opdClaimFor}
+                          onChange={(e) => handleOPDClaimChange(e.target.value)}
+                        >
+                          <option value="" disabled>
+                            -- select --
+                          </option>
+                          <option value="Self">Self</option>
+                          <option value="Dependent">Dependent</option>
+                        </Form.Select>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col>
+                    <Card>
+                      <Card.Header>Name of the Patient</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Name..."
+                          name="patientName"
+                          value={formData.patientName}
+                          onChange={handleChange}
+                          readOnly={opdClaimFor === 'Self'}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>
+                        Patient relationship with Employee
+                      </Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter..."
+                          name="patientRelation"
+                          value={formData.patientRelation}
+                          onChange={handleChange}
+                          readOnly={opdClaimFor === 'Self'}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>OPD No. on Prescription</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter No..."
+                          name="opdNo"
+                          value={formData.opdNo}
+                          onChange={handleChange}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>Prescription Date</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="date"
+                          name="opdDate"
+                          value={formData.opdDate}
+                          onChange={handleChange}
+                          min={minDate}
+                          max={today}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
@@ -393,24 +557,7 @@ function MedicalReimbirsement() {
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row className="g-3">
-                  <Col md={3}>
-                    <Card className="h-100">
-                      <Card.Header>
-                        Residential Address of Govt. Employee
-                      </Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          name="empResAddress"
-                          placeholder="Enter Address..."
-                          value={formData.empResAddress}
-                          onChange={handleChange}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  <Col md={9}>
+                  <Col md={12}>
                     <Card className="h-100">
                       <Card.Header>
                         In case of Children also give the following Information
@@ -434,13 +581,41 @@ function MedicalReimbirsement() {
                             <Card>
                               <Card.Header>No. in order of Birth</Card.Header>
                               <Card.Body>
-                                <Form.Control
+                                {/* <Form.Control
                                   type="text"
                                   placeholder="Enter..."
                                   name="birthOrder"
                                   value={formData.birthOrder}
                                   onChange={handleChange}
-                                />
+                                /> */}
+
+                                {/* <Select
+                                  value={formData.birthOrder}
+                                  displayEmpty
+                                  onChange={handleChange}
+                                  fullWidth
+                                  name="birthOrder"
+                                >
+                                  <MenuItem value="" disabled selected>
+                                    -- select --
+                                  </MenuItem>
+                                  <MenuItem value="1">First Child</MenuItem>
+                                  <MenuItem value="2">Second Child</MenuItem>
+                                </Select> */}
+
+                                <Form.Select
+                                  value={formData.birthOrder}
+                                  // displayEmpty
+                                  onChange={handleChange}
+                                  // fullWidth
+                                  name="birthOrder"
+                                >
+                                  <option value="" disabled selected>
+                                    -- select --
+                                  </option>
+                                  <option value="1">First Child</option>
+                                  <option value="2">Second Child</option>
+                                </Form.Select>
                               </Card.Body>
                             </Card>
                           </Col>
@@ -461,74 +636,6 @@ function MedicalReimbirsement() {
                             </Card>
                           </Col>
                         </Row>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </Row>
-              </Card.Body>
-            </Card>
-
-            {/* ================== PATIENT INFO ================== */}
-            <Card className="mb-3 shadow-sm">
-              <Card.Body>
-                <Row xs={1} md={4} className="g-3">
-                  <Col>
-                    <Card>
-                      <Card.Header>Name of the Patient</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter Name..."
-                          name="patientName"
-                          value={formData.patientName}
-                          onChange={handleChange}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  <Col>
-                    <Card>
-                      <Card.Header>
-                        Patient relationship with the Govt. Employee
-                      </Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter..."
-                          name="patientRelation"
-                          value={formData.patientRelation}
-                          onChange={handleChange}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  <Col>
-                    <Card>
-                      <Card.Header>Prescription with OPD No.</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter No..."
-                          name="opdNo"
-                          value={formData.opdNo}
-                          onChange={handleChange}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  <Col>
-                    <Card>
-                      <Card.Header>Prescription with OPD Date</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="date"
-                          name="opdDate"
-                          value={formData.opdDate}
-                          onChange={handleChange}
-                        />
                       </Card.Body>
                     </Card>
                   </Col>
@@ -655,14 +762,14 @@ function MedicalReimbirsement() {
 
                   <Col>
                     <Card>
-                      <Card.Header>Grad Pay</Card.Header>
+                      <Card.Header>Grade Pay</Card.Header>
                       <Card.Body>
                         <Form.Select
                           value={selectedGradePay}
                           onChange={(e) => setSelectedGradePay(e.target.value)}
                         >
                           <option value="" disabled>
-                            -- Select Grade Pay --
+                            -- select Grade Pay --
                           </option>
                           {gradePays.map((item) => (
                             <option key={item.id} value={item.id}>
@@ -749,22 +856,38 @@ function MedicalReimbirsement() {
                       </Card.Body>
                     </Card>
                   </Col>
+
+                  <Col md={4}>
+                    <Card>
+                      <Card.Header>
+                        Upload Certificate for Disease Requiring Prolonged
+                        Treatment
+                      </Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="file"
+                          name="prolongedTreatment"
+                          onChange={handleChange}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
                 </Row>
               </Card.Body>
             </Card>
           </div>
 
           {/* Extra fields for IPD */}
-          {formType === "IPD" && (
+          {formType === 'IPD' && (
             <>
               <Card className="mb-3">
                 <Card.Header className="text-center p-3">
                   <Typography
                     variant="h5"
                     sx={{
-                      fontFamily: "serif",
-                      fontWeight: "bold",
-                      color: "#0a1f83",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                      color: '#0a1f83',
                     }}
                   >
                     Details for Medical Reimbursement
@@ -930,9 +1053,9 @@ function MedicalReimbirsement() {
                           <Typography
                             variant="h5"
                             sx={{
-                              fontFamily: "serif",
-                              fontWeight: "bold",
-                              color: "#0a1f83",
+                              fontFamily: 'serif',
+                              fontWeight: 'bold',
+                              color: '#0a1f83',
                             }}
                           >
                             Charges for hospital treatment indicating separately
@@ -996,9 +1119,9 @@ function MedicalReimbirsement() {
                               <Typography
                                 variant="h5"
                                 sx={{
-                                  fontFamily: "serif",
-                                  fontWeight: "bold",
-                                  color: "#0a1f83",
+                                  fontFamily: 'serif',
+                                  fontWeight: 'bold',
+                                  color: '#0a1f83',
                                 }}
                               >
                                 Pathological, bacteriological or other similar
@@ -1113,7 +1236,7 @@ function MedicalReimbirsement() {
                               </Card>
                             </Col>
 
-                            <Col md={4}>
+                            {/* <Col md={4}>
                               <Card>
                                 <Card.Header>
                                   Upload Certificate for Disease Requiring
@@ -1127,7 +1250,7 @@ function MedicalReimbirsement() {
                                   />
                                 </Card.Body>
                               </Card>
-                            </Col>
+                            </Col> */}
                           </Row>
 
                           {/* <Row className="g-3 mt-3">
@@ -1211,27 +1334,96 @@ function MedicalReimbirsement() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
-                Drug Entry
+                Drug Entries
               </Typography>
             </Card.Header>
             <Card.Body>
+              <Card>
+                <Card.Header>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                      color: '#0a1f83',
+                    }}
+                  >
+                    Medical Bill Entry Purchase
+                  </Typography>
+                </Card.Header>
+                <Card.Body>
+                  {drugEntries.map((entry, index) => (
+                    <Row className="g-3" key={index}>
+                      <Col md={4}>
+                        <Form.Group>
+                          <Form.Label>Name of the Shop</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="shopName"
+                            placeholder="Enter Name"
+                            value={entry.shopName}
+                            onChange={(e) => handleDrugChange(index, e)}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={4}>
+                        <Form.Group>
+                          <Form.Label>Cash Memo No</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="cashMemoNo"
+                            placeholder="Enter No"
+                            value={entry.cashMemoNo}
+                            onChange={(e) => handleDrugChange(index, e)}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={4}>
+                        <Form.Group>
+                          <Form.Label>Cash Memo Date</Form.Label>
+                          <Form.Control
+                            type="date"
+                            name="cashMemoDate"
+                            value={entry.cashMemoDate}
+                            onChange={(e) => handleDrugChange(index, e)}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col md={4}>
+                        <Form.Group>
+                          <Form.Label>Upload Memo</Form.Label>
+                          <Form.Control
+                            type="file"
+                            name="uploadMemo"
+                            onChange={(e) => handleDrugChange(index, e)}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  ))}
+                </Card.Body>
+              </Card>
+
               {drugEntries.map((entry, index) => (
-                <Card key={index} className="mb-3 shadow-sm">
+                <Card key={index} className="mb-3 mt-3 shadow-sm">
                   <Card.Header className="d-flex justify-content-between align-items-center p-3">
                     <Typography
                       variant="h6"
                       sx={{
-                        fontFamily: "serif",
-                        fontWeight: "bold",
-                        color: "#0a1f83",
+                        fontFamily: 'serif',
+                        fontWeight: 'bold',
+                        color: '#0a1f83',
                       }}
                     >
-                      Drug Entry #{index + 1}
+                      Medical Bill Entry Purchase #{index + 1}
                     </Typography>
                     <div>
                       <Tooltip title="Add More" arrow placement="top">
@@ -1260,7 +1452,7 @@ function MedicalReimbirsement() {
                     </div>
                   </Card.Header>
                   <Card.Body>
-                    <Row className="g-3">
+                    {/* <Row className="g-3">
                       <Col md={4}>
                         <Form.Group>
                           <Form.Label>Name of the Shop</Form.Label>
@@ -1277,7 +1469,7 @@ function MedicalReimbirsement() {
                         <Form.Group>
                           <Form.Label>Cash Memo No</Form.Label>
                           <Form.Control
-                            type="number"
+                            type="text"
                             name="cashMemoNo"
                             placeholder="Enter No"
                             value={entry.cashMemoNo}
@@ -1296,12 +1488,12 @@ function MedicalReimbirsement() {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
+                    </Row> */}
 
-                    <Row className="g-3 mt-2">
+                    <Row className="g-3">
                       <Col md={4}>
                         <Form.Group>
-                          <Form.Label>Name of the Drug</Form.Label>
+                          <Form.Label>Name of the Drug </Form.Label>
                           <Form.Control
                             type="text"
                             name="drugName"
@@ -1337,7 +1529,7 @@ function MedicalReimbirsement() {
                       </Col>
                     </Row>
 
-                    <Row className="g-3 mt-2">
+                    {/* <Row className="g-3 mt-2">
                       <Col md={4}>
                         <Form.Group>
                           <Form.Label>Upload Memo</Form.Label>
@@ -1348,7 +1540,7 @@ function MedicalReimbirsement() {
                           />
                         </Form.Group>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Card.Body>
                 </Card>
               ))}
@@ -1371,11 +1563,11 @@ function MedicalReimbirsement() {
               className="green-button"
               variant="outlined"
               style={{
-                borderRadius: "20px",
-                backgroundColor: "#0a1f83",
-                color: "#fff",
-                padding: "6px 20px",
-                border: "none",
+                borderRadius: '20px',
+                backgroundColor: '#0a1f83',
+                color: '#fff',
+                padding: '6px 20px',
+                border: 'none',
               }}
             >
               Submit
@@ -1386,7 +1578,7 @@ function MedicalReimbirsement() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

@@ -89,6 +89,7 @@ import DgmPtrStatus from "../Components/Regular Employee/PTR_Failure_Status/dgmS
 import AdditionalChargesEmployee from "../Components/HR Pannel/Employee_Additional_Charges/Index";
 import ForgetPassword from "../Components/User/ForgetPassword";
 import MedicalHealthInsuranceView from "../Components/Regular Employee/Medical_Health_Insurance_View/Index";
+import HigherPayScale from "../Components/Regular Employee/Higher_Pay_Scale/Index";
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -256,6 +257,7 @@ function CustomRouter() {
 
             <Route path="gmLineStaffStatus" element={<GmLineStaffStatus />} />
             <Route path="dgmPtrStatus" element={<DgmPtrStatus />} />
+            <Route path="higherPayScale" element={<HigherPayScale />} />
 
             {/* HR Section */}
             <Route path="editLocation" element={<EditLocation />} />

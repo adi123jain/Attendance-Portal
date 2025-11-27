@@ -85,6 +85,12 @@ function EmployeeDashboard() {
       path: "/medicalApprovalByAo",
       icon: <AssignmentTurnedInIcon />,
     },
+
+    {
+      label: "Higher Pay Scale",
+      path: "/higherPayScale",
+      icon: <AssignmentTurnedInIcon />,
+    },
   ];
 
   return (

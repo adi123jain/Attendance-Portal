@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 // Base API URL
-const base_url = "https://attendance.mpcz.in:8888/E-Attendance/api";
-// const base_url = "http://172.16.17.79:8084/e-Attendance/api";
-const sessionEmpCode = sessionStorage.getItem("empCode");
+const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
+// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
+const sessionEmpCode = sessionStorage.getItem('empCode');
 
 // 1.Get Daily Attendance Records
 export const attendanceRecords = (punchDate) => {
@@ -13,17 +13,17 @@ export const attendanceRecords = (punchDate) => {
 
 // 2.User Authentication API
 export const userAuthentication = (payload) => {
-  return axios.post(base_url + "/user-login/authenticate", payload);
+  return axios.post(base_url + '/user-login/authenticate', payload);
 };
 
 // 3.Get User OTP API
 export const getOtp = (payload) => {
-  return axios.post(base_url + "/otp/getOtp", payload);
+  return axios.post(base_url + '/otp/getOtp', payload);
 };
 
 // 4.Verify User OTP API
 export const verifyOtp = (payload) => {
-  return axios.post(base_url + "/otp/verifyOtp", payload);
+  return axios.post(base_url + '/otp/verifyOtp', payload);
 };
 
 // 5.Get Regions
@@ -64,7 +64,7 @@ export const getSubstation = (dcId) => {
 
 // 11.Get Employee by Level (Region,Circle,Division, etc.....)
 export const getEmployeeByLevel = (payload) => {
-  return axios.post(base_url + "/employee/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/employee/getEmployeesByLevel', payload);
 };
 
 // 12.Get Employee by Employee Code
@@ -79,27 +79,27 @@ export const getDistrict = () => {
 
 // 14.Create Attendance Location
 export const createAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/addNewAttendanceLocation", payload);
+  return axios.post(base_url + '/location/addNewAttendanceLocation', payload);
 };
 
 // 15.View Attendance Location
 export const viewAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/getLocationByLevel", payload);
+  return axios.post(base_url + '/location/getLocationByLevel', payload);
 };
 
 // 16.Update Attendance Location
 export const updateLocationCordinate = (payload) => {
-  return axios.post(base_url + "/location/addNewAttendanceLocation", payload);
+  return axios.post(base_url + '/location/addNewAttendanceLocation', payload);
 };
 
 // 17.Get Leave Allocation by Levek (Region,Circle,Division, etc.....)
 export const getLeaveAllocation = (payload) => {
-  return axios.post(base_url + "/leave/getLeaveBalanceByLevel", payload);
+  return axios.post(base_url + '/leave/getLeaveBalanceByLevel', payload);
 };
 
 // 18.Update Employee Leaves
 export const updateEmployeeLeaves = (payload) => {
-  return axios.post(base_url + "/leave/updateLeaveBalancesEmp", payload);
+  return axios.post(base_url + '/leave/updateLeaveBalancesEmp', payload);
 };
 
 // 19.Get Employee Ateendance for Month/Year
@@ -127,17 +127,17 @@ export const getEmployeePlaceOfPosting = (empCode) => {
 
 // 22. Get Designation API
 export const getDesignation = () => {
-  return axios.get(base_url + "/master/getAllDesignations");
+  return axios.get(base_url + '/master/getAllDesignations');
 };
 
 // 23. Get Department API
 export const getDepartment = () => {
-  return axios.get(base_url + "/master/getAllDepartments");
+  return axios.get(base_url + '/master/getAllDepartments');
 };
 
 // 24. Submit Employee's Place of Postings
 export const submitPlaceOfPosting = (payload) => {
-  return axios.post(base_url + "/employee/employeePostingApi", [payload]);
+  return axios.post(base_url + '/employee/employeePostingApi', [payload]);
 };
 
 // 25. Get Substation By Division
@@ -205,12 +205,12 @@ export const getAttendanceOfficerWise = ({ month, year }) => {
 
 // 34. Get Outsource Emp Details By Level
 export const getOutsourceEmpByLevel = (payload) => {
-  return axios.post(base_url + "/outsource/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/outsource/getEmployeesByLevel', payload);
 };
 
 // 35. Get Outsource Emp Details By Level
 export const getOutsourceEmpByEmpCode = (payload) => {
-  return axios.post(base_url + "/outsource/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/outsource/getEmployeesByLevel', payload);
 };
 
 // 36. Get Outsource Employee Details for Update
@@ -227,7 +227,7 @@ export const getEmpForVerification = () => {
 
 // 38. Black list Outsource Emp
 export const employeeBlacklist = (payload) => {
-  return axios.post(base_url + "/outsource/saveOutsourceBlacklisted", payload);
+  return axios.post(base_url + '/outsource/saveOutsourceBlacklisted', payload);
 };
 
 // 39. Blacklisted Employee Records
@@ -257,7 +257,7 @@ export const getEmpMasterOutsource = (regionId, circleId) => {
 
 // 42. Leave Allocation Outsource
 export const leaveAllocationOutsource = (payload) => {
-  return axios.post(base_url + "/outsource/getLeaveBalanceByLevel", payload);
+  return axios.post(base_url + '/outsource/getLeaveBalanceByLevel', payload);
 };
 
 // 43. Get Employee Shifts
@@ -277,12 +277,12 @@ export const getHolidays = () => {
 
 // 46. Get Attendance Locations by Regions-Substations
 export const getAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/getLocationByLevel", payload);
+  return axios.post(base_url + '/location/getLocationByLevel', payload);
 };
 
 // 47. Get Reporting Officer's Designation
 export const getRoDesignation = () => {
-  return axios.get(base_url + "/employee/getRoDesignation");
+  return axios.get(base_url + '/employee/getRoDesignation');
 };
 
 // 48. Get Reporting Officer's Name by Designation
@@ -297,7 +297,7 @@ export const getHrManager = () => {
 
 // 50. Update Employee Details for Outsource
 export const updateVerifyOutEmployee = (payload) => {
-  return axios.post(base_url + "/outsource/updateEmployee  ", payload);
+  return axios.post(base_url + '/outsource/updateEmployee  ', payload);
 };
 
 // Employee Services Outsource
@@ -308,7 +308,7 @@ export const getPunishmentType = () => {
 
 // 52. Assign Punishment to Employee
 export const updatePunishment = (payload) => {
-  return axios.post(base_url + "/outsource/savePunishment", payload);
+  return axios.post(base_url + '/outsource/savePunishment', payload);
 };
 
 // 53. Get Employee Punishments Records by EmpCode
@@ -329,7 +329,7 @@ export const getComplaintType = () => {
 
 // 55. Register Complaint to Employee outsource
 export const updateComplaint = (payload) => {
-  return axios.post(base_url + "/outsource/saveComplaint", payload);
+  return axios.post(base_url + '/outsource/saveComplaint', payload);
 };
 
 // 56. View Complaint Details by Empcode
@@ -341,7 +341,7 @@ export const getEmpComplaints = (empCode) => {
 
 // 57. Upload Wireman Certificate for Outsource Employee
 export const uploadWiremanCertificate = (payload) => {
-  return axios.post(base_url + "/outsource/uploadWiremanCertificate", payload);
+  return axios.post(base_url + '/outsource/uploadWiremanCertificate', payload);
 };
 
 // 58. Download Wireman Certificate for Outsource Employee
@@ -353,12 +353,12 @@ export const downloadWiremanCertificate = (empCode) => {
 
 // 59. Detele Wireman Certificate for Outsource Employee
 export const deleteWiremanCertificate = (payload) => {
-  return axios.post(base_url + "/outsource/cancelWiremanCertificate", payload);
+  return axios.post(base_url + '/outsource/cancelWiremanCertificate', payload);
 };
 
 // 60. Training for Outsource Employee
 export const outsourceEmpTraning = (payload) => {
-  return axios.post(base_url + "/outsource/saveNewTrainingDetails", payload);
+  return axios.post(base_url + '/outsource/saveNewTrainingDetails', payload);
 };
 
 // 61. View Outsource Employee Training by Empcode
@@ -377,7 +377,7 @@ export const getOutsourcePlaceOfPosting = (empCode) => {
 
 // 63. Update Places of Postings Outsource
 export const submitOutsourcePlaceOfPosting = (payload) => {
-  return axios.post(base_url + "/outsource/outsourcePostingApi", [payload]);
+  return axios.post(base_url + '/outsource/outsourcePostingApi', [payload]);
 };
 
 // Employee Sections
@@ -398,12 +398,12 @@ export const viewEmpAttendanceBySessionCode = (month, year) => {
 
 // 65. Apply Corrections
 export const applyCorrections = (payload) => {
-  return axios.post(base_url + "/attendance/applyCorrection", payload);
+  return axios.post(base_url + '/attendance/applyCorrection', payload);
 };
 
 // 66. Apply Employee Leave's
 export const applyLeaves = (payload) => {
-  return axios.post(base_url + "/leave/applyLeave", payload);
+  return axios.post(base_url + '/leave/applyLeave', payload);
 };
 
 // 67. See Correction and Leave For Reporting Officer
@@ -432,12 +432,12 @@ export const getEmpCorrectionsDetails = (empCode, month, year) => {
 
 // 70. Approve Leave
 export const approveLeave = (payload) => {
-  return axios.post(base_url + "/leave/approveLeave", payload);
+  return axios.post(base_url + '/leave/approveLeave', payload);
 };
 
 // 71. Approve Corrections
 export const approveCorrections = (payload) => {
-  return axios.post(base_url + "/attendance/approveCorrection", payload);
+  return axios.post(base_url + '/attendance/approveCorrection', payload);
 };
 
 // 72. Get Employee Tagged to RO for Shift Change
@@ -454,7 +454,7 @@ export const getEmpShiftByCode = (empCode) => {
 
 // 74. Update Employee Shift
 export const updateEmpShift = (payload) => {
-  return axios.post(base_url + "/employee/changeShiftByEmpCode", payload);
+  return axios.post(base_url + '/employee/changeShiftByEmpCode', payload);
 };
 
 // 75. Get Tagged Outsource Employee For Weekly Rest
@@ -471,7 +471,7 @@ export const getEmpWeeklyRest = (empCode) => {
 
 // 77. Change Weekly Rest
 export const updateWeeklyRestByRO = (payload) => {
-  return axios.post(base_url + "/outsource/addWeeklyRest", payload);
+  return axios.post(base_url + '/outsource/addWeeklyRest', payload);
 };
 
 // 78. Amount check by Designation Revenue
@@ -509,7 +509,7 @@ export const getAllVendors = () => {
 
 // 83. Request for RRAC
 export const requestRRAC = (payload) => {
-  return axios.post(base_url + "/incentive/saveIncentive", payload);
+  return axios.post(base_url + '/incentive/saveIncentive', payload);
 };
 
 // 84. get Discontinuation Records
@@ -529,7 +529,7 @@ export const deleteDiscontinuationRecords = (id) => {
 
 // 86. add Discontinuation Records
 export const updateDiscontinuationRecords = (payload) => {
-  return axios.post(base_url + "/incentive/saveIncLocNotQualified", payload);
+  return axios.post(base_url + '/incentive/saveIncLocNotQualified', payload);
 };
 
 // 87. get Incentive Records
@@ -554,7 +554,7 @@ export const getIncentiveByrefNo = (refNo) => {
 
 // 90. submit Incentive
 export const submitExpenditure = (formData) => {
-  return axios.post(base_url + "/incentive/saveExpenditure", formData);
+  return axios.post(base_url + '/incentive/saveExpenditure', formData);
 };
 
 // 91. get Incentive by RO
@@ -567,17 +567,17 @@ export const getExpenditureByRo = (monthYear) => {
 
 // 92. Update Incentive Status  by RO
 export const submitExpByRo = (payload) => {
-  return axios.post(base_url + "/incentive/updateExpenditureRo", payload);
+  return axios.post(base_url + '/incentive/updateExpenditureRo', payload);
 };
 
 // 93. Feeder Management Update
 export const submitFeederManagement = (payload) => {
-  return axios.post(base_url + "/location/feederManagementApi", payload);
+  return axios.post(base_url + '/location/feederManagementApi', payload);
 };
 
 // 94. OPD/IPD Medical Submit
 export const submitMedicalReimbursement = (formData) => {
-  return axios.post(base_url + "/medical/saveMRDetail", formData);
+  return axios.post(base_url + '/medical/saveMRDetail', formData);
   // return axios.post(
   //   "http://172.16.17.79:8084/e-Attendance/api/medical/saveMRDetail",
   //   formData
@@ -591,7 +591,7 @@ export const currentGradePay = () => {
 
 // 96. Immovable Property Submit
 export const submitImmovableProperty = (payload) => {
-  return axios.post(base_url + "/employee/immovablePropertyReturn", payload);
+  return axios.post(base_url + '/employee/immovablePropertyReturn', payload);
 };
 
 // 97. Immovable Property View
@@ -611,7 +611,7 @@ export const getDailyLosses = (empCode, dcId) => {
 
 // 98. Submit Daily Losses
 export const submitDailyLosses = (payload) => {
-  return axios.post(base_url + "/OnM/saveSsoDailyLosses", payload);
+  return axios.post(base_url + '/OnM/saveSsoDailyLosses', payload);
 };
 
 // 99. Get Shut down Details
@@ -623,7 +623,7 @@ export const getShutDown = (empCode, dcId) => {
 
 // 100. Submit Shut down Details
 export const submitShutDown = (payload) => {
-  return axios.post(base_url + "/OnM/saveSsoShutdown", payload);
+  return axios.post(base_url + '/OnM/saveSsoShutdown', payload);
 };
 
 // 101. Get PTR Failure Details
@@ -633,7 +633,7 @@ export const getPtrFailure = (empCode) => {
 
 // 102. Submit PTR Failure Details
 export const submitPtrFailure = (formData) => {
-  return axios.post(base_url + "/OnM/savePtrFailure", formData);
+  return axios.post(base_url + '/OnM/savePtrFailure', formData);
 };
 
 // 103. Get SSO Authorization
@@ -653,7 +653,7 @@ export const getDgmByJe = (empCode) => {
 
 // 106. Submit Sso Authorization
 export const submitSsoAuthorization = (payload) => {
-  return axios.post(base_url + "/OnM/saveAutorizationSSO", payload);
+  return axios.post(base_url + '/OnM/saveAutorizationSSO', payload);
 };
 
 // 107. Get Line Staff Authorization
@@ -668,14 +668,14 @@ export const getLineByDcId = (dcId) => {
 
 // 109. Submit Line staff Authorization
 export const submitLineAuthorization = (payload) => {
-  return axios.post(base_url + "/OnM/saveAutorizationLine", payload);
+  return axios.post(base_url + '/OnM/saveAutorizationLine', payload);
 };
 
 // 110. Get Medical for HR
 export const getMedicalByHr = () => {
   return axios.get(
     // base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`
-    base_url + `/medical/getHrPending?hrEmpCode=12345`
+    base_url + `/medical/getHrPending?hrEmpCode=150049`
   );
 };
 
@@ -688,7 +688,7 @@ export const getMedicineDetailByRefNo = (refNo) => {
 
 // 112. Submit Medical Hr Status
 export const submitMedicalHrStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateHRStatus", payload);
+  return axios.post(base_url + '/medical/updateHRStatus', payload);
 };
 
 // 113. Get Medical for Cmo
@@ -698,7 +698,7 @@ export const getMedicalByCmo = () => {
 
 // 114. Submit Medical Hr Status
 export const submitMedicalCmoStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateCMOStatus", payload);
+  return axios.post(base_url + '/medical/updateCMOStatus', payload);
 };
 
 // 115. Get Medical For AO
@@ -711,7 +711,7 @@ export const getMedicalByAo = () => {
 
 // 116. Submit Medical AO Status
 export const submitMedicalAoStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateAOStatus", payload);
+  return axios.post(base_url + '/medical/updateAOStatus', payload);
 };
 
 // 117. Get Medical Form by EmpCode
@@ -730,17 +730,17 @@ export const getDrugDetails = (refNo) => {
 
 // 119. Delete Drug Entries
 export const deteleDrugDetails = (payload) => {
-  return axios.post(base_url + "/medical/removeMedicineDetailApi", payload);
+  return axios.post(base_url + '/medical/removeMedicineDetailApi', payload);
 };
 
 // 120. Update Medical by Employee
 export const updateMedicalForm = (payload) => {
-  return axios.put(base_url + "/medical/updateMRDetail", payload);
+  return axios.put(base_url + '/medical/updateMRDetail', payload);
 };
 
 // 121. Submit Mediclaim for Employee
 export const submitMediclaim = (payload) => {
-  return axios.post(base_url + "/medical/saveMediClaim", payload);
+  return axios.post(base_url + '/medical/saveMediClaim', payload);
 };
 
 // 122. get Employment Types
@@ -750,7 +750,7 @@ export const getEmploymentType = () => {
 
 // 123. Create New Employee
 export const createNewEmployee = (payload) => {
-  return axios.post(base_url + "/employee/saveNewEmployee", payload);
+  return axios.post(base_url + '/employee/saveNewEmployee', payload);
 };
 // https://attendance.mpcz.in:8888/E-Attendance/api/employee/saveNewEmployee
 
@@ -775,7 +775,7 @@ export const nominationSubmit = () => {
 // 127. Vigilance Login API
 export const vigilanceLogin = (payload) => {
   return axios.post(
-    "https://webapps.mpcz.in/vigilance/digi_webapis/vigilance_login_auth_api.php",
+    'https://webapps.mpcz.in/vigilance/digi_webapis/vigilance_login_auth_api.php',
     payload
   );
 };

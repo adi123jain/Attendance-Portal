@@ -69,6 +69,7 @@ import {
 //     backgroundColor: hoverBackground,
 //   },
 // }));
+
 function SsoAuthorization() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -86,6 +87,24 @@ function SsoAuthorization() {
         setOpenBackdrop(false);
       } else {
         setOpenBackdrop(false);
+        alert(response.data.message);
+      }
+    };
+    fetchRecords();
+  }, []);
+
+  const [substation, setSubstation] = useState("");
+  const [substationList, setSubstationList] = useState([]);
+  useEffect(() => {
+    const fetchRecords = async () => {
+      setOpenBackdrop(true);
+      const response = await getSubstation(sessionDcId);
+      // console.log(response);
+      if (response.data.code == "200") {
+        setSubstationList(response.data.list);
+        // setOpenBackdrop(false);
+      } else {
+        // setOpenBackdrop(false);
         alert(response.data.message);
       }
     };
@@ -129,6 +148,7 @@ function SsoAuthorization() {
   const [remark, setRemark] = useState("");
   const [errors, setErrors] = useState({});
 
+  const substationRef = useRef(null);
   const SsoRef = useRef(null);
   const dgmRef = useRef(null);
   const kv11Ref = useRef(null);
@@ -137,6 +157,7 @@ function SsoAuthorization() {
 
   const validate = () => {
     const newErrors = {};
+    if (!substation) newErrors.substation = "Substation is required";
     if (!selectSso) newErrors.selectSso = "SSO is required";
     if (!is11kv && !is33kv) newErrors.voltage = "Select at least one voltage";
     if (!selectDgm) newErrors.selectDgm = "DGM is required";
@@ -145,7 +166,9 @@ function SsoAuthorization() {
 
     // focus on first invalid
     if (Object.keys(newErrors).length > 0) {
-      if (newErrors.selectSso && SsoRef.current) SsoRef.current.focus();
+      if (newErrors.substation && substationRef.current)
+        substationRef.current.focus();
+      else if (newErrors.selectSso && SsoRef.current) SsoRef.current.focus();
       else if (newErrors.voltage && kv11Ref.current) kv11Ref.current.focus();
       else if (newErrors.selectDgm && dgmRef.current) dgmRef.current.focus();
       else if (newErrors.remark && remarkRef.current) remarkRef.current.focus();
@@ -165,7 +188,10 @@ function SsoAuthorization() {
       dcID: sessionDcId,
       dgmEmpCode: selectDgm,
       jeRemark: remark,
+      substationID: substation,
     };
+
+    // console.log(payload);
 
     try {
       const response = await submitSsoAuthorization(payload);
@@ -253,7 +279,7 @@ function SsoAuthorization() {
                   variant="contained"
                   size="small"
                   sx={{
-                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
+                    // background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
                     color: "#fff",
                     boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
                     "&:hover": {
@@ -276,8 +302,8 @@ function SsoAuthorization() {
                   variant="contained"
                   size="small"
                   sx={{
-                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
-                    color: "#fff",
+                    // background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
+                    color: "dark",
                     boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
                     "&:hover": {
                       background: "linear-gradient(90deg, #1B5E20, #43A047)",
@@ -397,6 +423,33 @@ function SsoAuthorization() {
 
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
+                {/* Select Substation */}
+                <Col xs={12} md={3}>
+                  <Card className="h-100">
+                    <Card.Header>select Substation</Card.Header>
+                    <Card.Body>
+                      <Form.Select
+                        ref={substationRef}
+                        value={substation}
+                        onChange={(e) => setSubstation(e.target.value)}
+                        isInvalid={!!errors.substation}
+                      >
+                        <option value="" disabled>
+                          -- select --
+                        </option>
+                        {substationList.map((item, index) => (
+                          <option value={item.substationId} key={index}>
+                            {item.name}
+                          </option>
+                        ))}
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid" className="d-block">
+                        {errors.substation}
+                      </Form.Control.Feedback>
+                    </Card.Body>
+                  </Card>
+                </Col>
+
                 {/* Select SSO */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
@@ -484,9 +537,10 @@ function SsoAuthorization() {
                     </Card.Body>
                   </Card>
                 </Col>
-
+              </Row>
+              <Row className="mt-2">
                 {/* Enter Remark */}
-                <Col xs={12} md={3}>
+                <Col md={12}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
                     <Card.Body>

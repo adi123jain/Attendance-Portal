@@ -199,9 +199,10 @@ function LineStaffAuthorization() {
   };
 
   const downloadPendingPDF = () => {
+    // http://172.16.17.79:8084
     // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
     window.open(
-      `http://172.16.17.79:8084/e-Attendance/api/OnM/getAuthPendingLinePdfByDcId?dcId=${sessionDcId}`,
+      `https://attendance.mpcz.in:8888/e-Attendance/api/OnM/getAuthPendingLinePdfByDcId?dcId=${sessionDcId}`,
       "_blank"
     );
   };
