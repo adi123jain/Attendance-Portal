@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Typography,
   Tooltip,
@@ -16,31 +16,31 @@ import {
   MenuItem,
   FormHelperText,
   FormControl,
-} from "@mui/material";
-import VerifiedIcon from "@mui/icons-material/Verified";
+} from '@mui/material';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { useLocation } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useNavigate } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
   getLineSatusByGm,
   getSsoSatusByGm,
   updateLineSatusByGm,
   updateSsoSatusByGm,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(135deg, #4F77AA, #1E3C72)";
 // const oddRowBackground = "#F8FAFF";
@@ -78,20 +78,20 @@ function GmLineStaffStatus() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(true);
   const [records, setRecords] = useState([]);
-  const sessionEmp = sessionStorage.getItem("empCode");
+  const sessionEmp = sessionStorage.getItem('empCode');
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         const response = await getLineSatusByGm(sessionEmp);
         console.log(response);
-        if (response.data.code === "200") {
+        if (response.data.code === '200') {
           setRecords(response.data.list);
         } else {
           alert(response.data.message);
         }
       } catch (error) {
-        console.error("Error fetching SSO status:", error);
+        console.error('Error fetching SSO status:', error);
       } finally {
         setOpenBackdrop(false);
       }
@@ -171,7 +171,7 @@ function GmLineStaffStatus() {
     }
 
     // ---- Validate Remark ----
-    if (!remarkValue || remarkValue.trim() === "") {
+    if (!remarkValue || remarkValue.trim() === '') {
       hasError = true;
       setErrors((prev) => ({
         ...prev,
@@ -190,19 +190,19 @@ function GmLineStaffStatus() {
       const response = await updateLineSatusByGm(
         selectedValue,
         id,
-        remarkValue
+        remarkValue,
       );
-      console.log("Update API Response:", response);
+      console.log('Update API Response:', response);
 
-      if (response?.data?.code === "200") {
-        alert("Successfully Updated!");
+      if (response?.data?.code === '200') {
+        alert('Successfully Updated!');
         window.location.reload();
       } else {
-        alert(response?.data?.message || "Update failed!");
+        alert(response?.data?.message || 'Update failed!');
       }
     } catch (error) {
-      console.error("Error updating status:", error);
-      alert("Something went wrong. Please try again later.");
+      console.error('Error updating status:', error);
+      alert('Something went wrong. Please try again later.');
     } finally {
       setOpenBackdrop(false);
     }
@@ -214,7 +214,7 @@ function GmLineStaffStatus() {
         className="shadow-lg rounded"
         style={{
           //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -222,9 +222,9 @@ function GmLineStaffStatus() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Line Staff Authorization Status by GM
@@ -234,7 +234,7 @@ function GmLineStaffStatus() {
         <Card.Body className="px-4 pb-4">
           <Paper
             elevation={3}
-            sx={{ borderRadius: "12px", overflow: "hidden" }}
+            sx={{ borderRadius: '12px', overflow: 'hidden' }}
           >
             <TableContainer>
               <Table ref={tableRef} stickyHeader>
@@ -265,35 +265,35 @@ function GmLineStaffStatus() {
                       <StyledTableRow key={index}>
                         <StyledTableCell>{index + 1}</StyledTableCell>
                         <StyledTableCell>
-                          {item.lineName || "-"}
+                          {item.lineName || '-'}
                         </StyledTableCell>
-                        <StyledTableCell>{item.jeName || "-"}</StyledTableCell>
-                        <StyledTableCell>{item.dgmName || "-"}</StyledTableCell>
+                        <StyledTableCell>{item.jeName || '-'}</StyledTableCell>
+                        <StyledTableCell>{item.dgmName || '-'}</StyledTableCell>
                         <StyledTableCell>
-                          {item.dgmStatus || "-"}
+                          {item.dgmStatus || '-'}
                         </StyledTableCell>
-                        <StyledTableCell>{item.gmName || "-"}</StyledTableCell>
+                        <StyledTableCell>{item.gmName || '-'}</StyledTableCell>
 
                         <StyledTableCell>
-                          {item.gmStatus || "-"}
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          {item.status11KV || "-"}
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          {item.status33KV || "-"}
+                          {item.gmStatus || '-'}
                         </StyledTableCell>
 
                         <StyledTableCell>
-                          {item.jeRemark || "-"}
+                          {item.status11KV || '-'}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {item.status33KV || '-'}
                         </StyledTableCell>
 
                         <StyledTableCell>
-                          {item.dgmRemark || "-"}
+                          {item.jeRemark || '-'}
                         </StyledTableCell>
 
-                        <StyledTableCell>{item.dcName || "-"}</StyledTableCell>
+                        <StyledTableCell>
+                          {item.dgmRemark || '-'}
+                        </StyledTableCell>
+
+                        <StyledTableCell>{item.dcName || '-'}</StyledTableCell>
 
                         {/* Action Select */}
                         <StyledTableCell>
@@ -304,7 +304,7 @@ function GmLineStaffStatus() {
                             size="small"
                           >
                             <Select
-                              value={actionValues[index] || ""}
+                              value={actionValues[index] || ''}
                               onChange={(e) =>
                                 handleSelectChange(index, e.target.value)
                               }
@@ -332,10 +332,10 @@ function GmLineStaffStatus() {
                             fullWidth
                             size="small"
                             placeholder="Enter remark"
-                            value={remarkValues[index] || ""}
+                            value={remarkValues[index] || ''}
                             error={errors[index]?.remark}
                             helperText={
-                              errors[index]?.remark ? "Remark is required" : ""
+                              errors[index]?.remark ? 'Remark is required' : ''
                             }
                             onChange={(e) =>
                               handleRemarkChange(index, e.target.value)
@@ -351,11 +351,11 @@ function GmLineStaffStatus() {
                               size="small"
                               sx={{
                                 background:
-                                  "linear-gradient(90deg, #2196F3, #21CBF3)",
-                                color: "#fff",
-                                "&:hover": {
+                                  'linear-gradient(90deg, #2196F3, #21CBF3)',
+                                color: '#fff',
+                                '&:hover': {
                                   background:
-                                    "linear-gradient(90deg, #1E88E5, #1AA7E5)",
+                                    'linear-gradient(90deg, #1E88E5, #1AA7E5)',
                                 },
                               }}
                               onClick={() => updateGmStatus(index, item.id)}
@@ -368,7 +368,7 @@ function GmLineStaffStatus() {
                     ))
                   ) : (
                     <StyledTableRow>
-                      <StyledTableCell colSpan={12}>
+                      <StyledTableCell colSpan={15}>
                         <Typography variant="body1" sx={{ py: 2 }}>
                           No data found
                         </Typography>
@@ -384,7 +384,7 @@ function GmLineStaffStatus() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

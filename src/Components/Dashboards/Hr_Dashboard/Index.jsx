@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -6,155 +6,155 @@ import {
   Divider,
   Tooltip,
   Box,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import AssessmentIcon from "@mui/icons-material/Assessment";
-import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
-import InfoIcon from "@mui/icons-material/Info";
-import EditLocationAltIcon from "@mui/icons-material/EditLocationAlt";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import BlockIcon from "@mui/icons-material/Block";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import { motion } from "framer-motion";
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import InfoIcon from '@mui/icons-material/Info';
+import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import BlockIcon from '@mui/icons-material/Block';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import { motion } from 'framer-motion';
 
 function HumanResourceDashboard() {
   const hrCards = [
     {
-      title: "HR Panel",
-      icon: <PeopleAltIcon fontSize="large" sx={{ color: "#1976d2" }} />,
+      title: 'HR Panel',
+      icon: <PeopleAltIcon fontSize="large" sx={{ color: '#1976d2' }} />,
       links: [
         {
-          name: "Employee Information",
-          to: "/employeeInformation",
+          name: 'Employee Information',
+          to: '/employeeInformation',
           icon: <InfoIcon />,
         },
         {
-          name: "View/Edit Attendance Location",
-          to: "/editLocation",
+          name: 'View/Edit Attendance Location',
+          to: '/editLocation',
           icon: <EditLocationAltIcon />,
         },
         {
-          name: "Create Attendance Location",
-          to: "/createLocation",
+          name: 'Create Attendance Location',
+          to: '/createLocation',
           icon: <AddLocationAltIcon />,
         },
         {
-          name: "Leave Allocation",
-          to: "/leaveAllocation",
+          name: 'Leave Allocation',
+          to: '/leaveAllocation',
           icon: <AssignmentTurnedInIcon />,
         },
         {
-          name: "Employee Attendance View",
-          to: "/employeeAttendanceView",
+          name: 'Employee Attendance View',
+          to: '/employeeAttendanceView',
           icon: <VisibilityIcon />,
         },
         {
-          name: "Feeder Management",
-          to: "/feederManagement",
+          name: 'Feeder Management',
+          to: '/feederManagement',
           icon: <ManageAccountsIcon />,
         },
         {
-          name: "Medical HR Approval",
-          to: "/medicalApprovalByHr",
+          name: 'Medical HR Approval',
+          to: '/medicalApprovalByHr',
           icon: <CheckCircleOutlineIcon />,
         },
       ],
     },
     {
-      title: "Reports",
-      icon: <AssessmentIcon fontSize="large" sx={{ color: "#388e3c" }} />,
+      title: 'Reports',
+      icon: <AssessmentIcon fontSize="large" sx={{ color: '#388e3c' }} />,
       links: [
         {
-          name: "Monthly Attendance Sheet",
-          to: "/monthlyAttendance",
+          name: 'Monthly Attendance Sheet',
+          to: '/monthlyAttendance',
           icon: <AssignmentIcon />,
         },
         {
-          name: "Employee Masters",
-          to: "/employeeMaster",
+          name: 'Employee Masters',
+          to: '/employeeMaster',
           icon: <PeopleAltIcon />,
         },
         {
-          name: "Day-Wise Attendance Sheet",
-          to: "/dayWiseAttendance",
+          name: 'Day-Wise Attendance Sheet',
+          to: '/dayWiseAttendance',
           icon: <CalendarMonthIcon />,
         },
         {
-          name: "Leave Reports",
-          to: "/leaveReport",
+          name: 'Leave Reports',
+          to: '/leaveReport',
           icon: <AssignmentTurnedInIcon />,
         },
         {
-          name: "Monthly Sheet Officer Wise",
-          to: "/monthlyAttendannceOfficerWise",
+          name: 'Monthly Sheet Officer Wise',
+          to: '/monthlyAttendannceOfficerWise',
           icon: <AssignmentIcon />,
         },
         {
-          name: "MMSKY Monthly Attendance",
-          to: "/MMSKYattendance",
+          name: 'MMSKY Monthly Attendance',
+          to: '/MMSKYattendance',
           icon: <CalendarMonthIcon />,
         },
       ],
     },
     {
-      title: "Outsource (Employee)",
-      icon: <BusinessCenterIcon fontSize="large" sx={{ color: "#8e24aa" }} />,
+      title: 'Outsource (Employee)',
+      icon: <BusinessCenterIcon fontSize="large" sx={{ color: '#8e24aa' }} />,
       links: [
         {
-          name: "Employee Information (Outsource)",
-          to: "/outsourceEmployeeInfo",
+          name: 'Employee Information (Outsource)',
+          to: '/outsourceEmployeeInfo',
           icon: <InfoIcon />,
         },
         {
-          name: "Pending for HR Verification",
-          to: "/HRverification",
+          name: 'Pending for HR Verification',
+          to: '/HRverification',
           icon: <CheckCircleOutlineIcon />,
         },
         {
-          name: "Blacklist Employee",
-          to: "/blacklistEmployee",
+          name: 'Blacklist Employee',
+          to: '/blacklistEmployee',
           icon: <BlockIcon />,
         },
         {
-          name: "View Blacklisted Employees",
-          to: "/viewBlacklistedEmployee",
+          name: 'View Blacklisted Employees',
+          to: '/viewBlacklistedEmployee',
           icon: <VisibilityOffIcon />,
         },
         {
-          name: "Monthly Attendance Sheet",
-          to: "/monthlyAttendaceOutsource",
+          name: 'Monthly Attendance Sheet',
+          to: '/monthlyAttendaceOutsource',
           icon: <CalendarMonthIcon />,
         },
         {
-          name: "Day-Wise Attendance",
-          to: "/outsourceMIS",
+          name: 'Day-Wise Attendance',
+          to: '/outsourceMIS',
           icon: <AssignmentIcon />,
         },
         {
-          name: "Employee Data",
-          to: "/outsourceEmployeeData",
+          name: 'Employee Data',
+          to: '/outsourceEmployeeData',
           icon: <PeopleAltIcon />,
         },
         {
-          name: "Leave Allocation (Outsource)",
-          to: "/outsourceLeaveAllocation",
+          name: 'Leave Allocation (Outsource)',
+          to: '/outsourceLeaveAllocation',
           icon: <AssignmentTurnedInIcon />,
         },
         {
-          name: "Employee Attendance View",
-          to: "/outsourceEmployeeAttendaceView",
+          name: 'Employee Attendance View',
+          to: '/outsourceEmployeeAttendaceView',
           icon: <VisibilityIcon />,
         },
         {
-          name: "Employee Services",
-          to: "/outsourceEmployeeServices",
+          name: 'Employee Services',
+          to: '/outsourceEmployeeServices',
           icon: <ManageAccountsIcon />,
         },
       ],
@@ -177,21 +177,21 @@ function HumanResourceDashboard() {
           gutterBottom
           variant="h3"
           sx={{
-            textAlign: "center",
-            color: "#0d47a1",
-            fontWeight: "bold",
+            textAlign: 'center',
+            color: '#0d47a1',
+            fontWeight: 'bold',
             mb: 4,
-            fontFamily: "serif",
+            fontFamily: 'serif',
           }}
         >
-          Human Resource Manager
+          Human Resources (HR) Manager
         </Typography>
       </motion.div>
       <Box
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "center",
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
           gap: 4,
           p: 4,
         }}
@@ -203,22 +203,22 @@ function HumanResourceDashboard() {
               width: 320,
               boxShadow: 4,
               borderRadius: 3,
-              background: "linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)",
-              color: "#0d47a1",
-              transition: "all 0.3s ease",
-              "&:hover": {
-                transform: "translateY(-6px)",
+              background: 'linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)',
+              color: '#0d47a1',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-6px)',
                 boxShadow: 8,
-                backgroundColor: "#e3f2fd",
+                backgroundColor: '#e3f2fd',
               },
             }}
           >
             <CardContent>
               <Box
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexDirection: 'column',
                   mb: 1,
                 }}
               >
@@ -227,10 +227,10 @@ function HumanResourceDashboard() {
                   variant="h6"
                   sx={{
                     mt: 1,
-                    color: "#0d47a1",
-                    fontWeight: "bold",
-                    fontFamily: "serif",
-                    textAlign: "center",
+                    color: '#0d47a1',
+                    fontWeight: 'bold',
+                    fontFamily: 'serif',
+                    textAlign: 'center',
                   }}
                 >
                   {card.title}
@@ -244,22 +244,22 @@ function HumanResourceDashboard() {
                       component={Link}
                       to={item.to}
                       sx={{
-                        display: "flex",
-                        alignItems: "center",
+                        display: 'flex',
+                        alignItems: 'center',
                         gap: 1.5,
                         p: 1,
                         borderRadius: 2,
-                        textDecoration: "none",
-                        color: "inherit",
-                        "&:hover": {
-                          backgroundColor: "#bbdefb",
+                        textDecoration: 'none',
+                        color: 'inherit',
+                        '&:hover': {
+                          backgroundColor: '#bbdefb',
                         },
                       }}
                     >
                       {item.icon}
                       <Typography
                         variant="body2"
-                        sx={{ fontWeight: "bold", fontFamily: "serif" }}
+                        sx={{ fontWeight: 'bold', fontFamily: 'serif' }}
                       >
                         {item.name}
                       </Typography>

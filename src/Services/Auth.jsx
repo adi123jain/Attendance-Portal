@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 // Base API URL
-const base_url = "https://attendance.mpcz.in:8888/E-Attendance/api";
+const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
 // const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
-const sessionEmpCode = sessionStorage.getItem("empCode");
+
+const sessionEmpCode = sessionStorage.getItem('empCode');
 
 // 1.Get Daily Attendance Records
 export const attendanceRecords = (punchDate) => {
@@ -13,17 +14,17 @@ export const attendanceRecords = (punchDate) => {
 
 // 2.User Authentication API
 export const userAuthentication = (payload) => {
-  return axios.post(base_url + "/user-login/authenticate", payload);
+  return axios.post(base_url + '/user-login/authenticate', payload);
 };
 
 // 3.Get User OTP API
 export const getOtp = (payload) => {
-  return axios.post(base_url + "/otp/getOtp", payload);
+  return axios.post(base_url + '/otp/getOtp', payload);
 };
 
 // 4.Verify User OTP API
 export const verifyOtp = (payload) => {
-  return axios.post(base_url + "/otp/verifyOtp", payload);
+  return axios.post(base_url + '/otp/verifyOtp', payload);
 };
 
 // 5.Get Regions
@@ -39,21 +40,21 @@ export const getCircle = (regionId) => {
 // 7.Get Division
 export const getDivision = (circleId) => {
   return axios.get(
-    `${base_url}/location/getAllDivisionsByCircleId/${circleId}`
+    `${base_url}/location/getAllDivisionsByCircleId/${circleId}`,
   );
 };
 
 // 8.Get Sub-Division
 export const getSubDivision = (divisionId) => {
   return axios.get(
-    `${base_url}/location/getAllSubDivisionsByDivisionId/${divisionId}`
+    `${base_url}/location/getAllSubDivisionsByDivisionId/${divisionId}`,
   );
 };
 
 // 9.Get DC
 export const getDC = (subDivisionId) => {
   return axios.get(
-    `${base_url}/location/getAllDcsBySubDivisionId/${subDivisionId}`
+    `${base_url}/location/getAllDcsBySubDivisionId/${subDivisionId}`,
   );
 };
 
@@ -64,7 +65,7 @@ export const getSubstation = (dcId) => {
 
 // 11.Get Employee by Level (Region,Circle,Division, etc.....)
 export const getEmployeeByLevel = (payload) => {
-  return axios.post(base_url + "/employee/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/employee/getEmployeesByLevel', payload);
 };
 
 // 12.Get Employee by Employee Code
@@ -79,34 +80,34 @@ export const getDistrict = () => {
 
 // 14.Create Attendance Location
 export const createAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/addNewAttendanceLocation", payload);
+  return axios.post(base_url + '/location/addNewAttendanceLocation', payload);
 };
 
 // 15.View Attendance Location
 export const viewAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/getLocationByLevel", payload);
+  return axios.post(base_url + '/location/getLocationByLevel', payload);
 };
 
 // 16.Update Attendance Location
 export const updateLocationCordinate = (payload) => {
-  return axios.post(base_url + "/location/addNewAttendanceLocation", payload);
+  return axios.post(base_url + '/location/addNewAttendanceLocation', payload);
 };
 
 // 17.Get Leave Allocation by Levek (Region,Circle,Division, etc.....)
 export const getLeaveAllocation = (payload) => {
-  return axios.post(base_url + "/leave/getLeaveBalanceByLevel", payload);
+  return axios.post(base_url + '/leave/getLeaveBalanceByLevel', payload);
 };
 
 // 18.Update Employee Leaves
 export const updateEmployeeLeaves = (payload) => {
-  return axios.post(base_url + "/leave/updateLeaveBalancesEmp", payload);
+  return axios.post(base_url + '/leave/updateLeaveBalancesEmp', payload);
 };
 
 // 19.Get Employee Ateendance for Month/Year
 export const employeeAttendaceView = (empCode, month, year) => {
   return axios.get(
     base_url +
-      `/attendance/getMonthWiseAttendanceEmp?empCode=${empCode}&month=${month}&year=${year}`
+      `/attendance/getMonthWiseAttendanceEmp?empCode=${empCode}&month=${month}&year=${year}`,
   );
 };
 
@@ -114,103 +115,103 @@ export const employeeAttendaceView = (empCode, month, year) => {
 export const getImpressionImage = (empCode, punchDate) => {
   return axios.get(
     base_url +
-      `/attendance/getAttendanceCheckInByDate?empCode=${empCode}&punchDate=${punchDate}`
+      `/attendance/getAttendanceCheckInByDate?empCode=${empCode}&punchDate=${punchDate}`,
   );
 };
 
 // 21. Get Employee Places Of Postings Records
 export const getEmployeePlaceOfPosting = (empCode) => {
   return axios.get(
-    base_url + `/employee/getEmployeePostingApi?empCode=${empCode}`
+    base_url + `/employee/getEmployeePostingApi?empCode=${empCode}`,
   );
 };
 
 // 22. Get Designation API
 export const getDesignation = () => {
-  return axios.get(base_url + "/master/getAllDesignations");
+  return axios.get(base_url + '/master/getAllDesignations');
 };
 
 // 23. Get Department API
 export const getDepartment = () => {
-  return axios.get(base_url + "/master/getAllDepartments");
+  return axios.get(base_url + '/master/getAllDepartments');
 };
 
 // 24. Submit Employee's Place of Postings
 export const submitPlaceOfPosting = (payload) => {
-  return axios.post(base_url + "/employee/employeePostingApi", [payload]);
+  return axios.post(base_url + '/employee/employeePostingApi', [payload]);
 };
 
 // 25. Get Substation By Division
 export const getSubstationByDivision = (divisionId) => {
   return axios.get(
-    `${base_url}/location/getAllSubstationsByDivId/${divisionId}`
+    `${base_url}/location/getAllSubstationsByDivId/${divisionId}`,
   );
 };
 
 // 26. Get Substation By Division
 export const getFeederBySubstation = (substationId) => {
   return axios.get(
-    `https://htsanyojanuat.mpcz.in:8088/api/FeederDetails/by-ss/${substationId}`
+    `https://htsanyojanuat.mpcz.in:8088/api/FeederDetails/by-ss/${substationId}`,
   );
 };
 
 // 27. Get Officer User Details on DC Change
 export const getFeederManagerByDc = (dcId) => {
   return axios.get(
-    `${base_url}/employee/getOfficerEmployeeDetailApi?dc=${dcId}`
+    `${base_url}/employee/getOfficerEmployeeDetailApi?dc=${dcId}`,
   );
 };
 
 // 28. Get Feeder Incharge by DC
 export const getFeederInchargeByDc = (dcId) => {
   return axios.get(
-    `${base_url}/employee/getLinestaffEmployeeDetailApi?dc=${dcId}`
+    `${base_url}/employee/getLinestaffEmployeeDetailApi?dc=${dcId}`,
   );
 };
 
 // 29. Get Posted Feeder Manager and Feeder Inchange
 export const getPostedOfficerByFeeder = (feederId) => {
   return axios.get(
-    `${base_url}/location/getFeederManagementApi?feederCode=${feederId}`
+    `${base_url}/location/getFeederManagementApi?feederCode=${feederId}`,
   );
 };
 
 //  30. Get Employee Master Data
 export const getEmpMasterData = (regionId, circleId) => {
   return axios.get(
-    `${base_url}/employee/getEmployeeMisJson?regionId=${regionId}&circleId=${circleId}`
+    `${base_url}/employee/getEmployeeMisJson?regionId=${regionId}&circleId=${circleId}`,
   );
 };
 
 // 31. Day Wise Attendance Regular
 export const getDayWiseAttendance = (regionId, circleId, punchDate) => {
   return axios.get(
-    `${base_url}/attendance/getAttendanceSingleDateMisJson?regionId=${regionId}&circleId=${circleId}&punchDate=${punchDate}`
+    `${base_url}/attendance/getAttendanceSingleDateMisJson?regionId=${regionId}&circleId=${circleId}&punchDate=${punchDate}`,
   );
 };
 
 // 32. Employee Leave Reports
 export const getLeaveReports = ({ regionId, circleId, fromDate, toDate }) => {
   return axios.get(
-    `${base_url}/leave/getLeaveReport?regionId=${regionId}&circleId=${circleId}&fromDate=${fromDate}&toDate=${toDate}`
+    `${base_url}/leave/getLeaveReport?regionId=${regionId}&circleId=${circleId}&fromDate=${fromDate}&toDate=${toDate}`,
   );
 };
 
 // 33. Officer's Wise Attendance
 export const getAttendanceOfficerWise = ({ month, year }) => {
   return axios.get(
-    `${base_url}/attendance/getAttendanceMisHrWise?hrEmpCode=${sessionEmpCode}&month=${month}&year=${year}`
+    `${base_url}/attendance/getAttendanceMisHrWise?hrEmpCode=${sessionEmpCode}&month=${month}&year=${year}`,
   );
 };
 
 // 34. Get Outsource Emp Details By Level
 export const getOutsourceEmpByLevel = (payload) => {
-  return axios.post(base_url + "/outsource/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/outsource/getEmployeesByLevel', payload);
 };
 
 // 35. Get Outsource Emp Details By Level
 export const getOutsourceEmpByEmpCode = (payload) => {
-  return axios.post(base_url + "/outsource/getEmployeesByLevel", payload);
+  return axios.post(base_url + '/outsource/getEmployeesByLevel', payload);
 };
 
 // 36. Get Outsource Employee Details for Update
@@ -221,19 +222,19 @@ export const getOutsourceEmployee = (empCode) => {
 // 37. Verify Employee By HR
 export const getEmpForVerification = () => {
   return axios.get(
-    base_url + `/outsource/findEmpPendingAtHr?empCode=${sessionEmpCode}`
+    base_url + `/outsource/findEmpPendingAtHr?empCode=${sessionEmpCode}`,
   );
 };
 
 // 38. Black list Outsource Emp
 export const employeeBlacklist = (payload) => {
-  return axios.post(base_url + "/outsource/saveOutsourceBlacklisted", payload);
+  return axios.post(base_url + '/outsource/saveOutsourceBlacklisted', payload);
 };
 
 // 39. Blacklisted Employee Records
 export const getBlackListedEmp = (regionId, circleId) => {
   return axios.get(
-    `${base_url}/outsource/getBlacklistedList?regionId=${regionId}&circleId=${circleId}`
+    `${base_url}/outsource/getBlacklistedList?regionId=${regionId}&circleId=${circleId}`,
   );
 };
 
@@ -241,23 +242,23 @@ export const getBlackListedEmp = (regionId, circleId) => {
 export const getDayWiseAttendanceOutsource = (
   regionId,
   circleId,
-  punchDate
+  punchDate,
 ) => {
   return axios.get(
-    `${base_url}/outsource/getOutsourceSingleDateMis?regionId=${regionId}&circleId=${circleId}&punchDate=${punchDate}`
+    `${base_url}/outsource/getOutsourceSingleDateMis?regionId=${regionId}&circleId=${circleId}&punchDate=${punchDate}`,
   );
 };
 
 // 41. Employee Master Outsource
 export const getEmpMasterOutsource = (regionId, circleId) => {
   return axios.get(
-    `${base_url}/outsource/getOutsourceEmployeeMis?regionId=${regionId}&circleId=${circleId}`
+    `${base_url}/outsource/getOutsourceEmployeeMis?regionId=${regionId}&circleId=${circleId}`,
   );
 };
 
 // 42. Leave Allocation Outsource
 export const leaveAllocationOutsource = (payload) => {
-  return axios.post(base_url + "/outsource/getLeaveBalanceByLevel", payload);
+  return axios.post(base_url + '/outsource/getLeaveBalanceByLevel', payload);
 };
 
 // 43. Get Employee Shifts
@@ -277,12 +278,12 @@ export const getHolidays = () => {
 
 // 46. Get Attendance Locations by Regions-Substations
 export const getAttendanceLocation = (payload) => {
-  return axios.post(base_url + "/location/getLocationByLevel", payload);
+  return axios.post(base_url + '/location/getLocationByLevel', payload);
 };
 
 // 47. Get Reporting Officer's Designation
 export const getRoDesignation = () => {
-  return axios.get(base_url + "/employee/getRoDesignation");
+  return axios.get(base_url + '/employee/getRoDesignation');
 };
 
 // 48. Get Reporting Officer's Name by Designation
@@ -297,7 +298,7 @@ export const getHrManager = () => {
 
 // 50. Update Employee Details for Outsource
 export const updateVerifyOutEmployee = (payload) => {
-  return axios.post(base_url + "/outsource/updateEmployee  ", payload);
+  return axios.post(base_url + '/outsource/updateEmployee  ', payload);
 };
 
 // Employee Services Outsource
@@ -308,13 +309,13 @@ export const getPunishmentType = () => {
 
 // 52. Assign Punishment to Employee
 export const updatePunishment = (payload) => {
-  return axios.post(base_url + "/outsource/savePunishment", payload);
+  return axios.post(base_url + '/outsource/savePunishment', payload);
 };
 
 // 53. Get Employee Punishments Records by EmpCode
 export const getEmpPunishments = (empCode) => {
   return axios.get(
-    base_url + `/outsource/getPunishmentDetailsByEmpCode?empCode=${empCode}`
+    base_url + `/outsource/getPunishmentDetailsByEmpCode?empCode=${empCode}`,
   );
 };
 
@@ -323,68 +324,68 @@ export const getComplaintType = () => {
   return axios.get(
     base_url +
       `/master/getAllComplaints
-  `
+  `,
   );
 };
 
 // 55. Register Complaint to Employee outsource
 export const updateComplaint = (payload) => {
-  return axios.post(base_url + "/outsource/saveComplaint", payload);
+  return axios.post(base_url + '/outsource/saveComplaint', payload);
 };
 
 // 56. View Complaint Details by Empcode
 export const getEmpComplaints = (empCode) => {
   return axios.get(
-    base_url + `/outsource/getComplaintDetailByEmpCode?empCode=${empCode}`
+    base_url + `/outsource/getComplaintDetailByEmpCode?empCode=${empCode}`,
   );
 };
 
 // 57. Upload Wireman Certificate for Outsource Employee
 export const uploadWiremanCertificate = (payload) => {
-  return axios.post(base_url + "/outsource/uploadWiremanCertificate", payload);
+  return axios.post(base_url + '/outsource/uploadWiremanCertificate', payload);
 };
 
 // 58. Download Wireman Certificate for Outsource Employee
 export const downloadWiremanCertificate = (empCode) => {
   return axios.get(
-    base_url + `/outsource/getWirmanCertificateByEmpCode?empCode=${empCode}`
+    base_url + `/outsource/getWirmanCertificateByEmpCode?empCode=${empCode}`,
   );
 };
 
 // 59. Detele Wireman Certificate for Outsource Employee
 export const deleteWiremanCertificate = (payload) => {
-  return axios.post(base_url + "/outsource/cancelWiremanCertificate", payload);
+  return axios.post(base_url + '/outsource/cancelWiremanCertificate', payload);
 };
 
 // 60. Training for Outsource Employee
 export const outsourceEmpTraning = (payload) => {
-  return axios.post(base_url + "/outsource/saveNewTrainingDetails", payload);
+  return axios.post(base_url + '/outsource/saveNewTrainingDetails', payload);
 };
 
 // 61. View Outsource Employee Training by Empcode
 export const getEmployeeTrainings = (empCode) => {
   return axios.get(
-    base_url + `/outsource/getTrainingDetailsByEmp?empCode=${empCode}`
+    base_url + `/outsource/getTrainingDetailsByEmp?empCode=${empCode}`,
   );
 };
 
 // 62. Get Employee Places Of Postings Records
 export const getOutsourcePlaceOfPosting = (empCode) => {
   return axios.get(
-    base_url + `/outsource/getOutsourcePostingApi?empCode=${empCode}`
+    base_url + `/outsource/getOutsourcePostingApi?empCode=${empCode}`,
   );
 };
 
 // 63. Update Places of Postings Outsource
 export const submitOutsourcePlaceOfPosting = (payload) => {
-  return axios.post(base_url + "/outsource/outsourcePostingApi", [payload]);
+  return axios.post(base_url + '/outsource/outsourcePostingApi', [payload]);
 };
 
 // Employee Sections
 // 64. Regular Employee Leave Balance
 export const getEmployeeLeaveBalance = () => {
   return axios.get(
-    base_url + `/leave/getLeaveBalancesByEmpCode/${sessionEmpCode}`
+    base_url + `/leave/getLeaveBalancesByEmpCode/${sessionEmpCode}`,
   );
 };
 
@@ -392,25 +393,25 @@ export const getEmployeeLeaveBalance = () => {
 export const viewEmpAttendanceBySessionCode = (month, year) => {
   return axios.get(
     base_url +
-      `/attendance/getMonthWiseAttendanceEmp?empCode=${sessionEmpCode}&month=${month}&year=${year}`
+      `/attendance/getMonthWiseAttendanceEmp?empCode=${sessionEmpCode}&month=${month}&year=${year}`,
   );
 };
 
 // 65. Apply Corrections
 export const applyCorrections = (payload) => {
-  return axios.post(base_url + "/attendance/applyCorrection", payload);
+  return axios.post(base_url + '/attendance/applyCorrection', payload);
 };
 
 // 66. Apply Employee Leave's
 export const applyLeaves = (payload) => {
-  return axios.post(base_url + "/leave/applyLeave", payload);
+  return axios.post(base_url + '/leave/applyLeave', payload);
 };
 
 // 67. See Correction and Leave For Reporting Officer
 export const getCorrectionsByRoId = (month, year) => {
   return axios.get(
     base_url +
-      `/employee/getEmpApplicationsByRoId?roEmpCode=${sessionEmpCode}&month=${month}&year=${year}`
+      `/employee/getEmpApplicationsByRoId?roEmpCode=${sessionEmpCode}&month=${month}&year=${year}`,
   );
 };
 
@@ -418,7 +419,7 @@ export const getCorrectionsByRoId = (month, year) => {
 export const getEmpAttSummary = (empCode, month, year) => {
   return axios.get(
     base_url +
-      `/attendance/getAttendanceSummaryEmp?empCode=${empCode}&month=${month}&year=${year}`
+      `/attendance/getAttendanceSummaryEmp?empCode=${empCode}&month=${month}&year=${year}`,
   );
 };
 
@@ -426,24 +427,24 @@ export const getEmpAttSummary = (empCode, month, year) => {
 export const getEmpCorrectionsDetails = (empCode, month, year) => {
   return axios.get(
     base_url +
-      `/attendance/getPendingCorrections?empCode=${empCode}&month=${month}&year=${year}`
+      `/attendance/getPendingCorrections?empCode=${empCode}&month=${month}&year=${year}`,
   );
 };
 
 // 70. Approve Leave
 export const approveLeave = (payload) => {
-  return axios.post(base_url + "/leave/approveLeave", payload);
+  return axios.post(base_url + '/leave/approveLeave', payload);
 };
 
 // 71. Approve Corrections
 export const approveCorrections = (payload) => {
-  return axios.post(base_url + "/attendance/approveCorrection", payload);
+  return axios.post(base_url + '/attendance/approveCorrection', payload);
 };
 
 // 72. Get Employee Tagged to RO for Shift Change
 export const getEmpShiftByRo = () => {
   return axios.get(
-    base_url + `/employee/getEmployeesByRoId?roEmpCode=${sessionEmpCode}`
+    base_url + `/employee/getEmployeesByRoId?roEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -454,13 +455,13 @@ export const getEmpShiftByCode = (empCode) => {
 
 // 74. Update Employee Shift
 export const updateEmpShift = (payload) => {
-  return axios.post(base_url + "/employee/changeShiftByEmpCode", payload);
+  return axios.post(base_url + '/employee/changeShiftByEmpCode', payload);
 };
 
 // 75. Get Tagged Outsource Employee For Weekly Rest
 export const getOutWeeklyRestEmp = () => {
   return axios.get(
-    base_url + `/employee/getOutsourceEmpsByRoId?roEmpCode=${sessionEmpCode}`
+    base_url + `/employee/getOutsourceEmpsByRoId?roEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -471,14 +472,14 @@ export const getEmpWeeklyRest = (empCode) => {
 
 // 77. Change Weekly Rest
 export const updateWeeklyRestByRO = (payload) => {
-  return axios.post(base_url + "/outsource/addWeeklyRest", payload);
+  return axios.post(base_url + '/outsource/addWeeklyRest', payload);
 };
 
 // 78. Amount check by Designation Revenue
 export const maxAmountByDesignation = (designationId, dcId) => {
   return axios.get(
     base_url +
-      `/incentive/findMaxAmountDesg?designationId=${designationId}&dcId=${dcId}`
+      `/incentive/findMaxAmountDesg?designationId=${designationId}&dcId=${dcId}`,
   );
 };
 
@@ -488,7 +489,7 @@ export const empWalletAmount = () => {
   console.log(currentMonthYear);
   return axios.get(
     base_url +
-      `/incentive/findMaxAmountLimit?empCode=${sessionEmpCode}&monthYear=${currentMonthYear}`
+      `/incentive/findMaxAmountLimit?empCode=${sessionEmpCode}&monthYear=${currentMonthYear}`,
   );
 };
 
@@ -509,7 +510,7 @@ export const getAllVendors = () => {
 
 // 83. Request for RRAC
 export const requestRRAC = (payload) => {
-  return axios.post(base_url + "/incentive/saveIncentive", payload);
+  return axios.post(base_url + '/incentive/saveIncentive', payload);
 };
 
 // 84. get Discontinuation Records
@@ -529,13 +530,13 @@ export const deleteDiscontinuationRecords = (id) => {
 
 // 86. add Discontinuation Records
 export const updateDiscontinuationRecords = (payload) => {
-  return axios.post(base_url + "/incentive/saveIncLocNotQualified", payload);
+  return axios.post(base_url + '/incentive/saveIncLocNotQualified', payload);
 };
 
 // 87. get Incentive Records
 export const getIncentiveMisHostory = (monthYear) => {
   return axios.get(
-    base_url + `/incentive/findIncentiveByLevel?monthYear=${monthYear}`
+    base_url + `/incentive/findIncentiveByLevel?monthYear=${monthYear}`,
   );
 };
 
@@ -543,7 +544,7 @@ export const getIncentiveMisHostory = (monthYear) => {
 export const getIncentiveByCode = (monthYear) => {
   return axios.get(
     base_url +
-      `/incentive/findIncentiveByEmpCode?empCode=${sessionEmpCode}&monthYear=${monthYear}`
+      `/incentive/findIncentiveByEmpCode?empCode=${sessionEmpCode}&monthYear=${monthYear}`,
   );
 };
 
@@ -554,30 +555,30 @@ export const getIncentiveByrefNo = (refNo) => {
 
 // 90. submit Incentive
 export const submitExpenditure = (formData) => {
-  return axios.post(base_url + "/incentive/saveExpenditure", formData);
+  return axios.post(base_url + '/incentive/saveExpenditure', formData);
 };
 
 // 91. get Incentive by RO
 export const getExpenditureByRo = (monthYear) => {
   return axios.get(
     base_url +
-      `/incentive/findIncentiveByRoEmpCode?roEmpCode=${sessionEmpCode}&monthYear=${monthYear}`
+      `/incentive/findIncentiveByRoEmpCode?roEmpCode=${sessionEmpCode}&monthYear=${monthYear}`,
   );
 };
 
 // 92. Update Incentive Status  by RO
 export const submitExpByRo = (payload) => {
-  return axios.post(base_url + "/incentive/updateExpenditureRo", payload);
+  return axios.post(base_url + '/incentive/updateExpenditureRo', payload);
 };
 
 // 93. Feeder Management Update
 export const submitFeederManagement = (payload) => {
-  return axios.post(base_url + "/location/feederManagementApi", payload);
+  return axios.post(base_url + '/location/feederManagementApi', payload);
 };
 
 // 94. OPD/IPD Medical Submit
 export const submitMedicalReimbursement = (formData) => {
-  return axios.post(base_url + "/medical/saveMRDetail", formData);
+  return axios.post(base_url + '/medical/saveMRDetail', formData);
   // return axios.post(
   //   "http://172.16.17.79:8084/e-Attendance/api/medical/saveMRDetail",
   //   formData
@@ -596,39 +597,39 @@ export const currentGradePay = () => {
 
 // 96. Immovable Property Submit
 export const submitImmovableProperty = (payload) => {
-  return axios.post(base_url + "/employee/immovablePropertyReturn", payload);
+  return axios.post(base_url + '/employee/immovablePropertyReturn', payload);
 };
 
 // 97. Immovable Property View
 export const viewImmProperty = (year) => {
   return axios.get(
     base_url +
-      `/employee/getPropertyReturn?empCode=${sessionEmpCode}&year=${year}`
+      `/employee/getPropertyReturn?empCode=${sessionEmpCode}&year=${year}`,
   );
 };
 
 // 98. Get Daily Losses
 export const getDailyLosses = (empCode, dcId) => {
   return axios.get(
-    base_url + `/OnM/getSsoDailyLosses?empCode=${empCode}&dcId=${dcId}`
+    base_url + `/OnM/getSsoDailyLosses?empCode=${empCode}&dcId=${dcId}`,
   );
 };
 
 // 98. Submit Daily Losses
 export const submitDailyLosses = (payload) => {
-  return axios.post(base_url + "/OnM/saveSsoDailyLosses", payload);
+  return axios.post(base_url + '/OnM/saveSsoDailyLosses', payload);
 };
 
 // 99. Get Shut down Details
 export const getShutDown = (empCode, dcId) => {
   return axios.get(
-    base_url + `/OnM/getSsoShutdown?empCode=${empCode}&dcId=${dcId}`
+    base_url + `/OnM/getSsoShutdown?empCode=${empCode}&dcId=${dcId}`,
   );
 };
 
 // 100. Submit Shut down Details
 export const submitShutDown = (payload) => {
-  return axios.post(base_url + "/OnM/saveSsoShutdown", payload);
+  return axios.post(base_url + '/OnM/saveSsoShutdown', payload);
 };
 
 // 101. Get PTR Failure Details
@@ -638,7 +639,7 @@ export const getPtrFailure = (empCode) => {
 
 // 102. Submit PTR Failure Details
 export const submitPtrFailure = (formData) => {
-  return axios.post(base_url + "/OnM/savePtrFailure", formData);
+  return axios.post(base_url + '/OnM/savePtrFailure', formData);
 };
 
 // 103. Get SSO Authorization
@@ -658,7 +659,7 @@ export const getDgmByJe = (empCode) => {
 
 // 106. Submit Sso Authorization
 export const submitSsoAuthorization = (payload) => {
-  return axios.post(base_url + "/OnM/saveAutorizationSSO", payload);
+  return axios.post(base_url + '/OnM/saveAutorizationSSO', payload);
 };
 
 // 107. Get Line Staff Authorization
@@ -673,27 +674,40 @@ export const getLineByDcId = (dcId) => {
 
 // 109. Submit Line staff Authorization
 export const submitLineAuthorization = (payload) => {
-  return axios.post(base_url + "/OnM/saveAutorizationLine", payload);
+  return axios.post(base_url + '/OnM/saveAutorizationLine', payload);
 };
 
 // 110. Get Medical for HR
 export const getMedicalByHr = () => {
   return axios.get(
     // base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`
-    base_url + `/medical/getHrPending?hrEmpCode=150049`
+    base_url + `/medical/getHrPending?hrEmpCode=150049`,
   );
 };
 
 // 111. Medicine Details By Ref No
 export const getMedicineDetailByRefNo = (refNo) => {
   return axios.get(
-    base_url + `/medical/getMedicineDetailByRefNo?refNo=${refNo}`
+    base_url + `/medical/getMedicineDetailByRefNo?refNo=${refNo}`,
   );
+};
+
+export const getMedicalByRefNo = (refNo) => {
+  // return axios.get(
+  //   `http://172.16.17.79:8084/e-Attendance/api/medical/getMRByRefNo?refNo=${refNo}`,
+  // );
+
+  return axios.get(base_url + `/medical/getMRByRefNo?refNo=${refNo}`);
 };
 
 // 112. Submit Medical Hr Status
 export const submitMedicalHrStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateHRStatus", payload);
+  return axios.post(base_url + '/medical/updateHRStatus', payload);
+
+  // return axios.post(
+  //   "http://172.16.17.79:8084/e-Attendance/api/medical/updateHRStatus",
+  //   payload
+  // );
 };
 
 // 113. Get Medical for Cmo
@@ -703,49 +717,49 @@ export const getMedicalByCmo = () => {
 
 // 114. Submit Medical Hr Status
 export const submitMedicalCmoStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateCMOStatus", payload);
+  return axios.post(base_url + '/medical/updateCMOStatus', payload);
 };
 
 // 115. Get Medical For AO
 export const getMedicalByAo = () => {
   return axios.get(
     // base_url + `/medical/getAoPending?aoEmpCode=${sessionEmpCode}`
-    base_url + `/medical/getAoPending?aoEmpCode=12345`
+    base_url + `/medical/getAoPending?aoEmpCode=12345`,
   );
 };
 
 // 116. Submit Medical AO Status
 export const submitMedicalAoStatus = (payload) => {
-  return axios.post(base_url + "/medical/updateAOStatus", payload);
+  return axios.post(base_url + '/medical/updateAOStatus', payload);
 };
 
 // 117. Get Medical Form by EmpCode
 export const getMedicalFormByEmpCode = () => {
   return axios.get(
-    base_url + `/medical/getEmpAppliByEmpCode?empCode=${sessionEmpCode}`
+    base_url + `/medical/getEmpAppliByEmpCode?empCode=${sessionEmpCode}`,
   );
 };
 
 // 118. Get Drug Details By Ref No.
 export const getDrugDetails = (refNo) => {
   return axios.get(
-    base_url + `/medical/getMedicineDetailByRefNo?refNo=${refNo}`
+    base_url + `/medical/getMedicineDetailByRefNo?refNo=${refNo}`,
   );
 };
 
 // 119. Delete Drug Entries
 export const deteleDrugDetails = (payload) => {
-  return axios.post(base_url + "/medical/removeMedicineDetailApi", payload);
+  return axios.post(base_url + '/medical/removeMedicineDetailApi', payload);
 };
 
 // 120. Update Medical by Employee
 export const updateMedicalForm = (payload) => {
-  return axios.put(base_url + "/medical/updateMRDetail", payload);
+  return axios.put(base_url + '/medical/updateMRDetail', payload);
 };
 
 // 121. Submit Mediclaim for Employee
 export const submitMediclaim = (payload) => {
-  return axios.post(base_url + "/medical/saveMediClaim", payload);
+  return axios.post(base_url + '/medical/saveMediClaim', payload);
 };
 
 // 122. get Employment Types
@@ -755,7 +769,7 @@ export const getEmploymentType = () => {
 
 // 123. Create New Employee
 export const createNewEmployee = (payload) => {
-  return axios.post(base_url + "/employee/saveNewEmployee", payload);
+  return axios.post(base_url + '/employee/saveNewEmployee', payload);
 };
 // https://attendance.mpcz.in:8888/E-Attendance/api/employee/saveNewEmployee
 
@@ -773,22 +787,22 @@ export const getSsoList = () => {
 export const nominationSubmit = () => {
   return axios.put(
     base_url +
-      `/employee/updateNominationSub?empCode=${sessionEmpCode}&isNominationSubmitted=true`
+      `/employee/updateNominationSub?empCode=${sessionEmpCode}&isNominationSubmitted=true`,
   );
 };
 
 // 127. Vigilance Login API
 export const vigilanceLogin = (payload) => {
   return axios.post(
-    "https://webapps.mpcz.in/vigilance/digi_webapis/vigilance_login_auth_api.php",
-    payload
+    'https://webapps.mpcz.in/vigilance/digi_webapis/vigilance_login_auth_api.php',
+    payload,
   );
 };
 
 // 128. Get Sso Authorization status for DGM
 export const getSsoSatusByDgm = () => {
   return axios.get(
-    base_url + `/OnM/getDGMPendingAuthorizationSSO?dgmEmpCode=9590217`
+    base_url + `/OnM/getDGMPendingAuthorizationSSO?dgmEmpCode=9590217`,
   );
 };
 
@@ -797,17 +811,17 @@ export const updateSsoSatusByDgm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateDgmAuthorizationStatusSSO?status=${encodeURIComponent(
-        value
+        value,
       )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
-        remark
-      )}`
+        remark,
+      )}`,
   );
 };
 
 // 130. Get Sso Authorization status for GM
 export const getSsoSatusByGm = () => {
   return axios.get(
-    base_url + `/OnM/getGMPendingAuthorizationSSO?gmEmpCode=85390317`
+    base_url + `/OnM/getGMPendingAuthorizationSSO?gmEmpCode=85390317`,
   );
 };
 
@@ -816,18 +830,18 @@ export const updateSsoSatusByGm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateGmAuthorizationStatusSSO?status=${encodeURIComponent(
-        value
+        value,
       )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
-        remark
+        remark,
       )}
-      `
+      `,
   );
 };
 
 // 132. Get Line Staff status for DGM
 export const getLineSatusByDgm = () => {
   return axios.get(
-    base_url + `/OnM/getDGMPendingAuthorizationLine?dgmEmpCode=9590217`
+    base_url + `/OnM/getDGMPendingAuthorizationLine?dgmEmpCode=9590217`,
   );
 };
 
@@ -836,17 +850,17 @@ export const updateLineSatusByDgm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateDgmAuthorizationStatusLine?status=${encodeURIComponent(
-        value
+        value,
       )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
-        remark
-      )}`
+        remark,
+      )}`,
   );
 };
 
 // 134. Get Line Staff status for GM
 export const getLineSatusByGm = () => {
   return axios.get(
-    base_url + `/OnM/getGMPendingAuthorizationLine?gmEmpCode=85390317`
+    base_url + `/OnM/getGMPendingAuthorizationLine?gmEmpCode=85390317`,
   );
 };
 
@@ -855,16 +869,16 @@ export const updateLineSatusByGm = (value, id, remark) => {
   return axios.put(
     base_url +
       `/OnM/updateGmAuthorizationStatusLine?status=${encodeURIComponent(
-        value
+        value,
       )}&authorizationId=${encodeURIComponent(id)}&remark=${encodeURIComponent(
-        remark
-      )}`
+        remark,
+      )}`,
   );
 };
 
 // 136. Get PTR status for DGM
 export const getPtrSatusByDgm = () => {
-  return axios.get(base_url + `/OnM/getPtrFailureByDgm?dgmEmpCode=9300013`);
+  return axios.get(base_url + `/OnM/getPtrFailureByDgm?dgmEmpCode=9570011`);
 };
 
 // 137. Update PTR status for DGM
@@ -875,7 +889,7 @@ export const updatePtrSatusByDgm = (payload) => {
 // 138. Get Additional Charges for Employee
 export const getAdditionalCharges = (empCode) => {
   return axios.get(
-    base_url + `/employee/getAdditionalChargesApi?empCode=${empCode}`
+    base_url + `/employee/getAdditionalChargesApi?empCode=${empCode}`,
   );
 };
 
@@ -897,7 +911,7 @@ export const updatePassword = (payload) => {
 // 142. Find Medical Claimed by Emp Code
 export const getEmpMedicalClaim = () => {
   return axios.get(
-    base_url + `/medical/findMediclaimByEmpCode?empCode=${sessionEmpCode}`
+    base_url + `/medical/findMediclaimByEmpCode?empCode=${sessionEmpCode}`,
   );
 };
 

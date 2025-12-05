@@ -41,17 +41,57 @@ import { styled } from '@mui/material/styles';
 import { PropagateLoader } from 'react-spinners';
 import {
   getMedicalByHr,
+  getMedicalByRefNo,
   getMedicineDetailByRefNo,
   submitMedicalHrStatus,
 } from '../../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
+  SubTableRow,
+  SubTableCell,
 } from '../../../../Constants/TableStyles/Index';
 
-const fieldCard = (label, value, index) => (
+// const fieldCard = (label, value, index) => (
+//   <Grid item xs={12} sm={6} md={3} key={index}>
+//     <motion.div
+//       initial={{ opacity: 0, scale: 0.9 }}
+//       animate={{ opacity: 1, scale: 1 }}
+//       transition={{ delay: index * 0.05 }}
+//     >
+//       <Paper
+//         elevation={4}
+//         sx={{
+//           p: 2,
+//           borderRadius: 3,
+//           textAlign: 'center',
+//           transition: 'all 0.3s ease',
+//           background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
+//           '&:hover': {
+//             transform: 'translateY(-5px)',
+//             boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
+//           },
+//         }}
+//       >
+//         <Typography
+//           variant="body2"
+//           sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
+//         >
+//           {label}
+//         </Typography>
+//         <Typography variant="body1" sx={{ color: '#333' }}>
+//           {value || '—'}
+//         </Typography>
+//       </Paper>
+//     </motion.div>
+//   </Grid>
+// );
+
+const fieldCard = (label, value, index, onClick) => (
   <Grid item xs={12} sm={6} md={3} key={index}>
     <motion.div
+      onClick={onClick}
+      style={{ cursor: onClick ? 'pointer' : 'default' }}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: index * 0.05 }}
@@ -65,8 +105,8 @@ const fieldCard = (label, value, index) => (
           transition: 'all 0.3s ease',
           background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
           '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
+            transform: onClick ? 'translateY(-5px)' : 'none',
+            boxShadow: onClick ? '0px 10px 25px rgba(0,0,0,0.2)' : 'none',
           },
         }}
       >
@@ -93,8 +133,8 @@ function MedicalApprovalByHr() {
       try {
         setOpenBackdrop(true);
         const response = await getMedicalByHr();
-        console.log(response);
-        if (response.data.code == '200') {
+        // console.log(response);
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setRecords(response.data.list);
         } else {
@@ -109,36 +149,91 @@ function MedicalApprovalByHr() {
     fetchRecords();
   }, []);
 
-  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRow, setSelectedRow] = useState([]);
   const [open, setOpen] = useState(false);
   const [referenceNo, setReferenceNo] = useState('');
-  const handlePreview = (row) => {
-    setSelectedRow(row);
-    setOpen(true);
-    fetchMedicineDetails(row.refNo);
-    setReferenceNo(row.refNo);
+  const [medicineData, setMedicineData] = useState([]);
+
+  // const handlePreview = (row) => {
+  //   setSelectedRow(row);
+  //   setOpen(true);
+  //   fetchMedicineDetails(row.refNo);
+  //   setReferenceNo(row.refNo);
+  // };
+
+  const handlePreview = async (refNo) => {
+    try {
+      setReferenceNo(refNo);
+
+      // Fetch medicine details (no await? If async, add await)
+      // fetchMedicineDetails(refNo);
+
+      const response = await getMedicalByRefNo(refNo);
+      // console.log('API Response:', response);
+
+      if (
+        response?.data?.code === '200' &&
+        response?.data?.message === 'Success'
+      ) {
+        setSelectedRow(response.data.list[0]);
+        setMedicineData(response.data.list[0].medicineDetails);
+        setOpen(true);
+      } else {
+        alert(response?.data?.message || 'Something went wrong');
+        setOpen(false);
+      }
+    } catch (error) {
+      console.error('Error in handlePreview:', error);
+      alert('Something went wrong while fetching details.');
+      setOpen(false);
+    }
   };
+
+  // useEffect(() => {
+  //   if (selectedRow) {
+  //     console.log('Updated Selected Row:', selectedRow);
+  //     console.log('medicineData:', medicineData);
+
+  //     if (selectedRow.aoStatus === 'Approved') {
+  //     }
+  //   }
+  // }, [selectedRow]);
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedRow(null);
+    setSelectedRow([]);
   };
 
-  const [medicineData, setMedicineData] = useState([]);
-  const fetchMedicineDetails = async (refNo) => {
-    const response = await getMedicineDetailByRefNo(refNo);
-    console.log(response);
-    setMedicineData(response.data.list);
-  };
+  const [expandedRow, setExpandedRow] = useState(null);
 
-  function downloadDocument(path) {
-    if (!path) {
-      alert('Data not Found.');
+  const handlePreviewMemo = (item, index) => {
+    if (!item.memoList || item.memoList.length === 0) {
+      alert('Memo list data not found');
       return;
     }
-    const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${path}`;
-    window.open(url, '_blank');
-  }
+
+    // Toggle expand / collapse
+    setExpandedRow(expandedRow === index ? null : index);
+  };
+
+  // const [medicineData, setMedicineData] = useState([]);
+  // const fetchMedicineDetails = async (refNo) => {
+  //   const response = await getMedicineDetailByRefNo(refNo);
+  //   // console.log(response);
+  //   setMedicineData(response.data.list[0]);
+  // };
+
+  // function downloadDocument(path) {
+  //   console.log(path);
+  //   console.log(records);
+
+  //   if (!path) {
+  //     alert('Data not Found.');
+  //     return;
+  //   }
+  //   const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${path}`;
+  //   window.open(url, '_blank');
+  // }
 
   const [hrStatus, setHrStatus] = useState('');
   const [hrRemark, setHrRemark] = useState('');
@@ -244,24 +339,24 @@ function MedicalApprovalByHr() {
   };
 
   // GET FILLED ROWS ONLY
-  const getFilledRows = () => {
-    const filledRows = rows.filter((row) => {
-      // Check if at least one field is filled
-      return (
-        row.accountCode ||
-        row.accountHead ||
-        row.estimateNo ||
-        row.dc ||
-        row.amount ||
-        row.billRef ||
-        row.billRefDate ||
-        row.details
-      );
-    });
+  // const getFilledRows = () => {
+  //   const filledRows = rows.filter((row) => {
+  //     // Check if at least one field is filled
+  //     return (
+  //       row.accountCode ||
+  //       row.accountHead ||
+  //       row.estimateNo ||
+  //       row.dc ||
+  //       row.amount ||
+  //       row.billRef ||
+  //       row.billRefDate ||
+  //       row.details
+  //     );
+  //   });
 
-    console.log('FILLED ROWS:', filledRows);
-    alert(JSON.stringify(filledRows, null, 2));
-  };
+  //   console.log('FILLED ROWS:', filledRows);
+  //   alert(JSON.stringify(filledRows, null, 2));
+  // };
 
   const [journalRows, setJournalRows] = useState([
     {
@@ -312,22 +407,22 @@ function MedicalApprovalByHr() {
   };
 
   // GET FILLED JOURNAL ROWS
-  const journalGetFilledRows = () => {
-    const filled = journalRows.filter((row) => {
-      return (
-        row.journalAccountCode ||
-        row.journalAccountHead ||
-        row.journalEstimateNo ||
-        row.journalDC ||
-        row.journalDebitAmount ||
-        row.journalCreditAmount ||
-        row.journalDetails
-      );
-    });
+  // const journalGetFilledRows = () => {
+  //   const filled = journalRows.filter((row) => {
+  //     return (
+  //       row.journalAccountCode ||
+  //       row.journalAccountHead ||
+  //       row.journalEstimateNo ||
+  //       row.journalDC ||
+  //       row.journalDebitAmount ||
+  //       row.journalCreditAmount ||
+  //       row.journalDetails
+  //     );
+  //   });
 
-    console.log('JOURNAL SELECTED ROWS:', filled);
-    alert(JSON.stringify(filled, null, 2));
-  };
+  //   console.log('JOURNAL SELECTED ROWS:', filled);
+  //   alert(JSON.stringify(filled, null, 2));
+  // };
 
   const [bankCode, setBankCode] = useState('');
   const [bankName, setBankName] = useState('');
@@ -402,7 +497,7 @@ function MedicalApprovalByHr() {
         (row) =>
           row.journalAccountCode ||
           row.journalDebitAmount ||
-          row.journalCreditAmount
+          row.journalCreditAmount,
       )
       .map((row, index) => ({
         srNo: index + 1,
@@ -423,7 +518,7 @@ function MedicalApprovalByHr() {
       bankCode: bankCode,
       bankName: bankName,
       chequeNo: chequeNo,
-      chequeDate: date,
+      chequeDate: date || null,
     };
 
     // FINAL PAYLOAD EXACT MATCH AS YOUR GIVEN JSON
@@ -431,7 +526,7 @@ function MedicalApprovalByHr() {
       refNo: referenceNo,
       remark: hrRemark,
       status: hrStatus,
-      next: 'CMO',
+      // next: null,
       ...bankData,
       medicalPcvList: pettyCashConverted,
       medicalJvs: journalConverted,
@@ -454,6 +549,42 @@ function MedicalApprovalByHr() {
     } finally {
       setOpenBackdrop(false);
     }
+  };
+
+  const handleEssentialityDownload = (docPath) => {
+    if (!docPath) {
+      alert('Document not available');
+      return;
+    }
+
+    console.log('Downloading:', docPath);
+
+    const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
+    window.open(url, '_blank');
+  };
+
+  const handleProlongedDownload = (docPath) => {
+    if (!docPath) {
+      alert('Document not available');
+      return;
+    }
+
+    console.log('Downloading:', docPath);
+
+    const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
+    window.open(url, '_blank');
+  };
+
+  const handleMemoDownload = (docPath) => {
+    if (!docPath) {
+      alert('Document not available');
+      return;
+    }
+
+    console.log('Downloading:', docPath);
+
+    const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
+    window.open(url, '_blank');
   };
 
   return (
@@ -490,7 +621,9 @@ function MedicalApprovalByHr() {
                   records.map((item, index) => (
                     <StyledTableRow key={index}>
                       <StyledTableCell>{index + 1}</StyledTableCell>
-                      <StyledTableCell>{item.empName || '-'}</StyledTableCell>
+                      <StyledTableCell>
+                        {item.patientName || '-'}
+                      </StyledTableCell>
                       <StyledTableCell>{item.empCode || '-'}</StyledTableCell>
                       <StyledTableCell>{item.refNo || '-'}</StyledTableCell>
 
@@ -500,7 +633,8 @@ function MedicalApprovalByHr() {
                             variant="contained"
                             color="dark"
                             //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                            onClick={() => handlePreview(item)}
+                            // onClick={() => handlePreview(item)}
+                            onClick={() => handlePreview(item.refNo)}
                           >
                             <VisibilityIcon fontSize="small" />
                           </Button>
@@ -586,24 +720,24 @@ function MedicalApprovalByHr() {
               {fieldCard(
                 'Doctor Designation',
                 selectedRow.doctorDesignation,
-                7
+                7,
               )}
               {fieldCard('Nature of Illness', selectedRow.natureOfIllness, 8)}
               {fieldCard('Illness Duration', selectedRow.illnessDuration, 9)}
               {fieldCard(
                 'Essentiality Certificate No',
                 selectedRow.essentialityCertificateNo,
-                10
+                10,
               )}
               {fieldCard(
                 'Certificate Date',
                 selectedRow.essentialityCertificateDate,
-                11
+                11,
               )}
               {fieldCard(
                 'No Of Living Children',
                 selectedRow.noOfLivingChildren,
-                12
+                12,
               )}
               {fieldCard('No In Birth Order', selectedRow.noInBirthOrder, 13)}
               {fieldCard('Application Date', selectedRow.applicationDate, 14)}
@@ -616,6 +750,38 @@ function MedicalApprovalByHr() {
               {fieldCard('CMO Remark', selectedRow.cmoRemark, 21)}
               {fieldCard('AO Status', selectedRow.aoStatus, 22)}
               {fieldCard('AO Remark', selectedRow.aoRemark, 23)}
+
+              {fieldCard('Bank Name', selectedRow.bankName, 24)}
+              {fieldCard('Bank Code', selectedRow.bankCode, 25)}
+              {fieldCard('Cheque No', selectedRow.chequeNo, 26)}
+              {fieldCard(
+                'Amount Approved by CMO',
+                selectedRow.totalAmountApprovedByDoc,
+                27,
+              )}
+              {fieldCard(
+                'Essentiality Certificate',
+                <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
+                28,
+                () =>
+                  handleEssentialityDownload(
+                    selectedRow.essentialityCertificateDoc,
+                  ),
+              )}
+
+              {fieldCard(
+                'Prolonged Certificate',
+                <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
+                29,
+                () => handleProlongedDownload(selectedRow.prolongedTreatment),
+              )}
+
+              {fieldCard(
+                'Memo Doc',
+                <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
+                30,
+                () => handleMemoDownload(selectedRow.memoPath),
+              )}
             </Grid>
           )}
 
@@ -630,22 +796,19 @@ function MedicalApprovalByHr() {
                   fontWeight: 'bold',
                 }}
               >
-                Status
+                Drug Details
               </Typography>
             </Card.Header>
             <Card.Body>
-              <TableContainer component={Paper}>
+              {/* <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <StyledTableRow>
                       <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>Cash Memo Date</StyledTableCell>
-                      <StyledTableCell>Cash Memo No</StyledTableCell>
-                      <StyledTableCell>Drug Name</StyledTableCell>
-                      <StyledTableCell>Quantity</StyledTableCell>
                       <StyledTableCell>ShopName</StyledTableCell>
-                      <StyledTableCell>Total Value</StyledTableCell>
-                      <StyledTableCell>Document</StyledTableCell>
+                      <StyledTableCell>Cash Memo No</StyledTableCell>
+                      <StyledTableCell>Cash Memo Date</StyledTableCell>
+                      <StyledTableCell>View</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
                   <TableBody>
@@ -654,33 +817,19 @@ function MedicalApprovalByHr() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.cashMemoDate || '-'}
+                            {item.shopName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
                             {item.cashMemoNo || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.drugName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.quantity || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.shopName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.totalValue || '-'}
+                            {item.cashMemoDate || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
                             <Tooltip title="Preview" arrow>
-                              <Button
-                                variant="contained"
-                                color="dark"
-                                //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                                onClick={() => downloadDocument(item.memoPath)}
-                              >
-                                <CloudDownloadIcon
+                              <Button variant="contained" color="dark">
+                                <VisibilityIcon
                                   fontSize="small"
                                   color="success"
                                 />
@@ -698,440 +847,532 @@ function MedicalApprovalByHr() {
                     )}
                   </TableBody>
                 </Table>
-              </TableContainer>
-            </Card.Body>
-            <Card.Footer className="text-center"></Card.Footer>
-          </Card>
+              </TableContainer> */}
 
-          <Card className="shadow mt-3">
-            <Card.Header className="text-center">
-              <Typography
-                variant="h5"
-                sx={{
-                  color: '#0a1f83',
-                  mb: 2,
-                  fontFamily: 'serif',
-                  fontWeight: 'bold',
-                }}
-              >
-                PETTY CASH VOUCHER
-              </Typography>
-            </Card.Header>
-            <Card.Body>
-              <Tooltip title="Add More Rows" arrow placement="top">
-                <Button variant="contained" color="dark" onClick={addRow}>
-                  <AddBoxIcon fontSize="small" color="success" />
-                </Button>
-              </Tooltip>
-              <TableContainer component={Paper} className="mt-2">
+              <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
                     <StyledTableRow>
                       <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>Account Code</StyledTableCell>
-                      <StyledTableCell>Account Head</StyledTableCell>
-                      <StyledTableCell>Estimate No.</StyledTableCell>
-                      <StyledTableCell>D or C</StyledTableCell>
-                      <StyledTableCell>Amount</StyledTableCell>
-                      <StyledTableCell>Bill Reference</StyledTableCell>
-                      <StyledTableCell>Bill Reference Date</StyledTableCell>
-                      <StyledTableCell>Details</StyledTableCell>
+                      <StyledTableCell>Shop Name</StyledTableCell>
+                      <StyledTableCell>Cash Memo No</StyledTableCell>
+                      <StyledTableCell>Cash Memo Date</StyledTableCell>
                       <StyledTableCell>Action</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
 
                   <TableBody>
-                    {rows.map((row, index) => (
-                      <StyledTableRow key={index}>
-                        <StyledTableCell>{row.sno}</StyledTableCell>
+                    {medicineData && medicineData.length > 0 ? (
+                      medicineData.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {/* Main Row */}
+                          <StyledTableRow>
+                            <StyledTableCell>{index + 1}</StyledTableCell>
+                            <StyledTableCell>
+                              {item.shopName || '-'}
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              {item.cashMemoNo || '-'}
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              {item.cashMemoDate || '-'}
+                            </StyledTableCell>
 
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.accountCode}
-                            onChange={(e) =>
-                              pettyChange(index, 'accountCode', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <Tooltip
+                                title={
+                                  expandedRow === index
+                                    ? 'Hide Memo Details'
+                                    : 'Show Memo Details'
+                                }
+                                arrow
+                                placement="top"
+                              >
+                                <Button
+                                  variant="contained"
+                                  color="dark"
+                                  onClick={() => handlePreviewMemo(item, index)}
+                                  sx={{ minWidth: 40 }}
+                                >
+                                  {/* Toggle icon same, but color changes */}
+                                  <VisibilityIcon
+                                    fontSize="small"
+                                    color={
+                                      expandedRow === index
+                                        ? 'error'
+                                        : 'success'
+                                    }
+                                  />
+                                </Button>
+                              </Tooltip>
+                            </StyledTableCell>
+                          </StyledTableRow>
 
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.accountHead}
-                            onChange={(e) =>
-                              pettyChange(index, 'accountHead', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
+                          {/* Sub Table - Expandable */}
+                          {expandedRow === index && (
+                            <StyledTableRow>
+                              <StyledTableCell colSpan={5} sx={{ padding: 1 }}>
+                                <Table size="small">
+                                  <TableHead>
+                                    <SubTableRow>
+                                      <SubTableCell>S.No.</SubTableCell>
+                                      <SubTableCell>Cash Memo No</SubTableCell>
+                                      <SubTableCell>Drug Name</SubTableCell>
+                                      <SubTableCell>Quantity</SubTableCell>
+                                      <SubTableCell>Total Value</SubTableCell>
+                                    </SubTableRow>
+                                  </TableHead>
 
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.estimateNo}
-                            onChange={(e) =>
-                              pettyChange(index, 'estimateNo', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <Select
-                            size="small"
-                            value={row.dc}
-                            displayEmpty
-                            onChange={(e) =>
-                              pettyChange(index, 'dc', e.target.value)
-                            }
-                            style={{ width: '80px' }}
-                          >
-                            <MenuItem value="" disabled>
-                              select
-                            </MenuItem>
-                            <MenuItem value="D">D</MenuItem>
-                            <MenuItem value="C">C</MenuItem>
-                          </Select>
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.amount}
-                            onChange={(e) =>
-                              pettyChange(index, 'amount', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.billRef}
-                            onChange={(e) =>
-                              pettyChange(index, 'billRef', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <TextField
-                            type="date"
-                            size="small"
-                            value={row.billRefDate}
-                            onChange={(e) =>
-                              pettyChange(index, 'billRefDate', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.details}
-                            onChange={(e) =>
-                              pettyChange(index, 'details', e.target.value)
-                            }
-                          />
-                        </StyledTableCell>
-
-                        <StyledTableCell>
-                          <IconButton
-                            color="error"
-                            onClick={() => deleteRow(index)}
-                            disabled={rows.length === 1}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
+                                  <TableBody>
+                                    {item.memoList.map((memo, i) => (
+                                      <SubTableRow key={i}>
+                                        <SubTableCell>{i + 1}</SubTableCell>
+                                        <SubTableCell>
+                                          {memo.cashMemoNo || '-'}
+                                        </SubTableCell>
+                                        <SubTableCell>
+                                          {memo.drugName || '-'}
+                                        </SubTableCell>
+                                        <SubTableCell>
+                                          {memo.quantity || '-'}
+                                        </SubTableCell>
+                                        <SubTableCell>
+                                          {memo.totalValue || '-'}
+                                        </SubTableCell>
+                                      </SubTableRow>
+                                    ))}
+                                  </TableBody>
+                                </Table>
+                              </StyledTableCell>
+                            </StyledTableRow>
+                          )}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <StyledTableRow>
+                        <StyledTableCell colSpan={8}>
+                          Data Not Found
                         </StyledTableCell>
                       </StyledTableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
-
-              <div className=" my-3">
-                <Row className="mt-3 g-3">
-                  {/* Bank Code */}
-                  <Col xs={12} md={3}>
-                    <Card className="h-100">
-                      <Card.Header>Bank Code</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter Bank Code"
-                          value={bankCode}
-                          onChange={(e) => setBankCode(e.target.value)}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  {/* Bank Name */}
-                  <Col xs={12} md={3}>
-                    <Card className="h-100">
-                      <Card.Header>Bank Name</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter Bank Name"
-                          value={bankName}
-                          onChange={(e) => setBankName(e.target.value)}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  {/* Cheque No */}
-                  <Col xs={12} md={3}>
-                    <Card className="h-100">
-                      <Card.Header>Cheque No.</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="text"
-                          placeholder="Enter Cheque No."
-                          value={chequeNo}
-                          onChange={(e) => setChequeNo(e.target.value)}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-
-                  {/* Date */}
-                  <Col xs={12} md={3}>
-                    <Card className="h-100">
-                      <Card.Header>Date</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          type="date"
-                          value={date}
-                          onChange={(e) => setDate(e.target.value)}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                </Row>
-
-                {/* Submit Button */}
-                {/* <div className="text-center mt-3">
-                  <Button variant="primary" onClick={handleSubmit}>
-                    Get Bank Details
-                  </Button>
-                </div> */}
-              </div>
-
-              {/* <div className="text-center my-3">
-                <Button
-                  variant="contained"
-                  color="success"
-                  className="ms-2"
-                  onClick={getFilledRows}
-                >
-                  Get Filled Rows
-                </Button>
-              </div> */}
             </Card.Body>
             <Card.Footer className="text-center"></Card.Footer>
           </Card>
 
-          <Card className="shadow mt-3">
-            <Card.Header className="text-center">
-              <Typography
-                variant="h5"
-                sx={{
-                  color: '#0a1f83',
-                  mb: 2,
-                  fontFamily: 'serif',
-                  fontWeight: 'bold',
-                }}
-              >
-                JOURNAL VOUCHER
-              </Typography>
-            </Card.Header>
-            <Card.Body>
-              <Tooltip title="Add More Rows" arrow placement="top">
-                <Button
-                  variant="contained"
-                  color="dark"
-                  onClick={journalAddRow}
-                >
-                  <AddBoxIcon fontSize="small" color="success" />
-                </Button>
-              </Tooltip>
+          {selectedRow?.cmoStatus === 'Approved' && (
+            <>
+              <Card className="shadow mt-3">
+                <Card.Header className="text-center">
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: '#0a1f83',
+                      mb: 2,
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Petty Cash Voucher
+                  </Typography>
+                </Card.Header>
+                <Card.Body>
+                  <Tooltip title="Add More Rows" arrow placement="top">
+                    <Button variant="contained" color="dark" onClick={addRow}>
+                      <AddBoxIcon fontSize="small" color="success" />
+                    </Button>
+                  </Tooltip>
+                  <TableContainer component={Paper} className="mt-2">
+                    <Table>
+                      <TableHead>
+                        <StyledTableRow>
+                          <StyledTableCell>S.No.</StyledTableCell>
+                          <StyledTableCell>Account Code</StyledTableCell>
+                          <StyledTableCell>Account Head</StyledTableCell>
+                          <StyledTableCell>Estimate No.</StyledTableCell>
+                          <StyledTableCell>D or C</StyledTableCell>
+                          <StyledTableCell>Amount</StyledTableCell>
+                          <StyledTableCell>Bill Reference</StyledTableCell>
+                          <StyledTableCell>Bill Reference Date</StyledTableCell>
+                          <StyledTableCell>Details</StyledTableCell>
+                          <StyledTableCell>Action</StyledTableCell>
+                        </StyledTableRow>
+                      </TableHead>
 
-              <TableContainer component={Paper} className="mt-2">
-                <Table>
-                  <TableHead>
-                    <StyledTableRow>
-                      <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>Account Code</StyledTableCell>
-                      <StyledTableCell>Account Head</StyledTableCell>
-                      <StyledTableCell>Estimate No.</StyledTableCell>
-                      <StyledTableCell>D / C</StyledTableCell>
-                      <StyledTableCell>Debit Amount</StyledTableCell>
-                      <StyledTableCell>Credit Amount</StyledTableCell>
-                      <StyledTableCell>Details</StyledTableCell>
-                      <StyledTableCell>Action</StyledTableCell>
-                    </StyledTableRow>
-                  </TableHead>
+                      <TableBody>
+                        {rows.map((row, index) => (
+                          <StyledTableRow key={index}>
+                            <StyledTableCell>{row.sno}</StyledTableCell>
 
-                  <TableBody>
-                    {journalRows.map((row, index) => (
-                      <StyledTableRow key={index}>
-                        <StyledTableCell>{row.sno}</StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.accountCode}
+                                onChange={(e) =>
+                                  pettyChange(
+                                    index,
+                                    'accountCode',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Account Code */}
-                        <StyledTableCell>
-                          <TextField
-                            placeholder="Enter..."
-                            size="small"
-                            value={row.journalAccountCode}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalAccountCode',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.accountHead}
+                                onChange={(e) =>
+                                  pettyChange(
+                                    index,
+                                    'accountHead',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Account Head */}
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.journalAccountHead}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalAccountHead',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.estimateNo}
+                                onChange={(e) =>
+                                  pettyChange(
+                                    index,
+                                    'estimateNo',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Estimate No */}
-                        <StyledTableCell>
-                          <TextField
-                            placeholder="Enter..."
-                            size="small"
-                            value={row.journalEstimateNo}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalEstimateNo',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <Select
+                                size="small"
+                                value={row.dc}
+                                displayEmpty
+                                onChange={(e) =>
+                                  pettyChange(index, 'dc', e.target.value)
+                                }
+                                style={{ width: '80px' }}
+                              >
+                                <MenuItem value="" disabled>
+                                  select
+                                </MenuItem>
+                                <MenuItem value="D">D</MenuItem>
+                                <MenuItem value="C">C</MenuItem>
+                              </Select>
+                            </StyledTableCell>
 
-                        {/* D or C Dropdown */}
-                        <StyledTableCell>
-                          <Select
-                            size="small"
-                            value={row.journalDC}
-                            displayEmpty
-                            onChange={(e) =>
-                              journalChange(index, 'journalDC', e.target.value)
-                            }
-                            style={{ width: '100px' }}
-                          >
-                            <MenuItem value="" disabled>
-                              select
-                            </MenuItem>
-                            <MenuItem value="D">D</MenuItem>
-                            <MenuItem value="C">C</MenuItem>
-                          </Select>
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.amount}
+                                onChange={(e) =>
+                                  pettyChange(index, 'amount', e.target.value)
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Debit Amount */}
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            type="number"
-                            placeholder="Enter..."
-                            value={row.journalDebitAmount}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalDebitAmount',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.billRef}
+                                onChange={(e) =>
+                                  pettyChange(index, 'billRef', e.target.value)
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Credit Amount */}
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            type="number"
-                            value={row.journalCreditAmount}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalCreditAmount',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                type="date"
+                                size="small"
+                                value={row.billRefDate}
+                                onChange={(e) =>
+                                  pettyChange(
+                                    index,
+                                    'billRefDate',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Details */}
-                        <StyledTableCell>
-                          <TextField
-                            size="small"
-                            placeholder="Enter..."
-                            value={row.journalDetails}
-                            onChange={(e) =>
-                              journalChange(
-                                index,
-                                'journalDetails',
-                                e.target.value
-                              )
-                            }
-                          />
-                        </StyledTableCell>
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.details}
+                                onChange={(e) =>
+                                  pettyChange(index, 'details', e.target.value)
+                                }
+                              />
+                            </StyledTableCell>
 
-                        {/* Delete Button */}
-                        <StyledTableCell>
-                          <IconButton
-                            color="error"
-                            onClick={() => journalDeleteRow(index)}
-                            disabled={journalRows.length === 1}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                            <StyledTableCell>
+                              <IconButton
+                                color="error"
+                                onClick={() => deleteRow(index)}
+                                disabled={rows.length === 1}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
 
-              {/* Buttons */}
-              {/* <div className="text-center my-3">
-                <Button
-                  variant="contained"
-                  color="success"
-                  className="ms-2"
-                  onClick={journalGetFilledRows}
-                >
-                  Get Journal Rows
-                </Button>
-              </div> */}
-            </Card.Body>
-            <Card.Footer className="text-center"></Card.Footer>
-          </Card>
+                  <div className=" my-3">
+                    <Row className="mt-3 g-3">
+                      <Col xs={12} md={3}>
+                        <Card className="h-100">
+                          <Card.Header>Bank Code</Card.Header>
+                          <Card.Body>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter Bank Code"
+                              value={bankCode}
+                              onChange={(e) => setBankCode(e.target.value)}
+                            />
+                          </Card.Body>
+                        </Card>
+                      </Col>
+
+                      <Col xs={12} md={3}>
+                        <Card className="h-100">
+                          <Card.Header>Bank Name</Card.Header>
+                          <Card.Body>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter Bank Name"
+                              value={bankName}
+                              onChange={(e) => setBankName(e.target.value)}
+                            />
+                          </Card.Body>
+                        </Card>
+                      </Col>
+
+                      <Col xs={12} md={3}>
+                        <Card className="h-100">
+                          <Card.Header>Cheque No.</Card.Header>
+                          <Card.Body>
+                            <Form.Control
+                              type="text"
+                              placeholder="Enter Cheque No."
+                              value={chequeNo}
+                              onChange={(e) => setChequeNo(e.target.value)}
+                            />
+                          </Card.Body>
+                        </Card>
+                      </Col>
+
+                      <Col xs={12} md={3}>
+                        <Card className="h-100">
+                          <Card.Header>Date</Card.Header>
+                          <Card.Body>
+                            <Form.Control
+                              type="date"
+                              value={date}
+                              onChange={(e) => setDate(e.target.value)}
+                            />
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    </Row>
+                  </div>
+                </Card.Body>
+                <Card.Footer className="text-center"></Card.Footer>
+              </Card>
+
+              <Card className="shadow mt-3">
+                <Card.Header className="text-center">
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      color: '#0a1f83',
+                      mb: 2,
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                    }}
+                  >
+                    Journal Voucher
+                  </Typography>
+                </Card.Header>
+                <Card.Body>
+                  <Tooltip title="Add More Rows" arrow placement="top">
+                    <Button
+                      variant="contained"
+                      color="dark"
+                      onClick={journalAddRow}
+                    >
+                      <AddBoxIcon fontSize="small" color="success" />
+                    </Button>
+                  </Tooltip>
+
+                  <TableContainer component={Paper} className="mt-2">
+                    <Table>
+                      <TableHead>
+                        <StyledTableRow>
+                          <StyledTableCell>S.No.</StyledTableCell>
+                          <StyledTableCell>Account Code</StyledTableCell>
+                          <StyledTableCell>Account Head</StyledTableCell>
+                          <StyledTableCell>Estimate No.</StyledTableCell>
+                          <StyledTableCell>D / C</StyledTableCell>
+                          <StyledTableCell>Debit Amount</StyledTableCell>
+                          <StyledTableCell>Credit Amount</StyledTableCell>
+                          <StyledTableCell>Details</StyledTableCell>
+                          <StyledTableCell>Action</StyledTableCell>
+                        </StyledTableRow>
+                      </TableHead>
+
+                      <TableBody>
+                        {journalRows.map((row, index) => (
+                          <StyledTableRow key={index}>
+                            <StyledTableCell>{row.sno}</StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                placeholder="Enter..."
+                                size="small"
+                                value={row.journalAccountCode}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalAccountCode',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.journalAccountHead}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalAccountHead',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                placeholder="Enter..."
+                                size="small"
+                                value={row.journalEstimateNo}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalEstimateNo',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <Select
+                                size="small"
+                                value={row.journalDC}
+                                displayEmpty
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalDC',
+                                    e.target.value,
+                                  )
+                                }
+                                style={{ width: '100px' }}
+                              >
+                                <MenuItem value="" disabled>
+                                  select
+                                </MenuItem>
+                                <MenuItem value="D">D</MenuItem>
+                                <MenuItem value="C">C</MenuItem>
+                              </Select>
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                type="number"
+                                placeholder="Enter..."
+                                value={row.journalDebitAmount}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalDebitAmount',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                type="number"
+                                value={row.journalCreditAmount}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalCreditAmount',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <TextField
+                                size="small"
+                                placeholder="Enter..."
+                                value={row.journalDetails}
+                                onChange={(e) =>
+                                  journalChange(
+                                    index,
+                                    'journalDetails',
+                                    e.target.value,
+                                  )
+                                }
+                              />
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <IconButton
+                                color="error"
+                                onClick={() => journalDeleteRow(index)}
+                                disabled={journalRows.length === 1}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </StyledTableCell>
+                          </StyledTableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Card.Body>
+                <Card.Footer className="text-center"></Card.Footer>
+              </Card>
+            </>
+          )}
 
           <Card className="shadow mt-3">
             <Card.Header className="text-center">
