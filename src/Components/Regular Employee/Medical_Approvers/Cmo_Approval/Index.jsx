@@ -360,7 +360,7 @@ function MedicalApprovalByCmo() {
               fontWeight: 'bold',
             }}
           >
-            CMO Verification for Medical Reimbirsement
+            CMO Verification for Medical Reimbursement
           </Typography>
         </Card.Header>
         <Card.Body>

@@ -1,95 +1,97 @@
-import React from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import Navbar from "../Constants/Navbar/Index";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import Navbar from '../Constants/Navbar/Index';
 // import Home1 from "../Components/Home1";
 // import About from "../Components/About";
 // import Contact from "../Components/Contact";
-import Login from "../Components/User/Login";
-import Signup from "../Components/User/Signup";
-import PrivateRoute from "../Router/PrivateRoute";
-import PublicRoute from "../Router/PublicRoute";
-import { AuthProvider } from "../Authentication/Context/AuthContext";
-import Dashboard from "../Components/Dashboard/Index";
+import Login from '../Components/User/Login';
+import Signup from '../Components/User/Signup';
+import PrivateRoute from '../Router/PrivateRoute';
+import PublicRoute from '../Router/PublicRoute';
+import { AuthProvider } from '../Authentication/Context/AuthContext';
+import Dashboard from '../Components/Dashboard/Index';
 // import EmployeeInformation from "../Components/Regular Employee/Employee Information/Index";
-import ApplyAttendanceCorrection from "../Components/Regular Employee/Apply_Attendance_Correction/Index";
-import CorrectionApplication from "../Components/Regular Employee/Correction_Application/Index";
-import ShiftChange from "../Components/Regular Employee/Shift_Change/Index";
-import PaySlip from "../Components/Regular Employee/Pay_Slip/Index";
+import ApplyAttendanceCorrection from '../Components/Regular Employee/Apply_Attendance_Correction/Index';
+import CorrectionApplication from '../Components/Regular Employee/Correction_Application/Index';
+import ShiftChange from '../Components/Regular Employee/Shift_Change/Index';
+import PaySlip from '../Components/Regular Employee/Pay_Slip/Index';
 // import AddNewEmployee from "../Components/Regular Employee/Add New Employee/Index";
 
-import RRAC_Scheme from "../Components/Regular Employee/Request_For_RRAC_Scheme/Index";
-import RRAC_MIS from "../Components/Regular Employee/RRAC_Scheme_MIS/Index";
-import ViewExpenditure from "../Components/Regular Employee/Expenditure/View_Expenditure/Index";
-import UploadExpenditureDocuments from "../Components/Regular Employee/Expenditure/Upload_Documents/Index";
+import RRAC_Scheme from '../Components/Regular Employee/Request_For_RRAC_Scheme/Index';
+import RRAC_MIS from '../Components/Regular Employee/RRAC_Scheme_MIS/Index';
+import ViewExpenditure from '../Components/Regular Employee/Expenditure/View_Expenditure/Index';
+import UploadExpenditureDocuments from '../Components/Regular Employee/Expenditure/Upload_Documents/Index';
 //import ViewExpenditureDetails from "../Components/Regular Employee/Expenditure Approval By Authority/View_Expenditure_By_Authority/Index";
 //import ApproveDownloadDocs from "../Components/Regular Employee/Expenditure Approval By Authority/Approve_Download_Docs/Index";
-import EditLocation from "../Components/HR Pannel/Attendance Location/Edit_Location/Index";
-import CreateAttendanceLocation from "../Components/HR Pannel/Attendance Location/Create_Location/Index";
-import UpdateLocation from "../Components/HR Pannel/Attendance Location/Update_Location/Index";
-import LeaveAllocation from "../Components/HR Pannel/Leave_Allocation/Index";
-import AttendanceView from "../Components/HR Pannel/Employee_Attendance_View/Index";
-import MonthlyAttendanceView from "../Components/Reports/Monthly_Attendance_Sheet/Index";
-import EmployeeMaster from "../Components/Reports/Employee_Master/Index";
-import DayWiseAttendace from "../Components/Reports/Day_Wise_Attendance/Index";
-import LeaveReports from "../Components/Reports/Leave_Reports/Index";
-import MonthlyAttendannceOfficer from "../Components/Reports/Monthly_Attendance_Officers_Wise/Index";
-import MMSKYattendance from "../Components/Reports/MMSKY_Attendance_Sheet/Index";
-import OutsourceEmployeeInformation from "../Components/Outsource/Employee_Information/Index";
-import HRverification from "../Components/Outsource/HR_Verification/Index";
-import BlacklistEmployee from "../Components/Outsource/Blacklist_Employee/Index";
-import ViewBlacklistedEmployee from "../Components/Outsource/View_Blacklisted_Employee/Index";
-import MonthlyAttendaceOutsource from "../Components/Outsource/Monthly_Attendance/Index";
-import OutsourceEmployeeData from "../Components/Outsource/Emloyee_Data/Index";
-import OutsourceLeaveAllocation from "../Components/Outsource/Leave_Allocation/Index";
-import OutsourceEmpAttendaceView from "../Components/Outsource/Employee_Attendance_View/Index";
-import EmployeeInformation from "../Components/HR Pannel/Employee_Information/Index";
+import EditLocation from '../Components/HR Pannel/Attendance Location/Edit_Location/Index';
+import CreateAttendanceLocation from '../Components/HR Pannel/Attendance Location/Create_Location/Index';
+import UpdateLocation from '../Components/HR Pannel/Attendance Location/Update_Location/Index';
+import LeaveAllocation from '../Components/HR Pannel/Leave_Allocation/Index';
+import AttendanceView from '../Components/HR Pannel/Employee_Attendance_View/Index';
+import MonthlyAttendanceView from '../Components/Reports/Monthly_Attendance_Sheet/Index';
+import EmployeeMaster from '../Components/Reports/Employee_Master/Index';
+import DayWiseAttendace from '../Components/Reports/Day_Wise_Attendance/Index';
+import LeaveReports from '../Components/Reports/Leave_Reports/Index';
+import MonthlyAttendannceOfficer from '../Components/Reports/Monthly_Attendance_Officers_Wise/Index';
+import MMSKYattendance from '../Components/Reports/MMSKY_Attendance_Sheet/Index';
+import OutsourceEmployeeInformation from '../Components/Outsource/Employee_Information/Index';
+import HRverification from '../Components/Outsource/HR_Verification/Index';
+import BlacklistEmployee from '../Components/Outsource/Blacklist_Employee/Index';
+import ViewBlacklistedEmployee from '../Components/Outsource/View_Blacklisted_Employee/Index';
+import MonthlyAttendaceOutsource from '../Components/Outsource/Monthly_Attendance/Index';
+import OutsourceEmployeeData from '../Components/Outsource/Emloyee_Data/Index';
+import OutsourceLeaveAllocation from '../Components/Outsource/Leave_Allocation/Index';
+import OutsourceEmpAttendaceView from '../Components/Outsource/Employee_Attendance_View/Index';
+import EmployeeInformation from '../Components/HR Pannel/Employee_Information/Index';
 // import AddNewEmployee from "../Components/HR Pannel/Add_New_Employee/Index";
-import EmployeePlaceOfPosting from "../Components/HR Pannel/Employee_Place_of_Postings/Index";
-import FeederManagement from "../Components/HR Pannel/Feeder_Management/Index";
-import DayWiseAttendanceOutsource from "../Components/Outsource/Day_Wise_Attendance/Index";
-import UpdateVerifyEmployee from "../Components/Outsource/Update_Verification_Employee/Index";
-import OutsourceEmployeeServices from "../Components/Outsource/Outsource_Employee_Services/Index";
-import OutsourceEmployeeTraining from "../Components/Outsource/Employee_Training/Index";
-import OutsourcePlaceOfPosting from "../Components/Outsource/Places_of_Posting/Index";
-import CorrectionApproval from "../Components/Regular Employee/Correction_Approval/Index";
-import CorrectionUpdateByRO from "../Components/Regular Employee/Correction_Approval_RO/Index";
-import OutsourceEmpWeeklyRest from "../Components/Regular Employee/Weekly_Rest/Index";
-import EmployeeForm16 from "../Components/Regular Employee/Form_16/Index";
-import RRAC_Discontinuation from "../Components/Regular Employee/RRAC_Discontinuation/Index";
-import ViewExpenditureByAuthority from "../Components/Regular Employee/Expenditure Approval By Authority/View_Expenditure_By_Authority/Index";
-import ApproveExpenditureByAuthority from "../Components/Regular Employee/Expenditure Approval By Authority/Approve_Download_Docs/Index";
-import MedicalReimbirsement from "../Components/Regular Employee/Medical_Reimbursement/Index";
-import ImmovableProperty from "../Components/Regular Employee/Immovable_Property/Index";
-import ImmovablePropertyView from "../Components/Regular Employee/View_Immovable_Property/Index";
-import SsoDailyLosses from "../Components/Regular Employee/Sso_Daily_Losses/Index";
-import SsoShutDown from "../Components/Regular Employee/Sso_Shutdown/Index";
-import PowerTransformerReport from "../Components/Regular Employee/PTR_Failure/Index";
-import SsoAuthorization from "../Components/Regular Employee/Sso_Authorization/Index";
-import LineStaffAuthorization from "../Components/Regular Employee/LineStaff_Authorization/Index";
-import MedicalApprovalByHr from "../Components/Regular Employee/Medical_Approvers/Hr_Approval/Index";
-import MedicalApprovalByCmo from "../Components/Regular Employee/Medical_Approvers/Cmo_Approval/Index";
-import MedicalApprovalByAo from "../Components/Regular Employee/Medical_Approvers/Ao_Approval/Index";
-import MedicalFormView from "../Components/Regular Employee/Medical_Update_and_View/MedicalView";
-import MedicalFormUpdate from "../Components/Regular Employee/Medical_Update_and_View/MedicalUpdate";
+import EmployeePlaceOfPosting from '../Components/HR Pannel/Employee_Place_of_Postings/Index';
+import FeederManagement from '../Components/HR Pannel/Feeder_Management/Index';
+import DayWiseAttendanceOutsource from '../Components/Outsource/Day_Wise_Attendance/Index';
+import UpdateVerifyEmployee from '../Components/Outsource/Update_Verification_Employee/Index';
+import OutsourceEmployeeServices from '../Components/Outsource/Outsource_Employee_Services/Index';
+import OutsourceEmployeeTraining from '../Components/Outsource/Employee_Training/Index';
+import OutsourcePlaceOfPosting from '../Components/Outsource/Places_of_Posting/Index';
+import CorrectionApproval from '../Components/Regular Employee/Correction_Approval/Index';
+import CorrectionUpdateByRO from '../Components/Regular Employee/Correction_Approval_RO/Index';
+import OutsourceEmpWeeklyRest from '../Components/Regular Employee/Weekly_Rest/Index';
+import EmployeeForm16 from '../Components/Regular Employee/Form_16/Index';
+import RRAC_Discontinuation from '../Components/Regular Employee/RRAC_Discontinuation/Index';
+import ViewExpenditureByAuthority from '../Components/Regular Employee/Expenditure Approval By Authority/View_Expenditure_By_Authority/Index';
+import ApproveExpenditureByAuthority from '../Components/Regular Employee/Expenditure Approval By Authority/Approve_Download_Docs/Index';
+import MedicalReimbirsement from '../Components/Regular Employee/Medical_Reimbursement/Index';
+import ImmovableProperty from '../Components/Regular Employee/Immovable_Property/Index';
+import ImmovablePropertyView from '../Components/Regular Employee/View_Immovable_Property/Index';
+import SsoDailyLosses from '../Components/Regular Employee/Sso_Daily_Losses/Index';
+import SsoShutDown from '../Components/Regular Employee/Sso_Shutdown/Index';
+import PowerTransformerReport from '../Components/Regular Employee/PTR_Failure/Index';
+import SsoAuthorization from '../Components/Regular Employee/Sso_Authorization/Index';
+import LineStaffAuthorization from '../Components/Regular Employee/LineStaff_Authorization/Index';
+import MedicalApprovalByHr from '../Components/Regular Employee/Medical_Approvers/Hr_Approval/Index';
+import MedicalApprovalByCmo from '../Components/Regular Employee/Medical_Approvers/Cmo_Approval/Index';
+import MedicalApprovalByAo from '../Components/Regular Employee/Medical_Approvers/Ao_Approval/Index';
+import MedicalFormView from '../Components/Regular Employee/Medical_Update_and_View/MedicalView';
+import MedicalFormUpdate from '../Components/Regular Employee/Medical_Update_and_View/MedicalUpdate';
 // import SsoDashboard from "../Components/Sso_Dashboard/Index";
-import MedicalHealthInsurance from "../Components/Regular Employee/Medical_Health_Insurance/Index";
-import DataProvider from "../Components/HR Pannel/Add_New_Employee/DataProvider";
+import MedicalHealthInsurance from '../Components/Regular Employee/Medical_Health_Insurance/Index';
+import DataProvider from '../Components/HR Pannel/Add_New_Employee/DataProvider';
 // import UpdateEmployeeInformation from "../Components/HR Pannel/Update_Employee_Information/Index";
-import UpdateDataContainer from "../Components/HR Pannel/Update_Employee_Information/UpdateDataContainer";
-import HumanResourceDashboard from "../Components/Dashboards/Hr_Dashboard/Index";
-import OperationmaintenanceDashboard from "../Components/Dashboards/O&M_Dashboard/Index";
-import EmployeeDashboard from "../Components/Dashboards/Employee_Dashboard/Index";
-import ReportingOfficerDashboard from "../Components/Dashboards/Reporting_Dashboard/Index";
-import SsoDashboard from "../Components/Dashboards/Sso_Dashboard/Index";
-import DgmAuthorizationStatus from "../Components/Regular Employee/Sso_Authorization_Status/dgmStatus";
-import GmAuthorizationStatus from "../Components/Regular Employee/Sso_Authorization_Status/gmStatus";
-import DgmLineStaffStatus from "../Components/Regular Employee/LineStaff_Authorization_Status/dgmStatus";
-import GmLineStaffStatus from "../Components/Regular Employee/LineStaff_Authorization_Status/gmStatus";
-import DgmPtrStatus from "../Components/Regular Employee/PTR_Failure_Status/dgmStatus";
-import AdditionalChargesEmployee from "../Components/HR Pannel/Employee_Additional_Charges/Index";
-import ForgetPassword from "../Components/User/ForgetPassword";
-import MedicalHealthInsuranceView from "../Components/Regular Employee/Medical_Health_Insurance_View/Index";
-import HigherPayScale from "../Components/Regular Employee/Higher_Pay_Scale/Index";
+import UpdateDataContainer from '../Components/HR Pannel/Update_Employee_Information/UpdateDataContainer';
+import HumanResourceDashboard from '../Components/Dashboards/Hr_Dashboard/Index';
+import OperationmaintenanceDashboard from '../Components/Dashboards/O&M_Dashboard/Index';
+import EmployeeDashboard from '../Components/Dashboards/Employee_Dashboard/Index';
+import ReportingOfficerDashboard from '../Components/Dashboards/Reporting_Dashboard/Index';
+import SsoDashboard from '../Components/Dashboards/Sso_Dashboard/Index';
+import DgmAuthorizationStatus from '../Components/Regular Employee/Sso_Authorization_Status/dgmStatus';
+import GmAuthorizationStatus from '../Components/Regular Employee/Sso_Authorization_Status/gmStatus';
+import DgmLineStaffStatus from '../Components/Regular Employee/LineStaff_Authorization_Status/dgmStatus';
+import GmLineStaffStatus from '../Components/Regular Employee/LineStaff_Authorization_Status/gmStatus';
+import DgmPtrStatus from '../Components/Regular Employee/PTR_Failure_Status/dgmStatus';
+import AdditionalChargesEmployee from '../Components/HR Pannel/Employee_Additional_Charges/Index';
+import ForgetPassword from '../Components/User/ForgetPassword';
+import MedicalHealthInsuranceView from '../Components/Regular Employee/Medical_Health_Insurance_View/Index';
+import HigherPayScale from '../Components/Regular Employee/Higher_Pay_Scale/Index';
+import WiremanCertificateByHr from '../Components/HR Pannel/Wireman_Certificate/Index';
+import UpdateWiremanCertificateStatus from '../Components/HR Pannel/View_Update_Wireman_Certificate/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -133,8 +135,8 @@ function CustomRouter() {
               </PrivateRoute>
             }
           >
-            <Route path="/" element={<Dashboard />} />
-            <Route path="ssoDashboard" element={<SsoDashboard />} />
+            <Route path="ssoDashboard" element={<Dashboard />} />
+            <Route path="/" element={<SsoDashboard />} />
             <Route path="employeeDashboard" element={<EmployeeDashboard />} />
             <Route
               path="reportingOfficerDashboard"
@@ -203,11 +205,11 @@ function CustomRouter() {
               element={<ApproveExpenditureByAuthority />}
             />
             <Route
-              path="medicalReimbirsement"
+              path="medicalReimbursement"
               element={<MedicalReimbirsement />}
             />
             <Route
-              path="medicalReimbirsementView"
+              path="medicalReimbursementView"
               element={<MedicalFormView />}
             />
 
@@ -221,7 +223,7 @@ function CustomRouter() {
             />
 
             <Route
-              path="medicalReimbirsementUpdate"
+              path="medicalReimbursementUpdate"
               element={<MedicalFormUpdate />}
             />
 
@@ -289,6 +291,16 @@ function CustomRouter() {
             <Route
               path="medicalApprovalByAo"
               element={<MedicalApprovalByAo />}
+            />
+
+            <Route
+              path="wiremanCertificate"
+              element={<WiremanCertificateByHr />}
+            />
+
+            <Route
+              path="updateWiremanCertificate"
+              element={<UpdateWiremanCertificateStatus />}
             />
 
             {/* Report Section */}

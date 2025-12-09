@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Card } from "react-bootstrap";
+import React, { useEffect, useState, useRef } from 'react';
+import { Card } from 'react-bootstrap';
 import {
   Typography,
   Paper,
@@ -19,24 +19,24 @@ import {
   DialogActions,
   Divider,
   Grid,
-} from "@mui/material";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+} from '@mui/material';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { motion } from "framer-motion";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { motion } from 'framer-motion';
 
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
-import { PropagateLoader } from "react-spinners";
-import { getMedicalFormByEmpCode } from "../../../Services/Auth";
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
+import { PropagateLoader } from 'react-spinners';
+import { getMedicalFormByEmpCode } from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -78,7 +78,7 @@ function MedicalFormView() {
         setOpenBackdrop(true);
         const response = await getMedicalFormByEmpCode();
         console.log(response);
-        if (response.data.code == "200") {
+        if (response.data.code == '200') {
           setOpenBackdrop(false);
           setData(response.data.list);
         } else {
@@ -86,7 +86,7 @@ function MedicalFormView() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
         setOpenBackdrop(false);
       }
     };
@@ -100,10 +100,10 @@ function MedicalFormView() {
           <Typography
             variant="h4"
             sx={{
-              color: "#0a1f83",
+              color: '#0a1f83',
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Medical Reimbursement View
@@ -127,9 +127,9 @@ function MedicalFormView() {
                   data.map((item, index) => (
                     <StyledTableRow key={index}>
                       <StyledTableCell>{index + 1}</StyledTableCell>
-                      <StyledTableCell>{item.empName || "-"}</StyledTableCell>
-                      <StyledTableCell>{item.empCode || "-"}</StyledTableCell>
-                      <StyledTableCell>{item.refNo || "-"}</StyledTableCell>
+                      <StyledTableCell>{item.empName || '-'}</StyledTableCell>
+                      <StyledTableCell>{item.empCode || '-'}</StyledTableCell>
+                      <StyledTableCell>{item.refNo || '-'}</StyledTableCell>
 
                       <StyledTableCell>
                         <Tooltip title="Preview" arrow>
@@ -137,7 +137,7 @@ function MedicalFormView() {
                             variant="contained"
                             color="dark"
                             onClick={() =>
-                              navigate("/medicalReimbirsementUpdate", {
+                              navigate('/medicalReimbursementUpdate', {
                                 state: { item },
                               })
                             }
@@ -172,7 +172,7 @@ function MedicalFormView() {
       </Card>
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

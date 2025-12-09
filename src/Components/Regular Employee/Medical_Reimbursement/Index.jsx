@@ -243,7 +243,7 @@ function MedicalReimbirsement() {
 
   const handleSubmit = async () => {
     const dataToSend = new FormData();
-    // setOpenBackdrop(true);
+    setOpenBackdrop(true);
 
     dataToSend.append('empCode', sessionEmpCode || '');
     dataToSend.append('presentAddress', empAddress || '');
@@ -368,6 +368,12 @@ function MedicalReimbirsement() {
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   const minDate = sixMonthsAgo.toISOString().split('T')[0];
+
+  const token = sessionStorage.getItem('token');
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const decodedData = JSON.parse(atob(base64));
+  // console.log(decodedData);
 
   return (
     <>
@@ -764,7 +770,7 @@ function MedicalReimbirsement() {
                       <Card.Header>Essentiality Certificate No</Card.Header>
                       <Card.Body>
                         <Form.Control
-                          type="number"
+                          type="text"
                           placeholder="Enter Number"
                           name="essentialityCertificateNo"
                           value={formData.essentialityCertificateNo}

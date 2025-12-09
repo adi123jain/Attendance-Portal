@@ -157,6 +157,18 @@ function HumanResourceDashboard() {
           to: '/outsourceEmployeeServices',
           icon: <ManageAccountsIcon />,
         },
+
+        {
+          name: 'Wireman Certificate',
+          to: '/wiremanCertificate',
+          icon: <ManageAccountsIcon />,
+        },
+
+        {
+          name: 'View Wireman Certificate',
+          to: '/updateWiremanCertificate',
+          icon: <ManageAccountsIcon />,
+        },
       ],
     },
   ];

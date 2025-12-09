@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Button,
   TextField,
@@ -16,33 +16,33 @@ import {
   Paper,
   Modal,
   Fade,
-} from "@mui/material";
-import { PropagateLoader } from "react-spinners";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
-import { styled } from "@mui/system";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import LockIcon from "@mui/icons-material/Lock";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { styled } from '@mui/system';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import LockIcon from '@mui/icons-material/Lock';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import {
   attendanceRecords,
   getOtp,
   userAuthentication,
   verifyOtp,
-} from "../../Services/Auth";
-import { useAuth } from "../../Authentication/Context/AuthContext";
-import { useNavigate } from "react-router-dom";
+} from '../../Services/Auth';
+import { useAuth } from '../../Authentication/Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
-const BackgroundContainer = styled("div")(({ theme }) => ({
+const BackgroundContainer = styled('div')(({ theme }) => ({
   backgroundImage: 'url("/assets/backgroundImg.avif")',
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  minHeight: "100vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "20px",
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '20px',
 }));
 
 const Login = () => {
@@ -50,9 +50,9 @@ const Login = () => {
 
   const [attendanceSummary, setAttendanceSummary] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [otp, setOtp] = useState(['', '', '', '']);
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [timer, setTimer] = useState(30);
   const [isResendDisabled, setIsResendDisabled] = useState(true);
@@ -62,21 +62,21 @@ const Login = () => {
 
   const getCurrentDate = () => {
     const currentDate = new Date();
-    const day = currentDate.getDate().toString().padStart(2, "0");
+    const day = currentDate.getDate().toString().padStart(2, '0');
 
     const monthNames = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
     const month = monthNames[currentDate.getMonth()];
     const year = currentDate.getFullYear();
@@ -90,7 +90,7 @@ const Login = () => {
         const response = await attendanceRecords(punchDate);
         setAttendanceSummary(response.data.list[0]);
       } catch (error) {
-        console.log("Error While Get Attendace Summary", error);
+        console.log('Error While Get Attendace Summary', error);
       }
     };
     fetchData();
@@ -98,45 +98,45 @@ const Login = () => {
 
   const cardData = [
     {
-      title: "Registered Employees",
+      title: 'Registered Employees',
       value: attendanceSummary.totalRegisteredEmps,
-      color: "primary",
+      color: 'primary',
       progress: 50,
     },
     {
-      title: "Active Employees",
+      title: 'Active Employees',
       value: attendanceSummary.totalActiveEmps,
-      color: "warning",
+      color: 'warning',
       progress: 50,
     },
     {
-      title: "Today Present",
+      title: 'Today Present',
       value: attendanceSummary.present,
-      color: "secondary",
+      color: 'secondary',
       progress: 50,
     },
     {
-      title: "Not Closed",
+      title: 'Not Closed',
       value: attendanceSummary.notClosed,
-      color: "info",
+      color: 'info',
       progress: 50,
     },
     {
-      title: "LC/BO",
+      title: 'LC/BO',
       value: attendanceSummary.lcBo,
-      color: "error",
+      color: 'error',
       progress: 50,
     },
     {
-      title: "Today Leave",
+      title: 'Today Leave',
       value: attendanceSummary.leave,
-      color: "primary",
+      color: 'primary',
       progress: 50,
     },
     {
-      title: "Today Absent",
+      title: 'Today Absent',
       value: attendanceSummary.absent,
-      color: "success",
+      color: 'success',
       progress: 50,
     },
   ];
@@ -159,19 +159,19 @@ const Login = () => {
     const sendReq = {
       username: userId,
       password,
-      deviceId: "",
-      requestMode: "",
+      deviceId: '',
+      requestMode: '',
     };
     try {
       const response = await userAuthentication(sendReq);
-      if (response.data.code === "200" && response.data.message === "Success") {
-        const otpReq = { username: userId, source: "E-Attendance Portal" };
+      if (response.data.code === '200' && response.data.message === 'Success') {
+        const otpReq = { username: userId, source: 'E-Attendance Portal' };
         const otpResponse = await getOtp(otpReq);
         if (
-          otpResponse.data.code === "200" &&
-          otpResponse.data.message === "Success"
+          otpResponse.data.code === '200' &&
+          otpResponse.data.message === 'Success'
         ) {
-          alert("OTP Sent Successfully");
+          alert('OTP Sent Successfully');
           handleModalOpen();
 
           setTimer(30);
@@ -183,7 +183,7 @@ const Login = () => {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error('Login Error:', error);
     }
   };
 
@@ -206,11 +206,11 @@ const Login = () => {
   };
 
   const handleKeyDown = (event, index) => {
-    if (event.key === "Backspace") {
+    if (event.key === 'Backspace') {
       if (otp[index]) {
         // If current has value, clear it first
         const newOtp = [...otp];
-        newOtp[index] = "";
+        newOtp[index] = '';
         setOtp(newOtp);
       } else if (index > 0) {
         // Move focus to previous input
@@ -221,39 +221,39 @@ const Login = () => {
 
   // Verifying OTP
   const OtpVerification = async () => {
-    if (otp.includes("")) {
-      alert("Please Enter Correct OTP");
+    if (otp.includes('')) {
+      alert('Please Enter Correct OTP');
       return;
     }
-    const enteredOtp = otp.join("");
+    const enteredOtp = otp.join('');
     const sendReq = {
       username: userId,
-      source: "E-Attendance Portal",
+      source: 'E-Attendance Portal',
       otp: enteredOtp,
     };
     try {
       const response = await verifyOtp(sendReq);
-      if (response.data.code == "200" && response.data.message == "Success") {
-        alert("Otp Verified");
+      if (response.data.code == '200' && response.data.message == 'Success') {
+        alert('Otp Verified');
         doubleAuthentication();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.log("Verify Otp Error:", error);
+      console.log('Verify Otp Error:', error);
     }
   };
 
   const handleResendOtp = async () => {
     try {
-      const otpReq = { username: userId, source: "E-Attendance Portal" };
+      const otpReq = { username: userId, source: 'E-Attendance Portal' };
       const otpResponse = await getOtp(otpReq);
       if (
-        otpResponse.data.code === "200" &&
-        otpResponse.data.message === "Success"
+        otpResponse.data.code === '200' &&
+        otpResponse.data.message === 'Success'
       ) {
-        alert("OTP Resend Successfully");
-        setOtp(["", "", "", ""]);
+        alert('OTP Resend Successfully');
+        setOtp(['', '', '', '']);
         inputRefs.current[0].focus();
         setTimer(30);
         setIsResendDisabled(true);
@@ -261,7 +261,7 @@ const Login = () => {
         alert(otpResponse.data.message);
       }
     } catch (error) {
-      console.error("OTP Error:", error);
+      console.error('OTP Error:', error);
     }
   };
 
@@ -269,145 +269,143 @@ const Login = () => {
     const sendReq = {
       username: userId,
       password,
-      deviceId: "",
-      requestMode: "",
+      deviceId: '',
+      requestMode: '',
     };
     try {
       const response = await userAuthentication(sendReq);
-      if (response.data.code === "200" && response.data.message === "Success") {
+      if (response.data.code === '200' && response.data.message === 'Success') {
         // console.log("Double Auth", response);
         // console.log("Double Auth", response.headers.authorization);
         const token = response.headers.authorization;
 
-        const base64Url = token.split(".")[1];
-        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const base64Url = token.split('.')[1];
+        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const decodedData = JSON.parse(atob(base64));
         sessionStorage.setItem(
-          "isNominationSubmitted",
-          decodedData.isNominationSubmitted
+          'isNominationSubmitted',
+          decodedData.isNominationSubmitted,
         );
         // console.log("Decoded Token Data:", decodedData.isNominationSubmitted);
-
-        sessionStorage.setItem("token", token);
-
-        sessionStorage.setItem("empCode", response.data.list[0].empCode);
-        sessionStorage.setItem("fullName", response.data.list[0].fullName);
-        sessionStorage.setItem("id", response.data.list[0].id);
+        sessionStorage.setItem('token', token);
+        sessionStorage.setItem('empCode', response.data.list[0].empCode);
+        sessionStorage.setItem('fullName', response.data.list[0].fullName);
+        sessionStorage.setItem('id', response.data.list[0].id);
         sessionStorage.setItem(
-          "isManagerHr",
-          response.data.list[0].isManagerHr
+          'isManagerHr',
+          response.data.list[0].isManagerHr,
         );
         sessionStorage.setItem(
-          "isReportingOfficer",
-          response.data.list[0].isReportingOfficer
+          'isReportingOfficer',
+          response.data.list[0].isReportingOfficer,
         );
         // sessionStorage.setItem('designation', response.data.list[0].designation);
         sessionStorage.setItem(
-          "designationId",
-          response.data.list[0].designationId
+          'designationId',
+          response.data.list[0].designationId,
         );
         sessionStorage.setItem(
-          "isOutsourceInvoiceApprover",
-          response.data.list[0].isOutsourceInvoiceApprover
+          'isOutsourceInvoiceApprover',
+          response.data.list[0].isOutsourceInvoiceApprover,
         );
-        sessionStorage.setItem("isRaoApprover", response.data.list[0].isRao);
+        sessionStorage.setItem('isRaoApprover', response.data.list[0].isRao);
 
         sessionStorage.setItem(
-          "departmentId",
-          response.data.list[0].departmentId
+          'departmentId',
+          response.data.list[0].departmentId,
         );
         sessionStorage.setItem(
-          "departmentName",
-          response.data.list[0].department
+          'departmentName',
+          response.data.list[0].department,
         );
         sessionStorage.setItem(
-          "designationName",
-          response.data.list[0].designation
+          'designationName',
+          response.data.list[0].designation,
         );
 
         sessionStorage.setItem(
-          "regionId",
-          response.data.list[0].region.regionId
+          'regionId',
+          response.data.list[0].region.regionId,
         );
-        sessionStorage.setItem("regionName", response.data.list[0].region.name);
+        sessionStorage.setItem('regionName', response.data.list[0].region.name);
 
         if (response.data.list[0].circle == null) {
-          sessionStorage.setItem("circleId", response.data.list[0].circle);
+          sessionStorage.setItem('circleId', response.data.list[0].circle);
         } else {
           sessionStorage.setItem(
-            "circleId",
-            response.data.list[0].circle.circleId
+            'circleId',
+            response.data.list[0].circle.circleId,
           );
           sessionStorage.setItem(
-            "circleName",
-            response.data.list[0].circle.name
+            'circleName',
+            response.data.list[0].circle.name,
           );
         }
 
         if (response.data.list[0].division == null) {
-          sessionStorage.setItem("divisionId", response.data.list[0].division);
+          sessionStorage.setItem('divisionId', response.data.list[0].division);
         } else {
           sessionStorage.setItem(
-            "divisionId",
-            response.data.list[0].division.divisionId
+            'divisionId',
+            response.data.list[0].division.divisionId,
           );
           sessionStorage.setItem(
-            "divisionName",
-            response.data.list[0].division.name
+            'divisionName',
+            response.data.list[0].division.name,
           );
         }
 
         if (response.data.list[0].subDivision == null) {
           sessionStorage.setItem(
-            "subdivisionId",
-            response.data.list[0].subDivision
+            'subdivisionId',
+            response.data.list[0].subDivision,
           );
         } else {
           sessionStorage.setItem(
-            "subdivisionId",
-            response.data.list[0].subDivision.subdivisionId
+            'subdivisionId',
+            response.data.list[0].subDivision.subdivisionId,
           );
           sessionStorage.setItem(
-            "subdivisionName",
-            response.data.list[0].subDivision.name
+            'subdivisionName',
+            response.data.list[0].subDivision.name,
           );
         }
 
         if (response.data.list[0].dc == null) {
-          sessionStorage.setItem("dcId", response.data.list[0].dc);
+          sessionStorage.setItem('dcId', response.data.list[0].dc);
         } else {
-          sessionStorage.setItem("dcId", response.data.list[0].dc.dcId);
-          sessionStorage.setItem("dcName", response.data.list[0].dc.name);
+          sessionStorage.setItem('dcId', response.data.list[0].dc.dcId);
+          sessionStorage.setItem('dcName', response.data.list[0].dc.name);
         }
 
         sessionStorage.setItem(
-          "adhaarNumber",
-          response.data.list[0].adhaarNumber
+          'adhaarNumber',
+          response.data.list[0].adhaarNumber,
         );
         sessionStorage.setItem(
-          "dateOfBirth",
-          response.data.list[0].dateOfBirth
+          'dateOfBirth',
+          response.data.list[0].dateOfBirth,
         );
-        sessionStorage.setItem("gender", response.data.list[0].gender);
+        sessionStorage.setItem('gender', response.data.list[0].gender);
         sessionStorage.setItem(
-          "employementType",
-          response.data.list[0].employementType
+          'employementType',
+          response.data.list[0].employementType,
         );
-        sessionStorage.setItem("email", response.data.list[0].email);
-        sessionStorage.setItem("address", response.data.list[0].address);
-        sessionStorage.setItem("mobileNo", response.data.list[0].mobileNo);
+        sessionStorage.setItem('email', response.data.list[0].email);
+        sessionStorage.setItem('address', response.data.list[0].address);
+        sessionStorage.setItem('mobileNo', response.data.list[0].mobileNo);
         login();
-        navigate("/");
+        navigate('/');
       } else {
         alert(response.response.data.message);
       }
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error('Login Error:', error);
     }
   };
 
   const clearValues = () => {
-    setOtp(["", "", "", ""]);
+    setOtp(['', '', '', '']);
     inputRefs.current[0].focus();
   };
 
@@ -425,7 +423,7 @@ const Login = () => {
 
   const handleModalClose = () => {
     setShowOtpInput(false);
-    setOtp(["", "", "", ""]);
+    setOtp(['', '', '', '']);
     // setTimer(0);
   };
 
@@ -438,7 +436,7 @@ const Login = () => {
             <Grid container spacing={3}>
               {cardData.map((data, index) => (
                 <Grid item xs={12} sm={6} key={index}>
-                  <Card sx={{ height: "8rem" }}>
+                  <Card sx={{ height: '8rem' }}>
                     <CardContent>
                       <Typography variant="h6" gutterBottom color={data.color}>
                         {data.title}
@@ -461,38 +459,38 @@ const Login = () => {
 
           {/* Right Side: Login Form */}
           <Grid item xs={12} md={6}>
-            <Card style={{ padding: "40px" }}>
+            <Card style={{ padding: '40px' }}>
               <CardContent>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}
                 >
                   <img
                     src="/assets/mpebLogo.jpg"
                     alt="Logo"
                     style={{
-                      height: "130px",
-                      width: "130px",
-                      marginBottom: "20px",
-                      borderRadius: "50%",
-                      boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+                      height: '130px',
+                      width: '130px',
+                      marginBottom: '20px',
+                      borderRadius: '50%',
+                      boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
                     }}
                   />
 
                   <Typography
                     variant="h4"
                     gutterBottom
-                    fontFamily={"serif"}
+                    fontFamily={'serif'}
                     // color="primary"
                     sx={{
-                      color: "#0a1f83",
+                      color: '#0a1f83',
                       // mb: 0,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
                     }}
                   >
                     e - Attendance Login
@@ -519,7 +517,7 @@ const Login = () => {
 
                       <TextField
                         label="Enter Password"
-                        type={showPassword ? "text" : "password"}
+                        type={showPassword ? 'text' : 'password'}
                         variant="outlined"
                         margin="normal"
                         fullWidth
@@ -574,8 +572,8 @@ const Login = () => {
                         backdrop: {
                           timeout: 500,
                           sx: {
-                            backdropFilter: "blur(8px)",
-                            backgroundColor: "rgba(0, 0, 0, 0.45)",
+                            backdropFilter: 'blur(8px)',
+                            backgroundColor: 'rgba(0, 0, 0, 0.45)',
                           },
                         },
                       }}
@@ -585,19 +583,19 @@ const Login = () => {
                       <Fade in={showOtpInput}>
                         <Box
                           sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            width: "100%",
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '100%',
                             maxWidth: 420,
-                            bgcolor: "rgba(255, 255, 255, 0.9)",
-                            backdropFilter: "blur(10px)",
+                            bgcolor: 'rgba(255, 255, 255, 0.9)',
+                            backdropFilter: 'blur(10px)',
                             borderRadius: 5,
-                            boxShadow: "0 8px 40px rgba(0,0,0,0.25)",
+                            boxShadow: '0 8px 40px rgba(0,0,0,0.25)',
                             p: 5,
-                            textAlign: "center",
-                            outline: "none",
+                            textAlign: 'center',
+                            outline: 'none',
                           }}
                         >
                           <Typography
@@ -608,7 +606,7 @@ const Login = () => {
                             gutterBottom
                             sx={{
                               letterSpacing: 0.5,
-                              textTransform: "uppercase",
+                              textTransform: 'uppercase',
                             }}
                           >
                             OTP Verification
@@ -631,22 +629,22 @@ const Login = () => {
                             spacing={2}
                             mb={4}
                             sx={{
-                              "& .MuiOutlinedInput-root": {
+                              '& .MuiOutlinedInput-root': {
                                 borderRadius: 3,
-                                backgroundColor: "#f5f7fa",
-                                boxShadow: "inset 0 1px 2px rgba(0,0,0,0.08)",
-                                transition: "all 0.2s ease",
-                                "&.Mui-focused": {
-                                  boxShadow: "0 0 10px rgba(25,118,210,0.4)",
-                                  backgroundColor: "#fff",
-                                  transform: "scale(1.05)",
+                                backgroundColor: '#f5f7fa',
+                                boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.08)',
+                                transition: 'all 0.2s ease',
+                                '&.Mui-focused': {
+                                  boxShadow: '0 0 10px rgba(25,118,210,0.4)',
+                                  backgroundColor: '#fff',
+                                  transform: 'scale(1.05)',
                                 },
                               },
-                              "& input": {
+                              '& input': {
                                 fontWeight: 700,
-                                fontSize: "1.8rem",
-                                textAlign: "center",
-                                color: "#0d1b2a",
+                                fontSize: '1.8rem',
+                                textAlign: 'center',
+                                color: '#0d1b2a',
                               },
                             }}
                           >
@@ -665,7 +663,7 @@ const Login = () => {
                                 }
                                 sx={{
                                   width: 65,
-                                  "& .MuiInputBase-root": { height: 65 },
+                                  '& .MuiInputBase-root': { height: 65 },
                                 }}
                               />
                             ))}
@@ -679,19 +677,19 @@ const Login = () => {
                               fullWidth
                               onClick={OtpVerification}
                               sx={{
-                                fontSize: "1rem",
+                                fontSize: '1rem',
                                 py: 1.4,
                                 borderRadius: 3,
                                 fontWeight: 700,
-                                textTransform: "none",
+                                textTransform: 'none',
                                 letterSpacing: 0.5,
                                 background:
-                                  "linear-gradient(135deg, #1976d2, #1565c0)",
-                                boxShadow: "0 4px 15px rgba(25,118,210,0.4)",
-                                "&:hover": {
+                                  'linear-gradient(135deg, #1976d2, #1565c0)',
+                                boxShadow: '0 4px 15px rgba(25,118,210,0.4)',
+                                '&:hover': {
                                   background:
-                                    "linear-gradient(135deg, #1565c0, #0d47a1)",
-                                  boxShadow: "0 6px 20px rgba(25,118,210,0.5)",
+                                    'linear-gradient(135deg, #1565c0, #0d47a1)',
+                                  boxShadow: '0 6px 20px rgba(25,118,210,0.5)',
                                 },
                               }}
                             >
@@ -704,15 +702,15 @@ const Login = () => {
                               fullWidth
                               onClick={clearValues}
                               sx={{
-                                fontSize: "1rem",
+                                fontSize: '1rem',
                                 py: 1.3,
                                 borderRadius: 3,
-                                textTransform: "none",
+                                textTransform: 'none',
                                 fontWeight: 600,
-                                borderColor: "#90a4ae",
-                                "&:hover": {
-                                  borderColor: "#1976d2",
-                                  backgroundColor: "rgba(25,118,210,0.05)",
+                                borderColor: '#90a4ae',
+                                '&:hover': {
+                                  borderColor: '#1976d2',
+                                  backgroundColor: 'rgba(25,118,210,0.05)',
                                 },
                               }}
                             >
@@ -726,18 +724,18 @@ const Login = () => {
                               onClick={handleResendOtp}
                               disabled={isResendDisabled}
                               sx={{
-                                fontSize: "0.95rem",
+                                fontSize: '0.95rem',
                                 py: 1.1,
-                                textTransform: "none",
+                                textTransform: 'none',
                                 fontWeight: 600,
-                                "&:disabled": {
-                                  color: "#999",
+                                '&:disabled': {
+                                  color: '#999',
                                 },
                               }}
                             >
                               {isResendDisabled
                                 ? `Resend OTP in ${timer}s`
-                                : "Resend OTP"}
+                                : 'Resend OTP'}
                             </Button>
 
                             <Button
@@ -746,13 +744,13 @@ const Login = () => {
                               fullWidth
                               onClick={handleModalClose}
                               sx={{
-                                fontSize: "0.95rem",
+                                fontSize: '0.95rem',
                                 py: 1.1,
-                                textTransform: "none",
+                                textTransform: 'none',
                                 fontWeight: 600,
-                                "&:hover": {
-                                  color: "#d32f2f",
-                                  backgroundColor: "rgba(211,47,47,0.1)",
+                                '&:hover': {
+                                  color: '#d32f2f',
+                                  backgroundColor: 'rgba(211,47,47,0.1)',
                                 },
                               }}
                             >
@@ -770,7 +768,7 @@ const Login = () => {
         </Grid>
       </Container>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

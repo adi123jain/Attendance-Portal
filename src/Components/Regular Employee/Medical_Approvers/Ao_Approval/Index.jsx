@@ -359,7 +359,7 @@ function MedicalApprovalByAo() {
               fontWeight: 'bold',
             }}
           >
-            AO Verification for Medical Reimbirsement
+            AO Verification for Medical Reimbursement
           </Typography>
         </Card.Header>
         <Card.Body>

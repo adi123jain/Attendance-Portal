@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Card,
   CardContent,
@@ -6,89 +6,89 @@ import {
   Typography,
   Grid,
   Box,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+} from '@mui/material';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 // Material Icons
-import EditCalendarIcon from "@mui/icons-material/EditCalendar";
-import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
-import DescriptionIcon from "@mui/icons-material/Description";
-import SecurityIcon from "@mui/icons-material/Security";
-import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
-import HomeWorkIcon from "@mui/icons-material/HomeWork";
-import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import EditCalendarIcon from '@mui/icons-material/EditCalendar';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import DescriptionIcon from '@mui/icons-material/Description';
+import SecurityIcon from '@mui/icons-material/Security';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import HomeWorkIcon from '@mui/icons-material/HomeWork';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 function EmployeeDashboard() {
   const menuItems = [
     {
-      label: "Apply Attendance Correction",
-      path: "/attendanceCorrection",
+      label: 'Apply Attendance Correction',
+      path: '/attendanceCorrection',
       icon: <EditCalendarIcon />,
     },
-    { label: "Pay Slip", path: "/paySlip", icon: <ReceiptLongIcon /> },
+    { label: 'Pay Slip', path: '/paySlip', icon: <ReceiptLongIcon /> },
     {
-      label: "Employee Form-16",
-      path: "/employeeForm16",
+      label: 'Employee Form-16',
+      path: '/employeeForm16',
       icon: <DescriptionIcon />,
     },
     {
-      label: "Informer Scheme",
+      label: 'Informer Scheme',
       path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${sessionStorage.getItem(
-        "empCode"
+        'empCode',
       )}`,
       external: true,
       icon: <SecurityIcon />,
     },
     {
-      label: "Medical Reimbursement",
-      path: "/medicalReimbirsement",
+      label: 'Medical Reimbursement',
+      path: '/medicalReimbursement',
       icon: <LocalHospitalIcon />,
     },
     {
-      label: "Medical Reimbursement View",
-      path: "/medicalReimbirsementView",
+      label: 'Medical Reimbursement View',
+      path: '/medicalReimbursementView',
       icon: <VisibilityIcon />,
     },
     {
-      label: "MP Power Company Cashless Health Scheme",
-      path: "/medicalHealthInsurance",
+      label: 'MP Power Company Cashless Health Scheme',
+      path: '/medicalHealthInsurance',
       icon: <HealthAndSafetyIcon />,
     },
 
     {
-      label: "MP Power Company Cashless Health Scheme View",
-      path: "/medicalHealthInsuranceView",
+      label: 'MP Power Company Cashless Health Scheme View',
+      path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
     {
-      label: "Immovable Property",
-      path: "/immovableProperty",
+      label: 'Immovable Property',
+      path: '/immovableProperty',
       icon: <HomeWorkIcon />,
     },
     {
-      label: "Immovable Property View",
-      path: "/immovablePropertyView",
+      label: 'Immovable Property View',
+      path: '/immovablePropertyView',
       icon: <VisibilityIcon />,
     },
     {
-      label: "Medical CMO Approval",
-      path: "/medicalApprovalByCmo",
+      label: 'Medical CMO Approval',
+      path: '/medicalApprovalByCmo',
       icon: <VerifiedUserIcon />,
     },
     {
-      label: "Medical AO Approval",
-      path: "/medicalApprovalByAo",
+      label: 'Medical AO Approval',
+      path: '/medicalApprovalByAo',
       icon: <AssignmentTurnedInIcon />,
     },
 
     {
-      label: "Higher Pay Scale",
-      path: "/higherPayScale",
+      label: 'Higher Pay Scale',
+      path: '/higherPayScale',
       icon: <AssignmentTurnedInIcon />,
     },
   ];
@@ -109,11 +109,11 @@ function EmployeeDashboard() {
           gutterBottom
           variant="h3"
           sx={{
-            textAlign: "center",
-            color: "#0d47a1",
-            fontWeight: "bold",
+            textAlign: 'center',
+            color: '#0d47a1',
+            fontWeight: 'bold',
             mb: 4,
-            fontFamily: "serif",
+            fontFamily: 'serif',
           }}
         >
           Employee Dashboard
@@ -124,11 +124,11 @@ function EmployeeDashboard() {
         container
         spacing={3}
         justifyContent="center"
-        sx={{ maxWidth: 1100, mx: "auto" }}
+        sx={{ maxWidth: 1100, mx: 'auto' }}
       >
         {menuItems.map((item, index) => {
           const linkProps = item.external
-            ? { component: "a", href: item.path, target: "_blank" }
+            ? { component: 'a', href: item.path, target: '_blank' }
             : { component: Link, to: item.path };
 
           return (
@@ -143,19 +143,19 @@ function EmployeeDashboard() {
                   {...linkProps}
                   sx={{
                     height: 160,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     borderRadius: 3,
-                    textDecoration: "none",
+                    textDecoration: 'none',
                     boxShadow: 2,
                     background:
-                      "linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)",
-                    color: "#0d47a1",
-                    transition: "all 0.3s ease",
-                    "&:hover": {
-                      backgroundColor: "#e8f0fe",
+                      'linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)',
+                    color: '#0d47a1',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: '#e8f0fe',
                       boxShadow: 6,
                     },
                   }}
@@ -163,9 +163,9 @@ function EmployeeDashboard() {
                   <Box
                     sx={{
                       fontSize: 48,
-                      color: "#1a237e",
+                      color: '#1a237e',
                       mb: 1,
-                      "& svg": { fontSize: 48 },
+                      '& svg': { fontSize: 48 },
                     }}
                   >
                     {item.icon}
@@ -173,11 +173,11 @@ function EmployeeDashboard() {
                   <Typography
                     variant="subtitle1"
                     sx={{
-                      fontWeight: "bold",
-                      textAlign: "center",
+                      fontWeight: 'bold',
+                      textAlign: 'center',
                       px: 2,
-                      color: "#333",
-                      fontFamily: "Roboto, serif",
+                      color: '#333',
+                      fontFamily: 'Roboto, serif',
                     }}
                   >
                     {item.label}

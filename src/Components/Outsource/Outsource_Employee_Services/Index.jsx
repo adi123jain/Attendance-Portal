@@ -1,23 +1,23 @@
-import React, { useRef, useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import React, { useRef, useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import {
   getOutsourceEmpByEmpCode,
   getOutsourceEmpByLevel,
-} from "../../../Services/Auth";
-import SearchUtils from "../../../Constants/Search_Utils/Index";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
+} from '../../../Services/Auth';
+import SearchUtils from '../../../Constants/Search_Utils/Index';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import '../../../Constants/Style/styles.css';
 import {
   Typography,
   Tooltip,
@@ -32,19 +32,19 @@ import {
   TextField,
   Backdrop,
   Box,
-} from "@mui/material";
-import PunishmentModal from "./Modals/PunishmentModal";
-import ComplaintModal from "./Modals/ComplaintModal";
-import ViewPunishmentModal from "./Modals/ViewPunishmentModal";
-import ViewComplaintModal from "./Modals/ViewComplaintModal";
-import DeleteCertificateModal from "./Modals/DeleteCertificateModal";
-import UploadCertificateModal from "./Modals/UploadCertificateModal";
-import DownloadCertificateModal from "./Modals/DownloadCertificateModal";
-import EmployeeTrainingView from "./Modals/ViewTrainingModal";
+} from '@mui/material';
+import PunishmentModal from './Modals/PunishmentModal';
+import ComplaintModal from './Modals/ComplaintModal';
+import ViewPunishmentModal from './Modals/ViewPunishmentModal';
+import ViewComplaintModal from './Modals/ViewComplaintModal';
+import DeleteCertificateModal from './Modals/DeleteCertificateModal';
+import UploadCertificateModal from './Modals/UploadCertificateModal';
+import DownloadCertificateModal from './Modals/DownloadCertificateModal';
+import EmployeeTrainingView from './Modals/ViewTrainingModal';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // Styled Components
 // const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
@@ -90,24 +90,24 @@ function OutsourceEmployeeServices() {
   const empTableRef = useRef(null);
   const navigate = useNavigate();
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
   });
 
   const [errors, setErrors] = useState({});
   const [showLevelTable, setShowLevelTable] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [dataInLevelTable, setDataInLevelTable] = useState([]);
 
   const validate = () => {
     const newErrors = {};
     if (!searchValues.region) {
-      newErrors.region = " *region is required.";
+      newErrors.region = ' *region is required.';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -115,17 +115,17 @@ function OutsourceEmployeeServices() {
 
   useEffect(() => {
     if (showLevelTable && dataInLevelTable.length > 0 && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showLevelTable, dataInLevelTable]);
 
   // Search Employee By Level
   const searchEmpByLevel = async () => {
     setShowEmpTable(false);
-    setEmpCode("");
-    setEmpCodeError("");
+    setEmpCode('');
+    setEmpCodeError('');
     if (!validate()) {
-      setEmpCodeError("");
+      setEmpCodeError('');
       if (!searchValues.region && regionRef.current) {
         regionRef.current.focus();
       }
@@ -144,7 +144,7 @@ function OutsourceEmployeeServices() {
       };
       const res = await getOutsourceEmpByLevel(payload);
       // console.log("Employee Data:", res?.data);
-      if (res?.data.code == "200" && res?.data.message == "Success") {
+      if (res?.data.code == '200' && res?.data.message == 'Success') {
         setOpenBackdrop(true);
         setDataInLevelTable(res?.data.list);
         setShowLevelTable(true);
@@ -153,7 +153,7 @@ function OutsourceEmployeeServices() {
         alert(res?.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -161,33 +161,33 @@ function OutsourceEmployeeServices() {
   };
 
   // Search By Emp Code
-  const [empCode, setEmpCode] = useState("");
-  const [empCodeError, setEmpCodeError] = useState("");
+  const [empCode, setEmpCode] = useState('');
+  const [empCodeError, setEmpCodeError] = useState('');
   const [showEmpTable, setShowEmpTable] = useState(false);
   const [dataInEmpTable, setDataInEmpTable] = useState([]);
 
   useEffect(() => {
     if (showEmpTable && empTableRef.current) {
-      empTableRef.current.scrollIntoView({ behavior: "smooth" });
+      empTableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showEmpTable, dataInEmpTable]);
 
   const searchByEmpCode = async () => {
     setShowLevelTable(false);
     setSearchValues({
-      region: "",
-      circle: "",
-      division: "",
-      subDivision: "",
-      dc: "",
-      subStation: "",
+      region: '',
+      circle: '',
+      division: '',
+      subDivision: '',
+      dc: '',
+      subStation: '',
     });
-    setErrors("");
+    setErrors('');
     if (!empCode.trim()) {
-      setEmpCodeError("Employee Code is Required.");
+      setEmpCodeError('Employee Code is Required.');
       return;
     } else {
-      setEmpCodeError("");
+      setEmpCodeError('');
     }
 
     setOpenBackdrop(true);
@@ -203,9 +203,9 @@ function OutsourceEmployeeServices() {
         substationId: null,
       };
       const res = await getOutsourceEmpByEmpCode(payload);
-      console.log("Response:", res?.data);
+      console.log('Response:', res?.data);
 
-      if (res?.data.code === "200" && res?.data.message === "Success") {
+      if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
         // console.log("___", dataInEmpTable);
         setShowEmpTable(true);
@@ -215,7 +215,7 @@ function OutsourceEmployeeServices() {
         alert(res?.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -244,7 +244,7 @@ function OutsourceEmployeeServices() {
   const [modalState, setModalState] = useState({
     open: false,
     type: null,
-    empCode: "",
+    empCode: '',
   });
 
   const handleOpen = (type, empCode) => {
@@ -252,7 +252,7 @@ function OutsourceEmployeeServices() {
   };
 
   const handleClose = () => {
-    setModalState({ open: false, type: null, empCode: "" });
+    setModalState({ open: false, type: null, empCode: '' });
   };
 
   return (
@@ -264,7 +264,7 @@ function OutsourceEmployeeServices() {
               // display: "flex",
               // alignItems: "center",
               // justifyContent: "space-between",
-              textAlign: "center",
+              textAlign: 'center',
               mb: 2,
             }}
           >
@@ -272,14 +272,14 @@ function OutsourceEmployeeServices() {
             <Typography
               variant="h4"
               sx={{
-                color: "#0a1f83",
-                fontFamily: "serif",
-                fontWeight: "bold",
+                color: '#0a1f83',
+                fontFamily: 'serif',
+                fontWeight: 'bold',
                 flex: 1,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
-              Employee Service's (Outsource)
+              Employee Services (Outsource)
             </Typography>
 
             {/* Right-side Download Button */}
@@ -332,13 +332,13 @@ function OutsourceEmployeeServices() {
                         type="number"
                         id="empCode"
                         className={`form-control ${
-                          empCodeError ? "is-invalid" : ""
+                          empCodeError ? 'is-invalid' : ''
                         }`}
                         placeholder="Enter Employee Code"
                         value={empCode}
                         onChange={(e) => {
                           setEmpCode(e.target.value);
-                          if (empCodeError) setEmpCodeError("");
+                          if (empCodeError) setEmpCodeError('');
                         }}
                       />
                       {empCodeError && (
@@ -369,8 +369,8 @@ function OutsourceEmployeeServices() {
         <Card
           className="shadow-lg rounded"
           style={{
-            textAlign: "center",
-            marginTop: "20px",
+            textAlign: 'center',
+            marginTop: '20px',
           }}
         >
           <Card.Header className="text-center p-3">
@@ -378,12 +378,12 @@ function OutsourceEmployeeServices() {
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
-              Employee Service's (Outsource)
+              Employee Services (Outsource)
             </Typography>
             <TextField
               label="Search by Code, Name or Designation"
@@ -391,10 +391,10 @@ function OutsourceEmployeeServices() {
               sx={{
                 mb: 2,
                 mt: 1,
-                width: "50%",
+                width: '50%',
                 mr: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px',
                 },
               }}
               value={searchQuery}
@@ -429,13 +429,13 @@ function OutsourceEmployeeServices() {
                       .filter((item) => {
                         const query = searchQuery.toLowerCase();
                         return (
-                          String(item.empCode || "")
+                          String(item.empCode || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.fullName || "")
+                          String(item.fullName || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.designation || "")
+                          String(item.designation || '')
                             .toLowerCase()
                             .includes(query)
                         );
@@ -453,7 +453,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                handleOpen("punishmentModal", item.empCode)
+                                handleOpen('punishmentModal', item.empCode)
                               }
                             >
                               <Tooltip title="Punishment" arrow>
@@ -471,7 +471,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                handleOpen("viewPunishmentModal", item.empCode)
+                                handleOpen('viewPunishmentModal', item.empCode)
                               }
                             >
                               <Tooltip title="View Punishment" arrow>
@@ -489,7 +489,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                handleOpen("complaintModal", item.empCode)
+                                handleOpen('complaintModal', item.empCode)
                               }
                             >
                               <Tooltip title="Complaint" arrow>
@@ -507,7 +507,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                handleOpen("viewComplaintModal", item.empCode)
+                                handleOpen('viewComplaintModal', item.empCode)
                               }
                             >
                               <Tooltip title="View Complaint" arrow>
@@ -527,8 +527,8 @@ function OutsourceEmployeeServices() {
                               color="dark"
                               onClick={() =>
                                 handleOpen(
-                                  "uploadCertificateModal",
-                                  item.empCode
+                                  'uploadCertificateModal',
+                                  item.empCode,
                                 )
                               }
                             >
@@ -548,8 +548,8 @@ function OutsourceEmployeeServices() {
                               color="dark"
                               onClick={() =>
                                 handleOpen(
-                                  "downloadCertificateModal",
-                                  item.empCode
+                                  'downloadCertificateModal',
+                                  item.empCode,
                                 )
                               }
                             >
@@ -569,8 +569,8 @@ function OutsourceEmployeeServices() {
                               color="dark"
                               onClick={() =>
                                 handleOpen(
-                                  "deleteCertificateModal",
-                                  item.empCode
+                                  'deleteCertificateModal',
+                                  item.empCode,
                                 )
                               }
                             >
@@ -589,7 +589,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                navigate("/outsourceEmployeeTraining")
+                                navigate('/outsourceEmployeeTraining')
                               }
                             >
                               <Tooltip title="Employee Training" arrow>
@@ -608,7 +608,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                handleOpen("viewEmployeeTraining", item.empCode)
+                                handleOpen('viewEmployeeTraining', item.empCode)
                               }
                             >
                               <Tooltip title="Employee Training" arrow>
@@ -627,7 +627,7 @@ function OutsourceEmployeeServices() {
                               // className="download-button"
                               color="dark"
                               onClick={() =>
-                                navigate("/outsourceEmployeePosting", {
+                                navigate('/outsourceEmployeePosting', {
                                   state: {
                                     empCode: item.empCode,
                                     fullName: item.fullName,
@@ -783,19 +783,19 @@ function OutsourceEmployeeServices() {
       {showEmpTable && (
         <Card
           className="shadow-lg rounded"
-          style={{ textAlign: "center", marginTop: "20px" }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           <Card.Header className="text-center p-3">
             <Typography
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
-              Employee Service's (Outsource)
+              Employee Services (Outsource)
             </Typography>
           </Card.Header>
 
@@ -841,8 +841,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "punishmentModal",
-                              dataInEmpTable.empCode
+                              'punishmentModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -859,8 +859,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "viewPunishmentModal",
-                              dataInEmpTable.empCode
+                              'viewPunishmentModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -876,7 +876,7 @@ function OutsourceEmployeeServices() {
                           // className="download-button"
                           color="dark"
                           onClick={() =>
-                            handleOpen("complaintModal", dataInEmpTable.empCode)
+                            handleOpen('complaintModal', dataInEmpTable.empCode)
                           }
                         >
                           <Tooltip title="Complaint" arrow>
@@ -892,8 +892,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "viewComplaintModal",
-                              dataInEmpTable.empCode
+                              'viewComplaintModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -911,8 +911,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "uploadCertificateModal",
-                              dataInEmpTable.empCode
+                              'uploadCertificateModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -929,8 +929,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "downloadCertificateModal",
-                              dataInEmpTable.empCode
+                              'downloadCertificateModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -947,8 +947,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "deleteCertificateModal",
-                              dataInEmpTable.empCode
+                              'deleteCertificateModal',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -963,7 +963,7 @@ function OutsourceEmployeeServices() {
                           size="small"
                           // className="download-button"
                           color="dark"
-                          onClick={() => navigate("/outsourceEmployeeTraining")}
+                          onClick={() => navigate('/outsourceEmployeeTraining')}
                         >
                           <Tooltip title="Employee Training" arrow>
                             <OpenInNewIcon fontSize="small" color="primary" />
@@ -979,8 +979,8 @@ function OutsourceEmployeeServices() {
                           color="dark"
                           onClick={() =>
                             handleOpen(
-                              "viewEmployeeTraining",
-                              dataInEmpTable.empCode
+                              'viewEmployeeTraining',
+                              dataInEmpTable.empCode,
                             )
                           }
                         >
@@ -997,7 +997,7 @@ function OutsourceEmployeeServices() {
                           // className="download-button"
                           color="dark"
                           onClick={() =>
-                            navigate("/outsourceEmployeePosting", {
+                            navigate('/outsourceEmployeePosting', {
                               state: {
                                 empCode: dataInEmpTable.empCode,
                                 fullName: dataInEmpTable.fullName,
@@ -1027,28 +1027,28 @@ function OutsourceEmployeeServices() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />
       </Backdrop>
 
       {/* Conditional Rendering of Modals */}
-      {modalState.type === "punishmentModal" && (
+      {modalState.type === 'punishmentModal' && (
         <PunishmentModal
           open={modalState.open}
           onClose={handleClose}
           empCode={modalState.empCode}
         />
       )}
-      {modalState.type === "viewPunishmentModal" && (
+      {modalState.type === 'viewPunishmentModal' && (
         <ViewPunishmentModal
           open={modalState.open}
           onClose={handleClose}
           empCode={modalState.empCode}
         />
       )}
-      {modalState.type === "complaintModal" && (
+      {modalState.type === 'complaintModal' && (
         <ComplaintModal
           open={modalState.open}
           onClose={handleClose}
@@ -1056,7 +1056,7 @@ function OutsourceEmployeeServices() {
         />
       )}
 
-      {modalState.type === "viewComplaintModal" && (
+      {modalState.type === 'viewComplaintModal' && (
         <ViewComplaintModal
           open={modalState.open}
           onClose={handleClose}
@@ -1064,7 +1064,7 @@ function OutsourceEmployeeServices() {
         />
       )}
 
-      {modalState.type === "uploadCertificateModal" && (
+      {modalState.type === 'uploadCertificateModal' && (
         <UploadCertificateModal
           open={modalState.open}
           onClose={handleClose}
@@ -1072,7 +1072,7 @@ function OutsourceEmployeeServices() {
         />
       )}
 
-      {modalState.type === "downloadCertificateModal" && (
+      {modalState.type === 'downloadCertificateModal' && (
         <DownloadCertificateModal
           open={modalState.open}
           onClose={handleClose}
@@ -1080,7 +1080,7 @@ function OutsourceEmployeeServices() {
         />
       )}
 
-      {modalState.type === "deleteCertificateModal" && (
+      {modalState.type === 'deleteCertificateModal' && (
         <DeleteCertificateModal
           open={modalState.open}
           onClose={handleClose}
@@ -1088,7 +1088,7 @@ function OutsourceEmployeeServices() {
         />
       )}
 
-      {modalState.type === "viewEmployeeTraining" && (
+      {modalState.type === 'viewEmployeeTraining' && (
         <EmployeeTrainingView
           open={modalState.open}
           onClose={handleClose}

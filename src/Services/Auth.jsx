@@ -920,4 +920,30 @@ export const updateFamilyInfoMedical = (payload) => {
   return axios.post(base_url + `/medical/updateMediClaimMember`, payload);
 };
 
+// 144. Create Wireman Certificate
+export const createWiremanCertificate = (payload) => {
+  return axios.post(base_url + `/outsource/saveNewWiremanCertReq`, payload);
+};
+
+// 145. Fetch Wireman Certificates
+export const getWiremanCertificates = (circleId) => {
+  return axios.get(
+    base_url + `/outsource/getWiremanCertPendingAtCircle?circleId=309`,
+  );
+};
+
+// 146. Get Employee Name by EmpCode
+export const getEmpNameByCode = (empCode) => {
+  return axios.get(
+    base_url + `/biomatric/findNameByEmpCode?empCode=${empCode}`,
+  );
+};
+
+// 147 Update Status of Wireman Certificate by GM
+export const updateWiremanCertificateGM = (payload) => {
+  return axios.post(base_url + `/outsource/updateWiremanGmStatus`, payload);
+};
+
+// https://attendance.mpcz.in:8888/E-Attendance/api/biomatric/findNameByEmpCode?empCode=12345
+
 // https://attendance.mpcz.in:8888/E-Attendance/api/medical/updateMediClaimMember

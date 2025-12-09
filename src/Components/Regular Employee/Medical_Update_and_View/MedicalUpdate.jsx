@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Card, Row, Col, Container, Form } from "react-bootstrap";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Card, Row, Col, Container, Form } from 'react-bootstrap';
 import {
   Typography,
   Tooltip,
@@ -25,24 +25,24 @@ import {
   MenuItem,
   InputLabel,
   Select,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { PropagateLoader } from "react-spinners";
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { PropagateLoader } from 'react-spinners';
 import {
   currentGradePay,
   deteleDrugDetails,
   getDrugDetails,
   submitMedicalReimbursement,
   updateMedicalForm,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -76,17 +76,17 @@ import {
 
 function MedicalFormUpdate() {
   const navigate = useNavigate();
-  const sessionRegion = sessionStorage.getItem("regionName");
-  const sessionCircle = sessionStorage.getItem("circleName");
-  const sessionDivision = sessionStorage.getItem("divisionName");
-  const sessionSubdivision = sessionStorage.getItem("subdivisionName");
-  const sessionDc = sessionStorage.getItem("dcId");
-  const designationName = sessionStorage.getItem("designationName");
-  const sessionEmpCode = sessionStorage.getItem("empCode");
-  const sessionEmpName = sessionStorage.getItem("fullName");
-  const departmentName = sessionStorage.getItem("departmentName");
+  const sessionRegion = sessionStorage.getItem('regionName');
+  const sessionCircle = sessionStorage.getItem('circleName');
+  const sessionDivision = sessionStorage.getItem('divisionName');
+  const sessionSubdivision = sessionStorage.getItem('subdivisionName');
+  const sessionDc = sessionStorage.getItem('dcId');
+  const designationName = sessionStorage.getItem('designationName');
+  const sessionEmpCode = sessionStorage.getItem('empCode');
+  const sessionEmpName = sessionStorage.getItem('fullName');
+  const departmentName = sessionStorage.getItem('departmentName');
 
-  const isValid = (val) => val !== null && val !== "null" && val !== "";
+  const isValid = (val) => val !== null && val !== 'null' && val !== '';
 
   let officeName = null;
 
@@ -107,50 +107,50 @@ function MedicalFormUpdate() {
   }
 
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [formType, setFormType] = useState("OPD");
+  const [formType, setFormType] = useState('OPD');
 
   const [formData, setFormData] = useState({
-    empResAddress: "",
-    childDOB: "",
-    birthOrder: "",
-    totalChildren: "",
-    patientName: "",
-    patientRelation: "",
-    opdNo: "",
-    opdDate: "",
-    diseaseName: "",
-    diseaseDuration: "",
-    doctorName: "",
-    doctorDesignation: "",
+    empResAddress: '',
+    childDOB: '',
+    birthOrder: '',
+    totalChildren: '',
+    patientName: '',
+    patientRelation: '',
+    opdNo: '',
+    opdDate: '',
+    diseaseName: '',
+    diseaseDuration: '',
+    doctorName: '',
+    doctorDesignation: '',
 
-    totalAmountClaimed: "",
-    hospitalName: "",
-    hospitalAddress: "",
-    registrationNo: "",
-    registrationValidity: "",
-    packageClaimed: "",
-    testHospital: "",
-    testOnAdvice: "",
-    accommodationFile: "",
-    diet: "",
-    surgery: "",
-    pathologyHospital: "",
-    pathologyCertificate: "",
-    nursing: "",
-    otherCharges: "",
-    enclosures: "",
-    essentialityCertificate: "",
-    essentialityCertificateNo: "",
-    essentialityCertificateDate: "",
-    placeOfIllness: "",
-    prolongedTreatment: "",
+    totalAmountClaimed: '',
+    hospitalName: '',
+    hospitalAddress: '',
+    registrationNo: '',
+    registrationValidity: '',
+    packageClaimed: '',
+    testHospital: '',
+    testOnAdvice: '',
+    accommodationFile: '',
+    diet: '',
+    surgery: '',
+    pathologyHospital: '',
+    pathologyCertificate: '',
+    nursing: '',
+    otherCharges: '',
+    enclosures: '',
+    essentialityCertificate: '',
+    essentialityCertificateNo: '',
+    essentialityCertificateDate: '',
+    placeOfIllness: '',
+    prolongedTreatment: '',
   });
 
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "file" ? files[0] : value,
+      [name]: type === 'file' ? files[0] : value,
     });
   };
 
@@ -164,13 +164,13 @@ function MedicalFormUpdate() {
       try {
         const response = await getDrugDetails(preItem.refNo);
         // console.log(response);
-        if (response.data.code == "200") {
+        if (response.data.code == '200') {
           setDrugEntry(response.data.list);
         } else {
           setDrugEntry([]);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
       }
     };
     fetchDrugsDetails();
@@ -180,52 +180,52 @@ function MedicalFormUpdate() {
     if (preItem) {
       setFormData((prev) => ({
         ...prev,
-        empResAddress: preItem.presentAddress || "",
-        childDOB: preItem.childDob || "",
-        birthOrder: preItem.noInBirthOrder || "",
-        totalChildren: preItem.noOfLivingChildren || "",
-        patientName: preItem.patientName || "",
-        patientRelation: preItem.patientRelation || "",
-        opdNo: preItem.opdNo || "",
-        opdDate: preItem.opdDate || "",
-        diseaseName: preItem.natureOfIllness || "",
-        diseaseDuration: preItem.illnessDuration || "",
-        doctorName: preItem.doctorName || "",
-        doctorDesignation: preItem.doctorDesignation || "",
-        essentialityCertificateNo: preItem.essentialityCertificateNo || "",
-        essentialityCertificate: "", // File
-        essentialityCertificateDate: preItem.essentialityCertificateDate || "",
-        totalAmountClaimed: preItem.totalAmount || "",
-        placeOfIllness: preItem.placeOfIllness || "",
-        hospitalName: preItem.hospitalName || "",
-        hospitalAddress: preItem.hospitalAddress || "",
-        registrationNo: preItem.registrationNo || "",
-        registrationValidity: preItem.registrationValidity || "",
-        packageClaimed: preItem.packageType || "",
-        testHospital: preItem.testingHosLabName || "",
-        testOnAdvice: preItem.test1AuthorizedByDoctor || "",
-        accommodationFile: "", //  File
-        diet: preItem.dietCost || "",
-        surgery: preItem.surgicalMedicalCharges || "",
-        pathologyHospital: preItem.testHosLabName || "",
-        pathologyCertificate: "", // File
-        nursing: preItem.nursuingDetail || "",
-        otherCharges: preItem.anyOther || "",
-        enclosures: "", // File
-        prolongedTreatment: "", // File
+        empResAddress: preItem.presentAddress || '',
+        childDOB: preItem.childDob || '',
+        birthOrder: preItem.noInBirthOrder || '',
+        totalChildren: preItem.noOfLivingChildren || '',
+        patientName: preItem.patientName || '',
+        patientRelation: preItem.patientRelation || '',
+        opdNo: preItem.opdNo || '',
+        opdDate: preItem.opdDate || '',
+        diseaseName: preItem.natureOfIllness || '',
+        diseaseDuration: preItem.illnessDuration || '',
+        doctorName: preItem.doctorName || '',
+        doctorDesignation: preItem.doctorDesignation || '',
+        essentialityCertificateNo: preItem.essentialityCertificateNo || '',
+        essentialityCertificate: '', // File
+        essentialityCertificateDate: preItem.essentialityCertificateDate || '',
+        totalAmountClaimed: preItem.totalAmount || '',
+        placeOfIllness: preItem.placeOfIllness || '',
+        hospitalName: preItem.hospitalName || '',
+        hospitalAddress: preItem.hospitalAddress || '',
+        registrationNo: preItem.registrationNo || '',
+        registrationValidity: preItem.registrationValidity || '',
+        packageClaimed: preItem.packageType || '',
+        testHospital: preItem.testingHosLabName || '',
+        testOnAdvice: preItem.test1AuthorizedByDoctor || '',
+        accommodationFile: '', //  File
+        diet: preItem.dietCost || '',
+        surgery: preItem.surgicalMedicalCharges || '',
+        pathologyHospital: preItem.testHosLabName || '',
+        pathologyCertificate: '', // File
+        nursing: preItem.nursuingDetail || '',
+        otherCharges: preItem.anyOther || '',
+        enclosures: '', // File
+        prolongedTreatment: '', // File
       }));
     }
-    setSelectedGradePay(preItem.gradePay || "");
+    setSelectedGradePay(preItem.gradePay || '');
   }, [preItem]);
 
   const [drugEntries, setDrugEntries] = useState([
     {
-      shopName: "",
-      cashMemoNo: "",
-      cashMemoDate: "",
-      drugName: "",
-      quantity: "",
-      totalValue: "",
+      shopName: '',
+      cashMemoNo: '',
+      cashMemoDate: '',
+      drugName: '',
+      quantity: '',
+      totalValue: '',
       uploadMemo: null,
     },
   ]);
@@ -243,12 +243,12 @@ function MedicalFormUpdate() {
     setDrugEntries([
       ...drugEntries,
       {
-        shopName: "",
-        cashMemoNo: "",
-        cashMemoDate: "",
-        drugName: "",
-        quantity: "",
-        totalValue: "",
+        shopName: '',
+        cashMemoNo: '',
+        cashMemoDate: '',
+        drugName: '',
+        quantity: '',
+        totalValue: '',
         uploadMemo: null,
       },
     ]);
@@ -262,105 +262,105 @@ function MedicalFormUpdate() {
   };
 
   const [gradePays, setGradePays] = useState([]);
-  const [selectedGradePay, setSelectedGradePay] = useState("");
+  const [selectedGradePay, setSelectedGradePay] = useState('');
   useEffect(() => {
     const fetchGradePay = async () => {
       try {
         const response = await currentGradePay();
         setGradePays(response.data.list || []);
       } catch (err) {
-        console.error("Error fetching grade pay:", err);
+        console.error('Error fetching grade pay:', err);
       }
     };
     fetchGradePay();
   }, []);
 
   const canUpdate =
-    preItem.appliPresentAtEmpCode == sessionStorage.getItem("empCode");
+    preItem.appliPresentAtEmpCode == sessionStorage.getItem('empCode');
   const handleUpdate = async () => {
     const dataToSend = new FormData();
     if (!canUpdate) {
-      alert("You are not able to update this.");
+      alert('You are not able to update this.');
       return;
     }
     setOpenBackdrop(true);
     // Employee & Patient Info
-    dataToSend.append("empCode", sessionStorage.getItem("empCode") || "");
-    dataToSend.append("presentAddress", formData.empResAddress || "");
-    dataToSend.append("childDob", formData.childDOB || "");
-    dataToSend.append("noInBirthOrder", formData.birthOrder || "");
-    dataToSend.append("noOfLivingChildren", formData.totalChildren || "");
-    dataToSend.append("patientName", formData.patientName || "");
-    dataToSend.append("patientRelation", formData.patientRelation || "");
-    dataToSend.append("opdNo", formData.opdNo || "");
-    dataToSend.append("opdDate", formData.opdDate || "");
-    dataToSend.append("natureOfIllness", formData.diseaseName || "");
-    dataToSend.append("illnessDuration", formData.diseaseDuration || "");
-    dataToSend.append("doctorName", formData.doctorName || "");
-    dataToSend.append("doctorDesignation", formData.doctorDesignation || "");
-    dataToSend.append("totalAmount", formData.totalAmountClaimed);
-    dataToSend.append("gradePay", selectedGradePay || "");
-    dataToSend.append("placeOfIllness", formData.placeOfIllness || "");
+    dataToSend.append('empCode', sessionStorage.getItem('empCode') || '');
+    dataToSend.append('presentAddress', formData.empResAddress || '');
+    dataToSend.append('childDob', formData.childDOB || '');
+    dataToSend.append('noInBirthOrder', formData.birthOrder || '');
+    dataToSend.append('noOfLivingChildren', formData.totalChildren || '');
+    dataToSend.append('patientName', formData.patientName || '');
+    dataToSend.append('patientRelation', formData.patientRelation || '');
+    dataToSend.append('opdNo', formData.opdNo || '');
+    dataToSend.append('opdDate', formData.opdDate || '');
+    dataToSend.append('natureOfIllness', formData.diseaseName || '');
+    dataToSend.append('illnessDuration', formData.diseaseDuration || '');
+    dataToSend.append('doctorName', formData.doctorName || '');
+    dataToSend.append('doctorDesignation', formData.doctorDesignation || '');
+    dataToSend.append('totalAmount', formData.totalAmountClaimed);
+    dataToSend.append('gradePay', selectedGradePay || '');
+    dataToSend.append('placeOfIllness', formData.placeOfIllness || '');
     dataToSend.append(
-      "essentialityCertificateNo",
-      formData.essentialityCertificateNo || ""
+      'essentialityCertificateNo',
+      formData.essentialityCertificateNo || '',
     );
     if (formData.essentialityCertificate)
       dataToSend.append(
-        "essentialityCertificatePdf",
-        formData.essentialityCertificate || ""
+        'essentialityCertificatePdf',
+        formData.essentialityCertificate || '',
       );
     dataToSend.append(
-      "essentialityCertificateDate",
-      formData.essentialityCertificateDate || ""
+      'essentialityCertificateDate',
+      formData.essentialityCertificateDate || '',
     );
 
     // Hospital & Doctor Info
-    dataToSend.append("hospitalName", formData.hospitalName || "");
-    dataToSend.append("hospitalAddress", formData.hospitalAddress || "");
-    dataToSend.append("registrationNo", formData.registrationNo || "");
+    dataToSend.append('hospitalName', formData.hospitalName || '');
+    dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
+    dataToSend.append('registrationNo', formData.registrationNo || '');
     dataToSend.append(
-      "registrationValidity",
-      formData.registrationValidity || ""
+      'registrationValidity',
+      formData.registrationValidity || '',
     );
 
-    dataToSend.append("packageType", formData.packageClaimed || "");
-    dataToSend.append("testingHosLabName", formData.testHospital || "");
-    dataToSend.append("test1AuthorizedByDoctor", formData.testOnAdvice || "");
+    dataToSend.append('packageType', formData.packageClaimed || '');
+    dataToSend.append('testingHosLabName', formData.testHospital || '');
+    dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
 
     if (formData.accommodationFile)
-      dataToSend.append("accommodationPdf", formData.accommodationFile);
-    dataToSend.append("dietCost", formData.diet);
-    dataToSend.append("surgicalMedicalCharges", formData.surgery);
+      dataToSend.append('accommodationPdf', formData.accommodationFile);
+    dataToSend.append('dietCost', formData.diet);
+    dataToSend.append('surgicalMedicalCharges', formData.surgery);
     // dataToSend.append("anyTest", formData.anyTest || "");
-    dataToSend.append("testHosLabName", formData.pathologyHospital || "");
+    dataToSend.append('testHosLabName', formData.pathologyHospital || '');
     if (formData.pathologyCertificate)
-      dataToSend.append("testPrescriptionDoc", formData.pathologyCertificate);
-    dataToSend.append("nursuingDetail", formData.nursing || "");
-    dataToSend.append("anyOther", formData.otherCharges || "");
+      dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
+    dataToSend.append('nursuingDetail', formData.nursing || '');
+    dataToSend.append('anyOther', formData.otherCharges || '');
     if (formData.enclosures)
-      dataToSend.append("enclosureDoc", formData.enclosures || "");
+      dataToSend.append('enclosureDoc', formData.enclosures || '');
 
-    dataToSend.append("type", formType);
-    dataToSend.append("refNo", preItem.refNo);
+    dataToSend.append('type', formType);
+    dataToSend.append('refNo', preItem.refNo);
 
     if (formData.prolongedTreatment)
       dataToSend.append(
-        "prolongedTreatment",
-        formData.prolongedTreatment || ""
+        'prolongedTreatment',
+        formData.prolongedTreatment || '',
       );
 
     // Add medicines (drug entries)
     drugEntries.forEach((entry, index) => {
-      dataToSend.append(`medi[${index}].shopName`, entry.shopName || "");
-      dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || "");
+      dataToSend.append(`medi[${index}].shopName`, entry.shopName || '');
+      dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || '');
       dataToSend.append(
         `medi[${index}].cashMemoDate`,
-        entry.cashMemoDate || ""
+        entry.cashMemoDate || '',
       );
-      dataToSend.append(`medi[${index}].drugName`, entry.drugName || "");
-      dataToSend.append(`medi[${index}].quantity`, entry.quantity || "");
-      dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || "");
+      dataToSend.append(`medi[${index}].drugName`, entry.drugName || '');
+      dataToSend.append(`medi[${index}].quantity`, entry.quantity || '');
+      dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || '');
       if (entry.uploadMemo)
         dataToSend.append(`medi[${index}].memoDoc`, entry.uploadMemo);
     });
@@ -368,16 +368,16 @@ function MedicalFormUpdate() {
     try {
       const response = await updateMedicalForm(dataToSend);
       //console.log("Update response", response);
-      if (response.data.code == "200") {
-        alert("Successfully Updated!!");
-        navigate("/medicalReimbirsementView");
+      if (response.data.code === '200') {
+        alert('Successfully Updated!!');
+        navigate('/medicalReimbursementView');
         setOpenBackdrop(false);
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
       setOpenBackdrop(false);
     }
   };
@@ -385,13 +385,13 @@ function MedicalFormUpdate() {
   const deteleRecord = async (id) => {
     const payload = {
       id: id,
-      empCode: sessionStorage.getItem("empCode"),
-      updatedBy: sessionStorage.getItem("empCode"),
+      empCode: sessionStorage.getItem('empCode'),
+      updatedBy: sessionStorage.getItem('empCode'),
     };
     const response = await deteleDrugDetails(payload);
     // console.log(response);
-    if (response.data.code == "200") {
-      alert("Record Delete Successfully !!");
+    if (response.data.code == '200') {
+      alert('Record Delete Successfully !!');
     } else {
       alert(response.data.message);
     }
@@ -406,7 +406,7 @@ function MedicalFormUpdate() {
         <Card.Header className="p-3 d-flex align-items-center position-relative">
           <Tooltip title="Back" arrow>
             <Button className="position-absolute start-2">
-              <Link to="/medicalReimbirsementView">
+              <Link to="/medicalReimbursementView">
                 <ArrowLeftIcon fontSize="large" color="warning" />
               </Link>
             </Button>
@@ -415,11 +415,11 @@ function MedicalFormUpdate() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Medical Reimbursement
@@ -816,16 +816,16 @@ function MedicalFormUpdate() {
           </div>
 
           {/* Extra fields for IPD */}
-          {formType === "IPD" && (
+          {formType === 'IPD' && (
             <>
               <Card className="mb-3">
                 <Card.Header className="text-center p-3">
                   <Typography
                     variant="h5"
                     sx={{
-                      fontFamily: "serif",
-                      fontWeight: "bold",
-                      color: "#0a1f83",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                      color: '#0a1f83',
                     }}
                   >
                     Details for Medical Reimbursement
@@ -972,9 +972,9 @@ function MedicalFormUpdate() {
                           <Typography
                             variant="h5"
                             sx={{
-                              fontFamily: "serif",
-                              fontWeight: "bold",
-                              color: "#0a1f83",
+                              fontFamily: 'serif',
+                              fontWeight: 'bold',
+                              color: '#0a1f83',
                             }}
                           >
                             Charges for hospital treatment indicating separately
@@ -1038,9 +1038,9 @@ function MedicalFormUpdate() {
                               <Typography
                                 variant="h5"
                                 sx={{
-                                  fontFamily: "serif",
-                                  fontWeight: "bold",
-                                  color: "#0a1f83",
+                                  fontFamily: 'serif',
+                                  fontWeight: 'bold',
+                                  color: '#0a1f83',
                                 }}
                               >
                                 Pathological, bacteriological or other similar
@@ -1206,9 +1206,9 @@ function MedicalFormUpdate() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Delete Previous Drug Enteries
@@ -1235,23 +1235,23 @@ function MedicalFormUpdate() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.shopName || "-"}
+                            {item.shopName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.cashMemoNo || "-"}
+                            {item.cashMemoNo || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.cashMemoDate || "-"}
+                            {item.cashMemoDate || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.drugName || "-"}
+                            {item.drugName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.quantity || "-"}
+                            {item.quantity || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.totalValue || "-"}
+                            {item.totalValue || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
@@ -1286,9 +1286,9 @@ function MedicalFormUpdate() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Drug Entry
@@ -1301,9 +1301,9 @@ function MedicalFormUpdate() {
                     <Typography
                       variant="h6"
                       sx={{
-                        fontFamily: "serif",
-                        fontWeight: "bold",
-                        color: "#0a1f83",
+                        fontFamily: 'serif',
+                        fontWeight: 'bold',
+                        color: '#0a1f83',
                       }}
                     >
                       Drug Entry #{index + 1}
@@ -1445,7 +1445,7 @@ function MedicalFormUpdate() {
               onClick={handleUpdate}
               disabled={!canUpdate}
               variant="outlined"
-              className={canUpdate ? "green-button" : "button-disabled"}
+              className={canUpdate ? 'green-button' : 'button-disabled'}
             >
               Update
             </Button>
@@ -1455,7 +1455,7 @@ function MedicalFormUpdate() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

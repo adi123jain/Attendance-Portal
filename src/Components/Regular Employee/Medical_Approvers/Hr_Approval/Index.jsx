@@ -600,7 +600,7 @@ function MedicalApprovalByHr() {
               fontWeight: 'bold',
             }}
           >
-            HR Verification for Medical Reimbirsement
+            HR Verification for Medical Reimbursement
           </Typography>
         </Card.Header>
         <Card.Body>

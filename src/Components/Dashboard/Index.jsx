@@ -1,22 +1,22 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import FolderIcon from "@mui/icons-material/Folder";
-import { Divider } from "@mui/material";
-import { Link } from "react-router-dom";
-import "../../App.css";
-import { Tooltip } from "@mui/material";
-import NominationDeclarationModal from "../Regular Employee/Nomination_Declaration/Index";
+import React from 'react';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import FolderIcon from '@mui/icons-material/Folder';
+import { Divider } from '@mui/material';
+import { Link } from 'react-router-dom';
+import '../../App.css';
+import { Tooltip } from '@mui/material';
+import NominationDeclarationModal from '../Regular Employee/Nomination_Declaration/Index';
 
 function Dashboard() {
   return (
-    <div style={{ marginBottom: "30px" }}>
+    <div style={{ marginBottom: '30px' }}>
       <Grid
         container
         justifyContent="center"
@@ -25,7 +25,7 @@ function Dashboard() {
         sx={{
           px: { xs: 2, sm: 4, md: 6 },
           py: 3,
-          fontFamily: "serif",
+          fontFamily: 'serif',
         }}
       >
         <NominationDeclarationModal />
@@ -34,7 +34,7 @@ function Dashboard() {
           <Card
             sx={{
               maxWidth: 345,
-              mx: "auto",
+              mx: 'auto',
               boxShadow: 3,
             }}
           >
@@ -49,10 +49,10 @@ function Dashboard() {
                 gutterBottom
                 variant="h5"
                 sx={{
-                  textAlign: "center",
-                  color: "#1a237e",
-                  fontFamily: "serif",
-                  textShadow: "2px 2px 4px #000000",
+                  textAlign: 'center',
+                  color: '#1a237e',
+                  fontFamily: 'serif',
+                  textShadow: '2px 2px 4px #000000',
                 }}
                 color="primary"
               >
@@ -195,7 +195,7 @@ function Dashboard() {
                       arrow
                     >
                       <b>
-                        {" "}
+                        {' '}
                         Evaluation Parameters against Revenue Realization and
                         Commercial parameters
                       </b>
@@ -208,7 +208,7 @@ function Dashboard() {
                   <ListItemIcon>
                     <FolderIcon />
                   </ListItemIcon>
-                  <Link to="medicalReimbirsement">
+                  <Link to="medicalReimbursement">
                     <b>Medical Reimbursement</b>
                   </Link>
                 </ListItem>
@@ -218,7 +218,7 @@ function Dashboard() {
                   <ListItemIcon>
                     <FolderIcon />
                   </ListItemIcon>
-                  <Link to="medicalReimbirsementView">
+                  <Link to="medicalReimbursementView">
                     <b>Medical Reimbursement View</b>
                   </Link>
                 </ListItem>
@@ -320,7 +320,7 @@ function Dashboard() {
 
         {/* Card 2 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Card sx={{ maxWidth: 345, mx: "auto", boxShadow: 3 }}>
+          <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia
               sx={{ height: 250 }}
               image="/assets/HR.jpg"
@@ -331,10 +331,10 @@ function Dashboard() {
                 gutterBottom
                 variant="h5"
                 sx={{
-                  textAlign: "center",
-                  color: "#1a237e",
-                  fontFamily: "serif",
-                  textShadow: "2px 2px 4px #000000",
+                  textAlign: 'center',
+                  color: '#1a237e',
+                  fontFamily: 'serif',
+                  textShadow: '2px 2px 4px #000000',
                 }}
                 color="primary"
               >
@@ -433,7 +433,7 @@ function Dashboard() {
 
         {/* Card 3 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Card sx={{ maxWidth: 345, mx: "auto", boxShadow: 3 }}>
+          <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia
               sx={{ height: 250 }}
               image="/assets/Reports.jpg"
@@ -444,10 +444,10 @@ function Dashboard() {
                 gutterBottom
                 variant="h5"
                 sx={{
-                  textAlign: "center",
-                  color: "#1a237e",
-                  fontFamily: "serif",
-                  textShadow: "2px 2px 4px #000000",
+                  textAlign: 'center',
+                  color: '#1a237e',
+                  fontFamily: 'serif',
+                  textShadow: '2px 2px 4px #000000',
                 }}
                 color="primary"
               >
@@ -521,7 +521,7 @@ function Dashboard() {
 
         {/* Card 4 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Card sx={{ maxWidth: 345, mx: "auto", boxShadow: 3 }}>
+          <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia
               sx={{ height: 250 }}
               image="/assets/Outsource.jpg"
@@ -532,10 +532,10 @@ function Dashboard() {
                 gutterBottom
                 variant="h5"
                 sx={{
-                  textAlign: "center",
-                  color: "#1a237e",
-                  fontFamily: "serif",
-                  textShadow: "2px 2px 4px #000000",
+                  textAlign: 'center',
+                  color: '#1a237e',
+                  fontFamily: 'serif',
+                  textShadow: '2px 2px 4px #000000',
                 }}
               >
                 Outsource (Employee)
