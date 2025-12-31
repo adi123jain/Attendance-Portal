@@ -161,13 +161,13 @@ function HumanResourceDashboard() {
         {
           name: 'Wireman Certificate',
           to: '/wiremanCertificate',
-          icon: <ManageAccountsIcon />,
+          icon: <AssignmentTurnedInIcon />,
         },
 
         {
-          name: 'View Wireman Certificate',
+          name: 'Update Wireman Certificate',
           to: '/updateWiremanCertificate',
-          icon: <ManageAccountsIcon />,
+          icon: <InfoIcon />,
         },
       ],
     },

@@ -199,7 +199,7 @@ function UpdateWiremanCertificateStatus() {
   const [otp, setOtp] = useState('');
   const [otpModal, setOtpModal] = useState(false);
   const [otpError, setOtpError] = useState('');
-  const [resendTimer, setResendTimer] = useState(0); // seconds left for resend
+  const [resendTimer, setResendTimer] = useState(0);
 
   // Send OTP API
   const sendOtp = async () => {
