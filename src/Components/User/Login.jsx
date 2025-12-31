@@ -162,6 +162,8 @@ const Login = () => {
       deviceId: '',
       requestMode: '',
     };
+    setOpenBackdrop(true);
+
     try {
       const response = await userAuthentication(sendReq);
       if (response.data.code === '200' && response.data.message === 'Success') {
@@ -184,6 +186,8 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Login Error:', error);
+    } finally {
+      setOpenBackdrop(false);
     }
   };
 
@@ -231,16 +235,19 @@ const Login = () => {
       source: 'E-Attendance Portal',
       otp: enteredOtp,
     };
+    setOpenBackdrop(true);
     try {
       const response = await verifyOtp(sendReq);
-      if (response.data.code == '200' && response.data.message == 'Success') {
-        alert('Otp Verified');
+      if (response.data.code === '200' && response.data.message === 'Success') {
         doubleAuthentication();
+        alert('Otp Verified');
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.log('Verify Otp Error:', error);
+    } finally {
+      setOpenBackdrop(false);
     }
   };
 
@@ -272,6 +279,8 @@ const Login = () => {
       deviceId: '',
       requestMode: '',
     };
+    setOpenBackdrop(false);
+
     try {
       const response = await userAuthentication(sendReq);
       if (response.data.code === '200' && response.data.message === 'Success') {
@@ -401,6 +410,8 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Login Error:', error);
+    } finally {
+      setOpenBackdrop(false);
     }
   };
 

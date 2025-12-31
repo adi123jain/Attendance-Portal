@@ -1,31 +1,16 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import {
-  Card,
-  Row,
-  Col,
-  Container,
-  Form,
-  OverlayTrigger,
-} from 'react-bootstrap';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Card, Row, Col, Form } from 'react-bootstrap';
 import {
   Typography,
   Tooltip,
-  IconButton,
-  Paper,
   Button,
-  TextField,
   Backdrop,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
-  Divider,
   Box,
-  MenuItem,
-  InputLabel,
-  Select,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -34,6 +19,7 @@ import { PropagateLoader } from 'react-spinners';
 import {
   currentGradePay,
   submitMedicalReimbursement,
+  submitMedicineDetails,
 } from '../../../Services/Auth';
 
 function MedicalReimbirsement() {
@@ -110,9 +96,42 @@ function MedicalReimbirsement() {
     placeOfIllness: '',
     prolongedTreatment: '',
     uploadMemo: '',
+
+    bankName: '',
+    bankIfsc: '',
+    bankAccount: '',
   });
 
   const [opdClaimFor, setOpdClaimFor] = useState('');
+
+  const decodedData = useMemo(() => {
+    const token = sessionStorage.getItem('token');
+    if (!token) return null;
+
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
+  }, []);
+
+  const [bankDisabled, setBankDisabled] = useState(false);
+
+  useEffect(() => {
+    if (decodedData) {
+      const hasBankData =
+        decodedData.bankName || decodedData.bankIfsc || decodedData.bankAccount;
+
+      if (hasBankData) {
+        setFormData((prev) => ({
+          ...prev,
+          bankName: decodedData.bankName || '',
+          bankIfsc: decodedData.bankIfsc || '',
+          bankAccount: decodedData.bankAccount || '',
+        }));
+
+        setBankDisabled(true);
+      }
+    }
+  }, [decodedData]);
 
   const handleOPDClaimChange = (value) => {
     setOpdClaimFor(value);
@@ -312,40 +331,40 @@ function MedicalReimbirsement() {
     if (formData.uploadMemo)
       dataToSend.append('memoDoc', formData.uploadMemo || '');
 
-    drugEntries.forEach((entry, entryIndex) => {
-      dataToSend.append(`medi.shopName`, entry.shopName || '');
-      dataToSend.append(`medi.cashMemoNo`, entry.cashMemoNo || '');
-      dataToSend.append(`medi.cashMemoDate`, entry.cashMemoDate || '');
+    dataToSend.append('bankName', formData.bankName || '');
+    dataToSend.append('bankIfsc', formData.bankIfsc || '');
+    dataToSend.append('bankAccount', formData.bankAccount || '');
 
-      // if (entry.uploadMemo) {
-      //   dataToSend.append(`medi[${entryIndex}].memoDoc`, entry.uploadMemo);
-      // }
+    // drugEntries.forEach((entry, entryIndex) => {
+    //   dataToSend.append(`medi.shopName`, entry.shopName || '');
+    //   dataToSend.append(`medi.cashMemoNo`, entry.cashMemoNo || '');
+    //   dataToSend.append(`medi.cashMemoDate`, entry.cashMemoDate || '');
 
-      entry.drugs.forEach((drug, drugIndex) => {
-        dataToSend.append(
-          `medi.memoList[${drugIndex}].cashMemoNo`,
-          entry.cashMemoNo || '',
-        );
+    //   entry.drugs.forEach((drug, drugIndex) => {
+    //     dataToSend.append(
+    //       `medi.memoList[${drugIndex}].cashMemoNo`,
+    //       entry.cashMemoNo || '',
+    //     );
 
-        dataToSend.append(
-          `medi.memoList[${drugIndex}].drugName`,
-          drug.drugName || '',
-        );
-        dataToSend.append(
-          `medi.memoList[${drugIndex}].quantity`,
-          drug.quantity || '',
-        );
-        dataToSend.append(
-          `medi.memoList[${drugIndex}].totalValue`,
-          drug.totalValue || '',
-        );
-      });
-    });
+    //     dataToSend.append(
+    //       `medi.memoList[${drugIndex}].drugName`,
+    //       drug.drugName || '',
+    //     );
+    //     dataToSend.append(
+    //       `medi.memoList[${drugIndex}].quantity`,
+    //       drug.quantity || '',
+    //     );
+    //     dataToSend.append(
+    //       `medi.memoList[${drugIndex}].totalValue`,
+    //       drug.totalValue || '',
+    //     );
+    //   });
+    // });
 
     // Debug: check FormData
     for (let pair of dataToSend.entries()) {
       const payload = pair[0] + ':' + pair[1];
-      // console.log(payload);
+      console.log(payload);
     }
 
     try {
@@ -353,6 +372,7 @@ function MedicalReimbirsement() {
       // console.log('MR response', response);
       if (response.data.code === '200') {
         alert('Successfully Submitted!!');
+        medicineSubmission(response.data.list[0].refNo);
         setOpenBackdrop(false);
       } else {
         alert(response.data.message);
@@ -363,17 +383,53 @@ function MedicalReimbirsement() {
       setOpenBackdrop(false);
     }
   };
+
+  const medicineSubmission = async (refNo) => {
+    // Build Medicine JSON payload
+    // alert(refNo);
+    const mediPayload = {
+      refNo: refNo,
+      shopName: drugEntries[0]?.shopName || '',
+      cashMemoNo: drugEntries[0]?.cashMemoNo || '',
+      cashMemoDate: drugEntries[0]?.cashMemoDate || '',
+      memoList: [],
+      updatedBy: sessionEmpCode,
+    };
+
+    // Add memoList from drugEntries
+    drugEntries.forEach((entry) => {
+      entry.drugs.forEach((drug) => {
+        mediPayload.memoList.push({
+          cashMemoNo: entry.cashMemoNo || '',
+          drugName: drug.drugName || '',
+          quantity: drug.quantity || '',
+          totalValue: drug.totalValue || '',
+        });
+      });
+    });
+
+    // console.log('Medicine JSON', mediPayload);
+
+    try {
+      // Call API
+      const response = await submitMedicineDetails(mediPayload);
+      if (response.data.code === '200') {
+        // window.location.reload();
+      } else {
+        alert(response.data.message);
+      }
+
+      // console.log('Medicine Response:', response);
+    } catch (error) {
+      console.log('Error', error);
+    }
+  };
+
   const today = new Date().toISOString().split('T')[0];
 
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   const minDate = sixMonthsAgo.toISOString().split('T')[0];
-
-  const token = sessionStorage.getItem('token');
-  const base64Url = token.split('.')[1];
-  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  const decodedData = JSON.parse(atob(base64));
-  // console.log(decodedData);
 
   return (
     <>
@@ -428,7 +484,7 @@ function MedicalReimbirsement() {
           <div className="my-4">
             <Card className="mb-3 shadow-sm">
               <Card.Body>
-                <Row xs={1} md={5} className="g-3">
+                <Row xs={1} md={4} className="g-3">
                   <Col>
                     <Card>
                       <Card.Header>Name of Govt. Employee</Card.Header>
@@ -470,6 +526,19 @@ function MedicalReimbirsement() {
                     </Card>
                   </Col>
 
+                  {/* <Col>
+                    <Card className="h-100">
+                      <Card.Header>
+                        Residential Address of Govt. Employee
+                      </Card.Header>
+                      <Card.Body>
+                        <Form.Control disabled value={empAddress} />
+                      </Card.Body>
+                    </Card>
+                  </Col> */}
+                </Row>
+
+                <Row xs={1} md={4} className="g-3 mt-2">
                   <Col>
                     <Card className="h-100">
                       <Card.Header>
@@ -477,6 +546,54 @@ function MedicalReimbirsement() {
                       </Card.Header>
                       <Card.Body>
                         <Form.Control disabled value={empAddress} />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>Bank Name</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Bank Name"
+                          name="bankName"
+                          value={formData.bankName}
+                          onChange={handleChange}
+                          disabled={bankDisabled}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>Bank IFSC</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Bank IFSC"
+                          name="bankIfsc"
+                          value={formData.bankIfsc}
+                          onChange={handleChange}
+                          disabled={bankDisabled}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+
+                  <Col>
+                    <Card>
+                      <Card.Header>Account No</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          type="text"
+                          placeholder="Enter Account Number"
+                          name="bankAccount"
+                          value={formData.bankAccount}
+                          onChange={handleChange}
+                          disabled={bankDisabled}
+                        />
                       </Card.Body>
                     </Card>
                   </Col>

@@ -93,6 +93,15 @@ function EmployeeDashboard() {
     },
   ];
 
+  const empCode = sessionStorage.getItem('empCode');
+  const designationId = Number(sessionStorage.getItem('designationId'));
+  const isManagerHr = sessionStorage.getItem('isManagerHr');
+
+  const showInformerScheme =
+    designationId === 13 || empCode === '12345' || isManagerHr === true;
+  const showCmoApproval = designationId === 13 || empCode === '12345';
+  const showAoApproval = designationId === 18 || empCode === '12345';
+
   return (
     <Box
       sx={{
@@ -127,6 +136,21 @@ function EmployeeDashboard() {
         sx={{ maxWidth: 1100, mx: 'auto' }}
       >
         {menuItems.map((item, index) => {
+          // Informer Scheme condition
+          if (item.label === 'Informer Scheme' && !showInformerScheme) {
+            return null;
+          }
+
+          // CMO Approval condition
+          if (item.label === 'Medical CMO Approval' && !showCmoApproval) {
+            return null;
+          }
+
+          // AO Approval condition
+          if (item.label === 'Medical AO Approval' && !showAoApproval) {
+            return null;
+          }
+
           const linkProps = item.external
             ? { component: 'a', href: item.path, target: '_blank' }
             : { component: Link, to: item.path };

@@ -157,7 +157,7 @@ function MedicalApprovalByAo() {
         setOpenBackdrop(true);
         const response = await getMedicalByAo();
         console.log(response);
-        if (response.data.code == '200') {
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setRecords(response.data.list);
         } else {
@@ -219,6 +219,7 @@ function MedicalApprovalByAo() {
   const handleClose = () => {
     setOpen(false);
     setSelectedRow(null);
+    window.location.reload();
   };
 
   const [expandedRow, setExpandedRow] = useState(null);
@@ -299,7 +300,7 @@ function MedicalApprovalByAo() {
       if (response.data.code === '200') {
         alert('Status Updated Successfully !!');
         setOpenBackdrop(false);
-        //window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
@@ -510,8 +511,8 @@ function MedicalApprovalByAo() {
               {fieldCard('AO Remark', selectedRow.aoRemark, 23)}
 
               {fieldCard('Bank Name', selectedRow.bankName, 24)}
-              {fieldCard('Bank Code', selectedRow.bankCode, 25)}
-              {fieldCard('Cheque No', selectedRow.chequeNo, 26)}
+              {fieldCard('Bank IFSC', selectedRow.bankIfsc, 25)}
+              {fieldCard('Account No', selectedRow.bankAccount, 26)}
 
               {fieldCard(
                 'Amount Approved by CMO',
@@ -519,10 +520,12 @@ function MedicalApprovalByAo() {
                 27,
               )}
 
+              {fieldCard('ERP Invoice Number', selectedRow.erpInvoiceNo, 28)}
+
               {fieldCard(
                 'Essentiality Certificate',
                 <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
-                28,
+                29,
                 () =>
                   handleEssentialityDownload(
                     selectedRow.essentialityCertificateDoc,
@@ -532,14 +535,14 @@ function MedicalApprovalByAo() {
               {fieldCard(
                 'Prolonged Certificate',
                 <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
-                29,
+                30,
                 () => handleProlongedDownload(selectedRow.prolongedTreatment),
               )}
 
               {fieldCard(
                 'Memo Doc',
                 <CloudDownloadIcon sx={{ color: '#3949ab', fontSize: 32 }} />,
-                30,
+                31,
                 () => handleMemoDownload(selectedRow.memoPath),
               )}
             </Grid>
@@ -761,7 +764,7 @@ function MedicalApprovalByAo() {
                       <StyledTableCell>S.No.</StyledTableCell>
                       <StyledTableCell>Account Code</StyledTableCell>
                       <StyledTableCell>Account Head</StyledTableCell>
-                      <StyledTableCell>Estimate No.</StyledTableCell>
+                      {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                       <StyledTableCell>D or C</StyledTableCell>
                       <StyledTableCell>Amount</StyledTableCell>
                       <StyledTableCell>Bill Reference</StyledTableCell>
@@ -780,9 +783,9 @@ function MedicalApprovalByAo() {
                           <StyledTableCell>
                             {item.accountHead || '-'}
                           </StyledTableCell>
-                          <StyledTableCell>
+                          {/* <StyledTableCell>
                             {item.estimateNo || '-'}
-                          </StyledTableCell>
+                          </StyledTableCell> */}
                           <StyledTableCell>{item.dOrC || '-'}</StyledTableCell>
                           <StyledTableCell>
                             {item.amountRs || '-'}
@@ -834,7 +837,7 @@ function MedicalApprovalByAo() {
                       <StyledTableCell>S.No.</StyledTableCell>
                       <StyledTableCell>Account Code</StyledTableCell>
                       <StyledTableCell>Account Head</StyledTableCell>
-                      <StyledTableCell>Estimate No.</StyledTableCell>
+                      {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                       <StyledTableCell>D or C</StyledTableCell>
                       <StyledTableCell>Debit Amount</StyledTableCell>
                       <StyledTableCell>Credit Amount</StyledTableCell>
@@ -852,9 +855,9 @@ function MedicalApprovalByAo() {
                           <StyledTableCell>
                             {item.accountHead || '-'}
                           </StyledTableCell>
-                          <StyledTableCell>
+                          {/* <StyledTableCell>
                             {item.estimateNo || '-'}
-                          </StyledTableCell>
+                          </StyledTableCell> */}
                           <StyledTableCell>{item.dOrC || '-'}</StyledTableCell>
                           <StyledTableCell>
                             {item.debitAmountRs || '-'}

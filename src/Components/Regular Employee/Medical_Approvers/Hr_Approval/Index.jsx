@@ -202,6 +202,7 @@ function MedicalApprovalByHr() {
   const handleClose = () => {
     setOpen(false);
     setSelectedRow([]);
+    window.location.reload();
   };
 
   const [expandedRow, setExpandedRow] = useState(null);
@@ -235,26 +236,61 @@ function MedicalApprovalByHr() {
   //   window.open(url, '_blank');
   // }
 
+  const [erpNumber, setErpNumber] = useState('');
   const [hrStatus, setHrStatus] = useState('');
   const [hrRemark, setHrRemark] = useState('');
   const [errors, setErrors] = useState({});
 
   const statusRef = useRef(null);
   const remarkRef = useRef(null);
+  const erpRef = useRef(null);
 
   //  Validation function
+  // const validate = () => {
+  //   const newErrors = {};
+  //   if (!hrStatus) newErrors.hrStatus = 'Status is required';
+  //   if (!hrRemark.trim()) newErrors.hrRemark = 'Remark is required';
+  //   setErrors(newErrors);
+
+  //   if (Object.keys(newErrors).length > 0) {
+  //     if (newErrors.hrStatus && statusRef.current) statusRef.current.focus();
+  //     else if (newErrors.hrRemark && remarkRef.current)
+  //       remarkRef.current.focus();
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
   const validate = () => {
     const newErrors = {};
+
+    // Status field validation
     if (!hrStatus) newErrors.hrStatus = 'Status is required';
+
+    // Remark field validation
     if (!hrRemark.trim()) newErrors.hrRemark = 'Remark is required';
+
+    // ERP Number validation — ONLY when the field is visible
+    if (selectedRow?.cmoStatus === 'Approved') {
+      if (!erpNumber || erpNumber.trim() === '') {
+        newErrors.erpNumber = 'ERP Number is required';
+      }
+    }
+
     setErrors(newErrors);
 
+    // Focus logic
     if (Object.keys(newErrors).length > 0) {
-      if (newErrors.hrStatus && statusRef.current) statusRef.current.focus();
-      else if (newErrors.hrRemark && remarkRef.current)
+      if (newErrors.hrStatus && statusRef.current) {
+        statusRef.current.focus();
+      } else if (newErrors.hrRemark && remarkRef.current) {
         remarkRef.current.focus();
+      } else if (newErrors.erpNumber && erpRef.current) {
+        erpRef.current.focus();
+      }
       return false;
     }
+
     return true;
   };
 
@@ -424,10 +460,10 @@ function MedicalApprovalByHr() {
   //   alert(JSON.stringify(filled, null, 2));
   // };
 
-  const [bankCode, setBankCode] = useState('');
-  const [bankName, setBankName] = useState('');
-  const [chequeNo, setChequeNo] = useState('');
-  const [date, setDate] = useState('');
+  // const [bankCode, setBankCode] = useState('');
+  // const [bankName, setBankName] = useState('');
+  // const [chequeNo, setChequeNo] = useState('');
+  // const [date, setDate] = useState('');
 
   // const handleSubmit = () => {
   //   const data = {
@@ -474,7 +510,7 @@ function MedicalApprovalByHr() {
     if (!validate()) return;
     setOpenBackdrop(true);
 
-    // 🔹 Get Petty Cash Rows (Converted to Backend Format)
+    // Get Petty Cash Rows (Converted to Backend Format)
     const pettyCashConverted = rows
       .filter((row) => row.accountCode || row.amount)
       .map((row, index) => ({
@@ -484,7 +520,7 @@ function MedicalApprovalByHr() {
         estimateNo: row.estimateNo || '',
         dOrC: row.dc || '',
         amountRs: Number(row.amount) || 0,
-        amountP: 0, // If you need paise field, modify accordingly
+        amountP: 0,
         billReferenceNo: row.billRef || '',
         billDate: row.billRefDate || '',
         details: row.details || '',
@@ -514,12 +550,12 @@ function MedicalApprovalByHr() {
       }));
 
     //  Bank Form Data
-    const bankData = {
-      bankCode: bankCode,
-      bankName: bankName,
-      chequeNo: chequeNo,
-      chequeDate: date || null,
-    };
+    // const bankData = {
+    //   bankCode: bankCode,
+    //   bankName: bankName,
+    //   chequeNo: chequeNo,
+    //   chequeDate: date || null,
+    // };
 
     // FINAL PAYLOAD EXACT MATCH AS YOUR GIVEN JSON
     const payload = {
@@ -527,19 +563,21 @@ function MedicalApprovalByHr() {
       remark: hrRemark,
       status: hrStatus,
       // next: null,
-      ...bankData,
+      // ...bankData,
+      erpInvoiceNo: erpNumber,
       medicalPcvList: pettyCashConverted,
       medicalJvs: journalConverted,
     };
 
-    console.log('FINAL READY PAYLOAD:', payload);
+    // console.log('FINAL READY PAYLOAD:', payload);
 
     try {
       const response = await submitMedicalHrStatus(payload);
-      console.log(response);
+      // console.log(response);
 
       if (response.data.code === '200') {
         alert('Status Updated Successfully !!');
+        // window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -586,6 +624,8 @@ function MedicalApprovalByHr() {
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
+
+  const showErp = selectedRow?.cmoStatus === 'Approved';
 
   return (
     <>
@@ -752,8 +792,8 @@ function MedicalApprovalByHr() {
               {fieldCard('AO Remark', selectedRow.aoRemark, 23)}
 
               {fieldCard('Bank Name', selectedRow.bankName, 24)}
-              {fieldCard('Bank Code', selectedRow.bankCode, 25)}
-              {fieldCard('Cheque No', selectedRow.chequeNo, 26)}
+              {fieldCard('Bank IFSC', selectedRow.bankIfsc, 25)}
+              {fieldCard('Account No', selectedRow.bankAccount, 26)}
               {fieldCard(
                 'Amount Approved by CMO',
                 selectedRow.totalAmountApprovedByDoc,
@@ -920,6 +960,9 @@ function MedicalApprovalByHr() {
                                       <SubTableCell>Drug Name</SubTableCell>
                                       <SubTableCell>Quantity</SubTableCell>
                                       <SubTableCell>Total Value</SubTableCell>
+                                      <SubTableCell>
+                                        Approved Amount
+                                      </SubTableCell>
                                     </SubTableRow>
                                   </TableHead>
 
@@ -938,6 +981,9 @@ function MedicalApprovalByHr() {
                                         </SubTableCell>
                                         <SubTableCell>
                                           {memo.totalValue || '-'}
+                                        </SubTableCell>
+                                        <SubTableCell>
+                                          {memo.approvedAmount || '-'}
                                         </SubTableCell>
                                       </SubTableRow>
                                     ))}
@@ -991,7 +1037,7 @@ function MedicalApprovalByHr() {
                           <StyledTableCell>S.No.</StyledTableCell>
                           <StyledTableCell>Account Code</StyledTableCell>
                           <StyledTableCell>Account Head</StyledTableCell>
-                          <StyledTableCell>Estimate No.</StyledTableCell>
+                          {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                           <StyledTableCell>D or C</StyledTableCell>
                           <StyledTableCell>Amount</StyledTableCell>
                           <StyledTableCell>Bill Reference</StyledTableCell>
@@ -1036,7 +1082,7 @@ function MedicalApprovalByHr() {
                               />
                             </StyledTableCell>
 
-                            <StyledTableCell>
+                            {/* <StyledTableCell>
                               <TextField
                                 size="small"
                                 placeholder="Enter..."
@@ -1049,7 +1095,7 @@ function MedicalApprovalByHr() {
                                   )
                                 }
                               />
-                            </StyledTableCell>
+                            </StyledTableCell> */}
 
                             <StyledTableCell>
                               <Select
@@ -1132,7 +1178,7 @@ function MedicalApprovalByHr() {
                     </Table>
                   </TableContainer>
 
-                  <div className=" my-3">
+                  {/* <div className=" my-3">
                     <Row className="mt-3 g-3">
                       <Col xs={12} md={3}>
                         <Card className="h-100">
@@ -1189,7 +1235,7 @@ function MedicalApprovalByHr() {
                         </Card>
                       </Col>
                     </Row>
-                  </div>
+                  </div> */}
                 </Card.Body>
                 <Card.Footer className="text-center"></Card.Footer>
               </Card>
@@ -1226,7 +1272,7 @@ function MedicalApprovalByHr() {
                           <StyledTableCell>S.No.</StyledTableCell>
                           <StyledTableCell>Account Code</StyledTableCell>
                           <StyledTableCell>Account Head</StyledTableCell>
-                          <StyledTableCell>Estimate No.</StyledTableCell>
+                          {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                           <StyledTableCell>D / C</StyledTableCell>
                           <StyledTableCell>Debit Amount</StyledTableCell>
                           <StyledTableCell>Credit Amount</StyledTableCell>
@@ -1270,7 +1316,7 @@ function MedicalApprovalByHr() {
                               />
                             </StyledTableCell>
 
-                            <StyledTableCell>
+                            {/* <StyledTableCell>
                               <TextField
                                 placeholder="Enter..."
                                 size="small"
@@ -1283,7 +1329,7 @@ function MedicalApprovalByHr() {
                                   )
                                 }
                               />
-                            </StyledTableCell>
+                            </StyledTableCell> */}
 
                             <StyledTableCell>
                               <Select
@@ -1389,8 +1435,23 @@ function MedicalApprovalByHr() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              <Row>
-                {/* Status Select */}
+              {/* <Row>
+                {selectedRow?.cmoStatus === 'Approved' && (
+                  <Col xs={12} md={3}>
+                    <Card>
+                      <Card.Header>ERP Number</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          placeholder="Enter ERP Number"
+                          value={erpNumber}
+                          onChange={(e) => setErpNumber(e.target.value)}
+                        />
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )}
+
+                 
                 <Col xs={12} md={4} className="mb-2">
                   <Card>
                     <Card.Header>Select Status</Card.Header>
@@ -1414,7 +1475,7 @@ function MedicalApprovalByHr() {
                   </Card>
                 </Col>
 
-                {/* Remark Textarea */}
+                
                 <Col xs={12} md={8}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
@@ -1422,6 +1483,77 @@ function MedicalApprovalByHr() {
                       <Form.Control
                         as="textarea"
                         rows={2}
+                        placeholder="Enter Remark..."
+                        ref={remarkRef}
+                        value={hrRemark}
+                        onChange={(e) => setHrRemark(e.target.value)}
+                        isInvalid={!!errors.hrRemark}
+                      />
+                      <Form.Control.Feedback type="invalid" className="d-block">
+                        {errors.hrRemark}
+                      </Form.Control.Feedback>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row> */}
+
+              <Row className="g-3">
+                {/* ERP Number */}
+                {showErp && (
+                  <Col xs={12} md={4}>
+                    <Card>
+                      <Card.Header>ERP Invoice Number</Card.Header>
+                      <Card.Body>
+                        <Form.Control
+                          ref={erpRef}
+                          placeholder="Enter ERP Number"
+                          value={erpNumber}
+                          onChange={(e) => setErpNumber(e.target.value)}
+                          isInvalid={!!errors.erpNumber}
+                        />
+                        <Form.Control.Feedback
+                          type="invalid"
+                          className="d-block"
+                        >
+                          {errors.erpNumber}
+                        </Form.Control.Feedback>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )}
+
+                {/* Status */}
+                <Col xs={12} md={4}>
+                  <Card>
+                    <Card.Header>Select Status</Card.Header>
+                    <Card.Body>
+                      <Form.Select
+                        ref={statusRef}
+                        value={hrStatus}
+                        onChange={(e) => setHrStatus(e.target.value)}
+                        isInvalid={!!errors.hrStatus}
+                      >
+                        <option value="" disabled>
+                          -- select --
+                        </option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                      </Form.Select>
+                      <Form.Control.Feedback type="invalid" className="d-block">
+                        {errors.hrStatus}
+                      </Form.Control.Feedback>
+                    </Card.Body>
+                  </Card>
+                </Col>
+
+                {/* Remark */}
+                <Col xs={12} md={showErp ? 4 : 8}>
+                  <Card>
+                    <Card.Header>Remark</Card.Header>
+                    <Card.Body>
+                      <Form.Control
+                        as="textarea"
+                        rows={3}
                         placeholder="Enter Remark..."
                         ref={remarkRef}
                         value={hrRemark}

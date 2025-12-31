@@ -80,7 +80,7 @@ function MedicalFormUpdate() {
   const sessionCircle = sessionStorage.getItem('circleName');
   const sessionDivision = sessionStorage.getItem('divisionName');
   const sessionSubdivision = sessionStorage.getItem('subdivisionName');
-  const sessionDc = sessionStorage.getItem('dcId');
+  const sessionDc = sessionStorage.getItem('dcName');
   const designationName = sessionStorage.getItem('designationName');
   const sessionEmpCode = sessionStorage.getItem('empCode');
   const sessionEmpName = sessionStorage.getItem('fullName');
@@ -157,14 +157,14 @@ function MedicalFormUpdate() {
   const location = useLocation();
   const { item: preItem } = location.state || {};
 
-  // console.log("Received item:", preItem);
+  console.log('Received item:', preItem);
   const [drugEntry, setDrugEntry] = useState([]);
   useEffect(() => {
     const fetchDrugsDetails = async () => {
       try {
         const response = await getDrugDetails(preItem.refNo);
         // console.log(response);
-        if (response.data.code == '200') {
+        if (response.data.code === '200') {
           setDrugEntry(response.data.list);
         } else {
           setDrugEntry([]);
@@ -390,7 +390,7 @@ function MedicalFormUpdate() {
     };
     const response = await deteleDrugDetails(payload);
     // console.log(response);
-    if (response.data.code == '200') {
+    if (response.data.code === '200') {
       alert('Record Delete Successfully !!');
     } else {
       alert(response.data.message);
@@ -422,7 +422,7 @@ function MedicalFormUpdate() {
               fontWeight: 'bold',
             }}
           >
-            Medical Reimbursement
+            Update Medical Reimbursement
           </Typography>
         </Card.Header>
 
@@ -440,11 +440,11 @@ function MedicalFormUpdate() {
                   control={<Radio />}
                   label="OPD Form"
                 />
-                <FormControlLabel
+                {/* <FormControlLabel
                   value="IPD"
                   control={<Radio />}
                   label="IPD Form"
-                />
+                /> */}
               </RadioGroup>
             </FormControl>
           </Box>
@@ -816,7 +816,7 @@ function MedicalFormUpdate() {
           </div>
 
           {/* Extra fields for IPD */}
-          {formType === 'IPD' && (
+          {/* {formType === 'IPD' && (
             <>
               <Card className="mb-3">
                 <Card.Header className="text-center p-3">
@@ -833,7 +833,6 @@ function MedicalFormUpdate() {
                 </Card.Header>
 
                 <Card.Body>
-                  {/* Hospital Details */}
                   <Row xs={1} md={4} className="mt-2 g-3">
                     <Col>
                       <Card>
@@ -893,8 +892,6 @@ function MedicalFormUpdate() {
                       </Card>
                     </Col>
                   </Row>
-
-                  {/* Packages and Tests */}
 
                   <Row className="mt-3 g-3">
                     <Col md={3}>
@@ -964,7 +961,6 @@ function MedicalFormUpdate() {
                     </Col>
                   </Row>
 
-                  {/* Hospital Treatment */}
                   <Row className="mt-3">
                     <Col>
                       <Card>
@@ -1032,7 +1028,6 @@ function MedicalFormUpdate() {
                             </Col>
                           </Row>
 
-                          {/* Pathological Tests */}
                           <Card className="mt-3">
                             <Card.Header className="text-center p-3">
                               <Typography
@@ -1100,26 +1095,7 @@ function MedicalFormUpdate() {
                             </Card.Body>
                           </Card>
 
-                          {/* Other Charges */}
                           <Row className="g-3 mt-3">
-                            {/* <Col md={4}>
-                              <Card>
-                                <Card.Header>
-                                  Special nursing (If employed on advice of
-                                  Medical Officer, attach certificate
-                                  countersigned by Medical Superintendent)
-                                </Card.Header>
-                                <Card.Body>
-                                  <Form.Control
-                                    type="text"
-                                    name="specialNursing"
-                                    placeholder="Enter..."
-                                    value={formData.specialNursing}
-                                    onChange={handleChange}
-                                  />
-                                </Card.Body>
-                              </Card>
-                            </Col> */}
                             <Col md={4}>
                               <Card>
                                 <Card.Header>
@@ -1165,32 +1141,12 @@ function MedicalFormUpdate() {
                                   <Form.Control
                                     type="file"
                                     name="prolongedTreatment"
-                                    // value={formData.essentialityCertificate}
                                     onChange={handleChange}
                                   />
                                 </Card.Body>
                               </Card>
                             </Col>
                           </Row>
-
-                          {/* <Row className="g-3 mt-3">
-                            <Col md={4}>
-                              <Card>
-                                <Card.Header>
-                                  Upload Certificate for Disease Requiring
-                                  Prolonged Treatment
-                                </Card.Header>
-                                <Card.Body>
-                                  <Form.Control
-                                    type="file"
-                                    name="prolongedTreatment"
-                                    // value={formData.essentialityCertificate}
-                                    onChange={handleChange}
-                                  />
-                                </Card.Body>
-                              </Card>
-                            </Col>
-                          </Row> */}
                         </Card.Body>
                       </Card>
                     </Col>
@@ -1198,7 +1154,7 @@ function MedicalFormUpdate() {
                 </Card.Body>
               </Card>
             </>
-          )}
+          )} */}
 
           <Card className="mt-3">
             <Card.Header className="text-center p-2">

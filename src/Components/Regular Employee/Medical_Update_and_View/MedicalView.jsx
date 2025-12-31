@@ -78,7 +78,7 @@ function MedicalFormView() {
         setOpenBackdrop(true);
         const response = await getMedicalFormByEmpCode();
         console.log(response);
-        if (response.data.code == '200') {
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setData(response.data.list);
         } else {

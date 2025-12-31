@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import {
   Typography,
   Tooltip,
@@ -17,9 +17,9 @@ import {
   Button,
   TextField,
   Backdrop,
-} from "@mui/material";
-import { PropagateLoader } from "react-spinners";
-import "../../../Constants/Style/styles.css";
+} from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
+import '../../../Constants/Style/styles.css';
 import {
   getCircle,
   getDC,
@@ -32,7 +32,7 @@ import {
   getSubDivision,
   getSubstationByDivision,
   submitFeederManagement,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 function FeederManagement() {
   const tableRef = useRef(null);
@@ -49,19 +49,19 @@ function FeederManagement() {
   const [feederIncharge, setFeederIncharge] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
-  const [selectedSubstation, setSelectedSubstation] = useState("");
-  const [selectedFeeder, setSelectedFeeder] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
+  const [selectedSubstation, setSelectedSubstation] = useState('');
+  const [selectedFeeder, setSelectedFeeder] = useState('');
 
-  const [selectedFeederManager, setSelectedFeederManager] = useState("");
-  const [selectedFeederIncharge, setSelectedFeederIncharge] = useState("");
+  const [selectedFeederManager, setSelectedFeederManager] = useState('');
+  const [selectedFeederIncharge, setSelectedFeederIncharge] = useState('');
 
-  const [managerJoiningDate, setManagerJoiningDate] = useState("");
-  const [inchargeJoiningDate, setInchargeJoiningDate] = useState("");
+  const [managerJoiningDate, setManagerJoiningDate] = useState('');
+  const [inchargeJoiningDate, setInchargeJoiningDate] = useState('');
 
   const [discontInTable, setDiscontInTable] = useState([]);
 
@@ -72,7 +72,7 @@ function FeederManagement() {
         const response = await getRegion();
         setRegions(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -85,7 +85,7 @@ function FeederManagement() {
         const res = await getCircle(selectedRegion);
         setCircles(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching circles:", error);
+        console.error('Error fetching circles:', error);
       }
     })();
   }, [selectedRegion]);
@@ -98,7 +98,7 @@ function FeederManagement() {
         const res = await getDivision(selectedCircle);
         setDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error('Error fetching divisions:', error);
       }
     })();
   }, [selectedCircle]);
@@ -111,7 +111,7 @@ function FeederManagement() {
         const res = await getSubDivision(selectedDivision);
         setSubDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching subdivisions:", error);
+        console.error('Error fetching subdivisions:', error);
       }
     })();
   }, [selectedDivision]);
@@ -124,7 +124,7 @@ function FeederManagement() {
         const res = await getDC(selectedSubDivision);
         setDCs(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching DCs:", error);
+        console.error('Error fetching DCs:', error);
       }
     })();
   }, [selectedSubDivision]);
@@ -137,7 +137,7 @@ function FeederManagement() {
         const res = await getSubstationByDivision(selectedDivision);
         setSubStations(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching substations:", error);
+        console.error('Error fetching substations:', error);
       }
     })();
   }, [selectedDivision]);
@@ -150,7 +150,7 @@ function FeederManagement() {
         const res = await getFeederBySubstation(selectedSubstation);
         setFeeder(res.data || []);
       } catch (error) {
-        console.error("Error fetching feeders:", error);
+        console.error('Error fetching feeders:', error);
       }
     })();
   }, [selectedSubstation]);
@@ -171,37 +171,89 @@ function FeederManagement() {
         setFeederManager(res1.data.list || []);
         setFeederIncharge(res2.data.list || []);
       } catch (error) {
-        console.error("Error fetching extra options for DC:", error);
+        console.error('Error fetching extra options for DC:', error);
       }
     })();
   }, [selectedDC]);
 
-  // Fetch Feeder when Substation changes
+  // Fetch Feeder Officer when Feeder changes
+  // useEffect(() => {
+  //   if (!selectedFeeder) return;
+  //   (async () => {
+  //     try {
+  //       const res = await getPostedOfficerByFeeder(selectedFeeder);
+  //       console.log(res);
+
+  //       setSelectedFeederManager(res.data?.list[0].fdrManagerEmpCode || '');
+  //       setManagerJoiningDate(
+  //         res.data?.list[0].managerFromDate.split(' ')[0] || '',
+  //       );
+
+  //       setSelectedFeederIncharge(res.data?.list[0].fdrInchargeEmpCode || '');
+  //       setInchargeJoiningDate(
+  //         res.data?.list[0].inchargeFromDate.split(' ')[0] || '',
+  //       );
+  //     } catch (error) {
+  //       console.error('Error fetching feeder assignment:', error);
+  //       setSelectedFeederManager('');
+  //       setSelectedFeederIncharge('');
+  //       setManagerJoiningDate('');
+  //       setInchargeJoiningDate('');
+  //     }
+  //   })();
+  // }, [selectedFeeder]);
+
   useEffect(() => {
     if (!selectedFeeder) return;
+
     (async () => {
       try {
         const res = await getPostedOfficerByFeeder(selectedFeeder);
-        console.log(res);
+        const data = res.data?.list?.[0];
 
-        setSelectedFeederManager(res.data?.list[0].fdrManagerEmpCode || "");
-        setManagerJoiningDate(
-          res.data?.list[0].managerFromDate.split(" ")[0] || ""
-        );
+        if (!data) return;
 
-        setSelectedFeederIncharge(res.data?.list[0].fdrInchargeEmpCode || "");
-        setInchargeJoiningDate(
-          res.data?.list[0].inchargeFromDate.split(" ")[0] || ""
-        );
+        const managerEmp = {
+          empCode: data.fdrManagerEmpCode,
+          fullName: data.fdrManagerName,
+          designationName: data.fdrManagerDesignation,
+        };
+
+        const inchargeEmp = {
+          empCode: data.fdrInchargeEmpCode,
+          fullName: data.fdrInchargeName,
+          designationName: data.fdrInchargeDesignation,
+        };
+
+        setFeederManager((prev) => ensureOptionExists(prev, managerEmp));
+        setFeederIncharge((prev) => ensureOptionExists(prev, inchargeEmp));
+
+        // Set selected values
+        setSelectedFeederManager(managerEmp.empCode || '');
+        setSelectedFeederIncharge(inchargeEmp.empCode || '');
+
+        // Set dates
+        setManagerJoiningDate(data.managerFromDate?.split(' ')[0] || '');
+        setInchargeJoiningDate(data.inchargeFromDate?.split(' ')[0] || '');
       } catch (error) {
-        console.error("Error fetching feeder assignment:", error);
-        setSelectedFeederManager("");
-        setSelectedFeederIncharge("");
-        setManagerJoiningDate("");
-        setInchargeJoiningDate("");
+        console.error('Error fetching feeder assignment:', error);
+
+        setSelectedFeederManager('');
+        setSelectedFeederIncharge('');
+        setManagerJoiningDate('');
+        setInchargeJoiningDate('');
       }
     })();
   }, [selectedFeeder]);
+
+  const ensureOptionExists = (list, emp) => {
+    if (!emp) return list;
+
+    const exists = list.some((item) => item.empCode === emp.empCode);
+    if (exists) return list;
+
+    return [...list, emp];
+  };
 
   // Refs for focusing
   const regionRef = useRef(null);
@@ -220,37 +272,37 @@ function FeederManagement() {
     const newErrors = {};
 
     if (!selectedRegion) {
-      newErrors.region = "*region is required.";
+      newErrors.region = '*region is required.';
       regionRef.current?.focus();
     } else if (!selectedCircle) {
-      newErrors.circle = "*circle is required.";
+      newErrors.circle = '*circle is required.';
       circleRef.current?.focus();
     } else if (!selectedDivision) {
-      newErrors.division = "*division is required.";
+      newErrors.division = '*division is required.';
       divisionRef.current?.focus();
     } else if (!selectedSubDivision) {
-      newErrors.subDivision = "*subDivision is required.";
+      newErrors.subDivision = '*subDivision is required.';
       subDivisionRef.current?.focus();
     } else if (!selectedDC) {
-      newErrors.dc = "*dc is required.";
+      newErrors.dc = '*dc is required.';
       dcRef.current?.focus();
     } else if (!selectedSubstation) {
-      newErrors.subStation = "*subStation is required.";
+      newErrors.subStation = '*subStation is required.';
       subStationRef.current?.focus();
     } else if (!selectedFeeder) {
-      newErrors.feeder = "*feeder is required.";
+      newErrors.feeder = '*feeder is required.';
       feederRef.current?.focus();
     } else if (!selectedFeederManager) {
-      newErrors.feederManager = "*feeder manager is required.";
+      newErrors.feederManager = '*feeder manager is required.';
       feederManagerRef.current?.focus();
     } else if (!managerJoiningDate) {
-      newErrors.feederManagerPosting = "*manager posting date is required.";
+      newErrors.feederManagerPosting = '*manager posting date is required.';
       feederManagerPostingRef.current?.focus();
     } else if (!selectedFeederIncharge) {
-      newErrors.feederIncharge = "*feeder incharge is required.";
+      newErrors.feederIncharge = '*feeder incharge is required.';
       feederInchargeRef.current?.focus();
     } else if (!inchargeJoiningDate) {
-      newErrors.feederInchargePosting = "*incharge posting date is required.";
+      newErrors.feederInchargePosting = '*incharge posting date is required.';
       feederInchargePostingRef.current?.focus();
     }
 
@@ -263,7 +315,7 @@ function FeederManagement() {
 
     setOpenBackdrop(true);
     const feederObj = feeder.find(
-      (f) => String(f.feederCode) === String(selectedFeeder)
+      (f) => String(f.feederCode) === String(selectedFeeder),
     );
     console.log(feederObj);
     try {
@@ -271,19 +323,19 @@ function FeederManagement() {
         dc: selectedDC,
         subStation: selectedSubstation,
         feederCode: selectedFeeder,
-        feederName: feederObj ? feederObj.feederName : "",
+        feederName: feederObj ? feederObj.feederName : '',
         fdrManagerEmpCode: selectedFeederManager,
         managerFromDate: managerJoiningDate,
         fdrInchargeEmpCode: selectedFeederIncharge,
         inchargeFromDate: inchargeJoiningDate,
-        createdBy: sessionStorage.getItem("empCode"),
+        createdBy: sessionStorage.getItem('empCode'),
       };
 
-      console.log("Payload:", payload);
+      // console.log('Payload:', payload);
 
       const response = await submitFeederManagement(payload);
-      if (response.data.code == "200") {
-        alert("SuccessFully Updated !!");
+      if (response.data.code === '200') {
+        alert('SuccessFully Updated !!');
         setOpenBackdrop(false);
         window.location.reload();
       } else {
@@ -291,7 +343,7 @@ function FeederManagement() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -306,9 +358,9 @@ function FeederManagement() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Feeder Management System (Regular Employee's)
@@ -330,24 +382,24 @@ function FeederManagement() {
                       setSelectedRegion(value);
 
                       // clear dependent
-                      setSelectedCircle("");
+                      setSelectedCircle('');
                       setCircles([]);
-                      setSelectedDivision("");
+                      setSelectedDivision('');
                       setDivisions([]);
-                      setSelectedSubDivision("");
+                      setSelectedSubDivision('');
                       setSubDivisions([]);
-                      setSelectedDC("");
+                      setSelectedDC('');
                       setDCs([]);
-                      setSelectedSubstation("");
+                      setSelectedSubstation('');
                       setSubStations([]);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setManagerJoiningDate("");
-                      setInchargeJoiningDate("");
+                      setManagerJoiningDate('');
+                      setInchargeJoiningDate('');
                     }}
                   >
                     <option disabled value="">
@@ -377,22 +429,22 @@ function FeederManagement() {
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedCircle(value);
-                      setSelectedDivision("");
+                      setSelectedDivision('');
                       setDivisions([]);
-                      setSelectedSubDivision("");
+                      setSelectedSubDivision('');
                       setSubDivisions([]);
-                      setSelectedDC("");
+                      setSelectedDC('');
                       setDCs([]);
-                      setSelectedSubstation("");
+                      setSelectedSubstation('');
                       setSubStations([]);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setManagerJoiningDate("");
-                      setInchargeJoiningDate("");
+                      setManagerJoiningDate('');
+                      setInchargeJoiningDate('');
                     }}
                   >
                     <option disabled value="">
@@ -422,20 +474,20 @@ function FeederManagement() {
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedDivision(value);
-                      setSelectedSubDivision("");
+                      setSelectedSubDivision('');
                       setSubDivisions([]);
-                      setSelectedDC("");
+                      setSelectedDC('');
                       setDCs([]);
-                      setSelectedSubstation("");
+                      setSelectedSubstation('');
                       setSubStations([]);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setManagerJoiningDate("");
-                      setInchargeJoiningDate("");
+                      setManagerJoiningDate('');
+                      setInchargeJoiningDate('');
                     }}
                   >
                     <option disabled value="">
@@ -467,18 +519,18 @@ function FeederManagement() {
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedSubDivision(value);
-                      setSelectedDC("");
+                      setSelectedDC('');
                       setDCs([]);
                       // setSelectedSubstation("");
                       // setSubStations([]);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setManagerJoiningDate("");
-                      setInchargeJoiningDate("");
+                      setManagerJoiningDate('');
+                      setInchargeJoiningDate('');
                     }}
                   >
                     <option disabled value="">
@@ -510,18 +562,18 @@ function FeederManagement() {
                       setSelectedDC(value);
                       // setSelectedSubstation("");
                       // setSubStations([]);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setSelectedFeederManager("");
+                      setSelectedFeederManager('');
                       setFeederManager([]);
-                      setSelectedFeederIncharge("");
+                      setSelectedFeederIncharge('');
                       setFeederIncharge([]);
-                      setManagerJoiningDate("");
-                      setInchargeJoiningDate("");
+                      setManagerJoiningDate('');
+                      setInchargeJoiningDate('');
                     }}
                   >
                     <option disabled value="">
@@ -551,7 +603,7 @@ function FeederManagement() {
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedSubstation(value);
-                      setSelectedFeeder("");
+                      setSelectedFeeder('');
                       setFeeder([]);
                     }}
                   >
@@ -613,7 +665,7 @@ function FeederManagement() {
                     </option>
                     {feederManager.map((item) => (
                       <option key={item.empCode} value={item.empCode}>
-                        {item.empCode} - {item.fullName} -{" "}
+                        {item.empCode} - {item.fullName} -{' '}
                         {item.designationName}
                       </option>
                     ))}
@@ -639,7 +691,7 @@ function FeederManagement() {
                     </option>
                     {feederIncharge.map((item) => (
                       <option key={item.empCode} value={item.empCode}>
-                        {item.empCode} - {item.fullName} -{" "}
+                        {item.empCode} - {item.fullName} -{' '}
                         {item.designationName}
                       </option>
                     ))}
@@ -695,7 +747,7 @@ function FeederManagement() {
             <Button
               className="cancel-button"
               variant="outlined"
-              style={{ borderRadius: "20px", padding: "6px 20px" }}
+              style={{ borderRadius: '20px', padding: '6px 20px' }}
               component={Link}
               to="/"
             >
@@ -707,11 +759,11 @@ function FeederManagement() {
               className="green-button"
               variant="outlined"
               style={{
-                borderRadius: "20px",
-                backgroundColor: "#0a1f83",
-                color: "#fff",
-                padding: "6px 20px",
-                border: "none",
+                borderRadius: '20px',
+                backgroundColor: '#0a1f83',
+                color: '#fff',
+                padding: '6px 20px',
+                border: 'none',
               }}
             >
               Submit
@@ -722,7 +774,7 @@ function FeederManagement() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

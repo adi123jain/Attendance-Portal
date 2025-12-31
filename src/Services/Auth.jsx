@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
-// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
+// const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
 
@@ -590,6 +590,11 @@ export const submitMedicalReimbursement = (formData) => {
   // );
 };
 
+// 94.1 Submit Medicine Details API
+export const submitMedicineDetails = (payload) => {
+  return axios.post(base_url + `/medical/saveMedicineDetail`, payload);
+};
+
 // 95. Get Current Grade Pay
 export const currentGradePay = () => {
   return axios.get(base_url + `/hps/getGradePay`);
@@ -649,12 +654,14 @@ export const getAuthorizationSso = (dcId) => {
 
 // 104. Get SSO Details by DcId
 export const getSsoByDCId = (dcId) => {
-  return axios.get(base_url + `/OnM/getSsoByDc?dcId=302020102`);
+  // 302020102
+  return axios.get(base_url + `/OnM/getSsoByDc?dcId=${dcId}`);
 };
 
 // 105. Get Dgm By JE
 export const getDgmByJe = (empCode) => {
-  return axios.get(base_url + `/OnM/getDGMByJE?jeEmpCode=34520691`);
+  // 34520691
+  return axios.get(base_url + `/OnM/getDGMByJE?jeEmpCode=${empCode}`);
 };
 
 // 106. Submit Sso Authorization
@@ -669,7 +676,8 @@ export const getLineStaffAuth = (dcId) => {
 
 // 108. Get Line Staff By DcId
 export const getLineByDcId = (dcId) => {
-  return axios.get(base_url + `/OnM/getLineByDc?dcId=302020102`);
+  // 302020102
+  return axios.get(base_url + `/OnM/getLineByDc?dcId=${dcId}`);
 };
 
 // 109. Submit Line staff Authorization
@@ -680,8 +688,8 @@ export const submitLineAuthorization = (payload) => {
 // 110. Get Medical for HR
 export const getMedicalByHr = () => {
   return axios.get(
-    // base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`
-    base_url + `/medical/getHrPending?hrEmpCode=150049`,
+    base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`,
+    // base_url + `/medical/getHrPending?hrEmpCode=150049`,
   );
 };
 
@@ -712,7 +720,10 @@ export const submitMedicalHrStatus = (payload) => {
 
 // 113. Get Medical for Cmo
 export const getMedicalByCmo = () => {
-  return axios.get(base_url + `/medical/getCmoPending?cmoEmpCode=273471`);
+  // 273471
+  return axios.get(
+    base_url + `/medical/getCmoPending?cmoEmpCode=${sessionEmpCode}`,
+  );
 };
 
 // 114. Submit Medical Hr Status
@@ -723,8 +734,8 @@ export const submitMedicalCmoStatus = (payload) => {
 // 115. Get Medical For AO
 export const getMedicalByAo = () => {
   return axios.get(
-    // base_url + `/medical/getAoPending?aoEmpCode=${sessionEmpCode}`
-    base_url + `/medical/getAoPending?aoEmpCode=12345`,
+    base_url + `/medical/getAoPending?aoEmpCode=${sessionEmpCode}`,
+    // base_url + `/medical/getAoPending?aoEmpCode=12345`,
   );
 };
 
@@ -780,7 +791,8 @@ export const getEmployeeInfo = (empCode) => {
 
 // 125. Get SSO List By Empcode
 export const getSsoList = () => {
-  return axios.get(base_url + `/master/ssoDashboard?empCode=290033`);
+  // 290033
+  return axios.get(base_url + `/master/ssoDashboard?empCode=${sessionEmpCode}`);
 };
 
 // 126. Employee Nomination
@@ -801,8 +813,10 @@ export const vigilanceLogin = (payload) => {
 
 // 128. Get Sso Authorization status for DGM
 export const getSsoSatusByDgm = () => {
+  // 9590217
   return axios.get(
-    base_url + `/OnM/getDGMPendingAuthorizationSSO?dgmEmpCode=9590217`,
+    base_url +
+      `/OnM/getDGMPendingAuthorizationSSO?dgmEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -820,8 +834,9 @@ export const updateSsoSatusByDgm = (value, id, remark) => {
 
 // 130. Get Sso Authorization status for GM
 export const getSsoSatusByGm = () => {
+  // 85390317
   return axios.get(
-    base_url + `/OnM/getGMPendingAuthorizationSSO?gmEmpCode=85390317`,
+    base_url + `/OnM/getGMPendingAuthorizationSSO?gmEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -840,8 +855,10 @@ export const updateSsoSatusByGm = (value, id, remark) => {
 
 // 132. Get Line Staff status for DGM
 export const getLineSatusByDgm = () => {
+  // 9590217
   return axios.get(
-    base_url + `/OnM/getDGMPendingAuthorizationLine?dgmEmpCode=9590217`,
+    base_url +
+      `/OnM/getDGMPendingAuthorizationLine?dgmEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -859,8 +876,9 @@ export const updateLineSatusByDgm = (value, id, remark) => {
 
 // 134. Get Line Staff status for GM
 export const getLineSatusByGm = () => {
+  // 85390317
   return axios.get(
-    base_url + `/OnM/getGMPendingAuthorizationLine?gmEmpCode=85390317`,
+    base_url + `/OnM/getGMPendingAuthorizationLine?gmEmpCode=${sessionEmpCode}`,
   );
 };
 
@@ -878,7 +896,10 @@ export const updateLineSatusByGm = (value, id, remark) => {
 
 // 136. Get PTR status for DGM
 export const getPtrSatusByDgm = () => {
-  return axios.get(base_url + `/OnM/getPtrFailureByDgm?dgmEmpCode=9570011`);
+  // 9570011
+  return axios.get(
+    base_url + `/OnM/getPtrFailureByDgm?dgmEmpCode=${sessionEmpCode}`,
+  );
 };
 
 // 137. Update PTR status for DGM
@@ -927,8 +948,9 @@ export const createWiremanCertificate = (payload) => {
 
 // 145. Fetch Wireman Certificates
 export const getWiremanCertificates = (circleId) => {
+  // 309
   return axios.get(
-    base_url + `/outsource/getWiremanCertPendingAtCircle?circleId=309`,
+    base_url + `/outsource/getWiremanCertPendingAtCircle?circleId=${circleId}`,
   );
 };
 
@@ -943,7 +965,3 @@ export const getEmpNameByCode = (empCode) => {
 export const updateWiremanCertificateGM = (payload) => {
   return axios.post(base_url + `/outsource/updateWiremanGmStatus`, payload);
 };
-
-// https://attendance.mpcz.in:8888/E-Attendance/api/biomatric/findNameByEmpCode?empCode=12345
-
-// https://attendance.mpcz.in:8888/E-Attendance/api/medical/updateMediClaimMember

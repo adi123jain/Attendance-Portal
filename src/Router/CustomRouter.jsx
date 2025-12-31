@@ -1,28 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from '../Constants/Navbar/Index';
-// import Home1 from "../Components/Home1";
-// import About from "../Components/About";
-// import Contact from "../Components/Contact";
+
 import Login from '../Components/User/Login';
 import Signup from '../Components/User/Signup';
 import PrivateRoute from '../Router/PrivateRoute';
 import PublicRoute from '../Router/PublicRoute';
 import { AuthProvider } from '../Authentication/Context/AuthContext';
 import Dashboard from '../Components/Dashboard/Index';
-// import EmployeeInformation from "../Components/Regular Employee/Employee Information/Index";
 import ApplyAttendanceCorrection from '../Components/Regular Employee/Apply_Attendance_Correction/Index';
 import CorrectionApplication from '../Components/Regular Employee/Correction_Application/Index';
 import ShiftChange from '../Components/Regular Employee/Shift_Change/Index';
 import PaySlip from '../Components/Regular Employee/Pay_Slip/Index';
-// import AddNewEmployee from "../Components/Regular Employee/Add New Employee/Index";
-
 import RRAC_Scheme from '../Components/Regular Employee/Request_For_RRAC_Scheme/Index';
 import RRAC_MIS from '../Components/Regular Employee/RRAC_Scheme_MIS/Index';
 import ViewExpenditure from '../Components/Regular Employee/Expenditure/View_Expenditure/Index';
 import UploadExpenditureDocuments from '../Components/Regular Employee/Expenditure/Upload_Documents/Index';
-//import ViewExpenditureDetails from "../Components/Regular Employee/Expenditure Approval By Authority/View_Expenditure_By_Authority/Index";
-//import ApproveDownloadDocs from "../Components/Regular Employee/Expenditure Approval By Authority/Approve_Download_Docs/Index";
 import EditLocation from '../Components/HR Pannel/Attendance Location/Edit_Location/Index';
 import CreateAttendanceLocation from '../Components/HR Pannel/Attendance Location/Create_Location/Index';
 import UpdateLocation from '../Components/HR Pannel/Attendance Location/Update_Location/Index';
@@ -43,7 +36,6 @@ import OutsourceEmployeeData from '../Components/Outsource/Emloyee_Data/Index';
 import OutsourceLeaveAllocation from '../Components/Outsource/Leave_Allocation/Index';
 import OutsourceEmpAttendaceView from '../Components/Outsource/Employee_Attendance_View/Index';
 import EmployeeInformation from '../Components/HR Pannel/Employee_Information/Index';
-// import AddNewEmployee from "../Components/HR Pannel/Add_New_Employee/Index";
 import EmployeePlaceOfPosting from '../Components/HR Pannel/Employee_Place_of_Postings/Index';
 import FeederManagement from '../Components/HR Pannel/Feeder_Management/Index';
 import DayWiseAttendanceOutsource from '../Components/Outsource/Day_Wise_Attendance/Index';
@@ -71,16 +63,14 @@ import MedicalApprovalByCmo from '../Components/Regular Employee/Medical_Approve
 import MedicalApprovalByAo from '../Components/Regular Employee/Medical_Approvers/Ao_Approval/Index';
 import MedicalFormView from '../Components/Regular Employee/Medical_Update_and_View/MedicalView';
 import MedicalFormUpdate from '../Components/Regular Employee/Medical_Update_and_View/MedicalUpdate';
-// import SsoDashboard from "../Components/Sso_Dashboard/Index";
 import MedicalHealthInsurance from '../Components/Regular Employee/Medical_Health_Insurance/Index';
 import DataProvider from '../Components/HR Pannel/Add_New_Employee/DataProvider';
-// import UpdateEmployeeInformation from "../Components/HR Pannel/Update_Employee_Information/Index";
 import UpdateDataContainer from '../Components/HR Pannel/Update_Employee_Information/UpdateDataContainer';
 import HumanResourceDashboard from '../Components/Dashboards/Hr_Dashboard/Index';
 import OperationmaintenanceDashboard from '../Components/Dashboards/O&M_Dashboard/Index';
 import EmployeeDashboard from '../Components/Dashboards/Employee_Dashboard/Index';
 import ReportingOfficerDashboard from '../Components/Dashboards/Reporting_Dashboard/Index';
-import SsoDashboard from '../Components/Dashboards/Sso_Dashboard/Index';
+// import SsoDashboard from '../Components/Dashboards/Sso_Dashboard/Index';
 import DgmAuthorizationStatus from '../Components/Regular Employee/Sso_Authorization_Status/dgmStatus';
 import GmAuthorizationStatus from '../Components/Regular Employee/Sso_Authorization_Status/gmStatus';
 import DgmLineStaffStatus from '../Components/Regular Employee/LineStaff_Authorization_Status/dgmStatus';
@@ -92,6 +82,7 @@ import MedicalHealthInsuranceView from '../Components/Regular Employee/Medical_H
 import HigherPayScale from '../Components/Regular Employee/Higher_Pay_Scale/Index';
 import WiremanCertificateByHr from '../Components/HR Pannel/Wireman_Certificate/Index';
 import UpdateWiremanCertificateStatus from '../Components/HR Pannel/View_Update_Wireman_Certificate/Index';
+import MainDashboard from '../Components/Dashboards/Main_Dashboard';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -135,8 +126,10 @@ function CustomRouter() {
               </PrivateRoute>
             }
           >
+            {/* <Route path="/" element={<SsoDashboard />} /> */}
+            <Route path="/" element={<MainDashboard />} />
+
             <Route path="ssoDashboard" element={<Dashboard />} />
-            <Route path="/" element={<SsoDashboard />} />
             <Route path="employeeDashboard" element={<EmployeeDashboard />} />
             <Route
               path="reportingOfficerDashboard"
@@ -260,6 +253,7 @@ function CustomRouter() {
             <Route path="gmLineStaffStatus" element={<GmLineStaffStatus />} />
             <Route path="dgmPtrStatus" element={<DgmPtrStatus />} />
             <Route path="higherPayScale" element={<HigherPayScale />} />
+            {/* <Route path="/" element={<HigherPayScale />} /> */}
 
             {/* HR Section */}
             <Route path="editLocation" element={<EditLocation />} />

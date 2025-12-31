@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Card, Row, Col, Form } from "react-bootstrap";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import Modal from "react-bootstrap/Modal";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Card, Row, Col, Form } from 'react-bootstrap';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Modal from 'react-bootstrap/Modal';
 
 import {
   Typography,
@@ -19,17 +19,17 @@ import {
   TableRow,
   Box,
   Paper,
-} from "@mui/material";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { PropagateLoader } from "react-spinners";
+} from '@mui/material';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { PropagateLoader } from 'react-spinners';
 import {
   getEmpMedicalClaim,
   updateFamilyInfoMedical,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableCell,
   StyledTableRow,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 function MedicalHealthInsuranceView() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -40,12 +40,12 @@ function MedicalHealthInsuranceView() {
       try {
         setOpenBackdrop(true);
         const response = await getEmpMedicalClaim();
-        console.log(response);
-        if (response.data.code === "200") {
+        // console.log(response);
+        if (response.data.code === '200') {
           setClaimedData(response.data.list[0]);
         }
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error);
       } finally {
         setOpenBackdrop(false);
       }
@@ -57,33 +57,33 @@ function MedicalHealthInsuranceView() {
   const modalClose = () => setModalShow(false);
 
   // Form states
-  const [relation, setRelation] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [dob, setDob] = useState("");
-  const [gender, setGender] = useState("");
-  const [bloodGroup, setBloodGroup] = useState("");
-  const [status, setStatus] = useState("");
-  const [dependent, setDependent] = useState("");
-  const [aadhaar, setAadhaar] = useState("");
-  const [memberId, setMemberId] = useState("");
+  const [relation, setRelation] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [dob, setDob] = useState('');
+  const [gender, setGender] = useState('');
+  const [bloodGroup, setBloodGroup] = useState('');
+  const [status, setStatus] = useState('');
+  const [dependent, setDependent] = useState('');
+  const [aadhaar, setAadhaar] = useState('');
+  const [memberId, setMemberId] = useState('');
 
   const handleView = (item) => {
-    setRelation(item.relation || "");
-    setFullName(item.fullName || "");
-    setDob(item.dateOfBirth || "");
-    setGender(item.gender || "");
-    setBloodGroup(item.bloodGroup || "");
-    setStatus(item.status || "");
-    setDependent(item.isDependent || "");
-    setAadhaar(item.adhaarNumber || "");
-    setMemberId(item.id || "");
+    setRelation(item.relation || '');
+    setFullName(item.fullName || '');
+    setDob(item.dateOfBirth || '');
+    setGender(item.gender || '');
+    setBloodGroup(item.bloodGroup || '');
+    setStatus(item.status || '');
+    setDependent(item.isDependent || '');
+    setAadhaar(item.adhaarNumber || '');
+    setMemberId(item.id || '');
 
     setModalShow(true);
   };
-  const [errorMsg, setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleUpdate = async () => {
-    setErrorMsg("");
+    setErrorMsg('');
 
     // Check required fields
     if (
@@ -95,14 +95,14 @@ function MedicalHealthInsuranceView() {
       !dependent ||
       !aadhaar
     ) {
-      setErrorMsg("Please fill all the required fields.");
+      setErrorMsg('Please fill all the required fields.');
       return;
     }
 
     //  Aadhaar validation (12 digits only)
     const aadhaarRegex = /^[0-9]{12}$/;
     if (!aadhaarRegex.test(aadhaar)) {
-      setErrorMsg("Aadhaar number must be exactly 12 digits.");
+      setErrorMsg('Aadhaar number must be exactly 12 digits.');
       return;
     }
 
@@ -118,7 +118,7 @@ function MedicalHealthInsuranceView() {
       gender: gender,
       bloodGroup: bloodGroup,
       adhaarNumber: aadhaar,
-      empCode: sessionStorage.getItem("empCode"),
+      empCode: sessionStorage.getItem('empCode'),
     };
 
     // console.log("Updated data:", payload);
@@ -126,14 +126,14 @@ function MedicalHealthInsuranceView() {
     try {
       const response = await updateFamilyInfoMedical(payload);
 
-      if (response.data.code === "200" && response.data.message === "Success") {
-        alert("Family Detailed Updated Successfully");
+      if (response.data.code === '200' && response.data.message === 'Success') {
+        alert('Family Detailed Updated Successfully');
         window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
     } finally {
       setOpenBackdrop(false);
       setModalShow(false);
@@ -155,11 +155,11 @@ function MedicalHealthInsuranceView() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             MP Power Company Cashless Health Scheme
@@ -173,11 +173,11 @@ function MedicalHealthInsuranceView() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
+                  textAlign: 'center',
+                  color: '#0a1f83',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Employee Information
@@ -193,9 +193,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.empCode || "-"}
+                    {claimedData?.empCode || '-'}
                   </Typography>
                 </Grid>
 
@@ -205,9 +205,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.empName || "-"}
+                    {claimedData?.empName || '-'}
                   </Typography>
                 </Grid>
 
@@ -217,9 +217,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.designationName || "-"}
+                    {claimedData?.designationName || '-'}
                   </Typography>
                 </Grid>
 
@@ -230,9 +230,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.departmentName || "-"}
+                    {claimedData?.departmentName || '-'}
                   </Typography>
                 </Grid>
 
@@ -242,9 +242,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.optionOpt || "-"}
+                    {claimedData?.optionOpt || '-'}
                   </Typography>
                 </Grid>
 
@@ -254,9 +254,9 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                   <Typography
                     variant="body1"
-                    sx={{ fontWeight: 600, color: "#0a1f83" }}
+                    sx={{ fontWeight: 600, color: '#0a1f83' }}
                   >
-                    {claimedData?.bloodGroup || "-"}
+                    {claimedData?.bloodGroup || '-'}
                   </Typography>
                 </Grid>
               </Grid>
@@ -268,11 +268,11 @@ function MedicalHealthInsuranceView() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
+                  textAlign: 'center',
+                  color: '#0a1f83',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Family Information
@@ -303,28 +303,28 @@ function MedicalHealthInsuranceView() {
                           <StyledTableCell>{index + 1}</StyledTableCell>
 
                           <StyledTableCell>
-                            {item.relation || "-"}
+                            {item.relation || '-'}
                           </StyledTableCell>
                           <StyledTableCell>{item.fullName}</StyledTableCell>
                           <StyledTableCell>
-                            {item.dateOfBirth || "-"}
+                            {item.dateOfBirth || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.gender || "-"}
+                            {item.gender || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.bloodGroup || "-"}
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            {item.status || "-"}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.isDependent || "-"}
+                            {item.bloodGroup || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.adhaarNumber || "-"}
+                            {item.status || '-'}
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            {item.isDependent || '-'}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.adhaarNumber || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
@@ -381,7 +381,7 @@ function MedicalHealthInsuranceView() {
           <Modal.Title>
             <Typography
               variant="h6"
-              sx={{ color: "#0a1f83", fontFamily: "serif", fontWeight: "bold" }}
+              sx={{ color: '#0a1f83', fontFamily: 'serif', fontWeight: 'bold' }}
             >
               Update Family Member
             </Typography>
@@ -513,13 +513,13 @@ function MedicalHealthInsuranceView() {
           {errorMsg && (
             <div
               style={{
-                backgroundColor: "#ffd8d8",
-                color: "#b30000",
-                padding: "8px 12px",
-                borderRadius: "5px",
-                marginBottom: "12px",
-                fontSize: "14px",
-                fontWeight: "500",
+                backgroundColor: '#ffd8d8',
+                color: '#b30000',
+                padding: '8px 12px',
+                borderRadius: '5px',
+                marginBottom: '12px',
+                fontSize: '14px',
+                fontWeight: '500',
               }}
             >
               {errorMsg}
@@ -547,7 +547,7 @@ function MedicalHealthInsuranceView() {
       </Modal>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

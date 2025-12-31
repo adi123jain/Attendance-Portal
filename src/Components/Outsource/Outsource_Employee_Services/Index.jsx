@@ -144,7 +144,7 @@ function OutsourceEmployeeServices() {
       };
       const res = await getOutsourceEmpByLevel(payload);
       // console.log("Employee Data:", res?.data);
-      if (res?.data.code == '200' && res?.data.message == 'Success') {
+      if (res?.data.code === '200' && res?.data.message === 'Success') {
         setOpenBackdrop(true);
         setDataInLevelTable(res?.data.list);
         setShowLevelTable(true);

@@ -1,5 +1,6 @@
 import {
   Backdrop,
+  Box,
   Button,
   Checkbox,
   FormControl,
@@ -12,7 +13,10 @@ import {
   TableHead,
   TextField,
   Typography,
+  Modal,
+  IconButton,
 } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropagateLoader } from 'react-spinners';
@@ -21,8 +25,10 @@ import {
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
 import {
+  getOtp,
   getWiremanCertificates,
   updateWiremanCertificateGM,
+  verifyOtp,
 } from '../../../Services/Auth';
 import { Link } from 'react-router-dom';
 
@@ -36,9 +42,6 @@ function UpdateWiremanCertificateStatus() {
 
   const inputRefs = useRef({}); // for focus on error fields
 
-  // ===================================================================
-  // 🔹 FETCH DATA
-  // ===================================================================
   const fetchDetails = async () => {
     try {
       setOpenBackdrop(true);
@@ -151,12 +154,12 @@ function UpdateWiremanCertificateStatus() {
   };
 
   const handleSubmit = async () => {
-    if (selected.length === 0) {
-      alert('Please select at least one record!');
-      return;
-    }
+    // if (selected.length === 0) {
+    //   alert('Please select at least one record!');
+    //   return;
+    // }
 
-    if (!validate()) return;
+    // if (!validate()) return;
 
     const payload = selected.map((id) => ({
       id,
@@ -186,6 +189,107 @@ function UpdateWiremanCertificateStatus() {
     } finally {
       setOpenBackdrop(false);
     }
+  };
+
+  // function check() {
+  //   const base64Mobile = btoa(9893452591);
+  //   console.log(base64Mobile);
+  // }
+
+  const [otp, setOtp] = useState('');
+  const [otpModal, setOtpModal] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [resendTimer, setResendTimer] = useState(0); // seconds left for resend
+
+  // Send OTP API
+  const sendOtp = async () => {
+    if (selected.length === 0) {
+      alert('Please select at least one record!');
+      return;
+    }
+
+    if (!validate()) return;
+    const payload = {
+      username: sessionStorage.getItem('empCode'),
+      source: 'OTP for approval of Wireman Certificate',
+    };
+    try {
+      setOpenBackdrop(true);
+
+      const response = await getOtp(payload);
+      if (response.data.code === '200') {
+        alert('OTP sent successfully');
+        setOtp('');
+        setOtpError('');
+        setOtpModal(true);
+        setResendTimer(15);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.log('Error', error);
+    } finally {
+      setOpenBackdrop(false);
+    }
+  };
+
+  // Timer effect for resend
+  useEffect(() => {
+    if (!otpModal) {
+      setResendTimer(0);
+      return;
+    }
+
+    if (resendTimer === 0) return;
+
+    const interval = setInterval(() => {
+      setResendTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [otpModal, resendTimer]);
+
+  // Resend OTP
+  const handleResend = () => {
+    if (resendTimer > 0) return; // safety, button is already disabled in UI
+    sendOtp();
+  };
+
+  // Submit OTP API
+  const submitOtp = async () => {
+    // Basic validation
+    if (!otp || otp.length !== 4) {
+      setOtpError('Please enter a valid 4-digit OTP.');
+      return;
+    }
+
+    try {
+      const payload = {
+        username: sessionStorage.getItem('empCode'),
+        source: 'OTP for approval of Wireman Certificate',
+        otp: otp,
+      };
+      const response = await verifyOtp(payload);
+      if (response.data.code === '200') {
+        alert('OTP verified successfully');
+        handleSubmit();
+        setOtpModal(false);
+        setOtp('');
+        setOtpError('');
+      } else {
+        setOtpError(response.data.message || 'Invalid OTP');
+      }
+    } catch (error) {
+      console.log('Error', error);
+      setOtpError('Something went wrong, please try again.');
+    }
+  };
+
+  const handleCloseOtpModal = () => {
+    setOtpModal(false);
+    setOtp('');
+    setOtpError('');
+    setResendTimer(0);
   };
 
   return (
@@ -354,16 +458,154 @@ function UpdateWiremanCertificateStatus() {
           <Button
             variant="contained"
             className="green-button"
-            onClick={handleSubmit}
+            onClick={sendOtp}
           >
             Update
           </Button>
         </div>
       </Card>
 
+      <Modal open={otpModal} onClose={handleCloseOtpModal}>
+        <Paper
+          elevation={8}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 420,
+            borderRadius: 3,
+            overflow: 'hidden',
+          }}
+        >
+          {/* Header */}
+          <Box
+            sx={{
+              background:
+                'linear-gradient(135deg, #1565C0 0%, #1E88E5 50%, #42A5F5 100%)',
+              color: 'white',
+              py: 1.5,
+              px: 2.2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              OTP Verification
+            </Typography>
+
+            <IconButton onClick={handleCloseOtpModal} sx={{ color: 'white' }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          {/* Body */}
+          <Box sx={{ p: 3 }}>
+            <Typography
+              variant="body1"
+              sx={{ mb: 2, color: '#555', lineHeight: 1.4 }}
+            >
+              Please enter the 4-digit OTP sent to your registered mobile
+              number.
+            </Typography>
+
+            {/* OTP Input */}
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Enter OTP"
+              required
+              placeholder="••••"
+              value={otp}
+              onChange={(e) => {
+                const value = e.target.value;
+                // allow only digits, max 4
+                if (/^\d{0,4}$/.test(value)) {
+                  setOtp(value);
+                  setOtpError('');
+                }
+              }}
+              error={!!otpError}
+              helperText={otpError || 'OTP is valid for a limited time.'}
+              inputProps={{
+                maxLength: 4,
+                inputMode: 'numeric',
+                style: {
+                  textAlign: 'center',
+                  fontSize: '20px',
+                  letterSpacing: '4px',
+                  padding: '10px 0',
+                },
+              }}
+              sx={{
+                mb: 3,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  backgroundColor: '#fafafa',
+                },
+              }}
+            />
+
+            {/* Buttons & Timer */}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={submitOtp}
+                sx={{
+                  flex: 1,
+                  py: 1,
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  background:
+                    'linear-gradient(135deg, #1E88E5 0%, #42A5F5 100%)',
+                }}
+              >
+                Submit OTP
+              </Button>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  flex: 1,
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={handleResend}
+                  disabled={resendTimer > 0}
+                  sx={{
+                    py: 1,
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    borderWidth: '1.8px',
+                  }}
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend OTP'}
+                </Button>
+                <Typography variant="caption" sx={{ mt: 0.5, color: '#888' }}>
+                  You can resend OTP after 15 seconds.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
+      </Modal>
+
       <Backdrop sx={{ color: '#fff', zIndex: 9999 }} open={openBackdrop}>
         <PropagateLoader />
       </Backdrop>
+
+      {/* <button onClick={check}>Click me</button> */}
     </>
   );
 }

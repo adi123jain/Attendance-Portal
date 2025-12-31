@@ -19,7 +19,10 @@ import {
   DialogActions,
   Divider,
   Grid,
+  TextField,
+  OutlinedInput,
 } from '@mui/material';
+
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -157,7 +160,7 @@ function MedicalApprovalByCmo() {
         setOpenBackdrop(true);
         const response = await getMedicalByCmo();
         console.log(response);
-        if (response.data.code == '200') {
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setRecords(response.data.list);
         } else {
@@ -215,6 +218,7 @@ function MedicalApprovalByCmo() {
   const handleClose = () => {
     setOpen(false);
     setSelectedRow([]);
+    window.location.reload();
   };
 
   const [expandedRow, setExpandedRow] = useState(null);
@@ -257,23 +261,40 @@ function MedicalApprovalByCmo() {
   // const forwardToRef = useRef(null);
 
   // Validation
+  // const validate = () => {
+  //   const newErrors = {};
+  //   if (!cmoStatus) newErrors.cmoStatus = 'Status is required';
+
+  //   // if (cmoStatus === 'Rejected' && !forwardTo) {
+  //   //   newErrors.forwardTo = 'Forward To is required when Rejected';
+  //   // }
+
+  //   // if (!cmoAprAmount.trim()) newErrors.cmoAprAmount = 'Amount is required';
+  //   if (!cmoRemark.trim()) newErrors.cmoRemark = 'Remark is required';
+
+  //   setErrors(newErrors);
+
+  //   if (Object.keys(newErrors).length > 0) {
+  //     if (newErrors.cmoStatus && statusRef.current) statusRef.current.focus();
+  //     else if (newErrors.cmoAprAmount && amountRef.current)
+  //       amountRef.current.focus();
+  //     else if (newErrors.cmoRemark && remarkRef.current)
+  //       remarkRef.current.focus();
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
   const validate = () => {
     const newErrors = {};
+
     if (!cmoStatus) newErrors.cmoStatus = 'Status is required';
-
-    // if (cmoStatus === 'Rejected' && !forwardTo) {
-    //   newErrors.forwardTo = 'Forward To is required when Rejected';
-    // }
-
-    if (!cmoAprAmount.trim()) newErrors.cmoAprAmount = 'Amount is required';
     if (!cmoRemark.trim()) newErrors.cmoRemark = 'Remark is required';
 
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
       if (newErrors.cmoStatus && statusRef.current) statusRef.current.focus();
-      else if (newErrors.cmoAprAmount && amountRef.current)
-        amountRef.current.focus();
       else if (newErrors.cmoRemark && remarkRef.current)
         remarkRef.current.focus();
       return false;
@@ -282,32 +303,71 @@ function MedicalApprovalByCmo() {
   };
 
   //  Submit function
+  // const CmoStatusUpdate = async () => {
+  //   if (!validate()) return;
+  //   setOpenBackdrop(true);
+  //   const payload = {
+  //     refNo: referenceNo,
+  //     status: cmoStatus,
+  //     remark: cmoRemark,
+  //     totalAmountApprovedByDoc: cmoAprAmount,
+  //     // next: cmoStatus === 'Approved' ? '' : forwardTo,
+  //   };
+
+  //   try {
+  //     // replace with your API call
+  //     const response = await submitMedicalCmoStatus(payload);
+  //     console.log('Success:', response);
+  //     if (response.data.code === '200') {
+  //       alert('Status Updated Successfully !!');
+  //       setOpenBackdrop(false);
+  //       //window.location.reload();
+  //     } else {
+  //       alert(response.data.message);
+  //       setOpenBackdrop(false);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error submitting:', error);
+  //     alert('Submission failed!');
+  //     setOpenBackdrop(false);
+  //   }
+  // };
+
   const CmoStatusUpdate = async () => {
     if (!validate()) return;
     setOpenBackdrop(true);
+
+    // Prepare memoList
+    const memoListPayload =
+      selectedRow?.medicineDetails
+        ?.flatMap((item) => item.memoList)
+        ?.map((memo) => ({
+          id: memo.id,
+          approvedAmount: approvedAmounts[memo.id] || '0',
+        })) || [];
+
     const payload = {
       refNo: referenceNo,
       status: cmoStatus,
       remark: cmoRemark,
       totalAmountApprovedByDoc: cmoAprAmount,
-      // next: cmoStatus === 'Approved' ? '' : forwardTo,
+      memoList: memoListPayload,
     };
+    console.log(payload);
 
     try {
-      // replace with your API call
       const response = await submitMedicalCmoStatus(payload);
-      console.log('Success:', response);
+
       if (response.data.code === '200') {
         alert('Status Updated Successfully !!');
-        setOpenBackdrop(false);
-        //window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
-        setOpenBackdrop(false);
       }
     } catch (error) {
       console.error('Error submitting:', error);
       alert('Submission failed!');
+    } finally {
       setOpenBackdrop(false);
     }
   };
@@ -347,6 +407,25 @@ function MedicalApprovalByCmo() {
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
+
+  const [approvedAmounts, setApprovedAmounts] = useState({});
+
+  const handleAmountChange = (memoId, value) => {
+    setApprovedAmounts((prev) => {
+      const updated = { ...prev, [memoId]: value };
+
+      // Calculate total
+      const total = Object.values(updated).reduce(
+        (sum, val) => sum + Number(val || 0),
+        0,
+      );
+
+      setCmoAprAmount(total); // auto update input outside table
+
+      return updated;
+    });
+  };
+
   return (
     <>
       <Card className="shadow">
@@ -511,8 +590,8 @@ function MedicalApprovalByCmo() {
               {fieldCard('AO Remark', selectedRow.aoRemark, 23)}
 
               {fieldCard('Bank Name', selectedRow.bankName, 24)}
-              {fieldCard('Bank Code', selectedRow.bankCode, 25)}
-              {fieldCard('Cheque No', selectedRow.chequeNo, 26)}
+              {fieldCard('Bank IFSC', selectedRow.bankIfsc, 25)}
+              {fieldCard('Account No', selectedRow.bankAccount, 26)}
               {fieldCard(
                 'Amount Approved by CMO',
                 selectedRow.totalAmountApprovedByDoc,
@@ -560,72 +639,6 @@ function MedicalApprovalByCmo() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <StyledTableRow>
-                      <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>Cash Memo Date</StyledTableCell>
-                      <StyledTableCell>Cash Memo No</StyledTableCell>
-                      <StyledTableCell>Drug Name</StyledTableCell>
-                      <StyledTableCell>Quantity</StyledTableCell>
-                      <StyledTableCell>ShopName</StyledTableCell>
-                      <StyledTableCell>Total Value</StyledTableCell>
-                      <StyledTableCell>Document</StyledTableCell>
-                    </StyledTableRow>
-                  </TableHead>
-                  <TableBody>
-                    {medicineData && medicineData.length > 0 ? (
-                      medicineData.map((item, index) => (
-                        <StyledTableRow key={index}>
-                          <StyledTableCell>{index + 1}</StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoDate || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoNo || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.drugName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.quantity || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.shopName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.totalValue || '-'}
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            <Tooltip title="Preview" arrow>
-                              <Button
-                                variant="contained"
-                                color="dark"
-                                //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                                onClick={() => downloadDocument(item.memoPath)}
-                              >
-                                <CloudDownloadIcon
-                                  fontSize="small"
-                                  color="success"
-                                />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    ) : (
-                      <StyledTableRow>
-                        <StyledTableCell colSpan={8}>
-                          Data Not Found
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
-
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
@@ -697,10 +710,14 @@ function MedicalApprovalByCmo() {
                                       <SubTableCell>Drug Name</SubTableCell>
                                       <SubTableCell>Quantity</SubTableCell>
                                       <SubTableCell>Total Value</SubTableCell>
+                                      <SubTableCell>
+                                        {' '}
+                                        Approved Amount
+                                      </SubTableCell>
                                     </SubTableRow>
                                   </TableHead>
 
-                                  <TableBody>
+                                  {/* <TableBody>
                                     {item.memoList.map((memo, i) => (
                                       <SubTableRow key={i}>
                                         <SubTableCell>{i + 1}</SubTableCell>
@@ -716,8 +733,90 @@ function MedicalApprovalByCmo() {
                                         <SubTableCell>
                                           {memo.totalValue || '-'}
                                         </SubTableCell>
+                                        <SubTableCell>
+                                          <TextField
+                                            type="number"
+                                            placeholder="Enter Amount"
+                                            variant="outlined"
+                                            value={
+                                              approvedAmounts[memo.id] || ''
+                                            }
+                                            onChange={(e) =>
+                                              handleAmountChange(
+                                                memo.id,
+                                                e.target.value,
+                                              )
+                                            }
+                                          />
+                                        </SubTableCell>
                                       </SubTableRow>
                                     ))}
+                                  </TableBody> */}
+
+                                  <TableBody>
+                                    {item.memoList &&
+                                    item.memoList.length > 0 ? (
+                                      item.memoList.map((memo, i) => (
+                                        <SubTableRow key={i}>
+                                          <SubTableCell>{i + 1}</SubTableCell>
+                                          <SubTableCell>
+                                            {memo.cashMemoNo || '-'}
+                                          </SubTableCell>
+                                          <SubTableCell>
+                                            {memo.drugName || '-'}
+                                          </SubTableCell>
+                                          <SubTableCell>
+                                            {memo.quantity || '-'}
+                                          </SubTableCell>
+                                          <SubTableCell>
+                                            {memo.totalValue || '-'}
+                                          </SubTableCell>
+                                          <SubTableCell>
+                                            {/* <TextField
+                                              type="number"
+                                              placeholder="Enter Amount"
+                                              variant="outlined"
+                                              value={
+                                                approvedAmounts[memo.id] || ''
+                                              }
+                                              onChange={(e) =>
+                                                handleAmountChange(
+                                                  memo.id,
+                                                  e.target.value,
+                                                )
+                                              }
+                                            /> */}
+
+                                            <OutlinedInput
+                                              type="number"
+                                              placeholder="Enter Amount"
+                                              value={
+                                                approvedAmounts[memo.id] || ''
+                                              }
+                                              onChange={(e) =>
+                                                handleAmountChange(
+                                                  memo.id,
+                                                  e.target.value,
+                                                )
+                                              }
+                                              size="small"
+                                            />
+                                          </SubTableCell>
+                                        </SubTableRow>
+                                      ))
+                                    ) : (
+                                      <SubTableRow>
+                                        <SubTableCell
+                                          colSpan={6}
+                                          style={{
+                                            textAlign: 'center',
+                                            color: 'red',
+                                          }}
+                                        >
+                                          Data Not Found
+                                        </SubTableCell>
+                                      </SubTableRow>
+                                    )}
                                   </TableBody>
                                 </Table>
                               </StyledTableCell>
@@ -727,7 +826,10 @@ function MedicalApprovalByCmo() {
                       ))
                     ) : (
                       <StyledTableRow>
-                        <StyledTableCell colSpan={8}>
+                        <StyledTableCell
+                          colSpan={5}
+                          style={{ textAlign: 'center', color: 'red' }}
+                        >
                           Data Not Found
                         </StyledTableCell>
                       </StyledTableRow>
@@ -790,16 +892,12 @@ function MedicalApprovalByCmo() {
                     <Card.Header>Total Approved Amount</Card.Header>
                     <Card.Body>
                       <Form.Control
-                        rows={2}
-                        placeholder="Enter Remark..."
+                        type="number"
                         ref={amountRef}
+                        placeholder="Enter Amount"
                         value={cmoAprAmount}
-                        onChange={(e) => setCmoAprAmount(e.target.value)}
-                        isInvalid={!!errors.cmoAprAmount}
+                        readOnly
                       />
-                      <Form.Control.Feedback type="invalid" className="d-block">
-                        {errors.cmoAprAmount}
-                      </Form.Control.Feedback>
                     </Card.Body>
                   </Card>
                 </Col>
