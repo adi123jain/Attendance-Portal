@@ -1,12 +1,4 @@
-import React from 'react';
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Grid,
-  Box,
-} from '@mui/material';
+import { Card, Typography, Grid, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -20,7 +12,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 function EmployeeDashboard() {
@@ -65,16 +56,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
-    {
-      label: 'Immovable Property',
-      path: '/immovableProperty',
-      icon: <HomeWorkIcon />,
-    },
-    {
-      label: 'Immovable Property View',
-      path: '/immovablePropertyView',
-      icon: <VisibilityIcon />,
-    },
+    // {
+    //   label: 'Immovable Property',
+    //   path: '/immovableProperty',
+    //   icon: <HomeWorkIcon />,
+    // },
+    // {
+    //   label: 'Immovable Property View',
+    //   path: '/immovablePropertyView',
+    //   icon: <VisibilityIcon />,
+    // },
     {
       label: 'Medical CMO Approval',
       path: '/medicalApprovalByCmo',
@@ -86,11 +77,11 @@ function EmployeeDashboard() {
       icon: <AssignmentTurnedInIcon />,
     },
 
-    {
-      label: 'Higher Pay Scale',
-      path: '/higherPayScale',
-      icon: <AssignmentTurnedInIcon />,
-    },
+    // {
+    //   label: 'Higher Pay Scale',
+    //   path: '/higherPayScale',
+    //   icon: <AssignmentTurnedInIcon />,
+    // },
   ];
 
   const empCode = sessionStorage.getItem('empCode');
@@ -99,8 +90,8 @@ function EmployeeDashboard() {
 
   const showInformerScheme =
     designationId === 13 || empCode === '12345' || isManagerHr === true;
-  const showCmoApproval = designationId === 13 || empCode === '12345';
-  const showAoApproval = designationId === 18 || empCode === '12345';
+  const showCmoApproval = designationId === 18 || empCode === '12345';
+  const showAoApproval = designationId === 13 || empCode === '12345';
 
   return (
     <Box
@@ -125,7 +116,7 @@ function EmployeeDashboard() {
             fontFamily: 'serif',
           }}
         >
-          Employee Dashboard
+          Employee Section
         </Typography>
       </motion.div>
 

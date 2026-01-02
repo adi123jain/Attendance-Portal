@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Row, Col, Card, Form } from "react-bootstrap";
+import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import '../../../Constants/Style/styles.css';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Row, Col, Card, Form } from 'react-bootstrap';
 
 import {
   Typography,
@@ -16,14 +12,11 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   addAdditionalCharges,
   deleteAdditionalCharges,
@@ -36,30 +29,11 @@ import {
   getRegion,
   getSubDivision,
   getSubstation,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableCell,
   StyledTableRow,
-} from "../../../Constants/TableStyles/Index";
-// import { StyledTableRow,StyledTableCell } from "../../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 // const StyledTableRow = styled(TableRow)(({ theme }) => ({
 //   "&:nth-of-type(odd)": {
@@ -88,8 +62,8 @@ function AdditionalChargesEmployee() {
         const response = await getAdditionalCharges(empCode);
         console.log(response);
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code == '200' &&
+          response?.data.message == 'Success'
         ) {
           setOpenBackdrop(false);
           setAdditionalRecords(response?.data.list);
@@ -98,7 +72,7 @@ function AdditionalChargesEmployee() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.error("Error fetching place of posting:", error);
+        console.error('Error fetching place of posting:', error);
         setOpenBackdrop(false);
       }
     };
@@ -113,12 +87,12 @@ function AdditionalChargesEmployee() {
   const [dcs, setDCs] = useState([]);
   const [subStations, setSubStations] = useState([]);
 
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
-  const [selectedSubstation, setSelectedSubstation] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
+  const [selectedSubstation, setSelectedSubstation] = useState('');
 
   const [errors, setErrors] = useState({});
 
@@ -135,7 +109,7 @@ function AdditionalChargesEmployee() {
         const response = await getRegion();
         setRegions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -148,7 +122,7 @@ function AdditionalChargesEmployee() {
         const response = await getCircle(selectedRegion);
         setCircles(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching circles:", error);
+        console.error('Error fetching circles:', error);
       }
     })();
   }, [selectedRegion]);
@@ -161,7 +135,7 @@ function AdditionalChargesEmployee() {
         const response = await getDivision(selectedCircle);
         setDivisions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error('Error fetching divisions:', error);
       }
     })();
   }, [selectedCircle]);
@@ -174,7 +148,7 @@ function AdditionalChargesEmployee() {
         const response = await getSubDivision(selectedDivision);
         setSubDivisions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching sub divisions:", error);
+        console.error('Error fetching sub divisions:', error);
       }
     })();
   }, [selectedDivision]);
@@ -187,7 +161,7 @@ function AdditionalChargesEmployee() {
         const response = await getDC(selectedSubDivision);
         setDCs(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching DCs:", error);
+        console.error('Error fetching DCs:', error);
       }
     })();
   }, [selectedSubDivision]);
@@ -200,7 +174,7 @@ function AdditionalChargesEmployee() {
         const response = await getSubstation(selectedDC);
         setSubStations(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching substations:", error);
+        console.error('Error fetching substations:', error);
       }
     })();
   }, [selectedDC]);
@@ -208,17 +182,17 @@ function AdditionalChargesEmployee() {
   const [designations, setDesignations] = useState([]);
   const [departments, setDepartments] = useState([]);
 
-  const [selectedDesignation, setSelectedDesignation] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedDesignation, setSelectedDesignation] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
 
   // Fetch Designations
   useEffect(() => {
     const fetchDesignations = async () => {
       try {
         const res = await getDesignation();
-        setDesignations(res?.data?.code === "200" ? res.data.list : []);
+        setDesignations(res?.data?.code === '200' ? res.data.list : []);
       } catch (error) {
-        console.error("Error fetching designations:", error);
+        console.error('Error fetching designations:', error);
         setDesignations([]);
       } finally {
       }
@@ -231,9 +205,9 @@ function AdditionalChargesEmployee() {
     const fetchDepartments = async () => {
       try {
         const res = await getDepartment();
-        setDepartments(res?.data?.code === "200" ? res.data.list : []);
+        setDepartments(res?.data?.code === '200' ? res.data.list : []);
       } catch (error) {
-        console.error("Error fetching departments:", error);
+        console.error('Error fetching departments:', error);
         setDepartments([]);
       } finally {
       }
@@ -244,9 +218,9 @@ function AdditionalChargesEmployee() {
   //  Handle submit
   const updateAdditionalCharge = async () => {
     let newErrors = {};
-    if (!selectedRegion) newErrors.region = "Region is required";
-    if (!selectedDesignation) newErrors.designation = "Designation is required";
-    if (!selectedDepartment) newErrors.department = "Department is required";
+    if (!selectedRegion) newErrors.region = 'Region is required';
+    if (!selectedDesignation) newErrors.designation = 'Designation is required';
+    if (!selectedDepartment) newErrors.department = 'Department is required';
 
     setErrors(newErrors);
 
@@ -272,28 +246,28 @@ function AdditionalChargesEmployee() {
       subStation: selectedSubstation,
       department: selectedDepartment,
       designation: selectedDesignation,
-      createdBy: sessionStorage.getItem("empCode"),
+      createdBy: sessionStorage.getItem('empCode'),
     };
 
     try {
       const response = await addAdditionalCharges(payload);
-      if (response.data.code == "200") {
+      if (response.data.code == '200') {
         setOpenBackdrop(false);
-        alert("Successfully Updated !!");
+        alert('Successfully Updated !!');
         window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
     }
   };
 
   const deleteRecords = async (code, id) => {
     try {
       const confirmDelete = window.confirm(
-        "Are you sure you want to delete this record?"
+        'Are you sure you want to delete this record?',
       );
       if (!confirmDelete) {
         return; // Stop if user cancels
@@ -302,20 +276,20 @@ function AdditionalChargesEmployee() {
       const payload = {
         empCode: code,
         id: id,
-        updatedBy: sessionStorage.getItem("empCode"),
+        updatedBy: sessionStorage.getItem('empCode'),
       };
 
       const response = await deleteAdditionalCharges(payload);
 
-      if (response.data.code === "200") {
-        alert("Successfully Deleted!");
+      if (response.data.code === '200') {
+        alert('Successfully Deleted!');
         window.location.reload();
       } else {
-        alert(response.data.message || "Failed to delete record.");
+        alert(response.data.message || 'Failed to delete record.');
       }
     } catch (error) {
-      console.error("Error deleting record:", error);
-      alert("An error occurred while deleting the record.");
+      console.error('Error deleting record:', error);
+      alert('An error occurred while deleting the record.');
     }
   };
 
@@ -324,7 +298,7 @@ function AdditionalChargesEmployee() {
       <Card
         className="shadow-lg rounded"
         style={{
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -332,9 +306,9 @@ function AdditionalChargesEmployee() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Additional Charges
@@ -345,8 +319,8 @@ function AdditionalChargesEmployee() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
-              marginTop: "20px",
+              textAlign: 'center',
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -354,8 +328,8 @@ function AdditionalChargesEmployee() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                   //color: "#0a1f83",
                 }}
                 color="primary"
@@ -389,35 +363,35 @@ function AdditionalChargesEmployee() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.employeeName || "-"}
+                            {item.employeeName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.empCode || "-"}
+                            {item.empCode || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.regionName || "-"}
+                            {item.regionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.circleName || "-"}
+                            {item.circleName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.divisionName || "-"}
+                            {item.divisionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.subDivisionName || "-"}
+                            {item.subDivisionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.dcName || "-"}
+                            {item.dcName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.subStation || "-"}
+                            {item.subStation || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.designation || "-"}
+                            {item.designation || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.departmentName || "-"}
+                            {item.departmentName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
                             <Tooltip title="Delete Record" placement="top">
@@ -450,7 +424,7 @@ function AdditionalChargesEmployee() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -458,8 +432,8 @@ function AdditionalChargesEmployee() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                   //   color: "#0a1f83",
                 }}
                 color="primary"
@@ -491,7 +465,7 @@ function AdditionalChargesEmployee() {
                       </Form.Select>
                       {errors.region && (
                         <Typography variant="caption" color="error">
-                          {" "}
+                          {' '}
                           *{errors.region}
                         </Typography>
                       )}
@@ -509,13 +483,13 @@ function AdditionalChargesEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedCircle(value);
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubstation("");
+                          setSelectedSubstation('');
                           setSubStations([]);
                         }}
                       >
@@ -545,11 +519,11 @@ function AdditionalChargesEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedDivision(value);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubstation("");
+                          setSelectedSubstation('');
                           setSubStations([]);
                         }}
                       >
@@ -579,7 +553,7 @@ function AdditionalChargesEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedSubDivision(value);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                           // setSelectedSubstation("");
                           // setSubStations([]);
@@ -689,7 +663,7 @@ function AdditionalChargesEmployee() {
                       </Form.Select>
                       {errors.designation && (
                         <Typography variant="caption" color="error">
-                          {" "}
+                          {' '}
                           *{errors.designation}
                         </Typography>
                       )}
@@ -721,7 +695,7 @@ function AdditionalChargesEmployee() {
                       </Form.Select>
                       {errors.department && (
                         <Typography variant="caption" color="error">
-                          {" "}
+                          {' '}
                           *{errors.department}
                         </Typography>
                       )}
@@ -754,7 +728,7 @@ function AdditionalChargesEmployee() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

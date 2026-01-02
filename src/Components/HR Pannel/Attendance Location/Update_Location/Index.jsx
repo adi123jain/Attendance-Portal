@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Backdrop, Button, Typography } from "@mui/material";
-import { PropagateLoader } from "react-spinners";
-import { updateLocationCordinate } from "../../../../Services/Auth";
-import { Link } from "react-router-dom";
+import React, { useState, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Backdrop, Button, Typography } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
+import { updateLocationCordinate } from '../../../../Services/Auth';
+import { Link } from 'react-router-dom';
 
 function UpdateLocation() {
   const location = useLocation();
@@ -13,9 +13,9 @@ function UpdateLocation() {
   const navigate = useNavigate();
   // console.log(item);
 
-  const [locationName, setLocationName] = useState(item?.locationName || "");
-  const [latitude, setLatitude] = useState(item?.latitude || "");
-  const [longitude, setLongitude] = useState(item?.longitude || "");
+  const [locationName, setLocationName] = useState(item?.locationName || '');
+  const [latitude, setLatitude] = useState(item?.latitude || '');
+  const [longitude, setLongitude] = useState(item?.longitude || '');
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const [errors, setErrors] = useState({});
@@ -30,15 +30,15 @@ function UpdateLocation() {
     let firstInvalidField = null;
 
     if (!locationName.trim()) {
-      newErrors.locationName = "*Location Name is required.";
+      newErrors.locationName = '*Location Name is required.';
       firstInvalidField = locationRef;
     }
     if (!latitude.toString().trim()) {
-      newErrors.latitude = "*Latitude is required.";
+      newErrors.latitude = '*Latitude is required.';
       if (!firstInvalidField) firstInvalidField = latitudeRef;
     }
     if (!longitude.toString().trim()) {
-      newErrors.longitude = "*Longitude is required.";
+      newErrors.longitude = '*Longitude is required.';
       if (!firstInvalidField) firstInvalidField = longitudeRef;
     }
 
@@ -73,17 +73,20 @@ function UpdateLocation() {
       //console.log("Payload to be sent:", payload);
       const response = await updateLocationCordinate(payload);
       //console.log(response);
-      if (response.data?.code == "200" && response.data.message == "Success") {
-        alert("Location Updated Successfully");
+      if (
+        response.data?.code === '200' &&
+        response.data.message === 'Success'
+      ) {
+        alert('Location Updated Successfully');
         setOpenBackdrop(false);
-        navigate("/editLocation");
+        navigate('/editLocation');
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.error("Error updating location:", error);
-      alert("Failed to update location.");
+      console.error('Error updating location:', error);
+      alert('Failed to update location.');
       setOpenBackdrop(false);
     }
   };
@@ -95,9 +98,9 @@ function UpdateLocation() {
           variant="h5"
           sx={{
             mb: 0,
-            fontFamily: "serif",
-            fontWeight: "bold",
-            color: "#0a1f83",
+            fontFamily: 'serif',
+            fontWeight: 'bold',
+            color: '#0a1f83',
           }}
         >
           Update Attendance Location
@@ -105,8 +108,7 @@ function UpdateLocation() {
       </Card.Header>
 
       <Card.Body className="d-flex flex-column align-items-center justify-content-center">
-        {/* Location Name */}
-        <Card style={{ width: "30rem", marginTop: "20px" }}>
+        <Card style={{ width: '30rem', marginTop: '20px' }}>
           <Card.Header>Attendance Location Name</Card.Header>
           <Card.Body className="d-flex flex-column align-items-center">
             <Form.Control
@@ -122,8 +124,7 @@ function UpdateLocation() {
           </Card.Body>
         </Card>
 
-        {/* Latitude */}
-        <Card style={{ width: "30rem", marginTop: "20px" }}>
+        <Card style={{ width: '30rem', marginTop: '20px' }}>
           <Card.Header>Latitude</Card.Header>
           <Card.Body className="d-flex flex-column align-items-center">
             <Form.Control
@@ -139,8 +140,7 @@ function UpdateLocation() {
           </Card.Body>
         </Card>
 
-        {/* Longitude */}
-        <Card style={{ width: "30rem", marginTop: "20px" }}>
+        <Card style={{ width: '30rem', marginTop: '20px' }}>
           <Card.Header>Longitude</Card.Header>
           <Card.Body className="d-flex flex-column align-items-center">
             <Form.Control
@@ -165,9 +165,8 @@ function UpdateLocation() {
           Update
         </Button>
       </Card.Footer>
-      {/* Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

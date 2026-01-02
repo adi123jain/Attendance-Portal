@@ -38,13 +38,17 @@ function MainDashboard() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [expandedCard, setExpandedCard] = useState(null);
   const navigate = useNavigate();
+  const sessionEmpCode = sessionStorage.getItem('empCode');
 
   // Fetch SSO list on mount
   useEffect(() => {
+    if (!sessionEmpCode) {
+      window.location.reload();
+    }
     const fetchSso = async () => {
       try {
         setOpenBackdrop(true);
-        const response = await getSsoList();
+        const response = await getSsoList(sessionEmpCode);
         console.log(response);
         setSsoList(response.data.list || []);
       } catch (error) {
@@ -53,6 +57,7 @@ function MainDashboard() {
         setOpenBackdrop(false);
       }
     };
+
     fetchSso();
   }, []);
 

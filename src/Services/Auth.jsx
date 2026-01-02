@@ -790,9 +790,9 @@ export const getEmployeeInfo = (empCode) => {
 };
 
 // 125. Get SSO List By Empcode
-export const getSsoList = () => {
+export const getSsoList = (empCode) => {
   // 290033
-  return axios.get(base_url + `/master/ssoDashboard?empCode=${sessionEmpCode}`);
+  return axios.get(base_url + `/master/ssoDashboard?empCode=${empCode}`);
 };
 
 // 126. Employee Nomination

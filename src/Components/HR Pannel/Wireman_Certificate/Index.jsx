@@ -31,9 +31,6 @@ import {
 function WiremanCertificateByHr() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  // -------------------------
-  // COMMON DATE FIELDS
-  // -------------------------
   const [examDate, setExamDate] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
@@ -51,9 +48,6 @@ function WiremanCertificateByHr() {
   const fromDateRef = useRef(null);
   const toDateRef = useRef(null);
 
-  // -------------------------
-  // TABLE ROW DATA
-  // -------------------------
   const [entries, setEntries] = useState([
     { empCode: '', FULLNAME: '', result: '', remark: '' },
   ]);
@@ -70,18 +64,12 @@ function WiremanCertificateByHr() {
     }));
   }, [entries]);
 
-  // --------------------------------
-  // HANDLE TABLE CELL CHANGE
-  // --------------------------------
   const handleChange = (index, field, value) => {
     const updated = [...entries];
     updated[index][field] = value;
     setEntries(updated);
   };
 
-  // --------------------------------
-  // ADD ROW
-  // --------------------------------
   //   const addRow = () => {
   //     setEntries([...entries, { empCode: '', result: '', remark: '' }]);
   //     setErrors([...errors, {}]);
@@ -96,9 +84,6 @@ function WiremanCertificateByHr() {
     setErrors([...errors, {}]);
   };
 
-  // --------------------------------
-  // DELETE ROW
-  // --------------------------------
   const deleteRow = (index) => {
     if (entries.length === 1) {
       alert('At least one entry is required');
@@ -116,7 +101,7 @@ function WiremanCertificateByHr() {
 
     try {
       const response = await getEmpNameByCode(empCode);
-      console.log('EMP NAME API:', response);
+      // console.log('EMP NAME API:', response);
 
       if (response?.data?.code === '200') {
         const name = response.data.list[0]?.FULLNAME || '';
@@ -130,14 +115,10 @@ function WiremanCertificateByHr() {
     }
   };
 
-  // --------------------------------
-  // VALIDATION (DATE + TABLE)
-  // --------------------------------
   const validate = () => {
     let newDateErrors = { examDate: '', fromDate: '', toDate: '' };
     let firstInvalidField = null;
 
-    // ------------ Validate Date Fields ------------
     if (!examDate) {
       newDateErrors.examDate = '*Required';
       firstInvalidField = examDateRef;
@@ -167,7 +148,6 @@ function WiremanCertificateByHr() {
       return false;
     }
 
-    // ------------ Validate Table Rows ------------
     let newErrors = [];
     let firstInvalidRow = null;
     let firstInvalidTableField = null;
@@ -216,9 +196,6 @@ function WiremanCertificateByHr() {
     return true;
   };
 
-  // --------------------------------
-  // SUBMIT FUNCTION
-  // --------------------------------
   const handleSubmit = async () => {
     if (!validate()) return;
 
@@ -235,7 +212,7 @@ function WiremanCertificateByHr() {
       createdBy: sessionStorage.getItem('empCode'),
     }));
 
-    console.log('FINAL PAYLOAD:', payload);
+    // console.log('FINAL PAYLOAD:', payload);
 
     try {
       const response = await createWiremanCertificate(payload);
@@ -276,9 +253,6 @@ function WiremanCertificateByHr() {
         </Card.Header>
 
         <Card.Body>
-          {/* ============================ */}
-          {/*   COMMON DATE INPUTS         */}
-          {/* ============================ */}
           <Row className="g-3 mb-3">
             <Col md={3}>
               <Card>
@@ -344,9 +318,6 @@ function WiremanCertificateByHr() {
             </Col>
           </Row>
 
-          {/* ============================ */}
-          {/* TABLE INPUT SECTION */}
-          {/* ============================ */}
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -365,21 +336,6 @@ function WiremanCertificateByHr() {
                   <StyledTableRow key={index}>
                     <StyledTableCell>{index + 1}</StyledTableCell>
 
-                    {/* Employee Code */}
-                    {/* <StyledTableCell>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter Employee Code"
-                        ref={inputRefs.current[index]?.empCode}
-                        value={row.empCode}
-                        isInvalid={!!errors[index]?.empCode}
-                        onChange={(e) =>
-                          handleChange(index, 'empCode', e.target.value)
-                        }
-                      />
-                    </StyledTableCell> */}
-
-                    {/* EMPLOYEE CODE */}
                     <StyledTableCell>
                       <Form.Control
                         type="number"
@@ -391,24 +347,21 @@ function WiremanCertificateByHr() {
                           const value = e.target.value;
                           handleChange(index, 'empCode', value);
 
-                          // Fetch employee name automatically
                           fetchEmployeeName(index, value);
                         }}
                       />
                     </StyledTableCell>
 
-                    {/* EMPLOYEE NAME (Auto-filled) */}
                     <StyledTableCell>
                       <Form.Control
                         type="text"
                         placeholder="Employee Name"
                         value={row.FULLNAME}
-                        disabled // prevent editing
+                        disabled
                         readOnly
                       />
                     </StyledTableCell>
 
-                    {/* Result */}
                     <StyledTableCell>
                       <Form.Select
                         ref={inputRefs.current[index]?.result}
@@ -424,7 +377,6 @@ function WiremanCertificateByHr() {
                       </Form.Select>
                     </StyledTableCell>
 
-                    {/* Remark */}
                     <StyledTableCell>
                       <Form.Control
                         ref={inputRefs.current[index]?.remark}
@@ -437,7 +389,6 @@ function WiremanCertificateByHr() {
                       />
                     </StyledTableCell>
 
-                    {/* Delete */}
                     <StyledTableCell>
                       <IconButton
                         color="error"
@@ -453,7 +404,6 @@ function WiremanCertificateByHr() {
             </Table>
           </TableContainer>
 
-          {/* ADD ROW BUTTON */}
           <div className="text-end mt-3">
             <Tooltip title="Add More Row" placement="top">
               <Button variant="contained" color="dark" onClick={addRow}>

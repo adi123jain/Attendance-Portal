@@ -1,3 +1,4 @@
+import { useEffect, useState, useRef } from 'react';
 import {
   Backdrop,
   Box,
@@ -17,7 +18,6 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropagateLoader } from 'react-spinners';
 import {
@@ -35,12 +35,12 @@ import { Link } from 'react-router-dom';
 function UpdateWiremanCertificateStatus() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [certificates, setCertificates] = useState([]);
-  const [selected, setSelected] = useState([]); // selected checkbox IDs
-  const [rowData, setRowData] = useState({}); // store gmStatus & gmRemark per id
+  const [selected, setSelected] = useState([]);
+  const [rowData, setRowData] = useState({});
   const [errors, setErrors] = useState({});
   const circleId = sessionStorage.getItem('circleId');
 
-  const inputRefs = useRef({}); // for focus on error fields
+  const inputRefs = useRef({});
 
   const fetchDetails = async () => {
     try {
@@ -169,7 +169,7 @@ function UpdateWiremanCertificateStatus() {
       gmEmpCode: sessionStorage.getItem('empCode'),
     }));
 
-    console.log('FINAL PAYLOAD:', payload);
+    //console.log('FINAL PAYLOAD:', payload);
 
     try {
       setOpenBackdrop(true);

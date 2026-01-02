@@ -1,31 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { Divider } from "@mui/material";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { PropagateLoader } from "react-spinners";
+import React, { useState, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { PropagateLoader } from 'react-spinners';
 
-import {
-  Typography,
-  Tooltip,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  Box,
-  Backdrop,
-} from "@mui/material";
-import { createNewEmployee } from "../../../Services/Auth";
+import { Typography, Tooltip, Button, Backdrop } from '@mui/material';
+import { createNewEmployee } from '../../../Services/Auth';
 
 function AddNewEmployee({
   employmentList,
@@ -84,29 +67,29 @@ function AddNewEmployee({
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const [formData, setFormData] = useState({
-    employeeCode: "",
-    firstName: "",
-    middleName: "",
-    lastName: "",
-    fullName: "",
-    status: "",
-    gender: "",
-    dob: "",
-    stateOfBirth: "",
-    cityName: "",
-    fatherName: "",
-    motherName: "",
-    maritalStatus: "",
-    height: "",
-    identificationMark: "",
-    category: "",
-    physicallyHandicapped: "",
-    disablementPercent: "",
-    isRegisteredHandicapped: "",
-    handicappedDescription: "",
-    joiningDate: "",
-    trainingDate: "",
-    regularisationDate: "",
+    employeeCode: '',
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    fullName: '',
+    status: '',
+    gender: '',
+    dob: '',
+    stateOfBirth: '',
+    cityName: '',
+    fatherName: '',
+    motherName: '',
+    maritalStatus: '',
+    height: '',
+    identificationMark: '',
+    category: '',
+    physicallyHandicapped: '',
+    disablementPercent: '',
+    isRegisteredHandicapped: '',
+    handicappedDescription: '',
+    joiningDate: '',
+    trainingDate: '',
+    regularisationDate: '',
 
     isHRManager: false,
     isReportingOfficer: false,
@@ -116,24 +99,24 @@ function AddNewEmployee({
     isDisciplinaryAuthority: false,
 
     //  Salary Details
-    basicPay: "",
-    panNumber: "",
-    providentFundType: "",
-    gpfCpfNumber: "",
-    bankName: "",
-    bankAccount: "",
-    bankIfsc: "",
-    pfNumber: "",
+    basicPay: '',
+    panNumber: '',
+    providentFundType: '',
+    gpfCpfNumber: '',
+    bankName: '',
+    bankAccount: '',
+    bankIfsc: '',
+    pfNumber: '',
 
     //  Personal Details
-    aadhaar: "",
-    officialEmail: "",
-    gsliNumber: "",
-    permanentAddress: "",
-    mobile: "",
-    personalEmail: "",
-    bloodGroup: "",
-    correspondenceAddress: "",
+    aadhaar: '',
+    officialEmail: '',
+    gsliNumber: '',
+    permanentAddress: '',
+    mobile: '',
+    personalEmail: '',
+    bloodGroup: '',
+    correspondenceAddress: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -145,13 +128,13 @@ function AddNewEmployee({
     setFormData((prev) => {
       let updatedData = {
         ...prev,
-        [name]: type === "checkbox" ? checked : value,
+        [name]: type === 'checkbox' ? checked : value,
       };
 
       if (
-        name === "firstName" ||
-        name === "middleName" ||
-        name === "lastName"
+        name === 'firstName' ||
+        name === 'middleName' ||
+        name === 'lastName'
       ) {
         updatedData.fullName = [
           updatedData.firstName,
@@ -159,7 +142,7 @@ function AddNewEmployee({
           updatedData.lastName,
         ]
           .filter(Boolean)
-          .join(" ");
+          .join(' ');
       }
 
       return updatedData;
@@ -170,49 +153,49 @@ function AddNewEmployee({
     let newErrors = {};
 
     if (!formData.employeeCode)
-      newErrors.employeeCode = " *Employee Code is required";
-    if (!formData.firstName) newErrors.firstName = " *First Name is required";
-    if (!formData.lastName) newErrors.lastName = " *Last Name is required";
-    if (!formData.status) newErrors.status = " *Status is required";
-    if (!formData.gender) newErrors.gender = "*Gender is required";
-    if (!formData.dob) newErrors.dob = "*Date of Birth is required";
+      newErrors.employeeCode = ' *Employee Code is required';
+    if (!formData.firstName) newErrors.firstName = ' *First Name is required';
+    if (!formData.lastName) newErrors.lastName = ' *Last Name is required';
+    if (!formData.status) newErrors.status = ' *Status is required';
+    if (!formData.gender) newErrors.gender = '*Gender is required';
+    if (!formData.dob) newErrors.dob = '*Date of Birth is required';
     if (!formData.fatherName)
       newErrors.fatherName = "*Father's Name is required";
 
     if (!selectedEmployment)
-      newErrors.selectedEmployment = "*Employment Type is required";
-    if (!selectedRegion) newErrors.selectedRegion = "*Region is required";
+      newErrors.selectedEmployment = '*Employment Type is required';
+    if (!selectedRegion) newErrors.selectedRegion = '*Region is required';
     if (!selectedDesignation)
-      newErrors.selectedDesignation = "*Designation is required";
+      newErrors.selectedDesignation = '*Designation is required';
     if (!selectedDepartment)
-      newErrors.selectedDepartment = "*Department is required";
+      newErrors.selectedDepartment = '*Department is required';
     if (!selectedRoDesignation)
-      newErrors.selectedRoDesignation = "*RO Designation is required";
+      newErrors.selectedRoDesignation = '*RO Designation is required';
     if (!selectedOfficer)
-      newErrors.selectedOfficer = "Officer Name is required";
+      newErrors.selectedOfficer = 'Officer Name is required';
     if (!selectedHrManager)
-      newErrors.selectedHrManager = "*HR Manager is required";
+      newErrors.selectedHrManager = '*HR Manager is required';
     if (!selectedLocation)
-      newErrors.selectedLocation = "*Attendance Location is required";
+      newErrors.selectedLocation = '*Attendance Location is required';
     if (!selectedHoliday)
-      newErrors.selectedHoliday = "*Holiday List is required";
-    if (!selectedShift) newErrors.selectedShift = "*Shift is required";
+      newErrors.selectedHoliday = '*Holiday List is required';
+    if (!selectedShift) newErrors.selectedShift = '*Shift is required';
 
-    if (!formData.aadhaar) newErrors.aadhaar = "Aadhaar is required";
+    if (!formData.aadhaar) newErrors.aadhaar = 'Aadhaar is required';
     else if (!/^\d{12}$/.test(formData.aadhaar))
-      newErrors.aadhaar = "Aadhaar must be 12 digits";
+      newErrors.aadhaar = 'Aadhaar must be 12 digits';
 
-    if (!formData.mobile) newErrors.mobile = "*Mobile is required";
+    if (!formData.mobile) newErrors.mobile = '*Mobile is required';
     else if (!/^\d{10}$/.test(formData.mobile))
-      newErrors.mobile = "*Mobile must be 10 digits";
+      newErrors.mobile = '*Mobile must be 10 digits';
 
-    if (!formData.officialEmail) newErrors.officialEmail = "*Email is required";
+    if (!formData.officialEmail) newErrors.officialEmail = '*Email is required';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.officialEmail))
-      newErrors.officialEmail = "*Invalid Email";
+      newErrors.officialEmail = '*Invalid Email';
 
-    if (!formData.panNumber) newErrors.panNumber = "*PAN is required";
+    if (!formData.panNumber) newErrors.panNumber = '*PAN is required';
     else if (!/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(formData.panNumber))
-      newErrors.panNumber = "*Invalid PAN";
+      newErrors.panNumber = '*Invalid PAN';
 
     setErrors(newErrors);
 
@@ -277,7 +260,7 @@ function AddNewEmployee({
 
       isCurrentCharge: false,
       currentChargeDesignation: null,
-      dateOfCurrentCharge: "",
+      dateOfCurrentCharge: '',
 
       managerHr: selectedHrManager,
       dateOfRegularisation: formData.regularisationDate,
@@ -286,7 +269,7 @@ function AddNewEmployee({
 
       departmentId: selectedDepartment,
       stateOfBirth: formData.stateOfBirth,
-      townOrCityOfBirth: "",
+      townOrCityOfBirth: '',
       isRegisteredHandicapped: formData.isRegisteredHandicapped,
       discriptionOfHandicapped: formData.handicappedDescription,
       officialEmail: formData.officialEmail,
@@ -300,23 +283,23 @@ function AddNewEmployee({
       holidayList: selectedHoliday,
       deviceId: null,
       exemptAttendance: false,
-      updatedBy: sessionStorage.getItem("empCode"),
+      updatedBy: sessionStorage.getItem('empCode'),
     };
 
-    console.log(" Final Payload:", payload);
+    // console.log(' Final Payload:', payload);
 
     try {
       const response = await createNewEmployee(payload);
-      console.log(response);
-      if (response.data.code == "200") {
-        alert("New Employee Created Successfully !!");
+      // console.log(response);
+      if (response.data.code === '200') {
+        alert('New Employee Created Successfully !!');
         setOpenBackdrop(false);
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
       setOpenBackdrop(false);
     }
   };
@@ -325,7 +308,6 @@ function AddNewEmployee({
     <>
       <Card>
         <Card.Header className="p-3 d-flex align-items-center position-relative">
-          {/* Back button */}
           <Tooltip title="Back" arrow placement="top">
             <Button className="position-absolute start-2">
               <Link to="/employeeInformation">
@@ -334,39 +316,36 @@ function AddNewEmployee({
             </Button>
           </Tooltip>
 
-          {/* Title */}
           <Typography
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
-              fontFamily: "serif",
-              fontWeight: "bold",
+              textAlign: 'center',
+              color: '#0a1f83',
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Add New Employee
           </Typography>
         </Card.Header>
         <Card.Body>
-          {/* Basic Information */}
           <Card>
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Basic Information
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
@@ -385,7 +364,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.employeeCode}
                         </Typography>
                       </Form.Control.Feedback>
@@ -409,7 +388,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.firstName}
                         </Typography>
                       </Form.Control.Feedback>
@@ -447,7 +426,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.lastName}
                         </Typography>
                       </Form.Control.Feedback>
@@ -456,7 +435,6 @@ function AddNewEmployee({
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -501,7 +479,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.status}
                         </Typography>
                       </Form.Control.Feedback>
@@ -531,7 +509,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.gender}
                         </Typography>
                       </Form.Control.Feedback>
@@ -561,7 +539,6 @@ function AddNewEmployee({
                 </Col>
               </Row>
 
-              {/* Row 3 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -647,7 +624,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.fatherName}
                         </Typography>
                       </Form.Control.Feedback>
@@ -671,7 +648,6 @@ function AddNewEmployee({
                 </Col>
               </Row>
 
-              {/* Row 4 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -749,7 +725,6 @@ function AddNewEmployee({
                 </Col>
               </Row>
 
-              {/* Row 5 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -816,14 +791,13 @@ function AddNewEmployee({
                         value={formData.handicappedDescription}
                         onChange={handleChange}
                         placeholder="Enter Description"
-                        style={{ height: "35px" }}
+                        style={{ height: '35px' }}
                       />
                     </Card.Body>
                   </Card>
                 </Col>
               </Row>
 
-              {/* Row 6 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -898,7 +872,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedEmployment}
                         </Typography>
                       </Form.Control.Feedback>
@@ -909,29 +883,27 @@ function AddNewEmployee({
             </Card.Body>
           </Card>
 
-          {/* Department and Grade */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Department and Grade
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
                     <Card.Header>
-                      Region{" "}
+                      Region{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -960,7 +932,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedRegion}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1028,7 +1000,7 @@ function AddNewEmployee({
                 <Col>
                   <Card>
                     <Card.Header>
-                      Sub Division{" "}
+                      Sub Division{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -1061,7 +1033,6 @@ function AddNewEmployee({
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1152,7 +1123,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedDesignation}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1192,7 +1163,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedDepartment}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1203,17 +1174,16 @@ function AddNewEmployee({
             </Card.Body>
           </Card>
 
-          {/* Reporting and Approvers */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Reporting and Approvers
@@ -1245,7 +1215,7 @@ function AddNewEmployee({
 
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedRoDesignation}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1312,7 +1282,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedHrManager}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1323,17 +1293,16 @@ function AddNewEmployee({
             </Card.Body>
           </Card>
 
-          {/* Attendance and Leave Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Attendance and Leave Details
@@ -1372,7 +1341,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedLocation}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1406,7 +1375,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedHoliday}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1414,7 +1383,6 @@ function AddNewEmployee({
                   </Card>
                 </Col>
 
-                {/* Default Shift */}
                 <Col>
                   <Card>
                     <Card.Header>Default Shift</Card.Header>
@@ -1442,7 +1410,7 @@ function AddNewEmployee({
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.selectedShift}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1453,17 +1421,16 @@ function AddNewEmployee({
             </Card.Body>
           </Card>
 
-          {/* Roles & Responsibilies */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Roles & Responsibilies
@@ -1578,10 +1545,10 @@ function AddNewEmployee({
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Salary Details
@@ -1619,7 +1586,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.panNumber}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1862,17 +1829,16 @@ function AddNewEmployee({
             </Card.Body>
           </Card>
 
-          {/* Personal Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
                 variant="h5"
                 style={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  textAlign: 'center',
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Personal Details
@@ -1895,7 +1861,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.aadhaar}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1918,7 +1884,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.officialEmail}
                         </Typography>
                       </Form.Control.Feedback>
@@ -1973,7 +1939,7 @@ function AddNewEmployee({
                       />
                       <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
-                          {" "}
+                          {' '}
                           {errors.mobile}
                         </Typography>
                       </Form.Control.Feedback>
@@ -2028,7 +1994,7 @@ function AddNewEmployee({
                       <Form.Control
                         as="textarea"
                         placeholder="Enter Correspondence Address"
-                        style={{ height: "35px" }}
+                        style={{ height: '35px' }}
                         name="correspondenceAddress"
                         value={formData.correspondenceAddress}
                         onChange={handleChange}
@@ -2055,9 +2021,8 @@ function AddNewEmployee({
           </Button>
         </Card.Footer>
       </Card>
-      {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

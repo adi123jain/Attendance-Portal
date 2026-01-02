@@ -1,79 +1,38 @@
-import React, { useRef, useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
-import SearchUtils from "../../../../Constants/Search_Utils/Index";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
+import { useRef, useEffect, useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import SearchUtils from '../../../../Constants/Search_Utils/Index';
 import {
   Typography,
   Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 
-// Styled Components
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-import { PropagateLoader } from "react-spinners";
-import { viewAttendanceLocation } from "../../../../Services/Auth";
+import { PropagateLoader } from 'react-spinners';
+import { viewAttendanceLocation } from '../../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../../Constants/TableStyles/Index";
+} from '../../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function EditLocation() {
   const regionRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
   });
 
   const [showTable, setShowTable] = useState(false);
@@ -82,12 +41,12 @@ function EditLocation() {
 
   useEffect(() => {
     if (showTable && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showTable, dataInTable]);
   const validate = () => {
     const newErrors = {};
-    if (!searchValues.region) newErrors.region = "Region is Required.";
+    if (!searchValues.region) newErrors.region = 'Region is Required.';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -100,7 +59,6 @@ function EditLocation() {
       return;
     }
     setOpenBackdrop(true);
-    // console.log(searchValues);
     const payload = {
       regionId: searchValues.region,
       circleId: searchValues.circle,
@@ -111,8 +69,10 @@ function EditLocation() {
     };
     try {
       const response = await viewAttendanceLocation(payload);
-      // console.log(response);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
         setDataInTable(response.data.list);
         setShowTable(true);
         setOpenBackdrop(false);
@@ -139,9 +99,9 @@ function EditLocation() {
               variant="h4"
               sx={{
                 mb: 0,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Attendance Locations
@@ -172,16 +132,16 @@ function EditLocation() {
       {showTable && (
         <Card
           className="shadow-lg rounded"
-          style={{ textAlign: "center", marginTop: "20px" }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           <Card.Header className="text-center p-3">
             <Typography
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Locations
@@ -216,42 +176,42 @@ function EditLocation() {
                       <StyledTableRow key={index}>
                         <StyledTableCell>{index + 1}</StyledTableCell>
                         <StyledTableCell>
-                          {item.locationCode || "-"}
+                          {item.locationCode || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.locationName || "-"}
+                          {item.locationName || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.regionName || "-"}
+                          {item.regionName || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.circleName || "-"}
+                          {item.circleName || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.divisionName || "-"}
+                          {item.divisionName || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.subdivisionName || "-"}
+                          {item.subdivisionName || '-'}
                         </StyledTableCell>
-                        <StyledTableCell>{item.dcName || "-"}</StyledTableCell>
+                        <StyledTableCell>{item.dcName || '-'}</StyledTableCell>
                         <StyledTableCell>
-                          {item.substationName || "-"}
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          {item.districtId || "-"}
+                          {item.substationName || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.latitude || "-"}
+                          {item.districtId || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.longitude || "-"}
+                          {item.latitude || '-'}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {item.longitude || '-'}
                         </StyledTableCell>
 
                         <StyledTableCell>
-                          {item.updateBy || "-"}
+                          {item.updateBy || '-'}
                         </StyledTableCell>
                         <StyledTableCell>
-                          {item.isActive ? "Active" : "Inactive"}
+                          {item.isActive ? 'Active' : 'Inactive'}
                         </StyledTableCell>
 
                         <StyledTableCell>
@@ -283,7 +243,7 @@ function EditLocation() {
       )}
       {/* Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />
