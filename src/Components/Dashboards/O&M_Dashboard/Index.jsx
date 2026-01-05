@@ -56,56 +56,56 @@ const cards = [
     link: 'https://attendance.mpcz.in:8888/E-Attendance/api/incentive/getFundDocument',
     icon: <DownloadIcon fontSize="large" color="primary" />,
   },
-  // {
-  //   title: 'SSO Daily Losses',
-  //   link: '/dailyLosses',
-  //   icon: <TrendingDownIcon fontSize="large" color="error" />,
-  // },
-  // {
-  //   title: 'SSO Shutdown',
-  //   link: '/ssoShutDown',
-  //   icon: <PowerOffIcon fontSize="large" color="warning" />,
-  // },
-  // {
-  //   title: 'Power Transformer Report',
-  //   link: '/powerTransformerReport',
-  //   icon: <ElectricalServicesIcon fontSize="large" color="secondary" />,
-  // },
-  // {
-  //   title: 'SSO Authorization',
-  //   link: '/ssoAuthorization',
-  //   icon: <SecurityIcon fontSize="large" color="info" />,
-  // },
-  // {
-  //   title: 'Line Staff Authorization',
-  //   link: '/lineStaffAuthorization',
-  //   icon: <PeopleIcon fontSize="large" color="primary" />,
-  // },
-  // {
-  //   title: 'SSO Status by DGM',
-  //   link: '/dgmAuthorizationStatus',
-  //   icon: <ManageAccountsIcon fontSize="large" color="info" />,
-  // },
-  // {
-  //   title: 'SSO Status by GM',
-  //   link: '/gmAuthorizationStatus',
-  //   icon: <WorkOutlineIcon fontSize="large" color="success" />,
-  // },
-  // {
-  //   title: 'Line Staff Status by DGM',
-  //   link: '/dgmLineStaffStatus',
-  //   icon: <EngineeringIcon fontSize="large" color="error" />,
-  // },
-  // {
-  //   title: 'Line Staff Status by GM',
-  //   link: '/gmLineStaffStatus',
-  //   icon: <PeopleIcon fontSize="large" color="secondary" />,
-  // },
-  // {
-  //   title: 'Power Transformer Report Status by DGM',
-  //   link: '/dgmPtrStatus',
-  //   icon: <AssessmentIcon fontSize="large" color="warning" />,
-  // },
+  {
+    title: 'SSO Daily Losses',
+    link: '/dailyLosses',
+    icon: <TrendingDownIcon fontSize="large" color="error" />,
+  },
+  {
+    title: 'SSO Shutdown',
+    link: '/ssoShutDown',
+    icon: <PowerOffIcon fontSize="large" color="warning" />,
+  },
+  {
+    title: 'Power Transformer Report',
+    link: '/powerTransformerReport',
+    icon: <ElectricalServicesIcon fontSize="large" color="secondary" />,
+  },
+  {
+    title: 'SSO Authorization',
+    link: '/ssoAuthorization',
+    icon: <SecurityIcon fontSize="large" color="info" />,
+  },
+  {
+    title: 'Line Staff Authorization',
+    link: '/lineStaffAuthorization',
+    icon: <PeopleIcon fontSize="large" color="primary" />,
+  },
+  {
+    title: 'SSO Status by DGM',
+    link: '/dgmAuthorizationStatus',
+    icon: <ManageAccountsIcon fontSize="large" color="info" />,
+  },
+  {
+    title: 'SSO Status by GM',
+    link: '/gmAuthorizationStatus',
+    icon: <WorkOutlineIcon fontSize="large" color="success" />,
+  },
+  {
+    title: 'Line Staff Status by DGM',
+    link: '/dgmLineStaffStatus',
+    icon: <EngineeringIcon fontSize="large" color="error" />,
+  },
+  {
+    title: 'Line Staff Status by GM',
+    link: '/gmLineStaffStatus',
+    icon: <PeopleIcon fontSize="large" color="secondary" />,
+  },
+  {
+    title: 'Power Transformer Report Status by DGM',
+    link: '/dgmPtrStatus',
+    icon: <AssessmentIcon fontSize="large" color="warning" />,
+  },
 ];
 
 const sessionEmpcode = sessionStorage.getItem('empCode');

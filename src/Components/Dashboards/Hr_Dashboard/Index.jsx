@@ -152,23 +152,23 @@ function HumanResourceDashboard() {
           to: '/outsourceEmployeeAttendaceView',
           icon: <VisibilityIcon />,
         },
-        // {
-        //   name: 'Employee Services',
-        //   to: '/outsourceEmployeeServices',
-        //   icon: <ManageAccountsIcon />,
-        // },
+        {
+          name: 'Employee Services',
+          to: '/outsourceEmployeeServices',
+          icon: <ManageAccountsIcon />,
+        },
 
-        // {
-        //   name: 'Wireman Certificate',
-        //   to: '/wiremanCertificate',
-        //   icon: <AssignmentTurnedInIcon />,
-        // },
+        {
+          name: 'Wireman Certificate',
+          to: '/wiremanCertificate',
+          icon: <AssignmentTurnedInIcon />,
+        },
 
-        // {
-        //   name: 'Update Wireman Certificate',
-        //   to: '/updateWiremanCertificate',
-        //   icon: <InfoIcon />,
-        // },
+        {
+          name: 'Update Wireman Certificate',
+          to: '/updateWiremanCertificate',
+          icon: <InfoIcon />,
+        },
       ],
     },
   ];

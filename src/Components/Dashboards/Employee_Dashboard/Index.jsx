@@ -56,16 +56,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
-    // {
-    //   label: 'Immovable Property',
-    //   path: '/immovableProperty',
-    //   icon: <HomeWorkIcon />,
-    // },
-    // {
-    //   label: 'Immovable Property View',
-    //   path: '/immovablePropertyView',
-    //   icon: <VisibilityIcon />,
-    // },
+    {
+      label: 'Immovable Property',
+      path: '/immovableProperty',
+      icon: <HomeWorkIcon />,
+    },
+    {
+      label: 'Immovable Property View',
+      path: '/immovablePropertyView',
+      icon: <VisibilityIcon />,
+    },
     {
       label: 'Medical CMO Approval',
       path: '/medicalApprovalByCmo',
@@ -77,11 +77,11 @@ function EmployeeDashboard() {
       icon: <AssignmentTurnedInIcon />,
     },
 
-    // {
-    //   label: 'Higher Pay Scale',
-    //   path: '/higherPayScale',
-    //   icon: <AssignmentTurnedInIcon />,
-    // },
+    {
+      label: 'Higher Pay Scale',
+      path: '/higherPayScale',
+      icon: <AssignmentTurnedInIcon />,
+    },
   ];
 
   const empCode = sessionStorage.getItem('empCode');
