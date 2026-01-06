@@ -1,14 +1,14 @@
-import React, { useState, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { viewImmProperty } from "../../../Services/Auth";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import { PropagateLoader } from "react-spinners";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { viewImmProperty } from '../../../Services/Auth';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import { PropagateLoader } from 'react-spinners';
+import { motion } from 'framer-motion';
 import {
   Typography,
   Tooltip,
@@ -27,11 +27,11 @@ import {
   DialogActions,
   Divider,
   Grid,
-} from "@mui/material";
+} from '@mui/material';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -57,7 +57,7 @@ import {
 //   "&:hover": { backgroundColor: hoverBackground },
 // }));
 
-const years = [2022, 2023, 2024, 2025, 2026];
+const years = [2022, 2023, 2024, 2025, 2026, 2027];
 
 const fieldCard = (label, value, index) => (
   <Grid item xs={12} sm={6} md={3} key={index}>
@@ -71,23 +71,23 @@ const fieldCard = (label, value, index) => (
         sx={{
           p: 2,
           borderRadius: 3,
-          textAlign: "center",
-          transition: "all 0.3s ease",
-          background: "linear-gradient(135deg,#f8fbff,#ffffff)",
-          "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0px 10px 25px rgba(0,0,0,0.2)",
+          textAlign: 'center',
+          transition: 'all 0.3s ease',
+          background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
+          '&:hover': {
+            transform: 'translateY(-5px)',
+            boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
           },
         }}
       >
         <Typography
           variant="body2"
-          sx={{ fontWeight: "bold", color: "#3949ab", mb: 1 }}
+          sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
         >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ color: "#333" }}>
-          {value || "—"}
+        <Typography variant="body1" sx={{ color: '#333' }}>
+          {value || '—'}
         </Typography>
       </Paper>
     </motion.div>
@@ -102,14 +102,14 @@ function ImmovablePropertyView() {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [open, setOpen] = useState(false);
 
-  const empCode = sessionStorage.getItem("empCode");
+  const empCode = sessionStorage.getItem('empCode');
 
   const viewImmovable = async () => {
     try {
       setOpenBackdrop(true);
       const response = await viewImmProperty(selectedYear);
       console.log(response);
-      if (response?.data.code == "200") {
+      if (response?.data.code == '200') {
         setImmovableData(response.data.list);
         setOpenBackdrop(false);
       } else {
@@ -140,7 +140,7 @@ function ImmovablePropertyView() {
         <Card.Header className="text-center text-primary p-3">
           <Typography
             variant="h4"
-            sx={{ fontFamily: "serif", fontWeight: "bold", color: "#0a1f83" }}
+            sx={{ fontFamily: 'serif', fontWeight: 'bold', color: '#0a1f83' }}
           >
             Immovable Property View
           </Typography>
@@ -155,7 +155,7 @@ function ImmovablePropertyView() {
                 <Card.Body>
                   <Form.Control
                     type="text"
-                    value={empCode || ""}
+                    value={empCode || ''}
                     disabled
                     readOnly
                   />
@@ -259,16 +259,16 @@ function ImmovablePropertyView() {
         PaperProps={{
           sx: {
             borderRadius: 3,
-            background: "linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%)",
-            boxShadow: "0px 15px 45px rgba(0,0,0,0.25)",
+            background: 'linear-gradient(135deg, #f9f9ff 0%, #ffffff 100%)',
+            boxShadow: '0px 15px 45px rgba(0,0,0,0.25)',
           },
         }}
       >
         {/* Header */}
         <DialogTitle
           sx={{
-            textAlign: "center",
-            bgcolor: "#e2e3e5",
+            textAlign: 'center',
+            bgcolor: '#e2e3e5',
             py: 2,
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
@@ -279,7 +279,7 @@ function ImmovablePropertyView() {
         >
           <Typography
             variant="h5"
-            sx={{ fontFamily: "serif", fontWeight: "bold", color: "#0a1f83" }}
+            sx={{ fontFamily: 'serif', fontWeight: 'bold', color: '#0a1f83' }}
           >
             Property Details Preview
           </Typography>
@@ -289,89 +289,89 @@ function ImmovablePropertyView() {
         <DialogContent
           dividers
           sx={{
-            backgroundColor: "rgba(255,255,255,0.95)",
-            backdropFilter: "blur(10px)",
-            maxHeight: "80vh",
+            backgroundColor: 'rgba(255,255,255,0.95)',
+            backdropFilter: 'blur(10px)',
+            maxHeight: '80vh',
           }}
         >
           {selectedRow && (
             <Grid container spacing={3}>
-              {fieldCard("Employee Code", selectedRow.empCode, 0)}
-              {fieldCard("Employee Name", selectedRow.empName, 1)}
-              {fieldCard("Designation", selectedRow.designation, 2)}
-              {fieldCard("Year", selectedRow.year, 3)}
-              {fieldCard("Acquisition Date", selectedRow.acquisitionDate, 4)}
-              {fieldCard("Acquisition Mode", selectedRow.acquisitionMode, 5)}
-              {fieldCard("From Whom Acquired", selectedRow.fromWhomAcquired, 6)}
-              {fieldCard("Ownership Status", selectedRow.ownershipStatus, 7)}
+              {fieldCard('Employee Code', selectedRow.empCode, 0)}
+              {fieldCard('Employee Name', selectedRow.empName, 1)}
+              {fieldCard('Designation', selectedRow.designation, 2)}
+              {fieldCard('Year', selectedRow.year, 3)}
+              {fieldCard('Acquisition Date', selectedRow.acquisitionDate, 4)}
+              {fieldCard('Acquisition Mode', selectedRow.acquisitionMode, 5)}
+              {fieldCard('From Whom Acquired', selectedRow.fromWhomAcquired, 6)}
+              {fieldCard('Ownership Status', selectedRow.ownershipStatus, 7)}
               {fieldCard(
-                "Relation With Board",
+                'Relation With Board',
                 selectedRow.relationWithBoard,
-                8
+                8,
               )}
               {fieldCard(
-                "Private Business Details",
+                'Private Business Details',
                 selectedRow.privateBusinessDetails,
-                9
+                9,
               )}
-              {fieldCard("Remarks", selectedRow.remarks, 10)}
+              {fieldCard('Remarks', selectedRow.remarks, 10)}
               {fieldCard(
-                "Agricultural Location",
+                'Agricultural Location',
                 selectedRow.agriculturalLocation,
-                11
+                11,
               )}
               {fieldCard(
-                "Agricultural Size Area",
+                'Agricultural Size Area',
                 selectedRow.agriculturalSizeArea,
-                12
+                12,
               )}
               {fieldCard(
-                "Agricultural Present Value",
+                'Agricultural Present Value',
                 selectedRow.agriculturalPresentValue,
-                13
+                13,
               )}
-              {fieldCard("Housing Location", selectedRow.housingLocation, 14)}
+              {fieldCard('Housing Location', selectedRow.housingLocation, 14)}
               {fieldCard(
-                "Housing Size Build-Up Area",
+                'Housing Size Build-Up Area',
                 selectedRow.housingSizeBuildUpArea,
-                15
+                15,
               )}
               {fieldCard(
-                "Housing Present Value",
+                'Housing Present Value',
                 selectedRow.housingPresentValue,
-                16
+                16,
               )}
               {fieldCard(
-                "Residential Location",
+                'Residential Location',
                 selectedRow.residentialLocation,
-                17
+                17,
               )}
               {fieldCard(
-                "Residential Size Area",
+                'Residential Size Area',
                 selectedRow.residentialSizeArea,
-                18
+                18,
               )}
               {fieldCard(
-                "Residential Present Value",
+                'Residential Present Value',
                 selectedRow.residentialPresentValue,
-                19
+                19,
               )}
-              {fieldCard("Shop Location", selectedRow.shopLocation, 20)}
+              {fieldCard('Shop Location', selectedRow.shopLocation, 20)}
               {fieldCard(
-                "Shop Size Build-Up Area",
+                'Shop Size Build-Up Area',
                 selectedRow.shopSizeBuildUpArea,
-                21
+                21,
               )}
               {fieldCard(
-                "Shop Present Value",
+                'Shop Present Value',
                 selectedRow.shopPresentValue,
-                22
+                22,
               )}
-              {fieldCard("District", selectedRow.district, 23)}
-              {fieldCard("Sub-District", selectedRow.subDistrict, 24)}
-              {fieldCard("Taluka/Village", selectedRow.talukaVillage, 25)}
-              {fieldCard("Annual Income", selectedRow.annualIncome, 26)}
-              {fieldCard("GPF / PRAN / EPF No", selectedRow.gpfPranEpfNo, 27)}
+              {fieldCard('District', selectedRow.district, 23)}
+              {fieldCard('Sub-District', selectedRow.subDistrict, 24)}
+              {fieldCard('Taluka/Village', selectedRow.talukaVillage, 25)}
+              {fieldCard('Annual Income', selectedRow.annualIncome, 26)}
+              {fieldCard('GPF / PRAN / EPF No', selectedRow.gpfPranEpfNo, 27)}
               {/* {fieldCard("Is Active", selectedRow.isActive ? "Yes" : "No", 28)}
               {fieldCard("Created On", selectedRow.created, 29)}
               {fieldCard("Created By", selectedRow.createdBy, 30)}
@@ -381,7 +381,7 @@ function ImmovablePropertyView() {
         </DialogContent>
 
         {/* Footer */}
-        <DialogActions sx={{ justifyContent: "center", p: 2 }}>
+        <DialogActions sx={{ justifyContent: 'center', p: 2 }}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Button
               onClick={handleClose}
@@ -395,7 +395,7 @@ function ImmovablePropertyView() {
       </Dialog>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

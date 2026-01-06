@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, Typography, Grid, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import DescriptionIcon from '@mui/icons-material/Description';
@@ -108,42 +108,84 @@ const cards = [
   },
 ];
 
-const sessionEmpcode = sessionStorage.getItem('empCode');
-const designationId = Number(sessionStorage.getItem('designationId'));
-const departmentId = Number(sessionStorage.getItem('departmentId'));
+// const sessionEmpcode = sessionStorage.getItem('empCode');
+// const designationId = Number(sessionStorage.getItem('designationId'));
+// const departmentId = Number(sessionStorage.getItem('departmentId'));
 
-const isCardVisible = (card) => {
-  // RRAC Request condition
-  if (card.key === 'RRAC_REQUEST') {
-    if (
-      (designationId === 98 ||
-        designationId === 17 ||
-        designationId === 10 ||
-        designationId === 8 ||
-        designationId === 2 ||
-        designationId === 23 ||
-        designationId === 99) &&
-      departmentId === 36
-    ) {
-      return true;
-    }
+// const isCardVisible = (card) => {
+//   // RRAC Request condition
+//   if (card.key === 'RRAC_REQUEST') {
+//     if (
+//       (designationId === 98 ||
+//         designationId === 17 ||
+//         designationId === 10 ||
+//         designationId === 8 ||
+//         designationId === 2 ||
+//         designationId === 23 ||
+//         designationId === 99) &&
+//       departmentId === 36
+//     ) {
+//       return true;
+//     }
 
-    if (sessionEmpcode === '12345') {
-      return true;
-    }
+//     if (sessionEmpcode === '12345') {
+//       return true;
+//     }
 
-    return false;
-  }
+//     return false;
+//   }
 
-  // existing empCode-based restriction
-  if (card.allowedEmpCodes) {
-    return card.allowedEmpCodes.includes(sessionEmpcode);
-  }
+//   if (card.allowedEmpCodes) {
+//     return card.allowedEmpCodes.includes(sessionEmpcode);
+//   }
 
-  return true;
-};
+//   return true;
+// };
 
 function OperationmaintenanceDashboard() {
+  const [sessionEmpcode, setSessionEmpcode] = useState(null);
+  const [designationId, setDesignationId] = useState(null);
+  const [departmentId, setDepartmentId] = useState(null);
+
+  useEffect(() => {
+    setSessionEmpcode(sessionStorage.getItem('empCode'));
+    setDesignationId(Number(sessionStorage.getItem('designationId')));
+    setDepartmentId(Number(sessionStorage.getItem('departmentId')));
+  }, []);
+
+  const isCardVisible = (card) => {
+    // wait until session data is ready
+    if (!sessionEmpcode || designationId === null || departmentId === null) {
+      return false;
+    }
+
+    if (card.key === 'RRAC_REQUEST') {
+      if (
+        (designationId === 98 ||
+          designationId === 17 ||
+          designationId === 10 ||
+          designationId === 8 ||
+          designationId === 2 ||
+          designationId === 23 ||
+          designationId === 99) &&
+        departmentId === 36
+      ) {
+        return true;
+      }
+
+      if (sessionEmpcode === '12345') {
+        return true;
+      }
+
+      return false;
+    }
+
+    if (card.allowedEmpCodes) {
+      return card.allowedEmpCodes.includes(sessionEmpcode);
+    }
+
+    return true;
+  };
   return (
     <Box
       sx={{

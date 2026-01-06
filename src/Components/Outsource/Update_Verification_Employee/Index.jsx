@@ -1,15 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import Tooltip from "@mui/material/Tooltip";
-import { Divider, Typography, Button, Backdrop } from "@mui/material";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
+import { useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link, useLocation } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Tooltip from '@mui/material/Tooltip';
+import { Typography, Button, Backdrop } from '@mui/material';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
 import {
   getAttendanceLocation,
   getCircle,
@@ -27,66 +24,68 @@ import {
   getSubDivision,
   getSubstation,
   updateVerifyOutEmployee,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 function UpdateVerifyEmployee() {
   const location = useLocation();
-  const empName = location.state?.empName || "";
-  const empCode = location.state?.empCode || "";
+  const empName = location.state?.empName || '';
+  const empCode = location.state?.empCode || '';
 
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [firstName, setFirstName] = useState("");
-  const [middleName, setMiddleName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [cityName, setCityName] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [aadhaarNumber, setAadhaarNumber] = useState("");
-  const [address, setAddress] = useState("");
-  const [dob, setDob] = useState("");
-  const [doj, setDoj] = useState("");
-  const [gender, setGender] = useState("");
-  const [fatherName, setFatherName] = useState("");
-  const [motherName, setMotherName] = useState("");
-  const [maritalStatus, setMaritalStatus] = useState("");
-  const [physicallyHandicapped, setPhysicallyHandicapped] = useState("");
-  const [disablementPercent, setDisablementPercent] = useState("");
-  const [status, setStatus] = useState("");
-  const [employeeCategory, setEmployeeCategory] = useState("");
-  const [skillType, setSkillType] = useState("");
-  const [defaultShift, setDefaultShift] = useState("");
-  const [workExperience, setWorkExperience] = useState("");
-  const [defaultDepartment, setDefaultDepartment] = useState("");
-  const [defaultDesignation, setDefaultDesignation] = useState("");
-  const [defaultHolidays, setDefaultHolidays] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [middleName, setMiddleName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [cityName, setCityName] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [aadhaarNumber, setAadhaarNumber] = useState('');
+  const [address, setAddress] = useState('');
+  const [dob, setDob] = useState('');
+  const [doj, setDoj] = useState('');
+  const [gender, setGender] = useState('');
+  const [fatherName, setFatherName] = useState('');
+  const [motherName, setMotherName] = useState('');
+  const [maritalStatus, setMaritalStatus] = useState('');
+  const [physicallyHandicapped, setPhysicallyHandicapped] = useState('');
+  const [disablementPercent, setDisablementPercent] = useState('');
+  const [status, setStatus] = useState('');
+  const [employeeCategory, setEmployeeCategory] = useState('');
+  const [skillType, setSkillType] = useState('');
+  const [defaultShift, setDefaultShift] = useState('');
+  const [workExperience, setWorkExperience] = useState('');
+  const [education, setEducation] = useState('');
 
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
-  const [selectedSubStation, setSelectedSubStation] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedOfficer, setSelectedOfficer] = useState("");
-  const [selectedRoName, setSelectedRoName] = useState("");
-  const [selectedHr, setSelectedHr] = useState("");
+  const [defaultDepartment, setDefaultDepartment] = useState('');
+  const [defaultDesignation, setDefaultDesignation] = useState('');
+  const [defaultHolidays, setDefaultHolidays] = useState('');
 
-  const [bankName, setBankName] = useState("");
-  const [bankAccount, setBankAccount] = useState("");
-  const [bankIfsc, setBankIfsc] = useState("");
-  const [panNumber, setPanNumber] = useState("");
-  const [pfNumber, setPfNumber] = useState("");
-  const [contractStartDate, setContractStartDate] = useState("");
-  const [contractEndDate, setContractEndDate] = useState("");
-  const [vendorId, setVendorId] = useState("");
-  const [vendorName, setVendorName] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
+  const [selectedSubStation, setSelectedSubStation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedOfficer, setSelectedOfficer] = useState('');
+  const [selectedRoName, setSelectedRoName] = useState('');
+  const [selectedHr, setSelectedHr] = useState('');
+
+  const [bankName, setBankName] = useState('');
+  const [bankAccount, setBankAccount] = useState('');
+  const [bankIfsc, setBankIfsc] = useState('');
+  const [panNumber, setPanNumber] = useState('');
+  const [pfNumber, setPfNumber] = useState('');
+  const [contractStartDate, setContractStartDate] = useState('');
+  const [contractEndDate, setContractEndDate] = useState('');
+  const [vendorId, setVendorId] = useState('');
+  const [vendorName, setVendorName] = useState('');
   // const [hrEmpCode, setHrEmpCode] = useState("");
   // const [hrAction, setHrAction] = useState("");
-  const [deviceId, setDeviceId] = useState("");
+  const [deviceId, setDeviceId] = useState('');
 
   // Concate First Middle and Last name into Full Name
   useEffect(() => {
-    const name = [firstName, middleName, lastName].filter(Boolean).join(" ");
+    const name = [firstName, middleName, lastName].filter(Boolean).join(' ');
     setFullName(name);
   }, [firstName, middleName, lastName]);
 
@@ -97,80 +96,85 @@ function UpdateVerifyEmployee() {
       try {
         const response = await getOutsourceEmployee(empCode);
         // console.log(response);
-        if (response.data.code == "200" && response.data.message == "Success") {
+        if (
+          response.data.code === '200' &&
+          response.data.message === 'Success'
+        ) {
           setOpenBackdrop(false);
-          setFirstName(response.data.list[0].firstName || "");
-          setMiddleName(response.data.list[0].middleName || "");
-          setLastName(response.data.list[0].lastName || "");
-          setFullName(response.data.list[0].fullName || "");
-          setCityName(response.data.list[0].city || "");
-          setMobileNumber(response.data.list[0].mobileNo || "");
-          setAadhaarNumber(response.data.list[0].adhaarNumber || "");
-          setAddress(response.data.list[0].address || "");
-          setDob(response.data.list[0].dateOfBirth || "");
-          setDoj(response.data.list[0].dateOfJoining || "");
-          setGender(response.data.list[0].gender || "");
-          setFatherName(response.data.list[0].fatherName || "");
+          setFirstName(response.data.list[0].firstName || '');
+          setMiddleName(response.data.list[0].middleName || '');
+          setLastName(response.data.list[0].lastName || '');
+          setFullName(response.data.list[0].fullName || '');
+          setCityName(response.data.list[0].city || '');
+          setMobileNumber(response.data.list[0].mobileNo || '');
+          setAadhaarNumber(response.data.list[0].adhaarNumber || '');
+          setAddress(response.data.list[0].address || '');
+          setDob(response.data.list[0].dateOfBirth || '');
+          setDoj(response.data.list[0].dateOfJoining || '');
+          setGender(response.data.list[0].gender || '');
+          setFatherName(response.data.list[0].fatherName || '');
 
-          setMotherName(response.data.list[0].motherName || "");
-          setMaritalStatus(response.data.list[0].maritalStatus || "");
+          setMotherName(response.data.list[0].motherName || '');
+          setMaritalStatus(response.data.list[0].maritalStatus || '');
           setPhysicallyHandicapped(
-            response.data.list[0].physicallyHandicaped || ""
+            response.data.list[0].physicallyHandicaped || '',
           );
           setDisablementPercent(
-            response.data.list[0].percentageOfDisablement || ""
+            response.data.list[0].percentageOfDisablement || '',
           );
-          setStatus(response.data.list[0].status || "");
-          setEmployeeCategory(response.data.list[0].category || "");
-          setSkillType(response.data.list[0].skillType || "");
-          setDefaultShift(response.data.list[0]?.defaultShift?.shiftId || "");
-          setWorkExperience(response.data.list[0].noOfWorkExp || "0");
-          setDefaultDepartment(response.data.list[0]?.department?.id || "");
-          setDefaultDesignation(
-            response.data.list[0]?.designation?.designationId || ""
-          );
-          setDefaultHolidays(response.data.list[0]?.holidayList?.id || "");
+          setStatus(response.data.list[0].status || '');
+          setEmployeeCategory(response.data.list[0].category || '');
+          setSkillType(response.data.list[0].skillType || '');
+          setDefaultShift(response.data.list[0]?.defaultShift?.shiftId || '');
+          setWorkExperience(response.data.list[0].noOfWorkExp || '0');
+          setEducation(response.data.list[0].education || '');
 
-          setSelectedRegion(response.data.list[0]?.region?.regionId || "");
-          setSelectedCircle(response.data.list[0]?.circle?.circleId || "");
+          setDefaultDepartment(response.data.list[0]?.department?.id || '');
+          setDefaultDesignation(
+            response.data.list[0]?.designation?.designationId || '',
+          );
+          setDefaultHolidays(response.data.list[0]?.holidayList?.id || '');
+
+          setSelectedRegion(response.data.list[0]?.region?.regionId || '');
+          setSelectedCircle(response.data.list[0]?.circle?.circleId || '');
           setSelectedDivision(
-            response.data.list[0]?.division?.divisionId || ""
+            response.data.list[0]?.division?.divisionId || '',
           );
           setSelectedSubDivision(
-            response.data.list[0]?.subDivision?.subdivisionId || ""
+            response.data.list[0]?.subDivision?.subdivisionId || '',
           );
-          setSelectedDC(response.data.list[0]?.dc?.dcId || "");
+          setSelectedDC(response.data.list[0]?.dc?.dcId || '');
           setSelectedSubStation(
-            response.data.list[0]?.substation?.substationId || ""
+            response.data.list[0]?.substation?.substationId || '',
           );
 
           setSelectedLocation(
-            response.data.list[0]?.attendanceLocationId?.id || ""
+            response.data.list[0]?.attendanceLocationId?.id || '',
           );
 
           setSelectedOfficer(
-            response.data.list[0]?.reportingOfficerDesignation?.id || ""
+            response.data.list[0]?.reportingOfficerDesignation?.id || '',
           );
 
-          setSelectedRoName(response.data.list[0]?.reportingOfficer?.id || "");
-          setSelectedHr(response.data.list[0]?.managerHr?.id || "");
+          setSelectedRoName(response.data.list[0]?.reportingOfficer?.id || '');
+          setSelectedHr(response.data.list[0]?.managerHr?.id || '');
 
-          setBankName(response.data.list[0].bankName || "");
-          setBankAccount(response.data.list[0].bankAccount || "");
-          setBankIfsc(response.data.list[0].bankIfsc || "");
-          setPanNumber(response.data.list[0].panNo || "");
-          setPfNumber(response.data.list[0].pfNumber || "");
-          setContractStartDate(response.data.list[0].contractStartDate || "");
-          setContractEndDate(response.data.list[0].contractEndDate || "");
-          setVendorId(response.data.list[0].vendorId || "");
-          setVendorName(response.data.list[0].vendorName || "");
-          setDeviceId(response.data.list[0].deviceId || "");
+          setBankName(response.data.list[0].bankName || '');
+          setBankAccount(response.data.list[0].bankAccount || '');
+          setBankIfsc(response.data.list[0].bankIfsc || '');
+          setPanNumber(response.data.list[0].panNo || '');
+          setPfNumber(response.data.list[0].pfNumber || '');
+          setContractStartDate(response.data.list[0].contractStartDate || '');
+          setContractEndDate(response.data.list[0].contractEndDate || '');
+          setVendorId(response.data.list[0].vendorId || '');
+          setVendorName(response.data.list[0].vendorName || '');
+          setDeviceId(response.data.list[0].deviceId || '');
         } else {
           alert(response.data.message);
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.error("Error fetching employee details:", error);
+        console.error('Error fetching employee details:', error);
         setOpenBackdrop(false);
       }
     };
@@ -186,7 +190,7 @@ function UpdateVerifyEmployee() {
         const response = await getShifts();
         setShifts(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -202,7 +206,7 @@ function UpdateVerifyEmployee() {
         //  console.log("designation", response);
         setDesignation(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -218,7 +222,7 @@ function UpdateVerifyEmployee() {
         // console.log("Department", response);
         setDepartment(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -234,7 +238,7 @@ function UpdateVerifyEmployee() {
         // console.log("holiday", response);
         setHolidays(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -255,7 +259,7 @@ function UpdateVerifyEmployee() {
         const response = await getRegion();
         setRegions(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -268,7 +272,7 @@ function UpdateVerifyEmployee() {
         const res = await getCircle(selectedRegion);
         setCircles(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching circles:", error);
+        console.error('Error fetching circles:', error);
       }
     })();
   }, [selectedRegion]);
@@ -281,7 +285,7 @@ function UpdateVerifyEmployee() {
         const res = await getDivision(selectedCircle);
         setDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error('Error fetching divisions:', error);
       }
     })();
   }, [selectedCircle]);
@@ -294,7 +298,7 @@ function UpdateVerifyEmployee() {
         const res = await getSubDivision(selectedDivision);
         setSubDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching sub divisions:", error);
+        console.error('Error fetching sub divisions:', error);
       }
     })();
   }, [selectedDivision]);
@@ -307,7 +311,7 @@ function UpdateVerifyEmployee() {
         const res = await getDC(selectedSubDivision);
         setDCs(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching DCs:", error);
+        console.error('Error fetching DCs:', error);
       }
     })();
   }, [selectedSubDivision]);
@@ -320,7 +324,7 @@ function UpdateVerifyEmployee() {
         const res = await getSubstation(selectedDC);
         setSubStations(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching sub stations:", error);
+        console.error('Error fetching sub stations:', error);
       }
     })();
   }, [selectedDC]);
@@ -348,11 +352,11 @@ function UpdateVerifyEmployee() {
 
   useEffect(() => {
     if (selectedRegion) {
-      setSelectedLocation("");
+      // setSelectedLocation("");
       fetchAttendanceLocation();
     } else {
       setAttendanceLocations([]);
-      setSelectedLocation("");
+      // setSelectedLocation("");
     }
   }, [
     selectedRegion,
@@ -372,7 +376,7 @@ function UpdateVerifyEmployee() {
         // console.log("roDesignation", response);
         setRoDesignation(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -388,7 +392,7 @@ function UpdateVerifyEmployee() {
         const res = await getRoNameByRoId(selectedOfficer);
         setRoName(res.data.list || []);
       } catch (err) {
-        console.error("Error fetching officer names:", err);
+        console.error('Error fetching officer names:', err);
       }
     };
 
@@ -404,7 +408,7 @@ function UpdateVerifyEmployee() {
         // console.log("HR name", response);
         setHrManager(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching shifts:", error);
+        console.error('Error fetching shifts:', error);
       }
     };
 
@@ -420,61 +424,61 @@ function UpdateVerifyEmployee() {
 
     // Required field validations
     const requiredFields = [
-      { value: firstName, name: "First Name", id: "firstName" },
-      { value: lastName, name: "Last Name", id: "lastName" },
-      { value: mobileNumber, name: "Mobile Number", id: "mobileNumber" },
-      { value: aadhaarNumber, name: "Aadhaar Number", id: "aadhaarNumber" },
-      { value: address, name: "Address", id: "address" },
-      { value: doj, name: "Date of Joining", id: "doj" },
-      { value: gender, name: "Gender", id: "gender" },
-      { value: fatherName, name: "Father Name", id: "fatherName" },
+      { value: firstName, name: 'First Name', id: 'firstName' },
+      { value: lastName, name: 'Last Name', id: 'lastName' },
+      { value: mobileNumber, name: 'Mobile Number', id: 'mobileNumber' },
+      { value: aadhaarNumber, name: 'Aadhaar Number', id: 'aadhaarNumber' },
+      { value: address, name: 'Address', id: 'address' },
+      { value: doj, name: 'Date of Joining', id: 'doj' },
+      { value: gender, name: 'Gender', id: 'gender' },
+      { value: fatherName, name: 'Father Name', id: 'fatherName' },
       {
         value: physicallyHandicapped,
-        name: "Physically Handicapped",
-        id: "physicallyHandicapped",
+        name: 'Physically Handicapped',
+        id: 'physicallyHandicapped',
       },
-      { value: status, name: "Status", id: "status" },
-      { value: employeeCategory, name: "Category", id: "employeeCategory" },
-      { value: skillType, name: "Skill Type", id: "skillType" },
-      { value: defaultShift, name: "Default Shift", id: "defaultShift" },
-      { value: defaultDesignation, name: "Designation", id: "designation" },
-      { value: defaultDepartment, name: "Department", id: "department" },
-      { value: defaultHolidays, name: "Holiday List", id: "holidayList" },
+      { value: status, name: 'Status', id: 'status' },
+      { value: employeeCategory, name: 'Category', id: 'employeeCategory' },
+      { value: skillType, name: 'Skill Type', id: 'skillType' },
+      { value: defaultShift, name: 'Default Shift', id: 'defaultShift' },
+      { value: defaultDesignation, name: 'Designation', id: 'designation' },
+      { value: defaultDepartment, name: 'Department', id: 'department' },
+      { value: defaultHolidays, name: 'Holiday List', id: 'holidayList' },
 
-      { value: selectedRegion, name: "Region", id: "selectedRegion" },
+      { value: selectedRegion, name: 'Region', id: 'selectedRegion' },
       {
         value: selectedLocation,
-        name: "Attendance Location",
-        id: "attendanceLocation",
+        name: 'Attendance Location',
+        id: 'attendanceLocation',
       },
       {
         value: selectedOfficer,
         name: "Officer's Designation",
-        id: "selectedOfficer",
+        id: 'selectedOfficer',
       },
       {
         value: selectedRoName,
-        name: "Reporting Officer",
-        id: "reportingOfficer",
+        name: 'Reporting Officer',
+        id: 'reportingOfficer',
       },
-      { value: selectedHr, name: "HR Manager", id: "hrManager" },
-      { value: bankName, name: "Bank Name", id: "bankName" },
-      { value: panNumber, name: "PAN Number", id: "panNumber" },
+      { value: selectedHr, name: 'HR Manager', id: 'hrManager' },
+      { value: bankName, name: 'Bank Name', id: 'bankName' },
+      { value: panNumber, name: 'PAN Number', id: 'panNumber' },
       {
         value: contractStartDate,
-        name: "Contract Start Date",
-        id: "contractStartDate",
+        name: 'Contract Start Date',
+        id: 'contractStartDate',
       },
       {
         value: contractEndDate,
-        name: "Contract End Date",
-        id: "contractEndDate",
+        name: 'Contract End Date',
+        id: 'contractEndDate',
       },
     ];
 
     // Check each required field
     requiredFields.forEach((field) => {
-      if (!field.value || String(field.value).trim() === "") {
+      if (!field.value || String(field.value).trim() === '') {
         newErrors[field.id] = `${field.name} is required`;
         if (!firstInvalid) firstInvalid = field.id;
       }
@@ -484,32 +488,32 @@ function UpdateVerifyEmployee() {
 
     // Extra validations
     if (mobileNumber && !/^\d{10}$/.test(mobileNumber)) {
-      newErrors.mobileNumber = "Mobile number must be exactly 10 digits";
-      if (!firstInvalid) firstInvalid = "mobileNumber";
+      newErrors.mobileNumber = 'Mobile number must be exactly 10 digits';
+      if (!firstInvalid) firstInvalid = 'mobileNumber';
     }
 
     if (aadhaarNumber && !/^\d{12}$/.test(aadhaarNumber)) {
-      newErrors.aadhaarNumber = "Aadhaar number must be exactly 12 digits";
-      if (!firstInvalid) firstInvalid = "aadhaarNumber";
+      newErrors.aadhaarNumber = 'Aadhaar number must be exactly 12 digits';
+      if (!firstInvalid) firstInvalid = 'aadhaarNumber';
     }
 
     if (panNumber && !/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/.test(panNumber)) {
-      newErrors.panNumber = "Enter PAN number in this format (e.g. ABCDE1234F)";
-      if (!firstInvalid) firstInvalid = "panNumber";
+      newErrors.panNumber = 'Enter PAN number in this format (e.g. ABCDE1234F)';
+      if (!firstInvalid) firstInvalid = 'panNumber';
     }
 
     const nameRegex = /^[A-Za-z ]+$/;
-    ["firstName", "middleName", "lastName", "motherName", "fatherName"].forEach(
+    ['firstName', 'middleName', 'lastName', 'motherName', 'fatherName'].forEach(
       (field) => {
         const value = eval(field);
         if (value && !nameRegex.test(value)) {
           newErrors[field] = `${field.replace(
             /([A-Z])/g,
-            " $1"
+            ' $1',
           )} must contain only letters`;
           if (!firstInvalid) firstInvalid = field;
         }
-      }
+      },
     );
 
     // Focus the first invalid field
@@ -522,60 +526,61 @@ function UpdateVerifyEmployee() {
     setOpenBackdrop(true);
 
     const payload = {
-      empCode: empCode || "",
-      firstName: firstName || "",
-      middleName: middleName || "",
-      lastName: lastName || "",
-      fullName: fullName || "",
-      mobileNo: mobileNumber || "",
-      adhaarNumber: aadhaarNumber || "",
-      dateOfBirth: dob || "",
-      dateOfJoining: doj || "",
-      gender: gender || "",
-      fatherName: fatherName || "",
-      motherName: motherName || "",
-      maritalStatus: maritalStatus || "",
-      physicallyHandicaped: physicallyHandicapped || "",
-      percentageOfDisablement: disablementPercent || "",
-      status: status || "",
-      category: employeeCategory || "",
-      address: address || "",
-      city: cityName || "",
-      region: selectedRegion || "",
-      circle: selectedCircle || "",
-      division: selectedDivision || "",
-      subDivision: selectedSubDivision || "",
-      dc: selectedDC || "",
-      substationId: selectedSubStation || "",
-      defaultShift: defaultShift || "",
-      designation: defaultDesignation || "",
-      reportingOfficer: selectedRoName || "",
-      bankName: bankName || "",
-      bankAccount: bankAccount || "",
-      bankIfsc: bankIfsc || "",
-      managerHr: selectedHr || "",
-      panNo: panNumber || "",
-      attendanceLocationId: selectedLocation || "",
-      departmentId: defaultDepartment || "",
-      pfNumber: pfNumber || "",
-      holidayListId: defaultHolidays || "",
-      skillType: skillType || "",
-      contractStartDate: contractStartDate || "",
-      contractEndDate: contractEndDate || "",
-      vendorId: vendorId || "",
-      vendorName: vendorName || "",
-      hrEmpCode: sessionStorage.getItem("empCode"),
-      hrAction: "Approved",
-      deviceId: deviceId || "",
-      noOfWorkExp: workExperience || "",
+      empCode: empCode || '',
+      firstName: firstName || '',
+      middleName: middleName || '',
+      lastName: lastName || '',
+      fullName: fullName || '',
+      mobileNo: mobileNumber || '',
+      adhaarNumber: aadhaarNumber || '',
+      dateOfBirth: dob || '',
+      dateOfJoining: doj || '',
+      gender: gender || '',
+      fatherName: fatherName || '',
+      motherName: motherName || '',
+      maritalStatus: maritalStatus || '',
+      physicallyHandicaped: physicallyHandicapped || '',
+      percentageOfDisablement: disablementPercent || '',
+      status: status || '',
+      category: employeeCategory || '',
+      address: address || '',
+      city: cityName || '',
+      region: selectedRegion || '',
+      circle: selectedCircle || '',
+      division: selectedDivision || '',
+      subDivision: selectedSubDivision || '',
+      dc: selectedDC || '',
+      substationId: selectedSubStation || '',
+      defaultShift: defaultShift || '',
+      designation: defaultDesignation || '',
+      reportingOfficer: selectedRoName || '',
+      bankName: bankName || '',
+      bankAccount: bankAccount || '',
+      bankIfsc: bankIfsc || '',
+      managerHr: selectedHr || '',
+      panNo: panNumber || '',
+      attendanceLocationId: selectedLocation || '',
+      departmentId: defaultDepartment || '',
+      pfNumber: pfNumber || '',
+      holidayListId: defaultHolidays || '',
+      skillType: skillType || '',
+      contractStartDate: contractStartDate || '',
+      contractEndDate: contractEndDate || '',
+      vendorId: vendorId || '',
+      vendorName: vendorName || '',
+      hrEmpCode: sessionStorage.getItem('empCode'),
+      hrAction: 'Approved',
+      deviceId: deviceId || '',
+      noOfWorkExp: workExperience || '',
+      education: education || '',
     };
 
     // Call API
     try {
       const response = await updateVerifyOutEmployee(payload);
       // console.log(response);
-      if (response.data.code == "200") {
-        alert("Updated Successfully !!");
+      if (response.data.code === '200') {
+        alert('Updated Successfully !!');
         setOpenBackdrop(false);
         // window.location.reload();
       } else {
@@ -602,9 +607,9 @@ function UpdateVerifyEmployee() {
               variant="h4"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Verify and Update Outsource Employee
@@ -614,8 +619,8 @@ function UpdateVerifyEmployee() {
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
                 //color: "#0a1f83",
               }}
             >
@@ -627,7 +632,15 @@ function UpdateVerifyEmployee() {
           {/* Basic Information */}
           <Card>
             <Card.Header className="text-center">
-              <h4 style={{ fontFamily: "serif" }}>Basic Information</h4>
+              <h4
+                style={{
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                }}
+              >
+                Basic Information
+              </h4>
             </Card.Header>
             <Card.Body>
               {/* Row 1 */}
@@ -636,7 +649,7 @@ function UpdateVerifyEmployee() {
                 <Col>
                   <Card>
                     <Card.Header>
-                      First Name{" "}
+                      First Name{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -656,9 +669,9 @@ function UpdateVerifyEmployee() {
                       {errors.firstName && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.firstName}
                         </Typography>
                       )}
@@ -687,7 +700,7 @@ function UpdateVerifyEmployee() {
                 <Col>
                   <Card>
                     <Card.Header>
-                      Last Name{" "}
+                      Last Name{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -707,9 +720,9 @@ function UpdateVerifyEmployee() {
                       {errors.lastName && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.lastName}
                         </Typography>
                       )}
@@ -757,7 +770,7 @@ function UpdateVerifyEmployee() {
                 <Col>
                   <Card>
                     <Card.Header>
-                      Mobile Number{" "}
+                      Mobile Number{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -777,9 +790,9 @@ function UpdateVerifyEmployee() {
                       {errors.mobileNumber && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.mobileNumber}
                         </Typography>
                       )}
@@ -790,7 +803,7 @@ function UpdateVerifyEmployee() {
                 <Col>
                   <Card>
                     <Card.Header>
-                      Adhaar Number{" "}
+                      Adhaar Number{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -810,9 +823,9 @@ function UpdateVerifyEmployee() {
                       {errors.aadhaarNumber && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.aadhaarNumber}
                         </Typography>
                       )}
@@ -834,9 +847,9 @@ function UpdateVerifyEmployee() {
                       {errors.address && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.address}
                         </Typography>
                       )}
@@ -873,9 +886,9 @@ function UpdateVerifyEmployee() {
                       {errors.doj && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.doj}
                         </Typography>
                       )}
@@ -903,9 +916,9 @@ function UpdateVerifyEmployee() {
                       {errors.gender && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.gender}
                         </Typography>
                       )}
@@ -931,9 +944,9 @@ function UpdateVerifyEmployee() {
                       {errors.fatherName && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.fatherName}
                         </Typography>
                       )}
@@ -1003,9 +1016,9 @@ function UpdateVerifyEmployee() {
                       {errors.physicallyHandicapped && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.physicallyHandicapped}
                         </Typography>
                       )}
@@ -1052,9 +1065,9 @@ function UpdateVerifyEmployee() {
                       {errors.status && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.status}
                         </Typography>
                       )}
@@ -1083,9 +1096,9 @@ function UpdateVerifyEmployee() {
                       {errors.employeeCategory && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.employeeCategory}
                         </Typography>
                       )}
@@ -1115,9 +1128,9 @@ function UpdateVerifyEmployee() {
                       {errors.skillType && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.skillType}
                         </Typography>
                       )}
@@ -1149,9 +1162,9 @@ function UpdateVerifyEmployee() {
                       {errors.defaultShift && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.defaultShift}
                         </Typography>
                       )}
@@ -1200,9 +1213,9 @@ function UpdateVerifyEmployee() {
                       {errors.designation && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.designation}
                         </Typography>
                       )}
@@ -1234,9 +1247,9 @@ function UpdateVerifyEmployee() {
                       {errors.department && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.department}
                         </Typography>
                       )}
@@ -1266,12 +1279,28 @@ function UpdateVerifyEmployee() {
                       {errors.holidayList && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.holidayList}
                         </Typography>
                       )}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+
+              <Row xs={1} sm={2} md={4} className="g-3 mt-2">
+                <Col>
+                  <Card>
+                    <Card.Header>Education Details</Card.Header>
+                    <Card.Body>
+                      <Form.Control
+                        type="text"
+                        placeholder="Enter Education"
+                        value={education}
+                        onChange={(e) => setEducation(e.target.value)}
+                      />
                     </Card.Body>
                   </Card>
                 </Col>
@@ -1282,7 +1311,16 @@ function UpdateVerifyEmployee() {
           {/* Department and Grade */}
           <Card className="mt-4">
             <Card.Header className="text-center">
-              <h4 style={{ fontFamily: "serif" }}> Department and Grade</h4>
+              <h4
+                style={{
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                }}
+              >
+                {' '}
+                Department and Grade
+              </h4>
             </Card.Header>
             <Card.Body>
               {/* Row 1 */}
@@ -1290,7 +1328,7 @@ function UpdateVerifyEmployee() {
                 <Col>
                   <Card>
                     <Card.Header>
-                      Region{" "}
+                      Region{' '}
                       <span className="text-danger text-bold text-large">
                         *
                       </span>
@@ -1303,15 +1341,15 @@ function UpdateVerifyEmployee() {
                           const value = e.target.value;
                           setSelectedRegion(value);
                           // Clear dependent fields
-                          setSelectedCircle("");
+                          setSelectedCircle('');
                           setCircles([]);
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubStation("");
+                          setSelectedSubStation('');
                           setSubStations([]);
                         }}
                       >
@@ -1327,9 +1365,9 @@ function UpdateVerifyEmployee() {
                       {errors.selectedRegion && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.selectedRegion}
                         </Typography>
                       )}
@@ -1347,13 +1385,13 @@ function UpdateVerifyEmployee() {
                           const value = e.target.value;
                           setSelectedCircle(value);
                           // Clear dependent fields
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubStation("");
+                          setSelectedSubStation('');
                           setSubStations([]);
                         }}
                         disabled={!selectedRegion}
@@ -1380,11 +1418,11 @@ function UpdateVerifyEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedDivision(value);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubStation("");
+                          setSelectedSubStation('');
                           setSubStations([]);
                         }}
                         disabled={!selectedCircle}
@@ -1415,9 +1453,9 @@ function UpdateVerifyEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedSubDivision(value);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
-                          setSelectedSubStation("");
+                          setSelectedSubStation('');
                           setSubStations([]);
                         }}
                         disabled={!selectedDivision}
@@ -1443,7 +1481,7 @@ function UpdateVerifyEmployee() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedDC(value);
-                          setSelectedSubStation("");
+                          setSelectedSubStation('');
                           setSubStations([]);
                         }}
                         disabled={!selectedSubDivision}
@@ -1489,7 +1527,16 @@ function UpdateVerifyEmployee() {
           {/* Reporting and Approvers */}
           <Card className="mt-4">
             <Card.Header className="text-center">
-              <h4 style={{ fontFamily: "serif" }}> Reporting and Approvers</h4>
+              <h4
+                style={{
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                }}
+              >
+                {' '}
+                Reporting and Approvers
+              </h4>
             </Card.Header>
             <Card.Body>
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
@@ -1523,9 +1570,9 @@ function UpdateVerifyEmployee() {
                       {errors.attendanceLocation && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.attendanceLocation}
                         </Typography>
                       )}
@@ -1553,9 +1600,9 @@ function UpdateVerifyEmployee() {
                       {errors.selectedOfficer && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.selectedOfficer}
                         </Typography>
                       )}
@@ -1589,9 +1636,9 @@ function UpdateVerifyEmployee() {
                       {errors.reportingOfficer && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.reportingOfficer}
                         </Typography>
                       )}
@@ -1620,9 +1667,9 @@ function UpdateVerifyEmployee() {
                       {errors.hrManager && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.hrManager}
                         </Typography>
                       )}
@@ -1636,7 +1683,16 @@ function UpdateVerifyEmployee() {
           {/* Attendance and Leave Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
-              <h4 style={{ fontFamily: "serif" }}> Salary Details</h4>
+              <h4
+                style={{
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                }}
+              >
+                {' '}
+                Salary Details
+              </h4>
             </Card.Header>
             <Card.Body>
               <Row xs={1} sm={3} md={3} className="g-3 mt-2">
@@ -1790,9 +1846,9 @@ function UpdateVerifyEmployee() {
                       {errors.bankName && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.bankName}
                         </Typography>
                       )}
@@ -1847,9 +1903,9 @@ function UpdateVerifyEmployee() {
                       {errors.panNumber && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.panNumber}
                         </Typography>
                       )}
@@ -1890,7 +1946,16 @@ function UpdateVerifyEmployee() {
           {/* Vendor's Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
-              <h4 style={{ fontFamily: "serif" }}> Vendor's Details</h4>
+              <h4
+                style={{
+                  color: '#0a1f83',
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                }}
+              >
+                {' '}
+                Vendor's Details
+              </h4>
             </Card.Header>
             <Card.Body>
               {/* Row 1 */}
@@ -1904,13 +1969,14 @@ function UpdateVerifyEmployee() {
                         id="contractStartDate"
                         value={contractStartDate}
                         onChange={(e) => setContractStartDate(e.target.value)}
+                        disabled
                       />
                       {errors.contractStartDate && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.contractStartDate}
                         </Typography>
                       )}
@@ -1927,13 +1993,14 @@ function UpdateVerifyEmployee() {
                         value={contractEndDate}
                         id="contractEndDate"
                         onChange={(e) => setContractEndDate(e.target.value)}
+                        disabled
                       />
                       {errors.contractEndDate && (
                         <Typography
                           variant="caption"
-                          style={{ color: "red", marginTop: "3px" }}
+                          style={{ color: 'red', marginTop: '3px' }}
                         >
-                          {" "}
+                          {' '}
                           &nbsp;*{errors.contractEndDate}
                         </Typography>
                       )}
@@ -1949,6 +2016,7 @@ function UpdateVerifyEmployee() {
                         type="text"
                         value={vendorName}
                         onChange={(e) => setVendorName(e.target.value)}
+                        disabled
                       />
                     </Card.Body>
                   </Card>
@@ -1971,7 +2039,7 @@ function UpdateVerifyEmployee() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

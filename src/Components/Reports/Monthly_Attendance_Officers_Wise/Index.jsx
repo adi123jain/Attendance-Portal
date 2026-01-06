@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Button, Typography } from "@mui/material";
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Button, Typography } from '@mui/material';
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
-const years = [2022, 2023, 2024, 2025, 2026];
+const years = [2022, 2023, 2024, 2025, 2026, 2027];
 
 function MonthlyAttendannceOfficer() {
   const currentDate = new Date();
@@ -27,20 +27,20 @@ function MonthlyAttendannceOfficer() {
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
 
-  const empCode = sessionStorage.getItem("empCode");
+  const empCode = sessionStorage.getItem('empCode');
 
   const downloadOfficerWise = () => {
     if (!selectedMonth || !selectedYear) {
-      alert("Please select both Month and Year.");
+      alert('Please select both Month and Year.');
       return;
     }
 
     const API = `https://attendance.mpcz.in:8888/E-Attendance/api/attendance/getAttendanceMisHrWise?hrEmpCode=${empCode}&month=${selectedMonth}&year=${selectedYear}`;
 
-    const downloadLink = document.createElement("a");
+    const downloadLink = document.createElement('a');
     downloadLink.href = API;
-    downloadLink.style.display = "none";
-    downloadLink.target = "_blank";
+    downloadLink.style.display = 'none';
+    downloadLink.target = '_blank';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -54,9 +54,9 @@ function MonthlyAttendannceOfficer() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Monthly Sheet Attendance Officer Wise
@@ -71,7 +71,7 @@ function MonthlyAttendannceOfficer() {
                 <Card.Body>
                   <Form.Control
                     type="text"
-                    value={empCode || ""}
+                    value={empCode || ''}
                     disabled
                     readOnly
                   />

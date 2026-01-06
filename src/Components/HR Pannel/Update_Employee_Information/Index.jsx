@@ -1,31 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { Divider } from '@mui/material';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { PropagateLoader } from 'react-spinners';
-
-import {
-  Typography,
-  Tooltip,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  Box,
-  Backdrop,
-} from '@mui/material';
+import { Typography, Tooltip, Button, Box, Backdrop } from '@mui/material';
 import { createNewEmployee } from '../../../Services/Auth';
 
 function UpdateEmployeeInformation({
@@ -1539,7 +1520,7 @@ function UpdateEmployeeInformation({
                         isInvalid={!!errors.selectedLocation}
                         ref={(el) => (inputRefs.current.selectedLocation = el)}
                       >
-                        <option value="" disabled selected>
+                        <option value="" disabled>
                           -- select Location --
                         </option>
                         {attendanceLocations &&

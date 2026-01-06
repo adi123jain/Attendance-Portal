@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link, useLocation } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import Tooltip from '@mui/material/Tooltip';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
   Divider,
   Typography,
@@ -20,22 +20,22 @@ import {
   Paper,
   Collapse,
   Box,
-} from "@mui/material";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import { getIncentiveMisHostory } from "../../../Services/Auth";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+} from '@mui/material';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import { getIncentiveMisHostory } from '../../../Services/Auth';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -71,15 +71,15 @@ function RRAC_MIS() {
   const [historyInTable, setHistoryInTable] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const [selectedYear, setSelectedYear] = useState("");
+  const [selectedMonth, setSelectedMonth] = useState('');
+  const [selectedYear, setSelectedYear] = useState('');
 
   const tableRef = useRef(null);
 
   //  Set default current month & year
   useEffect(() => {
     const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, "0"); // 01–12
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // 01–12
     const year = today.getFullYear();
     setSelectedMonth(month);
     setSelectedYear(year.toString());
@@ -87,18 +87,18 @@ function RRAC_MIS() {
 
   const handleSubmit = async () => {
     if (!selectedMonth || !selectedYear) {
-      alert("Please select both month and year.");
+      alert('Please select both month and year.');
       return;
     }
 
-    const requestParam = `${selectedYear}${"-"}${selectedMonth}`;
-    console.log("Request Param:", requestParam);
+    const requestParam = `${selectedYear}${'-'}${selectedMonth}`;
+    console.log('Request Param:', requestParam);
 
     setOpenBackdrop(true);
 
     try {
       const response = await getIncentiveMisHostory(requestParam);
-      console.log("API Response:", response);
+      console.log('API Response:', response);
 
       setHistoryInTable(response?.data?.list || []);
 
@@ -107,8 +107,8 @@ function RRAC_MIS() {
         tableRef.current?.focus();
       }, 100);
     } catch (error) {
-      console.error("Error fetching records:", error);
-      alert("Something went wrong while fetching records.");
+      console.error('Error fetching records:', error);
+      alert('Something went wrong while fetching records.');
     } finally {
       setOpenBackdrop(false);
     }
@@ -125,7 +125,7 @@ function RRAC_MIS() {
   // }
 
   const [openRow, setOpenRow] = useState(null);
-  const [filter, setFilter] = useState("All"); //  radio filter
+  const [filter, setFilter] = useState('All'); //  radio filter
 
   const toggleRow = (index) => {
     setOpenRow(openRow === index ? null : index);
@@ -134,11 +134,11 @@ function RRAC_MIS() {
   //  Filtered data based on radio selection
   const filteredData = useMemo(() => {
     if (!historyInTable) return [];
-    if (filter === "All") return historyInTable;
-    if (filter === "Approved")
-      return historyInTable.filter((item) => item.roApproval === "Approved");
-    if (filter === "Not Approved")
-      return historyInTable.filter((item) => item.roApproval !== "Approved");
+    if (filter === 'All') return historyInTable;
+    if (filter === 'Approved')
+      return historyInTable.filter((item) => item.roApproval === 'Approved');
+    if (filter === 'Not Approved')
+      return historyInTable.filter((item) => item.roApproval !== 'Approved');
     return historyInTable;
   }, [historyInTable, filter]);
 
@@ -155,7 +155,7 @@ function RRAC_MIS() {
 
     const totalAmount = filteredData.reduce(
       (sum, item) => sum + (Number(item.amount) || 0),
-      0
+      0,
     );
 
     const totalRecords = filteredData.length;
@@ -169,13 +169,13 @@ function RRAC_MIS() {
 
   const downloadExcel = () => {
     if (!selectedMonth || !selectedYear) {
-      alert("Please select Month and Year before downloading");
+      alert('Please select Month and Year before downloading');
       return;
     }
 
     const monthYear = `${selectedYear}-${selectedMonth}`;
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/incentive/getIncentiveMIS?monthYear=${monthYear}`;
-    window.open(url, "_blank");
+    window.open(url, '_blank');
 
     // try {
     //   const link = document.createElement("a");
@@ -197,11 +197,11 @@ function RRAC_MIS() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Revenue Realization & Commercial Activity (MIS)
@@ -253,6 +253,7 @@ function RRAC_MIS() {
                     <option value="2024">2024</option>
                     <option value="2025">2025</option>
                     <option value="2026">2026</option>
+                    <option value="2027">2027</option>
                   </Form.Select>
                 </Card.Body>
               </Card>
@@ -283,7 +284,7 @@ function RRAC_MIS() {
                   label="All"
                   name="filter"
                   value="All"
-                  checked={filter === "All"}
+                  checked={filter === 'All'}
                   onChange={(e) => setFilter(e.target.value)}
                 />
                 <Form.Check
@@ -291,7 +292,7 @@ function RRAC_MIS() {
                   label="Approved"
                   name="filter"
                   value="Approved"
-                  checked={filter === "Approved"}
+                  checked={filter === 'Approved'}
                   onChange={(e) => setFilter(e.target.value)}
                 />
                 <Form.Check
@@ -299,7 +300,7 @@ function RRAC_MIS() {
                   label="Not Approved"
                   name="filter"
                   value="Not Approved"
-                  checked={filter === "Not Approved"}
+                  checked={filter === 'Not Approved'}
                   onChange={(e) => setFilter(e.target.value)}
                 />
               </div>
@@ -381,7 +382,7 @@ function RRAC_MIS() {
             </Card.Header>
 
             <Card.Body>
-              <TableContainer component={Paper} sx={{ marginTop: "15px" }}>
+              <TableContainer component={Paper} sx={{ marginTop: '15px' }}>
                 <Table>
                   <TableHead>
                     <StyledTableRow>
@@ -415,55 +416,55 @@ function RRAC_MIS() {
                           <StyledTableRow>
                             <StyledTableCell>{index + 1}</StyledTableCell>
                             <StyledTableCell>
-                              {item.region?.name || "-"}
+                              {item.region?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.circle?.name || "-"}
+                              {item.circle?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.division?.name || "-"}
+                              {item.division?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.subdivision?.name || "-"}
+                              {item.subdivision?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.dc?.name || "-"}
+                              {item.dc?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.created || "-"}
+                              {item.created || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.empCode || "-"}
+                              {item.empCode || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.fullName || "-"}
+                              {item.fullName || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.designation?.name || "-"}
+                              {item.designation?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.amount || "-"}
+                              {item.amount || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.refNo || "-"}
+                              {item.refNo || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.roName || "-"}
+                              {item.roName || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.roDesignation || "-"}
+                              {item.roDesignation || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.roEmpCode || "-"}
+                              {item.roEmpCode || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.roApproval || "-"}
+                              {item.roApproval || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.roApprovalDate || "-"}
+                              {item.roApprovalDate || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.usedAmount || "-"}
+                              {item.usedAmount || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
                               {/* <Button
@@ -535,19 +536,19 @@ function RRAC_MIS() {
                                         item.heads.map((head, hIndex) => (
                                           <StyledTableRow key={hIndex}>
                                             <StyledTableCell>
-                                              {head.head.name || "-"}
+                                              {head.head.name || '-'}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                              {head.vendorName || "-"}
+                                              {head.vendorName || '-'}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                              {head.headCount || "0"}
+                                              {head.headCount || '0'}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                              {head.amount || "0"}
+                                              {head.amount || '0'}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                              {head.usedAmount || "0"}
+                                              {head.usedAmount || '0'}
                                             </StyledTableCell>
                                             <StyledTableCell>
                                               <Button
@@ -596,7 +597,7 @@ function RRAC_MIS() {
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

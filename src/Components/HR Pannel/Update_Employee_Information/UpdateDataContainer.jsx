@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import UpdateEmployeeInformation from "./Index";
+import React, { useEffect, useState } from 'react';
+import UpdateEmployeeInformation from './Index';
 import {
   getEmploymentType,
   getRegion,
@@ -17,10 +17,10 @@ import {
   getHolidays,
   getShifts,
   getEmployeeInfo,
-} from "../../../Services/Auth";
-import { useLocation } from "react-router-dom";
-import { Backdrop } from "@mui/material";
-import { PropagateLoader } from "react-spinners";
+} from '../../../Services/Auth';
+import { useLocation } from 'react-router-dom';
+import { Backdrop } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 
 function UpdateDataContainer() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -37,13 +37,13 @@ function UpdateDataContainer() {
       try {
         const response = await getEmployeeInfo(empCode);
 
-        if (response.data.code === "200") {
+        if (response.data.code === '200') {
           seEmpInfo(response.data.list[0]);
         } else {
           alert(response.data.message);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
       } finally {
         setOpenBackdrop(false);
       }
@@ -63,22 +63,22 @@ function UpdateDataContainer() {
   const [substations, setSubstations] = useState([]);
 
   // Selected values
-  const [selectedEmployment, setSelectedEmployment] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
-  const [selectedSubstation, setSelectedSubstation] = useState("");
-  const [selectedDesignation, setSelectedDesignation] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedEmployment, setSelectedEmployment] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
+  const [selectedSubstation, setSelectedSubstation] = useState('');
+  const [selectedDesignation, setSelectedDesignation] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
 
   // Fetch Employment Types
   useEffect(() => {
     const fetchEmployment = async () => {
       try {
         const res = await getEmploymentType();
-        setEmploymentTypes(res.data.code === "200" ? res.data.list : []);
+        setEmploymentTypes(res.data.code === '200' ? res.data.list : []);
       } catch (err) {
         console.error(err);
         setEmploymentTypes([]);
@@ -92,7 +92,7 @@ function UpdateDataContainer() {
     const fetchRegions = async () => {
       try {
         const res = await getRegion();
-        setRegions(res.data.code === "200" ? res.data.list : []);
+        setRegions(res.data.code === '200' ? res.data.list : []);
       } catch (err) {
         console.error(err);
         setRegions([]);
@@ -107,11 +107,11 @@ function UpdateDataContainer() {
 
   const handleRegionChange = async (regionId) => {
     setSelectedRegion(regionId);
-    setSelectedCircle("");
-    setSelectedDivision("");
-    setSelectedSubDivision("");
-    setSelectedDC("");
-    setSelectedSubstation("");
+    setSelectedCircle('');
+    setSelectedDivision('');
+    setSelectedSubDivision('');
+    setSelectedDC('');
+    setSelectedSubstation('');
     setCircles([]);
     setDivisions([]);
     setSubDivisions([]);
@@ -120,7 +120,7 @@ function UpdateDataContainer() {
 
     try {
       const res = await getCircle(regionId);
-      setCircles(res.data.code === "200" ? res.data.list : []);
+      setCircles(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
     }
@@ -128,10 +128,10 @@ function UpdateDataContainer() {
 
   const handleCircleChange = async (circleId) => {
     setSelectedCircle(circleId);
-    setSelectedDivision("");
-    setSelectedSubDivision("");
-    setSelectedDC("");
-    setSelectedSubstation("");
+    setSelectedDivision('');
+    setSelectedSubDivision('');
+    setSelectedDC('');
+    setSelectedSubstation('');
     setDivisions([]);
     setSubDivisions([]);
     setDCs([]);
@@ -139,7 +139,7 @@ function UpdateDataContainer() {
 
     try {
       const res = await getDivision(circleId);
-      setDivisions(res.data.code === "200" ? res.data.list : []);
+      setDivisions(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
     }
@@ -147,16 +147,16 @@ function UpdateDataContainer() {
 
   const handleDivisionChange = async (divisionId) => {
     setSelectedDivision(divisionId);
-    setSelectedSubDivision("");
-    setSelectedDC("");
-    setSelectedSubstation("");
+    setSelectedSubDivision('');
+    setSelectedDC('');
+    setSelectedSubstation('');
     setSubDivisions([]);
     setDCs([]);
     setSubstations([]);
 
     try {
       const res = await getSubDivision(divisionId);
-      setSubDivisions(res.data.code === "200" ? res.data.list : []);
+      setSubDivisions(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
     }
@@ -164,14 +164,14 @@ function UpdateDataContainer() {
 
   const handleSubDivisionChange = async (subDivisionId) => {
     setSelectedSubDivision(subDivisionId);
-    setSelectedDC("");
-    setSelectedSubstation("");
+    setSelectedDC('');
+    setSelectedSubstation('');
     setDCs([]);
     setSubstations([]);
 
     try {
       const res = await getDC(subDivisionId);
-      setDCs(res.data.code === "200" ? res.data.list : []);
+      setDCs(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
     }
@@ -179,12 +179,12 @@ function UpdateDataContainer() {
 
   const handleDCChange = async (dcId) => {
     setSelectedDC(dcId);
-    setSelectedSubstation("");
+    setSelectedSubstation('');
     setSubstations([]);
 
     try {
       const res = await getSubstation(dcId);
-      setSubstations(res.data.code === "200" ? res.data.list : []);
+      setSubstations(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
     }
@@ -199,7 +199,7 @@ function UpdateDataContainer() {
     const fetchDesignation = async () => {
       try {
         const res = await getDesignation();
-        setDesignations(res.data.code === "200" ? res.data.list : []);
+        setDesignations(res.data.code === '200' ? res.data.list : []);
       } catch (err) {
         console.error(err);
         setDesignations([]);
@@ -218,7 +218,7 @@ function UpdateDataContainer() {
     const fetchDepartment = async () => {
       try {
         const res = await getDepartment();
-        setDepartments(res.data.code === "200" ? res.data.list : []);
+        setDepartments(res.data.code === '200' ? res.data.list : []);
       } catch (err) {
         console.error(err);
         setDepartments([]);
@@ -234,15 +234,15 @@ function UpdateDataContainer() {
   const [roDesignations, setRoDesignations] = useState([]);
   const [officers, setOfficers] = useState([]);
 
-  const [selectedRoDesignation, setSelectedRoDesignation] = useState("");
-  const [selectedOfficer, setSelectedOfficer] = useState("");
+  const [selectedRoDesignation, setSelectedRoDesignation] = useState('');
+  const [selectedOfficer, setSelectedOfficer] = useState('');
 
   // Fetch Ro Designations on mount
   useEffect(() => {
     const fetchRoDesignations = async () => {
       try {
         const res = await getRoDesignation();
-        setRoDesignations(res.data.code === "200" ? res.data.list : []);
+        setRoDesignations(res.data.code === '200' ? res.data.list : []);
       } catch (err) {
         console.error(err);
         setRoDesignations([]);
@@ -254,12 +254,12 @@ function UpdateDataContainer() {
   // Handle Ro Name on designation change
   const handleRoDesignationChange = async (designationId) => {
     setSelectedRoDesignation(designationId);
-    setSelectedOfficer("");
+    setSelectedOfficer('');
     setOfficers([]);
 
     try {
       const res = await getRoNameByRoId(designationId);
-      setOfficers(res.data.code === "200" ? res.data.list : []);
+      setOfficers(res.data.code === '200' ? res.data.list : []);
     } catch (err) {
       console.error(err);
       setOfficers([]);
@@ -272,20 +272,20 @@ function UpdateDataContainer() {
   };
 
   const [hrManagers, setHrManagers] = useState([]);
-  const [selectedHrManager, setSelectedHrManager] = useState("");
+  const [selectedHrManager, setSelectedHrManager] = useState('');
 
   // Fetch HR Managers on load
   useEffect(() => {
     const fetchHrManagers = async () => {
       try {
         const res = await getHrManager();
-        if (res.data.code === "200") {
+        if (res.data.code === '200') {
           setHrManagers(res.data.list);
         } else {
           setHrManagers([]);
         }
       } catch (err) {
-        console.error("Failed to fetch HR managers:", err);
+        console.error('Failed to fetch HR managers:', err);
         setHrManagers([]);
       }
     };
@@ -293,36 +293,60 @@ function UpdateDataContainer() {
   }, []);
 
   const [attendanceLocations, setAttendanceLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState('');
 
-  const fetchAttendanceLocation = async () => {
-    const payload = {
-      regionId: selectedRegion,
-      circleId: selectedCircle || null,
-      divisionId: selectedDivision || null,
-      subDivisionId: selectedSubDivision || null,
-      dcId: selectedDC || null,
-      substationId: selectedSubstation || null,
-    };
+  // const fetchAttendanceLocation = async () => {
+  //   const payload = {
+  //     regionId: selectedRegion,
+  //     circleId: selectedCircle || null,
+  //     divisionId: selectedDivision || null,
+  //     subDivisionId: selectedSubDivision || null,
+  //     dcId: selectedDC || null,
+  //     substationId: selectedSubstation || null,
+  //   };
 
-    try {
-      const response = await getAttendanceLocation(payload);
-      const list = response?.data?.value ?? response?.data?.list ?? [];
-      setAttendanceLocations(Array.isArray(list) ? list : []);
-    } catch (error) {
-      console.error("Error fetching Attendance Location:", error);
-      setAttendanceLocations([]);
-    }
-  };
+  //   try {
+  //     const response = await getAttendanceLocation(payload);
+  //     const list = response?.data?.value ?? response?.data?.list ?? [];
+  //     setAttendanceLocations(Array.isArray(list) ? list : []);
+  //   } catch (error) {
+  //     console.error('Error fetching Attendance Location:', error);
+  //     setAttendanceLocations([]);
+  //   }
+  // };
 
   useEffect(() => {
-    if (selectedRegion) {
-      setSelectedLocation("");
-      fetchAttendanceLocation();
-    } else {
-      setAttendanceLocations([]);
-      setSelectedLocation("");
-    }
+    const fetchAttendanceLocation = async () => {
+      if (!selectedRegion) {
+        setAttendanceLocations([]);
+        setSelectedLocation('');
+        return;
+      }
+
+      const payload = {
+        regionId: selectedRegion,
+        circleId: selectedCircle || null,
+        divisionId: selectedDivision || null,
+        subDivisionId: selectedSubDivision || null,
+        dcId: selectedDC || null,
+        substationId: selectedSubstation || null,
+      };
+
+      try {
+        const response = await getAttendanceLocation(payload);
+        const list = response?.data?.list ?? response?.data?.value ?? [];
+
+        setAttendanceLocations(list);
+
+        setSelectedLocation((prev) =>
+          list.some((i) => i.locationId === prev) ? prev : '',
+        );
+      } catch (error) {
+        setAttendanceLocations([]);
+      }
+    };
+
+    fetchAttendanceLocation();
   }, [
     selectedRegion,
     selectedCircle,
@@ -332,8 +356,25 @@ function UpdateDataContainer() {
     selectedSubstation,
   ]);
 
+  // useEffect(() => {
+  //   if (selectedRegion) {
+  //     // setSelectedLocation("");
+  //     fetchAttendanceLocation();
+  //   } else {
+  //     setAttendanceLocations([]);
+  //     // setSelectedLocation("");
+  //   }
+  // }, [
+  //   selectedRegion,
+  //   selectedCircle,
+  //   selectedDivision,
+  //   selectedSubDivision,
+  //   selectedDC,
+  //   selectedSubstation,
+  // ]);
+
   const [holidayList, setHolidayList] = useState([]);
-  const [selectedHoliday, setSelectedHoliday] = useState("");
+  const [selectedHoliday, setSelectedHoliday] = useState('');
 
   // Fetch holidays on mount
   useEffect(() => {
@@ -343,7 +384,7 @@ function UpdateDataContainer() {
         const list = response?.data?.value ?? response?.data?.list ?? [];
         setHolidayList(Array.isArray(list) ? list : []);
       } catch (error) {
-        console.error("Error fetching Holiday List:", error);
+        console.error('Error fetching Holiday List:', error);
         setHolidayList([]);
       }
     };
@@ -352,7 +393,7 @@ function UpdateDataContainer() {
   }, []);
 
   const [shifts, setShifts] = useState([]);
-  const [selectedShift, setSelectedShift] = useState("");
+  const [selectedShift, setSelectedShift] = useState('');
   // Fetch Default Shift List
   useEffect(() => {
     const fetchShifts = async () => {
@@ -361,7 +402,7 @@ function UpdateDataContainer() {
         const list = response?.data?.value ?? response?.data?.list ?? [];
         setShifts(Array.isArray(list) ? list : []);
       } catch (error) {
-        console.error("Error fetching Default Shift:", error);
+        console.error('Error fetching Default Shift:', error);
         setShifts([]);
       }
     };
@@ -421,7 +462,7 @@ function UpdateDataContainer() {
         userInformation={empInfo}
       />
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

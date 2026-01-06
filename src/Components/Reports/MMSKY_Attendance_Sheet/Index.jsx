@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Button, Typography } from "@mui/material";
-import { getCircle, getRegion } from "../../../Services/Auth";
+import React, { useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Button, Typography } from '@mui/material';
+import { getCircle, getRegion } from '../../../Services/Auth';
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
-const years = [2022, 2023, 2024, 2025, 2026];
+const years = [2022, 2023, 2024, 2025, 2026, 2027];
 
 function MMSKYattendance() {
   const currentDate = new Date();
@@ -27,8 +27,8 @@ function MMSKYattendance() {
 
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
   const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [errors, setErrors] = useState({});
@@ -39,7 +39,7 @@ function MMSKYattendance() {
         const response = await getRegion();
         setRegions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     };
     fetchRegions();
@@ -53,16 +53,16 @@ function MMSKYattendance() {
       const circleResponse = await getCircle(regionId);
       setCircles(circleResponse?.data?.list || []);
     } catch (error) {
-      console.error("Error fetching circles:", error);
+      console.error('Error fetching circles:', error);
       setCircles([]);
     }
   };
 
   const handleDownloadSheet = () => {
     const validationErrors = {};
-    if (!selectedRegion) validationErrors.region = "Region is required";
-    if (!selectedMonth) validationErrors.month = "Month is required";
-    if (!selectedYear) validationErrors.year = "Year is required";
+    if (!selectedRegion) validationErrors.region = 'Region is required';
+    if (!selectedMonth) validationErrors.month = 'Month is required';
+    if (!selectedYear) validationErrors.year = 'Year is required';
 
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
@@ -71,10 +71,10 @@ function MMSKYattendance() {
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/attendance/getAttendanceMisMmsky?regionId=${selectedRegion}&circleId=${circle}&month=${selectedMonth}&year=${selectedYear}`;
 
-    const downloadLink = document.createElement("a");
+    const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.target = "_blank";
-    downloadLink.style.display = "none";
+    downloadLink.target = '_blank';
+    downloadLink.style.display = 'none';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -85,10 +85,10 @@ function MMSKYattendance() {
         <Typography
           variant="h4"
           sx={{
-            color: "#0a1f83",
+            color: '#0a1f83',
             mb: 2,
-            fontFamily: "serif",
-            fontWeight: "bold",
+            fontFamily: 'serif',
+            fontWeight: 'bold',
           }}
         >
           MMSKY Monthly Attendance Sheet

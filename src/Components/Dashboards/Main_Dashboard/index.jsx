@@ -39,17 +39,41 @@ function MainDashboard() {
   const [expandedCard, setExpandedCard] = useState(null);
   const navigate = useNavigate();
   const sessionEmpCode = sessionStorage.getItem('empCode');
+  const [empCode, setEmpCode] = useState(null);
+
+  useEffect(() => {
+    const code = sessionStorage.getItem('empCode');
+    setEmpCode(code);
+  }, []);
 
   // Fetch SSO list on mount
+  // useEffect(() => {
+  //   if (!sessionEmpCode) {
+  //     window.location.reload();
+  //   }
+  //   const fetchSso = async () => {
+  //     try {
+  //       setOpenBackdrop(true);
+  //       const response = await getSsoList(sessionEmpCode);
+  //       console.log(response);
+  //       setSsoList(response.data.list || []);
+  //     } catch (error) {
+  //       console.error('Error fetching SSO list:', error);
+  //     } finally {
+  //       setOpenBackdrop(false);
+  //     }
+  //   };
+
+  //   fetchSso();
+  // }, []);
+
   useEffect(() => {
-    if (!sessionEmpCode) {
-      window.location.reload();
-    }
+    if (!empCode) return;
+
     const fetchSso = async () => {
       try {
         setOpenBackdrop(true);
-        const response = await getSsoList(sessionEmpCode);
-        console.log(response);
+        const response = await getSsoList(empCode);
         setSsoList(response.data.list || []);
       } catch (error) {
         console.error('Error fetching SSO list:', error);
@@ -59,7 +83,7 @@ function MainDashboard() {
     };
 
     fetchSso();
-  }, []);
+  }, [empCode]);
 
   // Expand/collapse sublist
   const handleExpand = (index) => {

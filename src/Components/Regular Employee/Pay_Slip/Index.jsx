@@ -1,49 +1,49 @@
-import React, { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Button, Typography, Backdrop } from "@mui/material";
-import { PropagateLoader } from "react-spinners";
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Button, Typography, Backdrop } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 
 const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
-const years = [2022, 2023, 2024, 2025, 2026];
+const years = [2022, 2023, 2024, 2025, 2026, 2027];
 
 function PaySlip() {
   const currentDate = new Date();
 
   const [selectedMonth, setSelectedMonth] = useState(
-    currentDate.getMonth().toString()
+    currentDate.getMonth().toString(),
   );
   const [selectedYear, setSelectedYear] = useState(
-    currentDate.getFullYear().toString()
+    currentDate.getFullYear().toString(),
   );
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const DownloadPaySlip = () => {
-    const empCode = sessionStorage.getItem("empCode");
-    if (!empCode) return alert("Employee code not found in session!");
+    const empCode = sessionStorage.getItem('empCode');
+    if (!empCode) return alert('Employee code not found in session!');
 
     setOpenBackdrop(true);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/getPaySlip?empCode=${empCode}&month=${selectedMonth}&year=${selectedYear}`;
 
-    const downloadLink = document.createElement("a");
+    const downloadLink = document.createElement('a');
     downloadLink.href = url;
-    downloadLink.target = "_blank";
-    downloadLink.style.display = "none";
+    downloadLink.target = '_blank';
+    downloadLink.style.display = 'none';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     downloadLink.remove();
@@ -56,15 +56,15 @@ function PaySlip() {
   return (
     <>
       <div className="container d-flex justify-content-center">
-        <Card style={{ width: "100%", maxWidth: "1000px" }}>
+        <Card style={{ width: '100%', maxWidth: '1000px' }}>
           <Card.Header className="text-center text-primary p-3">
             <Typography
               variant="h4"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Pay Slip
@@ -135,7 +135,7 @@ function PaySlip() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader color="#0a1f83" />

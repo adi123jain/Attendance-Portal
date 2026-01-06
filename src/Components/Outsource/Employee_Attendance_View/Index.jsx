@@ -121,21 +121,21 @@
 
 // export default OutsourceEmpAttendaceView;
 
-import React, { useState, useRef, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
+import React, { useState, useRef, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Link } from 'react-router-dom';
 import {
   employeeAttendaceView,
   getImpressionImage,
-} from "../../../Services/Auth";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import * as XLSX from "xlsx";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import Modal from "react-bootstrap/Modal";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+} from '../../../Services/Auth';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import Modal from 'react-bootstrap/Modal';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
   Typography,
@@ -150,12 +150,12 @@ import {
   Button,
   TextField,
   Backdrop,
-} from "@mui/material";
-import { PropagateLoader } from "react-spinners";
+} from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -189,7 +189,7 @@ import {
 
 function OutsourceEmpAttendaceView() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [empCode, setEmpCode] = useState("");
+  const [empCode, setEmpCode] = useState('');
   const [month, setMonth] = useState(String(new Date().getMonth() + 1));
   const [year, setYear] = useState(String(new Date().getFullYear()));
   const [showTable, setShowTable] = useState(false);
@@ -203,15 +203,15 @@ function OutsourceEmpAttendaceView() {
 
   useEffect(() => {
     if (showTable && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showTable, dataInTable]);
 
   const empAttendanceView = async () => {
     const newErrors = {};
-    if (!empCode.trim()) newErrors.empCode = " *Employee code is required";
-    if (!month) newErrors.month = "*Month is required";
-    if (!year) newErrors.year = "*Year is required";
+    if (!empCode.trim()) newErrors.empCode = ' *Employee code is required';
+    if (!month) newErrors.month = '*Month is required';
+    if (!year) newErrors.year = '*Year is required';
 
     setErrors(newErrors);
 
@@ -225,7 +225,7 @@ function OutsourceEmpAttendaceView() {
     try {
       const response = await employeeAttendaceView(empCode, month, year);
       // console.log("Response", response);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
+      if (response?.data.code == '200' && response?.data.message == 'Success') {
         setShowTable(true);
         setOpenBackdrop(false);
         setDataInTable(response?.data.list);
@@ -235,7 +235,7 @@ function OutsourceEmpAttendaceView() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
       setOpenBackdrop(false);
     }
   };
@@ -243,34 +243,34 @@ function OutsourceEmpAttendaceView() {
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(dataInTable);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
-    XLSX.writeFile(workbook, "AttendanceRecords.xlsx");
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Attendance');
+    XLSX.writeFile(workbook, 'AttendanceRecords.xlsx');
   };
 
   const exportToPDF = () => {
     const doc = new jsPDF();
 
     const tableColumn = [
-      "S.No",
-      "Emp Code",
-      "Punch Date",
-      "In Time",
-      "Out Time",
-      "Duration",
-      "Remark",
-      "Impressions",
-      "Status",
-      "Leave Type",
-      "Inactive Source",
-      "Inactive Remark",
+      'S.No',
+      'Emp Code',
+      'Punch Date',
+      'In Time',
+      'Out Time',
+      'Duration',
+      'Remark',
+      'Impressions',
+      'Status',
+      'Leave Type',
+      'Inactive Source',
+      'Inactive Remark',
     ];
 
     const tableRows = dataInTable.map((item, index) => [
       index + 1,
       item.empCode,
       item.punchDate,
-      item.inTime ? item.inTime.split("T")[1]?.split(".")[0] : "",
-      item.outTime ? item.outTime.split("T")[1]?.split(".")[0] : "",
+      item.inTime ? item.inTime.split('T')[1]?.split('.')[0] : '',
+      item.outTime ? item.outTime.split('T')[1]?.split('.')[0] : '',
       item.duration,
       item.remark,
       item.impressions,
@@ -289,7 +289,7 @@ function OutsourceEmpAttendaceView() {
       headStyles: { fillColor: [22, 160, 133] },
     });
 
-    doc.save(month + "_" + year + "_" + empCode + "_AttendanceRecords.pdf");
+    doc.save(month + '_' + year + '_' + empCode + '_AttendanceRecords.pdf');
   };
 
   const [modalShow, setModalShow] = useState(false);
@@ -302,31 +302,31 @@ function OutsourceEmpAttendaceView() {
     setModalShow(true);
     // setImpressionData(items);
     setOpenBackdrop(true);
-    const parts = items.punchDate.split("/");
+    const parts = items.punchDate.split('/');
     const inputDate = new Date(parts[2], parts[1] - 1, parts[0]);
     const months = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
 
-    const formattedDate = `${("0" + inputDate.getDate()).slice(-2)}-${
+    const formattedDate = `${('0' + inputDate.getDate()).slice(-2)}-${
       months[inputDate.getMonth()]
     }-${inputDate.getFullYear().toString().slice(-2)}`;
 
     try {
       const response = await getImpressionImage(items.empCode, formattedDate);
       // console.log("impResponse", response);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
+      if (response?.data.code == '200' && response?.data.message == 'Success') {
         setImpressionData(response?.data.list);
         setOpenBackdrop(false);
       } else {
@@ -334,7 +334,7 @@ function OutsourceEmpAttendaceView() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
       setOpenBackdrop(false);
     }
   };
@@ -353,9 +353,9 @@ function OutsourceEmpAttendaceView() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Employee Attendance View (Outsource)
@@ -433,6 +433,8 @@ function OutsourceEmpAttendaceView() {
                     <option value="2023">2023</option>
                     <option value="2024">2024</option>
                     <option value="2025">2025</option>
+                    <option value="2026">2026</option>
+                    <option value="2027">2027</option>
                   </Form.Select>
                   {errors.year && (
                     <small className="text-danger">{errors.year}</small>
@@ -470,8 +472,8 @@ function OutsourceEmpAttendaceView() {
           <Card
             className="shadow-lg rounded"
             style={{
-              textAlign: "center",
-              marginTop: "20px",
+              textAlign: 'center',
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -479,9 +481,9 @@ function OutsourceEmpAttendaceView() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Attendance Records by Employee Code
@@ -517,13 +519,13 @@ function OutsourceEmpAttendaceView() {
                           <StyledTableCell>{item.punchDate}</StyledTableCell>
                           <StyledTableCell>
                             {item.inTime
-                              ? item.inTime.split("T")[1]?.split(".")[0]
-                              : ""}
+                              ? item.inTime.split('T')[1]?.split('.')[0]
+                              : ''}
                           </StyledTableCell>
                           <StyledTableCell>
                             {item.outTime
-                              ? item.outTime.split("T")[1]?.split(".")[0]
-                              : ""}
+                              ? item.outTime.split('T')[1]?.split('.')[0]
+                              : ''}
                           </StyledTableCell>
                           <StyledTableCell>{item.duration}</StyledTableCell>
                           <StyledTableCell>{item.remark}</StyledTableCell>
@@ -547,7 +549,7 @@ function OutsourceEmpAttendaceView() {
                                 View
                               </Button>
                             ) : (
-                              "-"
+                              '-'
                             )}
                           </StyledTableCell>
                         </StyledTableRow>
@@ -580,10 +582,10 @@ function OutsourceEmpAttendaceView() {
             <Typography
               variant="h5"
               sx={{
-                color: "#0a1f83",
+                color: '#0a1f83',
                 // mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
               }}
             >
               Employee Impressions (Outsource)
@@ -617,17 +619,17 @@ function OutsourceEmpAttendaceView() {
                       <StyledTableCell>{item.empCode}</StyledTableCell>
                       <StyledTableCell>{item.empName}</StyledTableCell>
                       <StyledTableCell>
-                        {item.punchTime ? item.punchTime.split("T")[0] : "--"}
+                        {item.punchTime ? item.punchTime.split('T')[0] : '--'}
                       </StyledTableCell>
                       <StyledTableCell>
                         {item.punchTime
-                          ? item.punchTime.split("T")[1].split(".")[0]
-                          : "--"}
+                          ? item.punchTime.split('T')[1].split('.')[0]
+                          : '--'}
                       </StyledTableCell>
                       <StyledTableCell>{item.logType}</StyledTableCell>
                       <StyledTableCell>{item.source}</StyledTableCell>
                       <StyledTableCell>
-                        {item.source === "BIOMETRIC" || !item.imgPath ? (
+                        {item.source === 'BIOMETRIC' || !item.imgPath ? (
                           <Button color="secondary" size="small" disabled>
                             View
                           </Button>
@@ -661,7 +663,7 @@ function OutsourceEmpAttendaceView() {
       </Modal>
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Button, Typography, Backdrop } from "@mui/material";
-import { PropagateLoader } from "react-spinners";
+import React, { useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Button, Typography, Backdrop } from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 
 // Year options
-const yearOptions = [2022, 2023, 2024, 2025, 2026];
+const yearOptions = [2022, 2023, 2024, 2025, 2026, 2027];
 
 function EmployeeForm16() {
   const currentYear = new Date().getFullYear();
   const [selectedYear, setSelectedYear] = useState(currentYear.toString());
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  const employeeCode = sessionStorage.getItem("empCode");
+  const employeeCode = sessionStorage.getItem('empCode');
 
   // Download Form-16 for employee
   const handleDownloadForm16 = () => {
     if (!employeeCode) {
-      alert("Employee code not found in session!");
+      alert('Employee code not found in session!');
       return;
     }
 
@@ -25,10 +25,10 @@ function EmployeeForm16() {
 
     const downloadUrl = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/getForm16?empCode=${employeeCode}&year=${selectedYear}`;
 
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = downloadUrl;
-    link.target = "_blank";
-    link.style.display = "none";
+    link.target = '_blank';
+    link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -42,16 +42,16 @@ function EmployeeForm16() {
   return (
     <>
       <div className="container d-flex justify-content-center">
-        <Card style={{ width: "100%", maxWidth: "1000px" }}>
+        <Card style={{ width: '100%', maxWidth: '1000px' }}>
           {/* Header */}
           <Card.Header className="text-center text-primary p-3">
             <Typography
               variant="h4"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Form-16
@@ -111,7 +111,7 @@ function EmployeeForm16() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader color="#0a1f83" />

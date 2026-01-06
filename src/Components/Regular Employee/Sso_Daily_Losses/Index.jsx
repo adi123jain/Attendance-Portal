@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useNavigate } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 import {
   Typography,
@@ -24,12 +24,12 @@ import {
   Button,
   TextField,
   Backdrop,
-} from "@mui/material";
-import { getDailyLosses, submitDailyLosses } from "../../../Services/Auth";
+} from '@mui/material';
+import { getDailyLosses, submitDailyLosses } from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -64,15 +64,15 @@ function SsoDailyLosses() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [records, setRecords] = useState([]);
-  const sessionEmp = sessionStorage.getItem("empCode");
-  const sessionDcId = sessionStorage.getItem("dcId");
+  const sessionEmp = sessionStorage.getItem('empCode');
+  const sessionDcId = sessionStorage.getItem('dcId');
 
   useEffect(() => {
     const fetchRecords = async () => {
       setOpenBackdrop(true);
       const response = await getDailyLosses(sessionEmp, sessionDcId);
       console.log(response);
-      if (response.data.code == "200") {
+      if (response.data.code == '200') {
         setRecords(response.data.list);
         setOpenBackdrop(false);
       } else {
@@ -83,9 +83,9 @@ function SsoDailyLosses() {
     fetchRecords();
   }, []);
 
-  const [option, setOption] = useState("");
-  const [year, setYear] = useState("");
-  const [remark, setRemark] = useState("");
+  const [option, setOption] = useState('');
+  const [year, setYear] = useState('');
+  const [remark, setRemark] = useState('');
 
   const [errors, setErrors] = useState({});
   const optionRef = useRef(null);
@@ -94,9 +94,9 @@ function SsoDailyLosses() {
 
   const validate = () => {
     let newErrors = {};
-    if (!option) newErrors.option = "Please select an option";
-    if (!year) newErrors.year = "Please select a year";
-    if (!remark.trim()) newErrors.remark = "Remark is required";
+    if (!option) newErrors.option = 'Please select an option';
+    if (!year) newErrors.year = 'Please select a year';
+    if (!remark.trim()) newErrors.remark = 'Remark is required';
     setErrors(newErrors);
 
     // focus on first error field
@@ -123,8 +123,8 @@ function SsoDailyLosses() {
 
     try {
       const response = await submitDailyLosses(payload);
-      if (response.data.code == "200") {
-        alert("Daily Losses submitted successfully!");
+      if (response.data.code == '200') {
+        alert('Daily Losses submitted successfully!');
         setOpenBackdrop(false);
         window.location.reload();
       } else {
@@ -132,7 +132,7 @@ function SsoDailyLosses() {
         setOpenBackdrop(false);
       }
     } catch (err) {
-      console.error("Error submitting:", err);
+      console.error('Error submitting:', err);
       setOpenBackdrop(false);
     }
   };
@@ -143,7 +143,7 @@ function SsoDailyLosses() {
         className="shadow-lg rounded"
         style={{
           //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -151,9 +151,9 @@ function SsoDailyLosses() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             S/s Operator Calculating Daily Losses.
@@ -164,8 +164,8 @@ function SsoDailyLosses() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
-              marginTop: "20px",
+              textAlign: 'center',
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center">
@@ -173,9 +173,9 @@ function SsoDailyLosses() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
                 // color="primary"
               >
@@ -205,17 +205,17 @@ function SsoDailyLosses() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.empName || "-"}
+                            {item.empName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>{item.empCode}</StyledTableCell>
                           <StyledTableCell>
-                            {item.dcName || "-"}
+                            {item.dcName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.isCalculationLosses || "-"}
+                            {item.isCalculationLosses || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.fyYear || "-"}
+                            {item.fyYear || '-'}
                           </StyledTableCell>
                           {/* <StyledTableCell>
                             {item.updatedBy || "-"}
@@ -224,7 +224,7 @@ function SsoDailyLosses() {
                             {item.updated || "-"}
                           </StyledTableCell> */}
                           <StyledTableCell>
-                            {item.remark || "-"}
+                            {item.remark || '-'}
                           </StyledTableCell>
                         </StyledTableRow>
                       ))
@@ -243,7 +243,7 @@ function SsoDailyLosses() {
 
           <Card
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center">
@@ -251,9 +251,9 @@ function SsoDailyLosses() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Calculate Daily Loss
@@ -300,6 +300,7 @@ function SsoDailyLosses() {
                         </option>
                         <option value="2024-25">2024-25</option>
                         <option value="2025-26">2025-26</option>
+                        <option value="2026-27">2026-27</option>
                       </Form.Select>
                       <Form.Control.Feedback type="invalid">
                         {errors.year}
@@ -352,7 +353,7 @@ function SsoDailyLosses() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

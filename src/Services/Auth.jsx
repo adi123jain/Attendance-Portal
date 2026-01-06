@@ -220,9 +220,9 @@ export const getOutsourceEmployee = (empCode) => {
 };
 
 // 37. Verify Employee By HR
-export const getEmpForVerification = () => {
+export const getEmpForVerification = (empCode) => {
   return axios.get(
-    base_url + `/outsource/findEmpPendingAtHr?empCode=${sessionEmpCode}`,
+    base_url + `/outsource/findEmpPendingAtHr?empCode=${empCode}`,
   );
 };
 
