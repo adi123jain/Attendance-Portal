@@ -1,23 +1,10 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {
-  Typography,
-  Tooltip,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  TextField,
-  Backdrop,
-} from '@mui/material';
+import { Typography, Button, Backdrop } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
 import '../../../Constants/Style/styles.css';
 import {
@@ -35,9 +22,7 @@ import {
 } from '../../../Services/Auth';
 
 function FeederManagement() {
-  const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
-
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
   const [divisions, setDivisions] = useState([]);
@@ -62,8 +47,6 @@ function FeederManagement() {
 
   const [managerJoiningDate, setManagerJoiningDate] = useState('');
   const [inchargeJoiningDate, setInchargeJoiningDate] = useState('');
-
-  const [discontInTable, setDiscontInTable] = useState([]);
 
   // Load Regions
   useEffect(() => {
@@ -175,33 +158,6 @@ function FeederManagement() {
       }
     })();
   }, [selectedDC]);
-
-  // Fetch Feeder Officer when Feeder changes
-  // useEffect(() => {
-  //   if (!selectedFeeder) return;
-  //   (async () => {
-  //     try {
-  //       const res = await getPostedOfficerByFeeder(selectedFeeder);
-  //       console.log(res);
-
-  //       setSelectedFeederManager(res.data?.list[0].fdrManagerEmpCode || '');
-  //       setManagerJoiningDate(
-  //         res.data?.list[0].managerFromDate.split(' ')[0] || '',
-  //       );
-
-  //       setSelectedFeederIncharge(res.data?.list[0].fdrInchargeEmpCode || '');
-  //       setInchargeJoiningDate(
-  //         res.data?.list[0].inchargeFromDate.split(' ')[0] || '',
-  //       );
-  //     } catch (error) {
-  //       console.error('Error fetching feeder assignment:', error);
-  //       setSelectedFeederManager('');
-  //       setSelectedFeederIncharge('');
-  //       setManagerJoiningDate('');
-  //       setInchargeJoiningDate('');
-  //     }
-  //   })();
-  // }, [selectedFeeder]);
 
   useEffect(() => {
     if (!selectedFeeder) return;
@@ -331,8 +287,6 @@ function FeederManagement() {
         createdBy: sessionStorage.getItem('empCode'),
       };
 
-      // console.log('Payload:', payload);
-
       const response = await submitFeederManagement(payload);
       if (response.data.code === '200') {
         alert('SuccessFully Updated !!');
@@ -369,7 +323,6 @@ function FeederManagement() {
 
         <Card.Body>
           <Row xs={1} sm={2} md={3} className="mt-2">
-            {/* Region */}
             <Col>
               <Card>
                 <Card.Header>Region</Card.Header>
@@ -418,7 +371,6 @@ function FeederManagement() {
               </Card>
             </Col>
 
-            {/* Circle */}
             <Col>
               <Card>
                 <Card.Header>Circle</Card.Header>
@@ -463,7 +415,6 @@ function FeederManagement() {
               </Card>
             </Col>
 
-            {/* Division */}
             <Col>
               <Card>
                 <Card.Header>Division</Card.Header>
@@ -508,7 +459,6 @@ function FeederManagement() {
           </Row>
 
           <Row xs={1} sm={2} md={4} className="mt-2 g-3">
-            {/* Sub Division */}
             <Col>
               <Card>
                 <Card.Header>Sub Division</Card.Header>
@@ -549,7 +499,6 @@ function FeederManagement() {
               </Card>
             </Col>
 
-            {/* DC */}
             <Col>
               <Card>
                 <Card.Header>Distribution Center</Card.Header>
@@ -592,7 +541,6 @@ function FeederManagement() {
               </Card>
             </Col>
 
-            {/* Substation */}
             <Col>
               <Card>
                 <Card.Header>Sub Station</Card.Header>
@@ -623,7 +571,6 @@ function FeederManagement() {
               </Card>
             </Col>
 
-            {/* Feeder */}
             <Col>
               <Card>
                 <Card.Header>Feeder</Card.Header>
@@ -650,7 +597,6 @@ function FeederManagement() {
             </Col>
           </Row>
           <Row xs={1} sm={2} md={4} className="g-3 mt-2">
-            {/* Extra Dropdowns (from DC APIs) */}
             <Col>
               <Card>
                 <Card.Header>Feeder Manager</Card.Header>

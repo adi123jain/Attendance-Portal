@@ -61,7 +61,7 @@ function HumanResourceDashboard() {
           icon: <ManageAccountsIcon />,
         },
         {
-          name: 'Medical HR Approval',
+          name: 'Medical Reimbursement HR Approval',
           to: '/medicalApprovalByHr',
           icon: <CheckCircleOutlineIcon />,
         },

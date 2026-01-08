@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import {
   Typography,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   Backdrop,
-  tableCellClasses,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import { getEmpForVerification } from '../../../Services/Auth';
 import { PropagateLoader } from 'react-spinners';
 import {
@@ -26,7 +22,7 @@ import {
 function HRverification() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [employeeList, setEmployeeList] = useState([]);
-  const empCode = sessionStorage.getItem('empCode');
+  // const empCode = sessionStorage.getItem('empCode');
 
   const navigate = useNavigate();
 

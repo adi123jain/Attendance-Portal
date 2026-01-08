@@ -283,11 +283,11 @@ function DataProvider() {
 
   useEffect(() => {
     if (selectedRegion) {
-      setSelectedLocation('');
+      // setSelectedLocation('');
       fetchAttendanceLocation();
     } else {
       setAttendanceLocations([]);
-      setSelectedLocation('');
+      // setSelectedLocation('');
     }
   }, [
     selectedRegion,

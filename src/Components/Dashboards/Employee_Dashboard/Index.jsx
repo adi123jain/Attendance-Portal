@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Card, Typography, Grid, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -15,6 +16,94 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 
 function EmployeeDashboard() {
+  // const menuItems = [
+  //   {
+  //     label: 'Apply Attendance Correction',
+  //     path: '/attendanceCorrection',
+  //     icon: <EditCalendarIcon />,
+  //   },
+  //   { label: 'Pay Slip', path: '/paySlip', icon: <ReceiptLongIcon /> },
+  //   {
+  //     label: 'Employee Form-16',
+  //     path: '/employeeForm16',
+  //     icon: <DescriptionIcon />,
+  //   },
+  //   {
+  //     label: 'Informer Scheme',
+  //     path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${sessionStorage.getItem(
+  //       'empCode',
+  //     )}`,
+  //     external: true,
+  //     icon: <SecurityIcon />,
+  //   },
+  //   {
+  //     label: 'Medical Reimbursement',
+  //     path: '/medicalReimbursement',
+  //     icon: <LocalHospitalIcon />,
+  //   },
+  //   {
+  //     label: 'Medical Reimbursement View',
+  //     path: '/medicalReimbursementView',
+  //     icon: <VisibilityIcon />,
+  //   },
+  //   {
+  //     label: 'MP Power Company Cashless Health Scheme',
+  //     path: '/medicalHealthInsurance',
+  //     icon: <HealthAndSafetyIcon />,
+  //   },
+
+  //   {
+  //     label: 'MP Power Company Cashless Health Scheme View',
+  //     path: '/medicalHealthInsuranceView',
+  //     icon: <HealthAndSafetyIcon />,
+  //   },
+  //   {
+  //     label: 'Immovable Property',
+  //     path: '/immovableProperty',
+  //     icon: <HomeWorkIcon />,
+  //   },
+  //   {
+  //     label: 'Immovable Property View',
+  //     path: '/immovablePropertyView',
+  //     icon: <VisibilityIcon />,
+  //   },
+  //   {
+  //     label: 'Medical CMO Approval',
+  //     path: '/medicalApprovalByCmo',
+  //     icon: <VerifiedUserIcon />,
+  //   },
+  //   {
+  //     label: 'Medical AO Approval',
+  //     path: '/medicalApprovalByAo',
+  //     icon: <AssignmentTurnedInIcon />,
+  //   },
+
+  //   {
+  //     label: 'Higher Pay Scale',
+  //     path: '/higherPayScale',
+  //     icon: <AssignmentTurnedInIcon />,
+  //   },
+  // ];
+
+  // const empCode = sessionStorage.getItem('empCode');
+  // const designationId = Number(sessionStorage.getItem('designationId'));
+  // const isManagerHr = sessionStorage.getItem('isManagerHr');
+
+  // const showInformerScheme =
+  //   designationId === 13 || empCode === '12345' || isManagerHr === true;
+  // const showCmoApproval = designationId === 18 || empCode === '12345';
+  // const showAoApproval = designationId === 13 || empCode === '12345';
+
+  const [empCode, setEmpCode] = useState(null);
+  const [designationId, setDesignationId] = useState(null);
+  const [isManagerHr, setIsManagerHr] = useState(false);
+
+  useEffect(() => {
+    setEmpCode(sessionStorage.getItem('empCode'));
+    setDesignationId(Number(sessionStorage.getItem('designationId')));
+    setIsManagerHr(sessionStorage.getItem('isManagerHr') === 'true');
+  }, []);
+
   const menuItems = [
     {
       label: 'Apply Attendance Correction',
@@ -29,9 +118,7 @@ function EmployeeDashboard() {
     },
     {
       label: 'Informer Scheme',
-      path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${sessionStorage.getItem(
-        'empCode',
-      )}`,
+      path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${empCode}`,
       external: true,
       icon: <SecurityIcon />,
     },
@@ -50,49 +137,47 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsurance',
       icon: <HealthAndSafetyIcon />,
     },
-
     {
       label: 'MP Power Company Cashless Health Scheme View',
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
+    // {
+    //   label: 'Immovable Property',
+    //   path: '/immovableProperty',
+    //   icon: <HomeWorkIcon />,
+    // },
+    // {
+    //   label: 'Immovable Property View',
+    //   path: '/immovablePropertyView',
+    //   icon: <VisibilityIcon />,
+    // },
     {
-      label: 'Immovable Property',
-      path: '/immovableProperty',
-      icon: <HomeWorkIcon />,
-    },
-    {
-      label: 'Immovable Property View',
-      path: '/immovablePropertyView',
-      icon: <VisibilityIcon />,
-    },
-    {
-      label: 'Medical CMO Approval',
+      label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',
       icon: <VerifiedUserIcon />,
     },
     {
-      label: 'Medical AO Approval',
+      label: 'Medical Reimbursement AO Approval',
       path: '/medicalApprovalByAo',
       icon: <AssignmentTurnedInIcon />,
     },
-
-    {
-      label: 'Higher Pay Scale',
-      path: '/higherPayScale',
-      icon: <AssignmentTurnedInIcon />,
-    },
+    // {
+    //   label: 'Higher Pay Scale',
+    //   path: '/higherPayScale',
+    //   icon: <AssignmentTurnedInIcon />,
+    // },
   ];
 
-  const empCode = sessionStorage.getItem('empCode');
-  const designationId = Number(sessionStorage.getItem('designationId'));
-  const isManagerHr = sessionStorage.getItem('isManagerHr');
-
+  // Conditions (now reliable)
   const showInformerScheme =
-    designationId === 13 || empCode === '12345' || isManagerHr === true;
+    designationId === 13 || empCode === '12345' || isManagerHr;
+
   const showCmoApproval = designationId === 18 || empCode === '12345';
   const showAoApproval = designationId === 13 || empCode === '12345';
 
+  //  Don’t render until session is ready
+  if (!empCode || designationId === null) return null;
   return (
     <Box
       sx={{

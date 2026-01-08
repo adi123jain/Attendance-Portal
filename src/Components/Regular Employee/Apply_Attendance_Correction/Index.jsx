@@ -1,76 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { Divider } from "@mui/material";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
+import { PropagateLoader } from 'react-spinners';
 // import "../../../Constants/Style/styles.css";
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   applyCorrections,
   applyLeaves,
   getEmployeeLeaveBalance,
   viewEmpAttendanceBySessionCode,
-} from "../../../Services/Auth";
-import axios from "axios";
+} from '../../../Services/Auth';
+import axios from 'axios';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function ApplyAttendanceCorrection() {
   const [balanceLeave, setBalanceLeave] = useState([]);
@@ -83,29 +39,27 @@ function ApplyAttendanceCorrection() {
         const response = await getEmployeeLeaveBalance();
         // console.log("Leaver", response);
         if (
-          response?.data?.code === "200" &&
-          response?.data?.message === "Success"
+          response?.data?.code === '200' &&
+          response?.data?.message === 'Success'
         ) {
           setBalanceLeave(response.data.list || []);
           setOpenBackdrop(false);
         } else {
           alert(
-            response?.data?.message || "Failed to fetch Punishment Details"
+            response?.data?.message || 'Failed to fetch Punishment Details',
           );
           setOpenBackdrop(false);
         }
       } catch (err) {
-        console.error("Error fetching complaints:", err);
+        console.error('Error fetching complaints:', err);
         setOpenBackdrop(false);
       }
     };
     fetchEmpBalanceLeave();
   }, []);
 
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  // const [monthError, setMonthError] = useState("");
-  // const [yearError, setYearError] = useState("");
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   const [dataInTbale, setDataInTable] = useState([]);
 
   // refs to control focus
@@ -120,31 +74,11 @@ function ApplyAttendanceCorrection() {
 
   const tableRef = useRef(null);
   const empAttendanceView = async () => {
-    // let isValid = true;
-
-    // if (!month) {
-    //   setMonthError("Month is required");
-    //   monthRef.current.focus();
-    //   isValid = false;
-    // } else {
-    //   setMonthError("");
-    // }
-
-    // if (!year) {
-    //   setYearError("Year is required");
-    //   if (isValid) yearRef.current.focus();
-    //   isValid = false;
-    // } else {
-    //   setYearError("");
-    // }
-
-    // if (!isValid) return;
-
     try {
-      setDataInTable("");
+      setDataInTable('');
       setOpenBackdrop(true);
       const response = await viewEmpAttendanceBySessionCode(month, year);
-      if (response.data.code == "200") {
+      if (response.data.code === '200') {
         //console.log(response);
         setDataInTable(response.data.list);
         setOpenBackdrop(false);
@@ -162,16 +96,16 @@ function ApplyAttendanceCorrection() {
     }
   };
 
-  const [preference, setPreference] = useState("");
-  const [correctionType, setCorrectionType] = useState("");
-  const [remark, setRemark] = useState("");
+  const [preference, setPreference] = useState('');
+  const [correctionType, setCorrectionType] = useState('');
+  const [remark, setRemark] = useState('');
 
   const [correctionOptions, setCorrectionOptions] = useState([]);
 
   // Validation messages
-  const [preferenceError, setPreferenceError] = useState("");
-  const [correctionError, setCorrectionError] = useState("");
-  const [remarkError, setRemarkError] = useState("");
+  const [preferenceError, setPreferenceError] = useState('');
+  const [correctionError, setCorrectionError] = useState('');
+  const [remarkError, setRemarkError] = useState('');
 
   // Refs for focus
   const preferenceRef = useRef(null);
@@ -181,39 +115,39 @@ function ApplyAttendanceCorrection() {
   const handleSelectPreference = (e) => {
     const value = e.target.value;
     setPreference(value);
-    setCorrectionType("");
-    setRemark("");
-    setPreferenceError("");
-    setCorrectionError("");
-    setRemarkError("");
+    setCorrectionType('');
+    setRemark('');
+    setPreferenceError('');
+    setCorrectionError('');
+    setRemarkError('');
 
-    if (value === "1") {
+    if (value === '1') {
       setShowCheckbox(false);
       setCorrectionOptions([
-        { value: "On Duty", label: "On Duty" },
-        { value: "Work From Home", label: "Work From Home" },
-        { value: "Meeting", label: "Meeting" },
-        { value: "Tour", label: "Tour" },
-        { value: "Other", label: "Other" },
+        { value: 'On Duty', label: 'On Duty' },
+        { value: 'Work From Home', label: 'Work From Home' },
+        { value: 'Meeting', label: 'Meeting' },
+        { value: 'Tour', label: 'Tour' },
+        { value: 'Other', label: 'Other' },
       ]);
-    } else if (value === "2") {
+    } else if (value === '2') {
       setShowCheckbox(true);
       setCorrectionOptions([
-        { value: "2", label: "Casual Leave" },
-        { value: "3", label: "Earn Leave" },
-        { value: "4", label: "Commutted Leave" },
-        { value: "5", label: "Optional Leave" },
-        { value: "6", label: "Paternity Leave" },
-        { value: "7", label: "Special Leave" },
-        { value: "86", label: "Maternity Leave" },
-        { value: "87", label: "Child Care Leave" },
-        { value: "88", label: "LWP" },
-        { value: "20", label: "Comp Off" },
-        { value: "91", label: "Miscarriage/Sterilization" },
+        { value: '2', label: 'Casual Leave' },
+        { value: '3', label: 'Earn Leave' },
+        { value: '4', label: 'Commutted Leave' },
+        { value: '5', label: 'Optional Leave' },
+        { value: '6', label: 'Paternity Leave' },
+        { value: '7', label: 'Special Leave' },
+        { value: '86', label: 'Maternity Leave' },
+        { value: '87', label: 'Child Care Leave' },
+        { value: '88', label: 'LWP' },
+        { value: '20', label: 'Comp Off' },
+        { value: '91', label: 'Miscarriage/Sterilization' },
       ]);
-    } else if (value === "3") {
+    } else if (value === '3') {
       setShowCheckbox(true);
-      setCorrectionOptions([{ value: "2", label: "Casual Leave" }]);
+      setCorrectionOptions([{ value: '2', label: 'Casual Leave' }]);
     } else {
       setCorrectionOptions([]);
     }
@@ -226,135 +160,36 @@ function ApplyAttendanceCorrection() {
     setIsHql(e.target.checked);
   };
 
-  // const handleSubmit = async () => {
-  //   let isValid = true;
-
-  //   if (!preference) {
-  //     setPreferenceError("Type of Preference is required");
-  //     preferenceRef.current.focus();
-  //     isValid = false;
-  //   } else {
-  //     setPreferenceError("");
-  //   }
-
-  //   if (!correctionType) {
-  //     setCorrectionError("Correction Type is required");
-  //     if (isValid) correctionRef.current.focus();
-  //     isValid = false;
-  //   } else {
-  //     setCorrectionError("");
-  //   }
-
-  //   if (!remark.trim()) {
-  //     setRemarkError("Remark is required");
-  //     if (isValid) remarkRef.current.focus();
-  //     isValid = false;
-  //   } else {
-  //     setRemarkError("");
-  //   }
-
-  //   if (!isValid) return;
-
-  //   const CheckInput = document.querySelectorAll(".getCheckValues");
-  //   let CheckInputVal = [];
-  //   CheckInput.forEach((element) => {
-  //     if (element.checked) {
-  //       CheckInputVal.push(element.value);
-  //     }
-  //   });
-
-  //   if (CheckInputVal.length === 0) {
-  //     alert("Please select the checkbox First in given Table.");
-  //     return;
-  //   }
-
-  //   for (let item of CheckInputVal) {
-  //     const dateParts = item.split("/");
-  //     const day = String(parseInt(dateParts[0])).padStart(2, "0");
-  //     const month = String(parseInt(dateParts[1])).padStart(2, "0");
-  //     const year = parseInt(dateParts[2]);
-  //     const DateFormate = `${year}-${month}-${day}`;
-
-  //     if (preference === "1") {
-  //       let payload = {
-  //         empCode: sessionStorage.getItem("empCode"),
-  //         punchDate: DateFormate,
-  //         applicationRemark: remark,
-  //         correctionType: correctionType,
-  //       };
-
-  //       const response = await applyCorrections(payload);
-  //       if (response.data.code == "200") {
-  //         alert("Corrections Applied Successfully !!");
-  //       } else {
-  //         alert(response.data.message);
-  //       }
-  //     } else if (preference === "2") {
-  //       let payload = {
-  //         empCode: sessionStorage.getItem("empCode"),
-  //         leaveDate: DateFormate,
-  //         remark: remark,
-  //         leaveTypeId: correctionType,
-  //         isHalfDay: false,
-  //         isHql: isHql,
-  //       };
-
-  //       const response = await applyLeaves(payload);
-  //       if (response.data.code == "200") {
-  //         alert("Leave Applied Successfully !!");
-  //       } else {
-  //         alert(response.data.message);
-  //       }
-  //     } else if (preference === "3") {
-  //       let payload = {
-  //         empCode: sessionStorage.getItem("empCode"),
-  //         leaveDate: DateFormate,
-  //         remark: remark,
-  //         leaveTypeId: correctionType,
-  //         isHalfDay: true,
-  //         isHql: isHql,
-  //       };
-
-  //       const response = await applyLeaves(payload);
-  //       if (response.data.code == "200") {
-  //         alert("Leave Applied Successfully !!");
-  //       } else {
-  //         alert(response.data.message);
-  //       }
-  //     }
-  //   }
-  // };
-
   const handleSubmit = async () => {
     let isValid = true;
 
     if (!preference) {
-      setPreferenceError("*Type of Preference is required");
+      setPreferenceError('*Type of Preference is required');
       preferenceRef.current.focus();
       isValid = false;
     } else {
-      setPreferenceError("");
+      setPreferenceError('');
     }
 
     if (!correctionType) {
-      setCorrectionError("*Correction Type is required");
+      setCorrectionError('*Correction Type is required');
       if (isValid) correctionRef.current.focus();
       isValid = false;
     } else {
-      setCorrectionError("");
+      setCorrectionError('');
     }
 
     if (!remark.trim()) {
-      setRemarkError("*Remark is required");
+      setRemarkError('*Remark is required');
       if (isValid) remarkRef.current.focus();
       isValid = false;
     } else {
-      setRemarkError("");
+      setRemarkError('');
     }
 
     if (!isValid) return;
 
-    const CheckInput = document.querySelectorAll(".getCheckValues");
+    const CheckInput = document.querySelectorAll('.getCheckValues');
     let CheckInputVal = [];
     CheckInput.forEach((element) => {
       if (element.checked) {
@@ -363,36 +198,36 @@ function ApplyAttendanceCorrection() {
     });
 
     if (CheckInputVal.length === 0) {
-      alert("Please select the checkbox first in given Table.");
+      alert('Please select the checkbox first in given Table.');
       tableRef.current?.focus();
       return;
     }
 
     let success = true;
-    let message = "";
+    let message = '';
 
     for (let item of CheckInputVal) {
-      const dateParts = item.split("/");
-      const day = String(parseInt(dateParts[0])).padStart(2, "0");
-      const month = String(parseInt(dateParts[1])).padStart(2, "0");
+      const dateParts = item.split('/');
+      const day = String(parseInt(dateParts[0])).padStart(2, '0');
+      const month = String(parseInt(dateParts[1])).padStart(2, '0');
       const year = parseInt(dateParts[2]);
       const DateFormate = `${year}-${month}-${day}`;
 
       let payload;
       let response;
 
-      if (preference === "1") {
+      if (preference === '1') {
         payload = {
-          empCode: sessionStorage.getItem("empCode"),
+          empCode: sessionStorage.getItem('empCode'),
           punchDate: DateFormate,
           applicationRemark: remark,
           correctionType: correctionType,
         };
 
         response = await applyCorrections(payload);
-      } else if (preference === "2") {
+      } else if (preference === '2') {
         payload = {
-          empCode: sessionStorage.getItem("empCode"),
+          empCode: sessionStorage.getItem('empCode'),
           leaveDate: DateFormate,
           remark: remark,
           leaveTypeId: correctionType,
@@ -401,9 +236,9 @@ function ApplyAttendanceCorrection() {
         };
 
         response = await applyLeaves(payload);
-      } else if (preference === "3") {
+      } else if (preference === '3') {
         payload = {
-          empCode: sessionStorage.getItem("empCode"),
+          empCode: sessionStorage.getItem('empCode'),
           leaveDate: DateFormate,
           remark: remark,
           leaveTypeId: correctionType,
@@ -414,7 +249,7 @@ function ApplyAttendanceCorrection() {
         response = await applyLeaves(payload);
       }
 
-      if (response.data.code !== "200") {
+      if (response.data.code !== '200') {
         success = false;
         message = response.data.message;
         break;
@@ -423,10 +258,10 @@ function ApplyAttendanceCorrection() {
 
     // Show alert once
     if (success) {
-      if (preference === "1") {
-        alert("Corrections Applied Successfully !!");
+      if (preference === '1') {
+        alert('Corrections Applied Successfully !!');
       } else {
-        alert("Leave Applied Successfully !!");
+        alert('Leave Applied Successfully !!');
       }
     } else {
       alert(message);
@@ -436,7 +271,7 @@ function ApplyAttendanceCorrection() {
   const [selectedDates, setSelectedDates] = useState([]);
 
   const formatDate = (dateStr) => {
-    const [day, month, year] = dateStr.split("/");
+    const [day, month, year] = dateStr.split('/');
     return `${year}-${month}-${day}`;
   };
 
@@ -447,43 +282,43 @@ function ApplyAttendanceCorrection() {
     setSelectedDates((prev) =>
       checked
         ? [...prev, formattedDate]
-        : prev.filter((d) => d !== formattedDate)
+        : prev.filter((d) => d !== formattedDate),
     );
   };
 
   const leavePdfDownload = async () => {
     if (selectedDates.length === 0) {
-      alert("Please select at least one checkbox.");
+      alert('Please select at least one checkbox.');
       return;
     }
     try {
-      const userEmpCode = sessionStorage.getItem("empCode");
-      const params = selectedDates.join(",");
+      const userEmpCode = sessionStorage.getItem('empCode');
+      const params = selectedDates.join(',');
       const apiUrl = `https://attendance.mpcz.in:8888/E-Attendance/api/leave/getLeavePdfV2?empCode=${userEmpCode}&dates=${params}`;
 
-      const response = await axios.get(apiUrl, { responseType: "blob" });
+      const response = await axios.get(apiUrl, { responseType: 'blob' });
 
-      const contentType = response.headers["content-type"];
+      const contentType = response.headers['content-type'];
 
-      if (contentType && contentType.includes("application/pdf")) {
+      if (contentType && contentType.includes('application/pdf')) {
         const url = window.URL.createObjectURL(
-          new Blob([response.data], { type: "application/pdf" })
+          new Blob([response.data], { type: 'application/pdf' }),
         );
-        const link = document.createElement("a");
+        const link = document.createElement('a');
         link.href = url;
-        link.setAttribute("download", `${userEmpCode}_leave.pdf`);
+        link.setAttribute('download', `${userEmpCode}_leave.pdf`);
         document.body.appendChild(link);
         link.click();
         link.remove();
       } else {
         const text = await response.data.text();
         const json = JSON.parse(text);
-        console.error("Error:", json);
-        alert("Error: " + (json.message || "Failed to download PDF"));
+        console.error('Error:', json);
+        alert('Error: ' + (json.message || 'Failed to download PDF'));
       }
     } catch (error) {
-      console.error("Error:", error);
-      alert("Something went wrong while downloading PDF!");
+      console.error('Error:', error);
+      alert('Something went wrong while downloading PDF!');
     }
   };
 
@@ -494,10 +329,10 @@ function ApplyAttendanceCorrection() {
           <Typography
             variant="h4"
             sx={{
-              color: "#0a1f83",
+              color: '#0a1f83',
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Apply Leave's and Attendance Corrections
@@ -547,10 +382,10 @@ function ApplyAttendanceCorrection() {
                   <Typography
                     variant="h6"
                     sx={{
-                      color: "#0a1f83",
+                      color: '#0a1f83',
                       mb: 2,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
                     }}
                   >
                     Attendance View
@@ -561,7 +396,7 @@ function ApplyAttendanceCorrection() {
                     <Col>
                       <Card>
                         <Card.Header>
-                          Month{" "}
+                          Month{' '}
                           <span className="text-danger text-bold text-large">
                             *
                           </span>
@@ -598,7 +433,7 @@ function ApplyAttendanceCorrection() {
                     <Col>
                       <Card>
                         <Card.Header>
-                          Year{" "}
+                          Year{' '}
                           <span className="text-danger text-bold text-large">
                             *
                           </span>
@@ -651,10 +486,10 @@ function ApplyAttendanceCorrection() {
                   <Typography
                     variant="h6"
                     sx={{
-                      color: "#0a1f83",
+                      color: '#0a1f83',
                       mb: 2,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
                     }}
                   >
                     Apply for Leave or Corrections
@@ -666,7 +501,7 @@ function ApplyAttendanceCorrection() {
                     <Col>
                       <Card>
                         <Card.Header>
-                          Type of Preference{" "}
+                          Type of Preference{' '}
                           <span className="text-danger">*</span>
                         </Card.Header>
                         <Card.Body>
@@ -682,7 +517,7 @@ function ApplyAttendanceCorrection() {
                             <option value="2">Leave</option>
                             <option value="3">Half Day</option>
                           </Form.Select>
-                          &nbsp;{" "}
+                          &nbsp;{' '}
                           {preferenceError && (
                             <Typography
                               variant="caption"
@@ -802,8 +637,8 @@ function ApplyAttendanceCorrection() {
           variant="contained"
           className={
             selectedDates.length === 0
-              ? "ms-auto button-disabled "
-              : "ms-auto green-button"
+              ? 'ms-auto button-disabled '
+              : 'ms-auto green-button'
           }
           disabled={selectedDates.length === 0}
           onClick={leavePdfDownload}
@@ -812,7 +647,7 @@ function ApplyAttendanceCorrection() {
         </Button>
       </div>
       <hr />
-      <TableContainer component={Paper} sx={{ marginTop: "10px" }}>
+      <TableContainer component={Paper} sx={{ marginTop: '10px' }}>
         <Table ref={tableRef} tabIndex={-1}>
           <TableHead>
             <StyledTableRow>
@@ -844,11 +679,11 @@ function ApplyAttendanceCorrection() {
                       value={item.punchDate}
                       className="getCheckValues"
                       disabled={
-                        item.status === "Holiday" ||
-                        item.status === "Present" ||
-                        item.correctionStatus === "Approved" ||
-                        item.correctionStatus === "Pending" ||
-                        item.leaveStatus === "Rejected"
+                        item.status === 'Holiday' ||
+                        item.status === 'Present' ||
+                        item.correctionStatus === 'Approved' ||
+                        item.correctionStatus === 'Pending' ||
+                        item.leaveStatus === 'Rejected'
                       }
                       onChange={handleCheckBoxForPdf}
                     />
@@ -857,19 +692,19 @@ function ApplyAttendanceCorrection() {
                   <StyledTableCell>
                     {item.inTime
                       ? new Date(item.inTime).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
+                          hour: '2-digit',
+                          minute: '2-digit',
                         })
-                      : "-"}
+                      : '-'}
                   </StyledTableCell>
 
                   <StyledTableCell>
                     {item.outTime
                       ? new Date(item.outTime).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
+                          hour: '2-digit',
+                          minute: '2-digit',
                         })
-                      : "-"}
+                      : '-'}
                   </StyledTableCell>
                   <StyledTableCell>{item.duration}</StyledTableCell>
                   <StyledTableCell>{item.remark}</StyledTableCell>
@@ -892,7 +727,7 @@ function ApplyAttendanceCorrection() {
       </TableContainer>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

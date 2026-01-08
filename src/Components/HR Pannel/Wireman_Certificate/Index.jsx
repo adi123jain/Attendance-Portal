@@ -34,6 +34,7 @@ function WiremanCertificateByHr() {
   const [examDate, setExamDate] = useState('');
   const [fromDate, setFromDate] = useState('');
   const [toDate, setToDate] = useState('');
+  const [document, setDocument] = useState('');
   const circleName = sessionStorage.getItem('circleName');
 
   // Date error messages
@@ -41,12 +42,14 @@ function WiremanCertificateByHr() {
     examDate: '',
     fromDate: '',
     toDate: '',
+    document: '',
   });
 
   // Date input refs
   const examDateRef = useRef(null);
   const fromDateRef = useRef(null);
   const toDateRef = useRef(null);
+  const docRef = useRef(null);
 
   const [entries, setEntries] = useState([
     { empCode: '', FULLNAME: '', result: '', remark: '' },
@@ -69,11 +72,6 @@ function WiremanCertificateByHr() {
     updated[index][field] = value;
     setEntries(updated);
   };
-
-  //   const addRow = () => {
-  //     setEntries([...entries, { empCode: '', result: '', remark: '' }]);
-  //     setErrors([...errors, {}]);
-  //   };
 
   const addRow = () => {
     setEntries([
@@ -107,7 +105,7 @@ function WiremanCertificateByHr() {
         const name = response.data.list[0]?.FULLNAME || '';
         handleChange(index, 'FULLNAME', name);
       } else {
-        handleChange(index, 'FULLNAME', '');
+        handleChange(index, 'FULLNAME', 'Not Found');
       }
     } catch (error) {
       console.log('Error fetching emp name:', error);
@@ -132,6 +130,11 @@ function WiremanCertificateByHr() {
     if (!toDate) {
       newDateErrors.toDate = '*Required';
       if (!firstInvalidField) firstInvalidField = toDateRef;
+    }
+
+    if (!document) {
+      newDateErrors.document = '*Required';
+      if (!firstInvalidField) firstInvalidField = docRef;
     }
 
     if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
@@ -196,45 +199,95 @@ function WiremanCertificateByHr() {
     return true;
   };
 
+  // const handleSubmit = async () => {
+  //   if (!validate()) return;
+
+  //   setOpenBackdrop(true);
+
+  //   const payload = entries.map((item) => ({
+  //     empCode: item.empCode,
+  //     dateOfExamination: examDate,
+  //     result: item.result,
+  //     remark: item.remark,
+  //     startDate: fromDate,
+  //     endDate: toDate,
+  //     circle: sessionStorage.getItem('circleId'),
+  //     createdBy: sessionStorage.getItem('empCode'),
+  //     doc: document,
+  //   }));
+
+  //   console.log('FINAL PAYLOAD:', payload);
+
+  //   try {
+  //     const response = await createWiremanCertificate(payload);
+
+  //     if (response?.data?.code === '200') {
+  //       alert('Submitted Successfully!');
+
+  //       // Reset everything
+  //       setExamDate('');
+  //       setFromDate('');
+  //       setToDate('');
+  //       setDocument('');
+  //       setDateErrors({ examDate: '', fromDate: '', toDate: '' });
+
+  //       setEntries([{ empCode: '', FULLNAME: '', result: '', remark: '' }]);
+
+  //       setErrors([]);
+  //     } else {
+  //       alert(response?.data?.message || 'Submission failed!');
+  //     }
+  //   } catch (error) {
+  //     alert('Something went wrong!');
+  //     console.error(error);
+  //   } finally {
+  //     setOpenBackdrop(false);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     if (!validate()) return;
 
     setOpenBackdrop(true);
 
-    const payload = entries.map((item) => ({
-      empCode: item.empCode,
-      dateOfExamination: examDate,
-      result: item.result,
-      remark: item.remark,
-      startDate: fromDate,
-      endDate: toDate,
-      circle: sessionStorage.getItem('circleId'),
-      createdBy: sessionStorage.getItem('empCode'),
-    }));
-
-    // console.log('FINAL PAYLOAD:', payload);
-
     try {
-      const response = await createWiremanCertificate(payload);
+      const wiremanList = entries.map((item) => ({
+        empCode: Number(item.empCode),
+        dateOfExamination: examDate, // yyyy-mm-dd
+        circle: Number(sessionStorage.getItem('circleId')),
+        result: item.result,
+        remark: item.remark,
+        startDate: fromDate,
+        endDate: toDate,
+        createdBy: Number(sessionStorage.getItem('empCode')),
+        authLt440VLine: false,
+        authLt11KvLine: false,
+        authLt33KvLine: false,
+      }));
+
+      const formData = new FormData();
+
+      formData.append('list', JSON.stringify(wiremanList));
+
+      if (document instanceof File) {
+        formData.append('doc', document);
+      }
+
+      const response = await createWiremanCertificate(formData);
 
       if (response?.data?.code === '200') {
-        alert('Submitted Successfully!');
+        alert('Submitted Successfully');
 
-        // Reset everything
         setExamDate('');
         setFromDate('');
         setToDate('');
-        setDateErrors({ examDate: '', fromDate: '', toDate: '' });
-
+        setDocument(null);
         setEntries([{ empCode: '', FULLNAME: '', result: '', remark: '' }]);
-
         setErrors([]);
-      } else {
-        alert(response?.data?.message || 'Submission failed!');
       }
-    } catch (error) {
-      alert('Something went wrong!');
-      console.error(error);
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong');
     } finally {
       setOpenBackdrop(false);
     }
@@ -253,8 +306,8 @@ function WiremanCertificateByHr() {
         </Card.Header>
 
         <Card.Body>
-          <Row className="g-3 mb-3">
-            <Col md={3}>
+          <Row className="g-3 mb-3" md={5}>
+            <Col>
               <Card>
                 <Card.Header>Circle Name</Card.Header>
                 <Card.Body>
@@ -263,7 +316,7 @@ function WiremanCertificateByHr() {
               </Card>
             </Col>
 
-            <Col md={3}>
+            <Col>
               <Card>
                 <Card.Header>Examination Date</Card.Header>
                 <Card.Body>
@@ -281,7 +334,7 @@ function WiremanCertificateByHr() {
               </Card>
             </Col>
 
-            <Col md={3}>
+            <Col>
               <Card>
                 <Card.Header>From Date</Card.Header>
                 <Card.Body>
@@ -299,7 +352,7 @@ function WiremanCertificateByHr() {
               </Card>
             </Col>
 
-            <Col md={3}>
+            <Col>
               <Card>
                 <Card.Header>To Date</Card.Header>
                 <Card.Body>
@@ -312,6 +365,23 @@ function WiremanCertificateByHr() {
                   />
                   <Form.Control.Feedback type="invalid">
                     {dateErrors.toDate}
+                  </Form.Control.Feedback>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col>
+              <Card>
+                <Card.Header>Document</Card.Header>
+                <Card.Body>
+                  <Form.Control
+                    type="file"
+                    ref={docRef}
+                    // value={document}
+                    isInvalid={!!dateErrors.document}
+                    onChange={(e) => setDocument(e.target.files[0])}
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    {dateErrors.document}
                   </Form.Control.Feedback>
                 </Card.Body>
               </Card>
@@ -414,7 +484,11 @@ function WiremanCertificateByHr() {
         </Card.Body>
 
         <Card.Footer className="text-center p-3">
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            className="blue-button"
+            onClick={handleSubmit}
+          >
             Submit
           </Button>
         </Card.Footer>

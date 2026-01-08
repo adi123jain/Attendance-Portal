@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import Modal from "react-bootstrap/Modal";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
+import React, { useState, useRef, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import Modal from 'react-bootstrap/Modal';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import '../../../Constants/Style/styles.css';
 import {
   Typography,
   Paper,
@@ -17,17 +17,17 @@ import {
   Button,
   TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   getLeaveAllocation,
   leaveAllocationOutsource,
   updateEmployeeLeaves,
-} from "../../../Services/Auth";
-import SearchBox from "./SearchBox";
+} from '../../../Services/Auth';
+import SearchBox from './SearchBox';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // import {
 //   StyledTableRow,
@@ -67,24 +67,24 @@ function OutsourceLeaveAllocation() {
   const regionRef = useRef(null);
   const tableRef = useRef(null);
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
   });
 
   const [errors, setErrors] = useState({});
   const [showLevelTable, setShowLevelTable] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [dataInLevelTable, setDataInLevelTable] = useState([]);
 
   const validate = () => {
     const newErrors = {};
     if (!searchValues.region) {
-      newErrors.region = "*region is required.";
+      newErrors.region = '*region is required.';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -92,14 +92,14 @@ function OutsourceLeaveAllocation() {
 
   useEffect(() => {
     if (showLevelTable && dataInLevelTable.length > 0 && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showLevelTable, dataInLevelTable]);
   // Search By Level
   const searchByLevel = async () => {
     setShowEmpTable(false);
-    setEmpCode("");
-    setEmpCodeError("");
+    setEmpCode('');
+    setEmpCodeError('');
     if (!validate()) {
       if (!searchValues.region && regionRef.current) {
         regionRef.current.focus();
@@ -122,7 +122,7 @@ function OutsourceLeaveAllocation() {
       const response = await leaveAllocationOutsource(payload);
       // console.log("response", response);
 
-      if (response?.data.code == "200" && response?.data.message == "Success") {
+      if (response?.data.code == '200' && response?.data.message == 'Success') {
         setShowLevelTable(true);
         setDataInLevelTable(response?.data.list);
       } else {
@@ -130,41 +130,41 @@ function OutsourceLeaveAllocation() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     } finally {
       setOpenBackdrop(false);
     }
   };
 
   // Search By Employee Code
-  const [empCode, setEmpCode] = useState("");
-  const [empCodeError, setEmpCodeError] = useState("");
+  const [empCode, setEmpCode] = useState('');
+  const [empCodeError, setEmpCodeError] = useState('');
   const [showEmpTable, setShowEmpTable] = useState(false);
   const [dataInEmpTable, setDataInEmpTable] = useState([]);
   const empTableRef = useRef(null);
 
   useEffect(() => {
     if (showEmpTable && empTableRef.current) {
-      empTableRef.current.scrollIntoView({ behavior: "smooth" });
+      empTableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showEmpTable, dataInEmpTable]);
 
   const searchByEmpCode = async () => {
     setShowLevelTable(false);
     setSearchValues({
-      region: "",
-      circle: "",
-      division: "",
-      subDivision: "",
-      dc: "",
-      subStation: "",
+      region: '',
+      circle: '',
+      division: '',
+      subDivision: '',
+      dc: '',
+      subStation: '',
     });
-    setErrors("");
+    setErrors('');
     if (!empCode.trim()) {
-      setEmpCodeError("Employee Code is Required.");
+      setEmpCodeError('Employee Code is Required.');
       return;
     } else {
-      setEmpCodeError("");
+      setEmpCodeError('');
     }
     setOpenBackdrop(true);
 
@@ -179,7 +179,7 @@ function OutsourceLeaveAllocation() {
     try {
       const res = await leaveAllocationOutsource(payload);
       // console.log("Response:", res?.data);
-      if (res?.data.code === "200" && res?.data.message === "Success") {
+      if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
         setShowEmpTable(true);
       } else {
@@ -188,7 +188,7 @@ function OutsourceLeaveAllocation() {
         alert(res?.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -209,7 +209,7 @@ function OutsourceLeaveAllocation() {
 
   const [modalShow, setModalShow] = useState(false);
   const [leaveData, setLeaveData] = useState({
-    casualLeave: "",
+    casualLeave: '',
     // earnLeave: "",
     // commutedLeave: "",
     // optionalLeave: "",
@@ -218,7 +218,7 @@ function OutsourceLeaveAllocation() {
     // maternityLeave: "",
     // childCareLeave: "",
     // lwpLeave: "",
-    empCode: "",
+    empCode: '',
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -236,7 +236,7 @@ function OutsourceLeaveAllocation() {
     // console.log(items);
     setModalShow(true);
     setLeaveData({
-      casualLeave: items.casualLeave || "",
+      casualLeave: items.casualLeave || '0',
       // earnLeave: items.earnLeave || "",
       // commutedLeave: items.commutedLeave || "",
       // optionalLeave: items.optionalLeave || "",
@@ -245,12 +245,12 @@ function OutsourceLeaveAllocation() {
       // maternityLeave: items.maternityLeave || "",
       // childCareLeave: items.childCareLeave || "",
       // lwpLeave: items.lwp || "",
-      empCode: items.empCode || "",
+      empCode: items.empCode || '',
     });
   };
   const validateForm = () => {
     const requiredFields = [
-      "casualLeave",
+      'casualLeave',
       // "earnLeave",
       // "commutedLeave",
       // "optionalLeave",
@@ -263,7 +263,7 @@ function OutsourceLeaveAllocation() {
 
     for (let field of requiredFields) {
       const value = leaveData[field];
-      if (value === "" || parseInt(value) < 0 || isNaN(value)) {
+      if (value === '' || parseInt(value) < 0 || isNaN(value)) {
         alert(`Please enter a valid value for ${field}`);
         inputRefs[field]?.current?.focus();
         return false;
@@ -278,7 +278,7 @@ function OutsourceLeaveAllocation() {
     setOpenBackdrop(true);
 
     const payload = {
-      empCode: leaveData.empCode || "",
+      empCode: leaveData.empCode || '',
       casualLeave: leaveData.casualLeave,
       earnLeave: null,
       commutedLeave: null,
@@ -288,20 +288,20 @@ function OutsourceLeaveAllocation() {
       maternityLeave: null,
       childCareLeave: null,
       lwp: null,
-      managerHrId: sessionStorage.getItem("empCode"),
+      managerHrId: sessionStorage.getItem('empCode'),
     };
 
     try {
       const response = await updateEmployeeLeaves(payload);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
-        alert("Leave Updated Successfully!!");
+      if (response?.data.code == '200' && response?.data.message == 'Success') {
+        alert('Leave Updated Successfully!!');
         modalClose();
         window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("Failed to update leaves:", error);
+      console.error('Failed to update leaves:', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -314,10 +314,10 @@ function OutsourceLeaveAllocation() {
           <Typography
             variant="h5"
             sx={{
-              color: "#0a1f83",
+              color: '#0a1f83',
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Leave Allocation (Outsource Employee)
@@ -359,13 +359,13 @@ function OutsourceLeaveAllocation() {
                         type="number"
                         id="empCode"
                         className={`form-control ${
-                          empCodeError ? "is-invalid" : ""
+                          empCodeError ? 'is-invalid' : ''
                         }`}
                         placeholder="Enter Employee Code"
                         value={empCode}
                         onChange={(e) => {
                           setEmpCode(e.target.value);
-                          if (empCodeError) setEmpCodeError("");
+                          if (empCodeError) setEmpCodeError('');
                         }}
                       />
                       {empCodeError && (
@@ -398,8 +398,8 @@ function OutsourceLeaveAllocation() {
         <Card
           className="shadow-lg rounded"
           style={{
-            textAlign: "center",
-            marginTop: "20px",
+            textAlign: 'center',
+            marginTop: '20px',
           }}
         >
           <Card.Header className="text-center p-3">
@@ -407,9 +407,9 @@ function OutsourceLeaveAllocation() {
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Leave Records (Outsource)
@@ -420,10 +420,10 @@ function OutsourceLeaveAllocation() {
               sx={{
                 mb: 2,
                 mt: 1,
-                width: "50%",
+                width: '50%',
                 mr: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px',
                 },
               }}
               value={searchQuery}
@@ -457,10 +457,10 @@ function OutsourceLeaveAllocation() {
                       .filter((item) => {
                         const query = searchQuery.toLowerCase();
                         return (
-                          String(item.empCode || "")
+                          String(item.empCode || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.empName || "")
+                          String(item.empName || '')
                             .toLowerCase()
                             .includes(query)
                         );
@@ -472,7 +472,7 @@ function OutsourceLeaveAllocation() {
                           <StyledTableCell>{item.empName}</StyledTableCell>
 
                           <StyledTableCell>
-                            {item.casualLeave || "0"}
+                            {item.casualLeave || '0'}
                           </StyledTableCell>
                           {/* <StyledTableCell>{item.earnLeave}</StyledTableCell>
                           <StyledTableCell>
@@ -523,16 +523,16 @@ function OutsourceLeaveAllocation() {
       {showEmpTable && (
         <Card
           className="shadow-lg rounded"
-          style={{ textAlign: "center", marginTop: "20px" }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           <Card.Header className="text-center p-3">
             <Typography
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Leave Records
@@ -633,10 +633,10 @@ function OutsourceLeaveAllocation() {
             <Typography
               variant="h5"
               sx={{
-                color: "#0a1f83",
+                color: '#0a1f83',
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
               }}
             >
               Leave Balance Update (Outsource)
@@ -649,9 +649,9 @@ function OutsourceLeaveAllocation() {
             <div className="row">
               {[
                 {
-                  label: "Casual Leave",
-                  name: "casualLeave",
-                  ref: inputRefs.casualLeave || "0",
+                  label: 'Casual Leave',
+                  name: 'casualLeave',
+                  ref: inputRefs.casualLeave || '0',
                 },
                 // {
                 //   label: "Earned Leave",
@@ -698,12 +698,12 @@ function OutsourceLeaveAllocation() {
                   <label
                     htmlFor={field.name}
                     style={{
-                      fontWeight: "600",
+                      fontWeight: '600',
                       fontFamily:
                         "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-                      display: "block",
-                      marginBottom: "6px",
-                      color: "#333",
+                      display: 'block',
+                      marginBottom: '6px',
+                      color: '#333',
                     }}
                   >
                     {field.label}
@@ -717,8 +717,8 @@ function OutsourceLeaveAllocation() {
                     ref={field.ref}
                     className="form-control"
                     style={{
-                      borderRadius: "6px",
-                      padding: "8px",
+                      borderRadius: '6px',
+                      padding: '8px',
                       fontFamily:
                         "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
                     }}
@@ -734,7 +734,7 @@ function OutsourceLeaveAllocation() {
             className="cancel-button"
             variant="outlined"
             onClick={modalClose}
-            style={{ borderRadius: "20px", padding: "6px 20px" }}
+            style={{ borderRadius: '20px', padding: '6px 20px' }}
           >
             Close
           </Button>
@@ -744,11 +744,11 @@ function OutsourceLeaveAllocation() {
             variant="outlined"
             onClick={updateLeaves}
             style={{
-              borderRadius: "20px",
-              backgroundColor: "#0a1f83",
-              color: "#fff",
-              padding: "6px 20px",
-              border: "none",
+              borderRadius: '20px',
+              backgroundColor: '#0a1f83',
+              color: '#fff',
+              padding: '6px 20px',
+              border: 'none',
             }}
           >
             Update
@@ -758,7 +758,7 @@ function OutsourceLeaveAllocation() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

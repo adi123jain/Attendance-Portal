@@ -403,8 +403,9 @@ const Login = () => {
         sessionStorage.setItem('email', response.data.list[0].email);
         sessionStorage.setItem('address', response.data.list[0].address);
         sessionStorage.setItem('mobileNo', response.data.list[0].mobileNo);
-          login();
-          navigate('/');
+        login();
+        navigate('/');
+        window.location.reload();
       } else {
         alert(response.response.data.message);
       }

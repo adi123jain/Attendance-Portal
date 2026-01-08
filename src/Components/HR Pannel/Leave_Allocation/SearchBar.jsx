@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
+import { useEffect, useState } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import {
   getRegion,
   getCircle,
   getDivision,
   getSubDivision,
   getDC,
-  //   getSubstation,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 function SelectBox({
   title,
@@ -29,7 +28,7 @@ function SelectBox({
             ref={inputRef}
             value={value}
             onChange={onChange}
-            style={{ borderColor: error ? "red" : undefined }}
+            style={{ borderColor: error ? 'red' : undefined }}
             disabled={disabled}
           >
             <option value="" disabled>
@@ -66,15 +65,14 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
 
     const resetMap = {
       region: {
-        circle: "",
-        division: "",
-        subDivision: "",
-        dc: "",
+        circle: '',
+        division: '',
+        subDivision: '',
+        dc: '',
       },
-      circle: { division: "", subDivision: "", dc: "" },
-      division: { subDivision: "", dc: "" },
-      subDivision: { dc: "" },
-      // dc: { subStation: "" },
+      circle: { division: '', subDivision: '', dc: '' },
+      division: { subDivision: '', dc: '' },
+      subDivision: { dc: '' },
     };
 
     setValues((prev) => ({
@@ -83,21 +81,6 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
       ...(resetMap[key] || {}),
     }));
   };
-
-  // useEffect(() => {
-  //   const fetchRegionData = async () => {
-  //     try {
-  //       const res = await getRegion();
-  //       const list = res?.data?.list || [];
-  //       setRegionOptions(
-  //         list.map((item) => ({ id: item.regionId, name: item.name }))
-  //       );
-  //     } catch (err) {
-  //       console.error("Error fetching regions:", err);
-  //     }
-  //   };
-  //   fetchRegionData();
-  // }, []);
 
   useEffect(() => {
     const fetchRegionData = async () => {
@@ -110,9 +93,8 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
         }));
         setRegionOptions(formattedList);
 
-        // If empCode is 89427825, set region value automatically to 2
-        const empCode = sessionStorage.getItem("empCode");
-        if (empCode === "89427825") {
+        const empCode = sessionStorage.getItem('empCode');
+        if (empCode === '89427825') {
           const defaultRegion = formattedList.find((item) => item.id === 2);
           if (defaultRegion) {
             setValues((prev) => ({
@@ -122,7 +104,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           }
         }
       } catch (err) {
-        console.error("Error fetching regions:", err);
+        console.error('Error fetching regions:', err);
       }
     };
 
@@ -136,10 +118,10 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
         const res = await getCircle(values.region);
         const list = res?.data?.list || [];
         setCircleOptions(
-          list.map((item) => ({ id: item.circleId, name: item.name }))
+          list.map((item) => ({ id: item.circleId, name: item.name })),
         );
       } catch (err) {
-        console.error("Error fetching circles:", err);
+        console.error('Error fetching circles:', err);
       }
     };
     fetchCircleData();
@@ -152,10 +134,10 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
         const res = await getDivision(values.circle);
         const list = res?.data?.list || [];
         setDivisionOptions(
-          list.map((item) => ({ id: item.divisionId, name: item.name }))
+          list.map((item) => ({ id: item.divisionId, name: item.name })),
         );
       } catch (err) {
-        console.error("Error fetching divisions:", err);
+        console.error('Error fetching divisions:', err);
       }
     };
     fetchDivisionData();
@@ -168,10 +150,10 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
         const res = await getSubDivision(values.division);
         const list = res?.data?.list || [];
         setSubDivisionOptions(
-          list.map((item) => ({ id: item.subdivisionId, name: item.name }))
+          list.map((item) => ({ id: item.subdivisionId, name: item.name })),
         );
       } catch (err) {
-        console.error("Error fetching sub-divisions:", err);
+        console.error('Error fetching sub-divisions:', err);
       }
     };
     fetchSubDivisionData();
@@ -191,8 +173,8 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
     fetchDC();
   }, [values.subDivision]);
 
-  const sessionEmpCode = sessionStorage.getItem("empCode");
-  const isDisabled = sessionEmpCode === "89427825";
+  const sessionEmpCode = sessionStorage.getItem('empCode');
+  const isDisabled = sessionEmpCode === '89427825';
 
   return (
     <Card.Body>
@@ -202,7 +184,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           placeholder="Region"
           value={values.region}
           options={regionOptions}
-          onChange={handleChange("region")}
+          onChange={handleChange('region')}
           error={errors.region}
           inputRef={refs.region}
           disabled={isDisabled}
@@ -212,7 +194,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           placeholder="Circle"
           value={values.circle}
           options={circleOptions}
-          onChange={handleChange("circle")}
+          onChange={handleChange('circle')}
           error={errors.circle}
           disabled={isDisabled}
         />
@@ -221,7 +203,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           placeholder="Division"
           value={values.division}
           options={divisionOptions}
-          onChange={handleChange("division")}
+          onChange={handleChange('division')}
           error={errors.division}
           disabled={isDisabled}
         />
@@ -233,7 +215,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           placeholder="Sub Division"
           value={values.subDivision}
           options={subDivisionOptions}
-          onChange={handleChange("subDivision")}
+          onChange={handleChange('subDivision')}
           error={errors.subDivision}
           disabled={isDisabled}
         />
@@ -242,7 +224,7 @@ function SearchBar({ values, setValues, errors = {}, refs = {} }) {
           placeholder="DC"
           value={values.dc}
           options={dcOptions}
-          onChange={handleChange("dc")}
+          onChange={handleChange('dc')}
           error={errors.dc}
           disabled={isDisabled}
         />

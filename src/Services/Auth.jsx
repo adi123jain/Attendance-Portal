@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
-// const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
+// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
 

@@ -35,18 +35,6 @@ import {
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
 
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
-
 function AdditionalChargesEmployee() {
   const location = useLocation();
   const { empCode, fullName } = location.state || {};
@@ -62,8 +50,8 @@ function AdditionalChargesEmployee() {
         const response = await getAdditionalCharges(empCode);
         console.log(response);
         if (
-          response?.data.code == '200' &&
-          response?.data.message == 'Success'
+          response?.data.code === '200' &&
+          response?.data.message === 'Success'
         ) {
           setOpenBackdrop(false);
           setAdditionalRecords(response?.data.list);
@@ -96,13 +84,11 @@ function AdditionalChargesEmployee() {
 
   const [errors, setErrors] = useState({});
 
-  // optional refs if you need focus control
-  // refs for focusing invalid fields
   const regionRef = useRef(null);
   const designationRef = useRef(null);
   const departmentRef = useRef(null);
 
-  // 🟩 Load Regions on Mount
+  //  Load Regions on Mount
   useEffect(() => {
     (async () => {
       try {
@@ -114,7 +100,7 @@ function AdditionalChargesEmployee() {
     })();
   }, []);
 
-  // 🟨 Load Circles on Region change
+  //  Load Circles on Region change
   useEffect(() => {
     if (!selectedRegion) return;
     (async () => {
@@ -127,7 +113,7 @@ function AdditionalChargesEmployee() {
     })();
   }, [selectedRegion]);
 
-  // 🟧 Load Divisions on Circle change
+  //  Load Divisions on Circle change
   useEffect(() => {
     if (!selectedCircle) return;
     (async () => {
@@ -140,7 +126,7 @@ function AdditionalChargesEmployee() {
     })();
   }, [selectedCircle]);
 
-  // 🟦 Load Sub Divisions on Division change
+  //  Load Sub Divisions on Division change
   useEffect(() => {
     if (!selectedDivision) return;
     (async () => {
@@ -153,7 +139,7 @@ function AdditionalChargesEmployee() {
     })();
   }, [selectedDivision]);
 
-  // 🟪 Load DCs on Sub Division change
+  //  Load DCs on Sub Division change
   useEffect(() => {
     if (!selectedSubDivision) return;
     (async () => {
@@ -166,7 +152,7 @@ function AdditionalChargesEmployee() {
     })();
   }, [selectedSubDivision]);
 
-  // 🟫 Load Substations on DC change
+  //  Load Substations on DC change
   useEffect(() => {
     if (!selectedDC) return;
     (async () => {
@@ -251,7 +237,7 @@ function AdditionalChargesEmployee() {
 
     try {
       const response = await addAdditionalCharges(payload);
-      if (response.data.code == '200') {
+      if (response.data.code === '200') {
         setOpenBackdrop(false);
         alert('Successfully Updated !!');
         window.location.reload();

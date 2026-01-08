@@ -1,70 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
-import Form from "react-bootstrap/Form";
+import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import { PropagateLoader } from 'react-spinners';
+import '../../../Constants/Style/styles.css';
+import Form from 'react-bootstrap/Form';
 
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   getDepartment,
   getDesignation,
   getEmployeePlaceOfPosting,
   submitPlaceOfPosting,
-} from "../../../Services/Auth";
-import SearchUtils from "../../../Constants/Search_Utils/Index";
+} from '../../../Services/Auth';
+import SearchUtils from '../../../Constants/Search_Utils/Index';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function EmployeePlaceOfPosting() {
   const location = useLocation();
   const { empCode, fullName } = location.state || {};
@@ -73,16 +35,16 @@ function EmployeePlaceOfPosting() {
   const [dataInTable, setDataInTable] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
-    designation: "",
-    department: "",
-    fromDate: "",
-    toDate: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
+    designation: '',
+    department: '',
+    fromDate: '',
+    toDate: '',
   });
   const [errors, setErrors] = useState({});
 
@@ -92,8 +54,8 @@ function EmployeePlaceOfPosting() {
       try {
         const response = await getEmployeePlaceOfPosting(empCode);
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code === '200' &&
+          response?.data.message === 'Success'
         ) {
           setOpenBackdrop(false);
           setDataInTable(response?.data.list);
@@ -102,7 +64,7 @@ function EmployeePlaceOfPosting() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.error("Error fetching place of posting:", error);
+        console.error('Error fetching place of posting:', error);
         setOpenBackdrop(false);
       }
     };
@@ -119,13 +81,13 @@ function EmployeePlaceOfPosting() {
       try {
         const response = await getDesignation();
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code === '200' &&
+          response?.data.message === 'Success'
         ) {
           setDesignations(response?.data.list || []);
         }
       } catch (error) {
-        console.error("Error fetching designations", error);
+        console.error('Error fetching designations', error);
       }
     };
 
@@ -140,13 +102,13 @@ function EmployeePlaceOfPosting() {
       try {
         const response = await getDepartment();
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code === '200' &&
+          response?.data.message === 'Success'
         ) {
           setDepartment(response?.data.list || []);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
       }
     };
 
@@ -163,30 +125,26 @@ function EmployeePlaceOfPosting() {
 
   const validate = () => {
     const newErrors = {};
-    // region validation (keep as you already have)
     if (!searchValues.region) {
-      newErrors.region = " *region is required.";
+      newErrors.region = ' *region is required.';
     }
-    // designation validation
     if (!searchValues.designation) {
-      newErrors.designation = " *designation is required.";
+      newErrors.designation = ' *designation is required.';
     }
-    // department validation
     if (!searchValues.department) {
-      newErrors.department = " *department is required.";
+      newErrors.department = ' *department is required.';
     }
-    // date validations
     if (!searchValues.fromDate) {
-      newErrors.fromDate = " *From Date is required.";
+      newErrors.fromDate = ' *From Date is required.';
     }
 
     if (!searchValues.toDate) {
-      newErrors.toDate = " *To Date is required.";
+      newErrors.toDate = ' *To Date is required.';
     } else if (
       searchValues.fromDate &&
       searchValues.toDate < searchValues.fromDate
     ) {
-      newErrors.toDate = " *To Date cannot be earlier than From Date.";
+      newErrors.toDate = ' *To Date cannot be earlier than From Date.';
     }
 
     setErrors(newErrors);
@@ -214,18 +172,21 @@ function EmployeePlaceOfPosting() {
       designation: searchValues.designation,
       fromDate: searchValues.fromDate,
       toDate: searchValues.toDate,
-      createdBy: String(sessionStorage.getItem("empCode")),
+      createdBy: String(sessionStorage.getItem('empCode')),
     };
     try {
       const response = await submitPlaceOfPosting(payload);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
-        alert("Posting Successfully !!");
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
+        alert('Posting Successfully !!');
         window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -238,7 +199,7 @@ function EmployeePlaceOfPosting() {
         className="shadow-lg rounded"
         style={{
           //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -246,9 +207,9 @@ function EmployeePlaceOfPosting() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             View and Update Employee Place of Postings
@@ -259,8 +220,8 @@ function EmployeePlaceOfPosting() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
-              marginTop: "20px",
+              textAlign: 'center',
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -268,9 +229,9 @@ function EmployeePlaceOfPosting() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
                 // color="primary"
               >
@@ -338,7 +299,7 @@ function EmployeePlaceOfPosting() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -346,9 +307,9 @@ function EmployeePlaceOfPosting() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
                 // color="primary"
               >
@@ -369,7 +330,6 @@ function EmployeePlaceOfPosting() {
               />
 
               <div className="row row-cols-1 row-cols-md-4 p-3">
-                {/* Designation */}
                 <div className="col">
                   <Card>
                     <Card.Header>Designation</Card.Header>
@@ -399,7 +359,6 @@ function EmployeePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* Department */}
                 <div className="col">
                   <Card>
                     <Card.Header>Department</Card.Header>
@@ -429,7 +388,6 @@ function EmployeePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* From Date */}
                 <div className="col">
                   <Card>
                     <Card.Header>From Date</Card.Header>
@@ -448,7 +406,6 @@ function EmployeePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* To Date */}
                 <div className="col">
                   <Card>
                     <Card.Header>To Date</Card.Header>
@@ -459,7 +416,7 @@ function EmployeePlaceOfPosting() {
                         value={searchValues.toDate}
                         onChange={handleInputChange}
                         isInvalid={!!errors.toDate}
-                        min={searchValues.fromDate || ""}
+                        min={searchValues.fromDate || ''}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.toDate}
@@ -484,9 +441,8 @@ function EmployeePlaceOfPosting() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />
