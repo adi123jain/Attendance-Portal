@@ -7,6 +7,8 @@ import { Typography, Button, Backdrop } from '@mui/material';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { PropagateLoader } from 'react-spinners';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+
 import {
   getAttendanceLocation,
   getCircle,
@@ -596,11 +598,13 @@ function UpdateVerifyEmployee() {
     <>
       <Card>
         <Card.Header className="d-flex align-items-center justify-content-between  p-3">
-          <Link to="/" className="text-danger">
-            <Tooltip title="Go to Dashboard" arrow>
-              <Button className="cancel-button">Back</Button>
-            </Tooltip>
-          </Link>
+          <Tooltip title="Back" arrow placement="top">
+            <Button className="position-absolute start-2">
+              <Link to="/outsourceEmployeeInfo">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
 
           <div className="flex-grow-1 text-center text-primary">
             <Typography

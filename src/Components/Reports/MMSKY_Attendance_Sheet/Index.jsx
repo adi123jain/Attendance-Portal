@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { Button, Typography } from '@mui/material';
+import { Button, Tooltip, Typography } from '@mui/material';
 import { getCircle, getRegion } from '../../../Services/Auth';
+import { Link } from 'react-router-dom';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 const months = [
   'January',
@@ -81,12 +83,22 @@ function MMSKYattendance() {
   };
   return (
     <Card>
-      <Card.Header className="text-center text-primary p-3">
+      <Card.Header className="p-3 d-flex align-items-center position-relative">
+        <Tooltip title="Back" arrow placement="top">
+          <Button className="position-absolute start-2">
+            <Link to="/humanResourceDashboard">
+              <ArrowLeftIcon fontSize="large" color="warning" />
+            </Link>
+          </Button>
+        </Tooltip>
+
         <Typography
           variant="h4"
           sx={{
+            flex: 1,
+            textAlign: 'center',
             color: '#0a1f83',
-            mb: 2,
+            mb: 0,
             fontFamily: 'serif',
             fontWeight: 'bold',
           }}

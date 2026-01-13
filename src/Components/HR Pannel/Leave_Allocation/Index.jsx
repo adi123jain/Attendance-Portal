@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import SearchBar from './SearchBar';
 import { PropagateLoader } from 'react-spinners';
 import '../../../Constants/Style/styles.css';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+
 import {
   Typography,
   Paper,
@@ -14,6 +16,7 @@ import {
   Button,
   TextField,
   Backdrop,
+  Tooltip,
 } from '@mui/material';
 import {
   getLeaveAllocation,
@@ -23,6 +26,7 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
+import { Link } from 'react-router-dom';
 
 function LeaveAllocation() {
   const regionRef = useRef(null);
@@ -282,12 +286,22 @@ function LeaveAllocation() {
   return (
     <>
       <Card className="shadow-lg rounded">
-        <Card.Header className="text-center p-3">
+        <Card.Header className="p-3 d-flex align-items-center position-relative">
+          <Tooltip title="Back" arrow placement="top">
+            <Button className="position-absolute start-2">
+              <Link to="/humanResourceDashboard">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
+
           <Typography
             variant="h4"
             sx={{
+              flex: 1,
+              textAlign: 'center',
               color: '#0a1f83',
-              mb: 2,
+              mb: 0,
               fontFamily: 'serif',
               fontWeight: 'bold',
             }}

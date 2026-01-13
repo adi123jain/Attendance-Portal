@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Card } from "react-bootstrap";
+import React, { useState, useEffect, useRef } from 'react';
+import { Card } from 'react-bootstrap';
 import {
   getEmpWeeklyRest,
   getOutWeeklyRestEmp,
   updateWeeklyRestByRO,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 import {
   Typography,
@@ -19,29 +19,29 @@ import {
   Button,
   Box,
   Backdrop,
-} from "@mui/material";
-import Modal from "react-bootstrap/Modal";
-import { Link } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+} from '@mui/material';
+import Modal from 'react-bootstrap/Modal';
+import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 //  Days constant outside component
 const days = [
-  { value: "1", label: "Sunday" },
-  { value: "2", label: "Monday" },
-  { value: "3", label: "Tuesday" },
-  { value: "4", label: "Wednesday" },
-  { value: "5", label: "Thursday" },
-  { value: "6", label: "Friday" },
-  { value: "7", label: "Saturday" },
+  { value: '1', label: 'Sunday' },
+  { value: '2', label: 'Monday' },
+  { value: '3', label: 'Tuesday' },
+  { value: '4', label: 'Wednesday' },
+  { value: '5', label: 'Thursday' },
+  { value: '6', label: 'Friday' },
+  { value: '7', label: 'Saturday' },
 ];
 
 function OutsourceEmpWeeklyRest() {
@@ -50,9 +50,9 @@ function OutsourceEmpWeeklyRest() {
   const [details, setDetails] = useState([]);
 
   const [modalShow, setModalShow] = useState(false);
-  const [employeeName, setEmployeeName] = useState("");
-  const [employeeCode, setEmployeeCode] = useState("");
-  const [weeklyRest, setWeeklyRest] = useState("");
+  const [employeeName, setEmployeeName] = useState('');
+  const [employeeCode, setEmployeeCode] = useState('');
+  const [weeklyRest, setWeeklyRest] = useState('');
 
   //  Fetch employees
   useEffect(() => {
@@ -60,13 +60,13 @@ function OutsourceEmpWeeklyRest() {
       setOpenBackdrop(true);
       try {
         const response = await getOutWeeklyRestEmp();
-        if (response.data.code === "200") {
+        if (response.data.code === '200') {
           setDetails(response.data.list);
         } else {
           alert(response.data.message);
         }
       } catch (error) {
-        console.error("Error", error);
+        console.error('Error', error);
       } finally {
         setOpenBackdrop(false);
       }
@@ -87,15 +87,15 @@ function OutsourceEmpWeeklyRest() {
     try {
       const response = await getEmpWeeklyRest(items.empCode);
       if (
-        response?.data.code === "200" &&
-        response?.data.message === "Success"
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
       ) {
         setWeeklyRest(response.data.list[0].weeklyRest);
       } else {
         alert(response?.data.message);
       }
     } catch (error) {
-      console.error("Error", error);
+      console.error('Error', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -103,29 +103,29 @@ function OutsourceEmpWeeklyRest() {
 
   //  Update weekly rest
   const updateWeeklyRest = async () => {
-    if (!weeklyRest) return alert("Please select a weekly rest day!");
+    if (!weeklyRest) return alert('Please select a weekly rest day!');
 
     setOpenBackdrop(true);
 
     const payload = {
       empCode: employeeCode,
       weeklyRest: parseInt(weeklyRest, 10),
-      reportingOfficer: sessionStorage.getItem("empCode"),
+      reportingOfficer: sessionStorage.getItem('empCode'),
     };
 
     try {
       const response = await updateWeeklyRestByRO(payload);
       if (
-        response?.data.code === "200" &&
-        response?.data.message === "Success"
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
       ) {
-        alert("Weekly Rest Changed Successfully !!");
+        alert('Weekly Rest Changed Successfully !!');
         window.location.reload();
       } else {
         alert(response?.data.message);
       }
     } catch (error) {
-      console.error("Error", error);
+      console.error('Error', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -147,10 +147,10 @@ function OutsourceEmpWeeklyRest() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
-              fontFamily: "serif",
-              fontWeight: "bold",
+              textAlign: 'center',
+              color: '#0a1f83',
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Employee's Shift Change
@@ -218,12 +218,22 @@ function OutsourceEmpWeeklyRest() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <Typography
-              variant="h6"
-              sx={{ color: "#0a1f83", fontFamily: "serif", fontWeight: "bold" }}
+            {/* <Typography
+              variant="body1"
+              sx={{ color: '#0a1f83', fontFamily: 'serif', fontWeight: 'bold' }}
             >
               Weekly Rest Change
-              <br /> {employeeName}
+            </Typography> */}
+
+            <Typography
+              variant="h6"
+              sx={{
+                color: '#0f9721ff',
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+              }}
+            >
+              {employeeName} - ({employeeCode})
             </Typography>
           </Modal.Title>
         </Modal.Header>
@@ -232,7 +242,7 @@ function OutsourceEmpWeeklyRest() {
           <Box>
             <Typography
               variant="subtitle1"
-              sx={{ fontWeight: "bold", mb: 1, color: "#0a1f83" }}
+              sx={{ fontWeight: 'bold', mb: 1, color: '#0a1f83' }}
             >
               Select Day
             </Typography>
@@ -273,7 +283,7 @@ function OutsourceEmpWeeklyRest() {
 
       {/* Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

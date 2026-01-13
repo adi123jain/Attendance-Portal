@@ -52,7 +52,15 @@ function WiremanCertificateByHr() {
   const docRef = useRef(null);
 
   const [entries, setEntries] = useState([
-    { empCode: '', FULLNAME: '', result: '', remark: '' },
+    {
+      empCode: '',
+      FULLNAME: '',
+      result: '',
+      remark: '',
+      authLt440VLine: false,
+      authLt11KvLine: false,
+      authLt33KvLine: false,
+    },
   ]);
 
   const [errors, setErrors] = useState([]);
@@ -76,7 +84,15 @@ function WiremanCertificateByHr() {
   const addRow = () => {
     setEntries([
       ...entries,
-      { empCode: '', FULLNAME: '', result: '', remark: '' },
+      {
+        empCode: '',
+        FULLNAME: '',
+        result: '',
+        remark: '',
+        authLt440VLine: false,
+        authLt11KvLine: false,
+        authLt33KvLine: false,
+      },
     ]);
 
     setErrors([...errors, {}]);
@@ -105,12 +121,31 @@ function WiremanCertificateByHr() {
         const name = response.data.list[0]?.FULLNAME || '';
         handleChange(index, 'FULLNAME', name);
       } else {
-        handleChange(index, 'FULLNAME', 'Not Found');
+        handleChange(index, 'FULLNAME', 'Enter Correct Employee Code');
       }
     } catch (error) {
       console.log('Error fetching emp name:', error);
       handleChange(index, 'FULLNAME', '');
     }
+  };
+
+  const handleCheckboxChange = (index, field) => {
+    const updated = [...entries];
+    updated[index][field] = !updated[index][field];
+
+    // clear certificate error if any checkbox becomes true
+    if (
+      updated[index].authLt440VLine ||
+      updated[index].authLt11KvLine ||
+      updated[index].authLt33KvLine
+    ) {
+      if (errors[index]) {
+        errors[index].certificate = '';
+        setErrors([...errors]);
+      }
+    }
+
+    setEntries(updated);
   };
 
   const validate = () => {
@@ -163,6 +198,18 @@ function WiremanCertificateByHr() {
         if (firstInvalidRow === null) {
           firstInvalidRow = i;
           firstInvalidTableField = 'empCode';
+        }
+      }
+
+      const hasAnyCertificate =
+        row.authLt440VLine || row.authLt11KvLine || row.authLt33KvLine;
+
+      if (!hasAnyCertificate) {
+        err.certificate = '*Select at least one certificate';
+
+        if (firstInvalidRow === null) {
+          firstInvalidRow = i;
+          firstInvalidTableField = 'certificate';
         }
       }
 
@@ -253,16 +300,16 @@ function WiremanCertificateByHr() {
     try {
       const wiremanList = entries.map((item) => ({
         empCode: Number(item.empCode),
-        dateOfExamination: examDate, // yyyy-mm-dd
+        dateOfExamination: examDate,
         circle: Number(sessionStorage.getItem('circleId')),
         result: item.result,
         remark: item.remark,
         startDate: fromDate,
         endDate: toDate,
         createdBy: Number(sessionStorage.getItem('empCode')),
-        authLt440VLine: false,
-        authLt11KvLine: false,
-        authLt33KvLine: false,
+        authLt440VLine: item.authLt440VLine,
+        authLt11KvLine: item.authLt11KvLine,
+        authLt33KvLine: item.authLt33KvLine,
       }));
 
       const formData = new FormData();
@@ -395,6 +442,7 @@ function WiremanCertificateByHr() {
                   <StyledTableCell>S.No.</StyledTableCell>
                   <StyledTableCell>Employee Code</StyledTableCell>
                   <StyledTableCell>Employee Name</StyledTableCell>
+                  <StyledTableCell>Authorising for</StyledTableCell>
                   <StyledTableCell>Result</StyledTableCell>
                   <StyledTableCell>Remark</StyledTableCell>
                   <StyledTableCell>Delete</StyledTableCell>
@@ -430,6 +478,44 @@ function WiremanCertificateByHr() {
                         disabled
                         readOnly
                       />
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      <Form.Check
+                        type="checkbox"
+                        label="LT (440V) Line Work"
+                        checked={row.authLt440VLine}
+                        onChange={() =>
+                          handleCheckboxChange(index, 'authLt440VLine')
+                        }
+                      />
+
+                      <Form.Check
+                        type="checkbox"
+                        label="11KV Line Work"
+                        checked={row.authLt11KvLine}
+                        onChange={() =>
+                          handleCheckboxChange(index, 'authLt11KvLine')
+                        }
+                      />
+
+                      <Form.Check
+                        type="checkbox"
+                        label="33KV Line Work"
+                        checked={row.authLt33KvLine}
+                        onChange={() =>
+                          handleCheckboxChange(index, 'authLt33KvLine')
+                        }
+                      />
+
+                      {errors[index]?.certificate && (
+                        <div
+                          className="text-danger mt-1"
+                          style={{ fontSize: '12px' }}
+                        >
+                          {errors[index].certificate}
+                        </div>
+                      )}
                     </StyledTableCell>
 
                     <StyledTableCell>

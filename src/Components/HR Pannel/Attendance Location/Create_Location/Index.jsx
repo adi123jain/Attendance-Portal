@@ -1,12 +1,15 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import SearchUtils from '../../../../Constants/Search_Utils/Index';
-import { Button, Typography } from '@mui/material';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+
+import { Button, Tooltip, Typography } from '@mui/material';
 import {
   getDistrict,
   createAttendanceLocation,
 } from '../../../../Services/Auth';
+import { Link } from 'react-router-dom';
 
 function CreateAttendanceLocation() {
   const regionRef = useRef(null);
@@ -96,12 +99,36 @@ function CreateAttendanceLocation() {
 
   return (
     <Card className="shadow-lg rounded">
-      <Card.Header className="text-center p-3">
+      {/* <Card.Header className="text-center p-3">
         <Typography
           variant="h4"
           sx={{
             color: '#0a1f83',
             mb: 2,
+            fontFamily: 'serif',
+            fontWeight: 'bold',
+          }}
+        >
+          Create Attendance Location
+        </Typography>
+      </Card.Header> */}
+
+      <Card.Header className="p-3 d-flex align-items-center position-relative">
+        <Tooltip title="Back" arrow placement="top">
+          <Button className="position-absolute start-2">
+            <Link to="/humanResourceDashboard">
+              <ArrowLeftIcon fontSize="large" color="warning" />
+            </Link>
+          </Button>
+        </Tooltip>
+
+        <Typography
+          variant="h4"
+          sx={{
+            flex: 1,
+            textAlign: 'center',
+            color: '#0a1f83',
+            mb: 0,
             fontFamily: 'serif',
             fontWeight: 'bold',
           }}

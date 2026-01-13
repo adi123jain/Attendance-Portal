@@ -1,21 +1,23 @@
-import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Backdrop, Button, Typography } from "@mui/material";
-import * as XLSX from "xlsx";
+import React, { useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Backdrop, Button, Tooltip, Typography } from '@mui/material';
+import * as XLSX from 'xlsx';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 import {
   getCircle,
   getDayWiseAttendance,
   getRegion,
-} from "../../../Services/Auth";
-import { PropagateLoader } from "react-spinners";
+} from '../../../Services/Auth';
+import { PropagateLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
 
 function DayWiseAttendace() {
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -25,7 +27,7 @@ function DayWiseAttendace() {
         const response = await getRegion();
         setRegions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     };
     fetchRegions();
@@ -34,23 +36,23 @@ function DayWiseAttendace() {
   const handleRegionChange = async (e) => {
     const regionId = e.target.value;
     setSelectedRegion(regionId);
-    setSelectedCircle("");
+    setSelectedCircle('');
     try {
       const circleResponse = await getCircle(regionId);
       setCircles(circleResponse?.data?.list || []);
     } catch (error) {
-      console.error("Error fetching circles:", error);
+      console.error('Error fetching circles:', error);
       setCircles([]);
     }
   };
 
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
 
   const formatDate = (inputDate) => {
     const date = new Date(inputDate);
-    const day = String(date.getDate()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, '0');
     const month = date
-      .toLocaleString("en-US", { month: "short" })
+      .toLocaleString('en-US', { month: 'short' })
       .toUpperCase();
     const year = String(date.getFullYear()).slice(-2);
     return `${day}-${month}-${year}`;
@@ -58,8 +60,8 @@ function DayWiseAttendace() {
 
   const DownloadDayWiseAttendance = async () => {
     const validationErrors = {};
-    if (!selectedRegion) validationErrors.region = "Region is required";
-    if (!selectedDate) validationErrors.date = "Date is required";
+    if (!selectedRegion) validationErrors.region = 'Region is required';
+    if (!selectedDate) validationErrors.date = 'Date is required';
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
 
@@ -71,42 +73,42 @@ function DayWiseAttendace() {
       const response = await getDayWiseAttendance(
         selectedRegion,
         circle,
-        formattedDate
+        formattedDate,
       );
       console.log(response);
       const list = response?.data?.list || [];
 
       if (list.length === 0) {
-        alert("No employee data found.");
+        alert('No employee data found.');
         return;
       }
 
       // Prepare data for Excel
       const excelData = list.map((item, index) => ({
-        "S.No": index + 1,
-        "Reporting Officer": item.reportingOfficer || "-",
-        Employee: item.employee || "-",
-        "Punch Date": item.punchDate || "-",
-        "In Time": item.inTime
-          ? new Date(item.inTime).toLocaleTimeString("en-GB")
-          : "-",
-        "Out Time": item.outTime
-          ? new Date(item.outTime).toLocaleTimeString("en-GB")
-          : "-",
-        Status: item.status || "-",
-        Location: item.attendanceLocation || "-",
-        "Correction Status": item.correctionStatus || "-",
+        'S.No': index + 1,
+        'Reporting Officer': item.reportingOfficer || '-',
+        Employee: item.employee || '-',
+        'Punch Date': item.punchDate || '-',
+        'In Time': item.inTime
+          ? new Date(item.inTime).toLocaleTimeString('en-GB')
+          : '-',
+        'Out Time': item.outTime
+          ? new Date(item.outTime).toLocaleTimeString('en-GB')
+          : '-',
+        Status: item.status || '-',
+        Location: item.attendanceLocation || '-',
+        'Correction Status': item.correctionStatus || '-',
       }));
 
       const worksheet = XLSX.utils.json_to_sheet(excelData);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "DayWiseAttendance");
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'DayWiseAttendance');
 
       const circleName = circles.find(
-        (c) => c.circleId == selectedCircle
+        (c) => c.circleId == selectedCircle,
       )?.name;
       const regionName = regions.find(
-        (r) => r.regionId == selectedRegion
+        (r) => r.regionId == selectedRegion,
       )?.name;
       const fileName = `${
         circleName || regionName
@@ -114,8 +116,8 @@ function DayWiseAttendace() {
 
       XLSX.writeFile(workbook, fileName);
     } catch (error) {
-      console.error("Error generating Excel:", error);
-      alert("Something went wrong while downloading the Excel file.");
+      console.error('Error generating Excel:', error);
+      alert('Something went wrong while downloading the Excel file.');
     } finally {
       setLoading(false);
     }
@@ -124,14 +126,24 @@ function DayWiseAttendace() {
   return (
     <>
       <Card>
-        <Card.Header className="text-center text-primary p-3">
+        <Card.Header className="p-3 d-flex align-items-center position-relative">
+          <Tooltip title="Back" arrow placement="top">
+            <Button className="position-absolute start-2">
+              <Link to="/humanResourceDashboard">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
+
           <Typography
             variant="h4"
             sx={{
-              mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              flex: 1,
+              textAlign: 'center',
+              color: '#0a1f83',
+              mb: 0,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Day Wise Attendance Sheet
@@ -218,7 +230,7 @@ function DayWiseAttendace() {
 
       {/* Backdrop Loader */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <PropagateLoader />

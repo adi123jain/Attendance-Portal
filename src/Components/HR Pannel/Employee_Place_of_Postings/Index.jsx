@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { PropagateLoader } from 'react-spinners';
 import '../../../Constants/Style/styles.css';
 import Form from 'react-bootstrap/Form';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 import {
   Typography,
@@ -14,6 +15,7 @@ import {
   TableHead,
   Button,
   Backdrop,
+  Tooltip,
 } from '@mui/material';
 import {
   getDepartment,
@@ -202,7 +204,7 @@ function EmployeePlaceOfPosting() {
           marginTop: '20px',
         }}
       >
-        <Card.Header className="text-center p-3">
+        {/* <Card.Header className="text-center p-3">
           <Typography
             variant="h4"
             sx={{
@@ -210,6 +212,30 @@ function EmployeePlaceOfPosting() {
               fontFamily: 'serif',
               fontWeight: 'bold',
               color: '#0a1f83',
+            }}
+          >
+            View and Update Employee Place of Postings
+          </Typography>
+        </Card.Header> */}
+
+        <Card.Header className="p-3 d-flex align-items-center position-relative">
+          <Tooltip title="Back" arrow>
+            <Button className="position-absolute start-2">
+              <Link to="/">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
+
+          <Typography
+            variant="h4"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              color: '#0a1f83',
+              mb: 0,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             View and Update Employee Place of Postings

@@ -414,7 +414,7 @@ function MedicalReimbirsement() {
       // Call API
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }

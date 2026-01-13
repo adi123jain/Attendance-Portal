@@ -18,7 +18,7 @@ import {
   IconButton,
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Card } from 'react-bootstrap';
+import { Card, Form } from 'react-bootstrap';
 import { PropagateLoader } from 'react-spinners';
 import {
   StyledTableCell,
@@ -49,6 +49,17 @@ function UpdateWiremanCertificateStatus() {
       const response = await getWiremanCertificates(circleId);
       if (response.data.code === '200') {
         setCertificates(response.data.list);
+        const initialRowData = {};
+        response.data.list.forEach((item) => {
+          initialRowData[item.id] = {
+            authLt440VLine: item.authLt440VLine,
+            authLt11KvLine: item.authLt11KvLine,
+            authLt33KvLine: item.authLt33KvLine,
+            gmStatus: '',
+            gmRemark: '',
+          };
+        });
+        setRowData(initialRowData);
       } else {
         alert(response.data.message);
       }
@@ -86,27 +97,28 @@ function UpdateWiremanCertificateStatus() {
     const isSelected = selected.includes(id);
 
     if (isSelected) {
-      // REMOVE ROW FROM SELECTION
       setSelected(selected.filter((item) => item !== id));
 
-      // CLEAR INPUT VALUES FOR THIS ROW
       setRowData((prev) => {
         const updated = { ...prev };
+        // updated[id] = {
+        //   gmStatus: '',
+        //   gmRemark: '',
+        // };
         updated[id] = {
+          ...updated[id],
           gmStatus: '',
           gmRemark: '',
         };
         return updated;
       });
 
-      // CLEAR VALIDATION ERRORS FOR THIS ROW
       setErrors((prev) => {
         const updated = { ...prev };
         delete updated[id];
         return updated;
       });
     } else {
-      // ADD ROW TO SELECTION
       setSelected([...selected, id]);
     }
   };
@@ -154,28 +166,38 @@ function UpdateWiremanCertificateStatus() {
   };
 
   const handleSubmit = async () => {
-    // if (selected.length === 0) {
-    //   alert('Please select at least one record!');
-    //   return;
-    // }
+    // const payload = selected.map((id) => ({
+    //   id,
+    //   gmStatus: rowData[id]?.gmStatus,
+    //   gmRemark: rowData[id]?.gmRemark,
+    //   updatedBy: sessionStorage.getItem('empCode'),
+    //   gmEmpCode: sessionStorage.getItem('empCode'),
+    //   authLt440VLine: '',
+    //   authLt11KvLine: '',
+    //   authLt33KvLine: '',
+    // }));
 
-    // if (!validate()) return;
+    const payload = selected.map((id) => {
+      // const cert = certificates.find((c) => c.id === id);
+      return {
+        id,
+        gmStatus: rowData[id]?.gmStatus,
+        gmRemark: rowData[id]?.gmRemark,
+        updatedBy: sessionStorage.getItem('empCode'),
+        gmEmpCode: sessionStorage.getItem('empCode'),
 
-    const payload = selected.map((id) => ({
-      id,
-      gmStatus: rowData[id]?.gmStatus,
-      gmRemark: rowData[id]?.gmRemark,
-      updatedBy: sessionStorage.getItem('empCode'),
-      gmEmpCode: sessionStorage.getItem('empCode'),
-    }));
+        authLt440VLine: rowData[id]?.authLt440VLine,
+        authLt11KvLine: rowData[id]?.authLt11KvLine,
+        authLt33KvLine: rowData[id]?.authLt33KvLine,
+      };
+    });
 
-    //console.log('FINAL PAYLOAD:', payload);
+    // console.log('FINAL PAYLOAD:', payload);
 
     try {
       setOpenBackdrop(true);
 
       const response = await updateWiremanCertificateGM(payload);
-
       if (response.data.code === '200') {
         alert('Updated Successfully!');
         fetchDetails();
@@ -190,11 +212,6 @@ function UpdateWiremanCertificateStatus() {
       setOpenBackdrop(false);
     }
   };
-
-  // function check() {
-  //   const base64Mobile = btoa(9893452591);
-  //   console.log(base64Mobile);
-  // }
 
   const [otp, setOtp] = useState('');
   const [otpModal, setOtpModal] = useState(false);
@@ -251,13 +268,12 @@ function UpdateWiremanCertificateStatus() {
 
   // Resend OTP
   const handleResend = () => {
-    if (resendTimer > 0) return; // safety, button is already disabled in UI
+    if (resendTimer > 0) return;
     sendOtp();
   };
 
   // Submit OTP API
   const submitOtp = async () => {
-    // Basic validation
     if (!otp || otp.length !== 4) {
       setOtpError('Please enter a valid 4-digit OTP.');
       return;
@@ -328,8 +344,10 @@ function UpdateWiremanCertificateStatus() {
                   <StyledTableCell>Examination Date</StyledTableCell>
                   <StyledTableCell>Start Date</StyledTableCell>
                   <StyledTableCell>End Date</StyledTableCell>
+                  <StyledTableCell>Authorised For</StyledTableCell>
                   <StyledTableCell>GM Status</StyledTableCell>
                   <StyledTableCell>GM Remark</StyledTableCell>
+                  <StyledTableCell>Document</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
 
@@ -360,7 +378,47 @@ function UpdateWiremanCertificateStatus() {
                         <StyledTableCell>{item.startDate}</StyledTableCell>
                         <StyledTableCell>{item.endDate}</StyledTableCell>
 
-                        {/* GM STATUS */}
+                        <StyledTableCell>
+                          <Form.Check
+                            type="checkbox"
+                            label="LT (440V) Line Work"
+                            checked={rowData[item.id]?.authLt440VLine || false}
+                            onChange={(e) =>
+                              handleRowChange(
+                                item.id,
+                                'authLt440VLine',
+                                e.target.checked,
+                              )
+                            }
+                          />
+
+                          <Form.Check
+                            type="checkbox"
+                            label="11KV Line Work"
+                            checked={rowData[item.id]?.authLt11KvLine || false}
+                            onChange={(e) =>
+                              handleRowChange(
+                                item.id,
+                                'authLt11KvLine',
+                                e.target.checked,
+                              )
+                            }
+                          />
+
+                          <Form.Check
+                            type="checkbox"
+                            label="33KV Line Work"
+                            checked={rowData[item.id]?.authLt33KvLine || false}
+                            onChange={(e) =>
+                              handleRowChange(
+                                item.id,
+                                'authLt33KvLine',
+                                e.target.checked,
+                              )
+                            }
+                          />
+                        </StyledTableCell>
+
                         <StyledTableCell>
                           <FormControl fullWidth size="small">
                             <Select
@@ -395,7 +453,6 @@ function UpdateWiremanCertificateStatus() {
                           </FormControl>
                         </StyledTableCell>
 
-                        {/* REMARK */}
                         <StyledTableCell>
                           <TextField
                             fullWidth
@@ -416,6 +473,8 @@ function UpdateWiremanCertificateStatus() {
                             helperText={errors[item.id]?.gmRemark}
                           />
                         </StyledTableCell>
+
+                        <StyledTableCell>{item.docPath}</StyledTableCell>
                       </StyledTableRow>
                     );
                   })
@@ -434,7 +493,6 @@ function UpdateWiremanCertificateStatus() {
           </TableContainer>
         </Card.Body>
 
-        {/* FIXED FOOTER UPDATE BUTTON */}
         <div
           style={{
             position: 'sticky',
@@ -478,7 +536,6 @@ function UpdateWiremanCertificateStatus() {
             overflow: 'hidden',
           }}
         >
-          {/* Header */}
           <Box
             sx={{
               background:
@@ -500,7 +557,6 @@ function UpdateWiremanCertificateStatus() {
             </IconButton>
           </Box>
 
-          {/* Body */}
           <Box sx={{ p: 3 }}>
             <Typography
               variant="body1"
@@ -510,7 +566,6 @@ function UpdateWiremanCertificateStatus() {
               number.
             </Typography>
 
-            {/* OTP Input */}
             <TextField
               fullWidth
               variant="outlined"
@@ -520,7 +575,6 @@ function UpdateWiremanCertificateStatus() {
               value={otp}
               onChange={(e) => {
                 const value = e.target.value;
-                // allow only digits, max 4
                 if (/^\d{0,4}$/.test(value)) {
                   setOtp(value);
                   setOtpError('');
@@ -547,7 +601,6 @@ function UpdateWiremanCertificateStatus() {
               }}
             />
 
-            {/* Buttons & Timer */}
             <Box
               sx={{
                 display: 'flex',
@@ -604,8 +657,6 @@ function UpdateWiremanCertificateStatus() {
       <Backdrop sx={{ color: '#fff', zIndex: 9999 }} open={openBackdrop}>
         <PropagateLoader />
       </Backdrop>
-
-      {/* <button onClick={check}>Click me</button> */}
     </>
   );
 }

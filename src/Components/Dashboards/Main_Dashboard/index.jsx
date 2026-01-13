@@ -31,14 +31,14 @@ import { getSsoList } from '../../../Services/Auth';
 import NominationDeclarationModal from '../../Regular Employee/Nomination_Declaration/Index';
 
 const cardGradient = 'linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)';
-const iconStyle = { fontSize: 40, color: '#1976d2' };
+const iconStyle = { fontSize: 40 };
 
 function MainDashboard() {
   const [ssoList, setSsoList] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [expandedCard, setExpandedCard] = useState(null);
   const navigate = useNavigate();
-  const sessionEmpCode = sessionStorage.getItem('empCode');
+  // const sessionEmpCode = sessionStorage.getItem('empCode');
   const [empCode, setEmpCode] = useState(null);
 
   useEffect(() => {
@@ -93,18 +93,20 @@ function MainDashboard() {
   // Map card name to icon
   const getIcon = (name) => {
     const lower = name.toLowerCase();
-    if (lower.includes('employee')) return <WorkIcon sx={iconStyle} />;
+    if (lower.includes('employee'))
+      return <WorkIcon sx={iconStyle} color="primary" />;
     if (lower.includes('human resource'))
-      return <ManageAccountsIcon sx={iconStyle} />;
+      return <ManageAccountsIcon sx={iconStyle} color="error" />;
     if (lower.includes('reporting officer'))
-      return <SupervisorAccountIcon sx={iconStyle} />;
-    if (lower.includes('operation')) return <BuildCircleIcon sx={iconStyle} />;
+      return <SupervisorAccountIcon sx={iconStyle} color="secondary" />;
+    if (lower.includes('operation'))
+      return <BuildCircleIcon sx={iconStyle} color="success" />;
     if (lower.includes('scn') || lower.includes('appeal'))
-      return <GavelIcon sx={iconStyle} />;
+      return <GavelIcon sx={iconStyle} color="warning" />;
     // if (lower.includes('sanchay'))
     //   return <AccountBalanceWalletIcon sx={iconStyle} />;
     if (lower.includes('e-service') || lower.includes('service book'))
-      return <BookIcon sx={iconStyle} />;
+      return <BookIcon sx={iconStyle} color="info" />;
 
     // Default icon
     return <MiscellaneousServicesIcon sx={iconStyle} />;

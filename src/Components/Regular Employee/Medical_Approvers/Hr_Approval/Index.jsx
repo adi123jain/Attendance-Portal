@@ -5,23 +5,18 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   Backdrop,
-  tableCellClasses,
   Tooltip,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   Grid,
   IconButton,
   TextField,
-  Checkbox,
   Select,
   MenuItem,
 } from '@mui/material';
@@ -31,18 +26,14 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { motion } from 'framer-motion';
-
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import { PropagateLoader } from 'react-spinners';
 import {
   getMedicalByHr,
   getMedicalByRefNo,
-  getMedicineDetailByRefNo,
   submitMedicalHrStatus,
 } from '../../../../Services/Auth';
 import {
@@ -595,7 +586,7 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    console.log('Downloading:', docPath);
+    // console.log('Downloading:', docPath);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
@@ -607,7 +598,7 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    console.log('Downloading:', docPath);
+    // console.log('Downloading:', docPath);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
@@ -619,7 +610,7 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    console.log('Downloading:', docPath);
+    // console.log('Downloading:', docPath);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
@@ -630,12 +621,36 @@ function MedicalApprovalByHr() {
   return (
     <>
       <Card className="shadow">
-        <Card.Header className="text-center p-3">
+        {/* <Card.Header className="text-center p-3">
           <Typography
             variant="h4"
             sx={{
               color: '#0a1f83',
               mb: 2,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+            }}
+          >
+            HR Verification for Medical Reimbursement
+          </Typography>
+        </Card.Header> */}
+
+        <Card.Header className="p-3 d-flex align-items-center position-relative">
+          <Tooltip title="Back" arrow placement="top">
+            <Button className="position-absolute start-2">
+              <Link to="/humanResourceDashboard">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
+
+          <Typography
+            variant="h4"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              color: '#0a1f83',
+              mb: 0,
               fontFamily: 'serif',
               fontWeight: 'bold',
             }}

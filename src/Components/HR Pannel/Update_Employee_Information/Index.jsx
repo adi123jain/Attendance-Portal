@@ -196,7 +196,8 @@ function UpdateEmployeeInformation({
         panNumber: userInformation.panNo,
         providentFundType: userInformation.providentFundType,
         gpfCpfNumber: userInformation.pranNumber,
-        bankName: userInformation.bankName,
+        // bankName: userInformation.bankName,
+        bankName: userInformation.bankName ?? '',
         bankAccount: userInformation.bankAccount,
         bankIfsc: userInformation.bankIfsc,
         pfNumber: userInformation.pfNumber,
@@ -316,8 +317,8 @@ function UpdateEmployeeInformation({
     if (!formData.status) newErrors.status = ' *Status is required';
     if (!formData.gender) newErrors.gender = '*Gender is required';
     if (!formData.dob) newErrors.dob = '*Date of Birth is required';
-    if (!formData.fatherName)
-      newErrors.fatherName = "*Father's Name is required";
+    // if (!formData.fatherName)
+    //   newErrors.fatherName = "*Father's Name is required";
 
     if (!selectedEmployment)
       newErrors.selectedEmployment = '*Employment Type is required';
@@ -801,25 +802,23 @@ function UpdateEmployeeInformation({
 
                 <Col>
                   <Card>
-                    <Card.Header>
-                      Father's Name <span className="text-danger">*</span>
-                    </Card.Header>
+                    <Card.Header>Father's Name</Card.Header>
                     <Card.Body>
                       <Form.Control
                         type="text"
                         name="fatherName"
                         value={formData.fatherName}
                         onChange={handleChange}
-                        isInvalid={!!errors.fatherName}
-                        ref={(el) => (inputRefs.current.fatherName = el)}
+                        // isInvalid={!!errors.fatherName}
+                        // ref={(el) => (inputRefs.current.fatherName = el)}
                         placeholder="Enter Father's Name"
                       />
-                      <Form.Control.Feedback type="invalid">
+                      {/* <Form.Control.Feedback type="invalid">
                         <Typography variant="caption">
                           {' '}
                           {errors.fatherName}
                         </Typography>
-                      </Form.Control.Feedback>
+                      </Form.Control.Feedback> */}
                     </Card.Body>
                   </Card>
                 </Col>
@@ -1880,9 +1879,7 @@ function UpdateEmployeeInformation({
                         value={formData.bankName}
                         onChange={handleChange}
                       >
-                        <option value="" disabled selected>
-                          -- select Bank --
-                        </option>
+                        <option value="">-- select Bank --</option>
                         <option value="AKOLA JANATA COMMERCIAL COOPERATIVE BANK">
                           AKOLA JANATA COMMERCIAL COOPERATIVE BANK
                         </option>

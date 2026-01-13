@@ -1,9 +1,10 @@
-import React, { useState, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
-import { Typography, Button } from "@mui/material";
-import SearchUtils from "../../../Constants/Search_Utils/Index";
-import { employeeBlacklist } from "../../../Services/Auth";
+import React, { useState, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import { Typography, Button } from '@mui/material';
+import SearchUtils from '../../../Constants/Search_Utils/Index';
+import { employeeBlacklist } from '../../../Services/Auth';
+import { Link } from 'react-router-dom';
 
 function BlacklistEmployee() {
   const regionRef = useRef(null);
@@ -15,19 +16,19 @@ function BlacklistEmployee() {
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
-    fullName: "",
-    aadharNo: "",
-    dateOfBlacklist: "",
-    remarks: "",
+    fullName: '',
+    aadharNo: '',
+    dateOfBlacklist: '',
+    remarks: '',
   });
 
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
   });
 
   const handleChange = (e) => {
@@ -39,15 +40,15 @@ function BlacklistEmployee() {
     const newErrors = {};
 
     if (!formData.fullName.trim())
-      newErrors.fullName = "*Full Name is required";
+      newErrors.fullName = '*Full Name is required';
     if (!formData.aadharNo.trim())
-      newErrors.aadharNo = "*Aadhaar Number is required";
+      newErrors.aadharNo = '*Aadhaar Number is required';
     else if (formData.aadharNo.length !== 12)
-      newErrors.aadharNo = "*Aadhaar must be 12 digits";
+      newErrors.aadharNo = '*Aadhaar must be 12 digits';
     if (!formData.dateOfBlacklist)
-      newErrors.dateOfBlacklist = "*Date is required";
-    if (!formData.remarks.trim()) newErrors.remarks = "*Remark is required";
-    if (!searchValues.region) newErrors.region = "*Region is required";
+      newErrors.dateOfBlacklist = '*Date is required';
+    if (!formData.remarks.trim()) newErrors.remarks = '*Remark is required';
+    if (!searchValues.region) newErrors.region = '*Region is required';
 
     setErrors(newErrors);
 
@@ -66,18 +67,18 @@ function BlacklistEmployee() {
 
   const formatDateToCustom = (inputDate) => {
     const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     const date = new Date(inputDate);
     const day = date.getDate();
@@ -99,13 +100,13 @@ function BlacklistEmployee() {
       dcId: searchValues.dc,
       substationId: searchValues.subStation,
       remarks: formData.remarks,
-      updatedBy: sessionStorage.getItem("empCode"),
+      updatedBy: sessionStorage.getItem('empCode'),
     };
 
     try {
       const response = await employeeBlacklist(payload);
-      console.log("Response:", response);
-      if (response.code == "200") {
+      console.log('Response:', response);
+      if (response.code == '200') {
         alert(response.data.message);
         window.location.reload();
       } else {
@@ -113,8 +114,8 @@ function BlacklistEmployee() {
       }
       // Reset form if needed
     } catch (err) {
-      console.error("Error while blacklisting:", err);
-      alert("Error during submission. Please try again.");
+      console.error('Error while blacklisting:', err);
+      alert('Error during submission. Please try again.');
     }
   };
 
@@ -124,10 +125,10 @@ function BlacklistEmployee() {
         <Typography
           variant="h4"
           sx={{
-            color: "#0a1f83",
+            color: '#0a1f83',
             mb: 2,
-            fontFamily: "serif",
-            fontWeight: "bold",
+            fontFamily: 'serif',
+            fontWeight: 'bold',
           }}
         >
           Blacklist Employee's (Outsource)
@@ -223,7 +224,12 @@ function BlacklistEmployee() {
       </Card.Body>
 
       <Card.Footer className="justify-content-center d-flex gap-2 p-3">
-        <Button variant="outlined" className="cancel-button">
+        <Button
+          variant="outlined"
+          className="cancel-button"
+          component={Link}
+          to="/humanResourceDashboard"
+        >
           Cancel
         </Button>
         <Button

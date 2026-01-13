@@ -127,7 +127,9 @@ function MedicalFormView() {
                   data.map((item, index) => (
                     <StyledTableRow key={index}>
                       <StyledTableCell>{index + 1}</StyledTableCell>
-                      <StyledTableCell>{item.empName || '-'}</StyledTableCell>
+                      <StyledTableCell>
+                        {item.patientName || '-'}
+                      </StyledTableCell>
                       <StyledTableCell>{item.empCode || '-'}</StyledTableCell>
                       <StyledTableCell>{item.refNo || '-'}</StyledTableCell>
 

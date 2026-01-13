@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+
 import {
   employeeAttendaceView,
   getImpressionImage,
@@ -20,12 +22,14 @@ import {
   TableHead,
   Button,
   Backdrop,
+  Tooltip,
 } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
 import {
   StyledTableCell,
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
+import { Link } from 'react-router-dom';
 
 function AttendanceView() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -193,7 +197,7 @@ function AttendanceView() {
   return (
     <>
       <Card>
-        <Card.Header className="text-primary text-center p-3">
+        {/* <Card.Header className="text-primary text-center p-3">
           <Typography
             variant="h4"
             sx={{
@@ -201,6 +205,30 @@ function AttendanceView() {
               fontFamily: 'serif',
               fontWeight: 'bold',
               color: '#0a1f83',
+            }}
+          >
+            Employee Attendance View
+          </Typography>
+        </Card.Header> */}
+
+        <Card.Header className="p-3 d-flex align-items-center position-relative">
+          <Tooltip title="Back" arrow placement="top">
+            <Button className="position-absolute start-2">
+              <Link to="/humanResourceDashboard">
+                <ArrowLeftIcon fontSize="large" color="warning" />
+              </Link>
+            </Button>
+          </Tooltip>
+
+          <Typography
+            variant="h4"
+            sx={{
+              flex: 1,
+              textAlign: 'center',
+              color: '#0a1f83',
+              mb: 0,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Employee Attendance View
