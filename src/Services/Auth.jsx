@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
-// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
+// const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
 
@@ -486,7 +486,7 @@ export const maxAmountByDesignation = (designationId, dcId) => {
 // 79. get Emp Wallet Amount
 export const empWalletAmount = () => {
   const currentMonthYear = new Date().toISOString().slice(0, 7);
-  console.log(currentMonthYear);
+  //console.log(currentMonthYear);
   return axios.get(
     base_url +
       `/incentive/findMaxAmountLimit?empCode=${sessionEmpCode}&monthYear=${currentMonthYear}`,

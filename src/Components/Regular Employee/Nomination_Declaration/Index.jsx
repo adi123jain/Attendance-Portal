@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -43,7 +43,7 @@ const NominationDeclarationModal = () => {
     try {
       const response = await nominationSubmit();
 
-      if (response.data.code == '200') {
+      if (response.data.code === '200') {
         sessionStorage.setItem('isNominationSubmitted', 'true');
         setSubmitted(true);
         setTimeout(() => setOpen(false), 2000);

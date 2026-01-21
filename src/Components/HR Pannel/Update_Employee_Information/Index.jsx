@@ -451,10 +451,10 @@ function UpdateEmployeeInformation({
     try {
       const response = await createNewEmployee(payload);
       //console.log(response);
-      if (response.data.code == '200') {
+      if (response.data.code === '200') {
         alert('Employee Information Successfully Updated !!');
         setOpenBackdrop(false);
-        //  window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);

@@ -1,74 +1,32 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useNavigate } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { Divider } from "@mui/material";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-// import "../../../Constants/Style/styles.css";
+import React, { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import { PropagateLoader } from 'react-spinners';
+
 import {
   Typography,
   Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
-import { getCorrectionsByRoId } from "../../../Services/Auth";
+} from '@mui/material';
+import { getCorrectionsByRoId } from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function CorrectionApplication() {
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [month, setMonth] = useState('');
+  const [year, setYear] = useState('');
   const [details, setDetails] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const tableRef = useRef(null);
@@ -86,7 +44,7 @@ function CorrectionApplication() {
       setOpenBackdrop(true);
       const response = await getCorrectionsByRoId(month, year);
       console.log(response);
-      if (response.data.code == "200") {
+      if (response.data.code === '200') {
         setDetails(response.data.list);
         setOpenBackdrop(false);
         setTimeout(() => {
@@ -98,7 +56,7 @@ function CorrectionApplication() {
       }
     } catch (error) {
       setOpenBackdrop(false);
-      console.log("Error", error);
+      console.log('Error', error);
     }
   };
 
@@ -109,10 +67,10 @@ function CorrectionApplication() {
           <Typography
             variant="h4"
             sx={{
-              color: "#0a1f83",
+              color: '#0a1f83',
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Attendance Correction Application
@@ -188,11 +146,11 @@ function CorrectionApplication() {
                       <StyledTableCell> {item.empName}</StyledTableCell>
                       <StyledTableCell> {item.designation}</StyledTableCell>
                       <StyledTableCell>
-                        {" "}
+                        {' '}
                         {item.totalApplication}
                       </StyledTableCell>
                       <StyledTableCell>
-                        {" "}
+                        {' '}
                         {item.pendingApplication}
                       </StyledTableCell>
                       <StyledTableCell>
@@ -201,7 +159,7 @@ function CorrectionApplication() {
                             variant="contained"
                             color="dark"
                             onClick={() =>
-                              navigate("/correctionApproval", {
+                              navigate('/correctionApproval', {
                                 state: {
                                   empCode: item.empCode,
                                   empName: item.empName,
@@ -212,7 +170,7 @@ function CorrectionApplication() {
                               })
                             }
                           >
-                            {" "}
+                            {' '}
                             <VisibilityIcon fontSize="small" />
                           </Button>
                         </Tooltip>
@@ -224,7 +182,7 @@ function CorrectionApplication() {
                             variant="contained"
                             color="dark"
                             onClick={() =>
-                              navigate("/correctionApprovalRO", {
+                              navigate('/correctionApprovalRO', {
                                 state: {
                                   empCode: item.empCode,
                                   empName: item.empName,
@@ -235,7 +193,7 @@ function CorrectionApplication() {
                               })
                             }
                           >
-                            {" "}
+                            {' '}
                             <VisibilityIcon fontSize="small" />
                           </Button>
                         </Tooltip>
@@ -245,7 +203,7 @@ function CorrectionApplication() {
                 ) : (
                   <StyledTableRow>
                     <StyledTableCell colSpan={8}>
-                      {" "}
+                      {' '}
                       Data Not Found
                     </StyledTableCell>
                   </StyledTableRow>
@@ -258,7 +216,7 @@ function CorrectionApplication() {
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

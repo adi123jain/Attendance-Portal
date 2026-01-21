@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import React, { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
   Typography,
@@ -18,67 +13,35 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   getDgmByJe,
   getLineByDcId,
   getLineStaffAuth,
   submitLineAuthorization,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function LineStaffAuthorization() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [lineRecords, setLineRecords] = useState([]);
-  const sessionEmp = sessionStorage.getItem("empCode");
-  const sessionDcId = sessionStorage.getItem("dcId");
+  const sessionEmp = sessionStorage.getItem('empCode');
+  const sessionDcId = sessionStorage.getItem('dcId');
 
   useEffect(() => {
     const fetchRecords = async () => {
       setOpenBackdrop(true);
       const response = await getLineStaffAuth(sessionDcId);
-      console.log(response);
-      if (response.data.code == "200") {
+      // console.log(response);
+      if (response.data.code === '200') {
         setLineRecords(response.data.list);
         setOpenBackdrop(false);
       } else {
@@ -90,13 +53,13 @@ function LineStaffAuthorization() {
   }, []);
 
   const [lineStaffList, setLineStaffList] = useState([]);
-  const [selectLine, setSelectLine] = useState("");
+  const [selectLine, setSelectLine] = useState('');
 
   useEffect(() => {
     const fetchLineStaff = async () => {
       const response = await getLineByDcId(sessionDcId);
-      console.log(response);
-      if (response.data.code == "200") {
+      // console.log(response);
+      if (response.data.code === '200') {
         setLineStaffList(response.data.list);
       } else {
         alert(response.data.message);
@@ -106,13 +69,13 @@ function LineStaffAuthorization() {
   }, []);
 
   const [dgmList, setDgmList] = useState([]);
-  const [selectDgm, setSelectDgm] = useState("");
+  const [selectDgm, setSelectDgm] = useState('');
 
   useEffect(() => {
     const fetchDgm = async () => {
       const response = await getDgmByJe(sessionEmp);
-      console.log(response);
-      if (response.data.code == "200") {
+      // console.log(response);
+      if (response.data.code === '200') {
         setDgmList(response.data.list);
       } else {
         alert(response.data.message);
@@ -121,13 +84,12 @@ function LineStaffAuthorization() {
     fetchDgm();
   }, []);
 
-  //  State
   // const [selectLine, setSelectLine] = useState("");
-  const [is11kv, setIs11kv] = useState("No");
-  const [is33kv, setIs33kv] = useState("No");
+  const [is11kv, setIs11kv] = useState('No');
+  const [is33kv, setIs33kv] = useState('No');
   // const [selectDgm, setSelectDgm] = useState("");
   const [errors, setErrors] = useState({});
-  const [remark, setRemark] = useState("");
+  const [remark, setRemark] = useState('');
 
   //  Refs
   const lineRef = useRef(null);
@@ -139,11 +101,11 @@ function LineStaffAuthorization() {
   //  Validation
   const validate = () => {
     const newErrors = {};
-    if (!selectLine) newErrors.selectLine = "Line Staff is required";
-    if (is11kv === "No" && is33kv === "No")
-      newErrors.voltage = "Select at least one voltage";
-    if (!selectDgm) newErrors.selectDgm = "DGM is required";
-    if (!remark) newErrors.remark = "Remark is required";
+    if (!selectLine) newErrors.selectLine = 'Line Staff is required';
+    if (is11kv === 'No' && is33kv === 'No')
+      newErrors.voltage = 'Select at least one voltage';
+    if (!selectDgm) newErrors.selectDgm = 'DGM is required';
+    if (!remark) newErrors.remark = 'Remark is required';
     setErrors(newErrors);
 
     // Focus on first invalid
@@ -157,7 +119,7 @@ function LineStaffAuthorization() {
     return true;
   };
 
-  // 🔹 Submit Handler
+  // Submit Handler
   const LineStaffSubmit = async () => {
     if (!validate()) return;
     setOpenBackdrop(true);
@@ -174,9 +136,9 @@ function LineStaffAuthorization() {
 
     try {
       const response = await submitLineAuthorization(payload);
-      console.log("Success:", response.data);
-      if (response.data.code === "200") {
-        alert("Submitted successfully!");
+      // console.log('Success:', response.data);
+      if (response.data.code === '200') {
+        alert('Submitted successfully!');
         setOpenBackdrop(false);
         window.location.reload();
       } else {
@@ -184,8 +146,8 @@ function LineStaffAuthorization() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.error("Error submitting data:", error);
-      alert("Submission failed!");
+      console.error('Error submitting data:', error);
+      alert('Submission failed!');
       setOpenBackdrop(false);
     }
   };
@@ -194,7 +156,7 @@ function LineStaffAuthorization() {
     // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
     window.open(
       `https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationLinePdfByDcId?dcId=${sessionDcId}`,
-      "_blank"
+      '_blank',
     );
   };
 
@@ -203,7 +165,7 @@ function LineStaffAuthorization() {
     // https://attendance.mpcz.in:8888/E-Attendance/api/OnM/getAuthorizationSsoPdfByDcId?dcId=${sessionDcId}
     window.open(
       `https://attendance.mpcz.in:8888/e-Attendance/api/OnM/getAuthPendingLinePdfByDcId?dcId=${sessionDcId}`,
-      "_blank"
+      '_blank',
     );
   };
 
@@ -213,7 +175,7 @@ function LineStaffAuthorization() {
         className="shadow-lg rounded"
         style={{
           //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -221,9 +183,9 @@ function LineStaffAuthorization() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Authorization chart issue to Line Staff
@@ -234,7 +196,7 @@ function LineStaffAuthorization() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             <Card.Header className="d-flex justify-content-between align-items-center p-3">
@@ -242,11 +204,11 @@ function LineStaffAuthorization() {
                 variant="h5"
                 sx={{
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                   flex: 1,
-                  textAlign: "center",
+                  textAlign: 'center',
                 }}
               >
                 Records
@@ -260,12 +222,12 @@ function LineStaffAuthorization() {
                   variant="contained"
                   size="small"
                   sx={{
-                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
-                    color: "#fff",
-                    boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
-                    "&:hover": {
-                      background: "linear-gradient(90deg, #1B5E20, #43A047)",
-                      boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
+                    background: 'linear-gradient(90deg, #2E7D32, #66BB6A)',
+                    color: '#fff',
+                    boxShadow: '0px 2px 5px rgba(0,0,0,0.15)',
+                    '&:hover': {
+                      background: 'linear-gradient(90deg, #1B5E20, #43A047)',
+                      boxShadow: '0px 3px 7px rgba(0,0,0,0.2)',
                     },
                   }}
                   onClick={() => downloadApprovedPDF()}
@@ -283,12 +245,12 @@ function LineStaffAuthorization() {
                   variant="contained"
                   size="small"
                   sx={{
-                    background: "linear-gradient(90deg, #2E7D32, #66BB6A)",
-                    color: "#fff",
-                    boxShadow: "0px 2px 5px rgba(0,0,0,0.15)",
-                    "&:hover": {
-                      background: "linear-gradient(90deg, #1B5E20, #43A047)",
-                      boxShadow: "0px 3px 7px rgba(0,0,0,0.2)",
+                    background: 'linear-gradient(90deg, #2E7D32, #66BB6A)',
+                    color: '#fff',
+                    boxShadow: '0px 2px 5px rgba(0,0,0,0.15)',
+                    '&:hover': {
+                      background: 'linear-gradient(90deg, #1B5E20, #43A047)',
+                      boxShadow: '0px 3px 7px rgba(0,0,0,0.2)',
                     },
                   }}
                   onClick={() => downloadPendingPDF()}
@@ -325,48 +287,48 @@ function LineStaffAuthorization() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.lineName || "-"}
+                            {item.lineName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>{item.jeName}</StyledTableCell>
                           <StyledTableCell>
-                            {item.dgmName || "-"}
+                            {item.dgmName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.dgmStatus || "-"}
+                            {item.dgmStatus || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.gmName || "-"}
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            {item.gmStatus || "-"}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.status11KV || "-"}
+                            {item.gmName || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.status33KV || "-"}
+                            {item.gmStatus || '-'}
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            {item.status11KV || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.updated || "-"}
+                            {item.status33KV || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.dcName || "-"}
+                            {item.updated || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.jeRemark || "-"}
+                            {item.dcName || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.dgmRemark || "-"}
+                            {item.jeRemark || '-'}
                           </StyledTableCell>
 
                           <StyledTableCell>
-                            {item.gmRemark || "-"}
+                            {item.dgmRemark || '-'}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.gmRemark || '-'}
                           </StyledTableCell>
                         </StyledTableRow>
                       ))
@@ -385,7 +347,7 @@ function LineStaffAuthorization() {
 
           <Card
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center">
@@ -393,9 +355,9 @@ function LineStaffAuthorization() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Submit Line Staff Authorization
@@ -441,9 +403,9 @@ function LineStaffAuthorization() {
                           ref={kv11Ref}
                           type="checkbox"
                           label="11KV"
-                          checked={is11kv === "Yes"}
+                          checked={is11kv === 'Yes'}
                           onChange={(e) =>
-                            setIs11kv(e.target.checked ? "Yes" : "No")
+                            setIs11kv(e.target.checked ? 'Yes' : 'No')
                           }
                           isInvalid={!!errors.voltage}
                         />
@@ -451,9 +413,9 @@ function LineStaffAuthorization() {
                           ref={kv33Ref}
                           type="checkbox"
                           label="33KV"
-                          checked={is33kv === "Yes"}
+                          checked={is33kv === 'Yes'}
                           onChange={(e) =>
-                            setIs33kv(e.target.checked ? "Yes" : "No")
+                            setIs33kv(e.target.checked ? 'Yes' : 'No')
                           }
                           isInvalid={!!errors.voltage}
                         />
@@ -537,7 +499,7 @@ function LineStaffAuthorization() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

@@ -143,12 +143,12 @@ function EmployeeDashboard() {
       icon: <HealthAndSafetyIcon />,
     },
     // {
-    //   label: 'Immovable Property',
+    //   label: 'Immovable Property Return',
     //   path: '/immovableProperty',
     //   icon: <HomeWorkIcon />,
     // },
     // {
-    //   label: 'Immovable Property View',
+    //   label: 'Immovable Property Return View',
     //   path: '/immovablePropertyView',
     //   icon: <VisibilityIcon />,
     // },

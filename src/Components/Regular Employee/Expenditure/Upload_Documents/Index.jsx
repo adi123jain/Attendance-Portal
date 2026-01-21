@@ -1,82 +1,49 @@
-import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import React, { useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link, useLocation } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
   Typography,
   Button,
   Backdrop,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Paper,
   Tooltip,
-} from "@mui/material";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
+} from '@mui/material';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
 
 import {
   getIncentiveByrefNo,
   submitExpenditure,
-} from "../../../../Services/Auth";
+} from '../../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../../Constants/TableStyles/Index";
+} from '../../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function UploadExpenditureDocuments() {
   const location = useLocation();
-  const referenceNo = location.state?.referenceNo || "";
+  const referenceNo = location.state?.referenceNo || '';
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [headsInTable, setHeadsInTable] = useState([]);
-  const [region, setRegion] = useState("");
-  const [circle, setCircle] = useState("");
-  const [division, setDivision] = useState("");
-  const [subDivision, setSubDivision] = useState("");
-  const [dc, setDc] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [currentMonth, setCurrentMonth] = useState("");
-  const [requestedAmt, setRequestedAmt] = useState("");
-  const [status, setStatus] = useState("");
-  const [roRemark, setRoRemark] = useState("");
-  const [resubmitRemark, setResubmitRemark] = useState("");
+  const [region, setRegion] = useState('');
+  const [circle, setCircle] = useState('');
+  const [division, setDivision] = useState('');
+  const [subDivision, setSubDivision] = useState('');
+  const [dc, setDc] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
+  const [requestedAmt, setRequestedAmt] = useState('');
+  const [status, setStatus] = useState('');
+  const [roRemark, setRoRemark] = useState('');
+  const [resubmitRemark, setResubmitRemark] = useState('');
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -84,7 +51,7 @@ function UploadExpenditureDocuments() {
       try {
         const response = await getIncentiveByrefNo(referenceNo);
         //console.log(response);
-        if (response.data.code == "200") {
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setHeadsInTable(response.data.list[0].heads);
           setRegion(response.data.list[0].region.name);
@@ -103,7 +70,7 @@ function UploadExpenditureDocuments() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error);
         setOpenBackdrop(false);
       }
     };
@@ -113,13 +80,13 @@ function UploadExpenditureDocuments() {
   const [formState, setFormState] = useState({});
 
   // Checkbox toggle
-  const handleCheckboxChange = (headId, checked, usedAmount = "") => {
+  const handleCheckboxChange = (headId, checked, usedAmount = '') => {
     setFormState((prev) => ({
       ...prev,
       [headId]: {
         ...prev[headId],
         checked,
-        usedAmount: checked ? prev[headId]?.usedAmount || usedAmount : "",
+        usedAmount: checked ? prev[headId]?.usedAmount || usedAmount : '',
         file: null,
       },
     }));
@@ -140,37 +107,37 @@ function UploadExpenditureDocuments() {
   const handleSubmit = async (item) => {
     const state = formState[item.headId];
     if (!state?.usedAmount) {
-      alert("Expense amount is required.");
+      alert('Expense amount is required.');
       return;
     }
     if (!state?.file) {
-      alert("Please select a file to upload.");
+      alert('Please select a file to upload.');
       return;
     }
 
     const file = state.file;
 
     // File validations
-    if (file.type !== "application/pdf") {
-      alert("Please upload a PDF file.");
+    if (file.type !== 'application/pdf') {
+      alert('Please upload a PDF file.');
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      alert("File size must not exceed 5 MB.");
+      alert('File size must not exceed 5 MB.');
       return;
     }
 
     const formData = new FormData();
-    formData.append("id", item.headId);
-    formData.append("usedAmount", state.usedAmount);
-    formData.append("refNo", referenceNo);
-    formData.append("document", file);
+    formData.append('id', item.headId);
+    formData.append('usedAmount', state.usedAmount);
+    formData.append('refNo', referenceNo);
+    formData.append('document', file);
 
     try {
       setOpenBackdrop(true);
       const response = await submitExpenditure(formData);
       //console.log(response);
-      if (response.data.code === "200") {
+      if (response.data.code === '200') {
         alert(response.data.message);
         setOpenBackdrop(false);
         window.location.reload();
@@ -180,7 +147,7 @@ function UploadExpenditureDocuments() {
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong, please try again.");
+      alert('Something went wrong, please try again.');
       setOpenBackdrop(false);
     }
   };
@@ -200,11 +167,11 @@ function UploadExpenditureDocuments() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Expenditure Booking Against Revenue Realization and Commercial
@@ -219,11 +186,11 @@ function UploadExpenditureDocuments() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
+                  textAlign: 'center',
+                  color: '#0a1f83',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Basic Information
@@ -346,17 +313,17 @@ function UploadExpenditureDocuments() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  color: "red",
+                  color: 'red',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 *To submit please select the checkbox in given Table.
               </Typography>
             </Card.Header>
             <Card.Body>
-              <TableContainer component={Paper} sx={{ marginTop: "15px" }}>
+              <TableContainer component={Paper} sx={{ marginTop: '15px' }}>
                 <Table>
                   <TableHead>
                     <StyledTableRow>
@@ -390,22 +357,22 @@ function UploadExpenditureDocuments() {
                                   handleCheckboxChange(
                                     item.headId,
                                     e.target.checked,
-                                    item.usedAmount
+                                    item.usedAmount,
                                   )
                                 }
                               />
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.head?.name || "-"}
+                              {item.head?.name || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.vendorName || "-"}
+                              {item.vendorName || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.headCount || "-"}
+                              {item.headCount || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {item.amount || "-"}
+                              {item.amount || '-'}
                             </StyledTableCell>
 
                             {/* Expense Amount */}
@@ -414,12 +381,12 @@ function UploadExpenditureDocuments() {
                                 type="number"
                                 placeholder="Enter Amount"
                                 disabled={!state.checked}
-                                value={state.usedAmount || ""}
+                                value={state.usedAmount || ''}
                                 onChange={(e) =>
                                   handleInputChange(
                                     item.headId,
-                                    "usedAmount",
-                                    e.target.value
+                                    'usedAmount',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -448,8 +415,8 @@ function UploadExpenditureDocuments() {
                                   onChange={(e) =>
                                     handleInputChange(
                                       item.headId,
-                                      "file",
-                                      e.target.files[0]
+                                      'file',
+                                      e.target.files[0],
                                     )
                                   }
                                 />
@@ -472,7 +439,7 @@ function UploadExpenditureDocuments() {
                                   />
                                 </Button>
                               ) : (
-                                "-"
+                                '-'
                               )}
                             </StyledTableCell>
 
@@ -484,7 +451,7 @@ function UploadExpenditureDocuments() {
                                   disabled
                                 />
                               ) : (
-                                "-"
+                                '-'
                               )}
                             </StyledTableCell>
 
@@ -523,7 +490,7 @@ function UploadExpenditureDocuments() {
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

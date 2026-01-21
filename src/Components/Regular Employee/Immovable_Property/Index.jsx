@@ -1,39 +1,38 @@
-import React, { useState } from "react";
-import { Card, Form, Row, Col } from "react-bootstrap";
+import { useEffect, useState } from 'react';
+import { Card, Form, Row, Col } from 'react-bootstrap';
 import {
   Typography,
   Tooltip,
-  Paper,
   Button,
+  Modal,
+  Paper,
+  Box,
+  IconButton,
   TextField,
   Backdrop,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  FormControl,
-  FormLabel,
-  Divider,
-  Box,
-  MenuItem,
-  InputLabel,
-  Select,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { submitImmovableProperty } from "../../../Services/Auth";
-import { Link } from "react-router-dom";
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteIcon from '@mui/icons-material/Delete';
+import {
+  getOtp,
+  submitImmovableProperty,
+  verifyOtp,
+} from '../../../Services/Auth';
+import { Link } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
+import { PropagateLoader } from 'react-spinners';
 
 const ImmovableProperty = () => {
-  const sessionRegion = sessionStorage.getItem("regionName");
-  const sessionCircle = sessionStorage.getItem("circleName");
-  const sessionDivision = sessionStorage.getItem("divisionName");
-  const sessionSubdivision = sessionStorage.getItem("subdivisionName");
-  const sessionDc = sessionStorage.getItem("dcId");
-  const designationName = sessionStorage.getItem("designationName");
-  const sessionEmpCode = sessionStorage.getItem("empCode");
-  const sessionEmpName = sessionStorage.getItem("fullName");
+  const sessionRegion = sessionStorage.getItem('regionName');
+  const sessionCircle = sessionStorage.getItem('circleName');
+  const sessionDivision = sessionStorage.getItem('divisionName');
+  const sessionSubdivision = sessionStorage.getItem('subdivisionName');
+  const sessionDc = sessionStorage.getItem('dcId');
+  const designationName = sessionStorage.getItem('designationName');
+  const sessionEmpCode = sessionStorage.getItem('empCode');
+  const sessionEmpName = sessionStorage.getItem('fullName');
 
-  const isValid = (val) => val !== null && val !== "null" && val !== "";
+  const isValid = (val) => val !== null && val !== 'null' && val !== '';
 
   let officeName = null;
 
@@ -59,35 +58,35 @@ const ImmovableProperty = () => {
     // empName: "",
     // designation: "",
     // empNumber: "",
-    gpfNumber: "",
-    district: "",
-    subDistrict: "",
-    village: "",
-    residentialLocationNo: "",
-    residentialArea: "",
-    residentialValue: "",
-    agricultureLocationNo: "",
-    agricultureArea: "",
-    agricultureValue: "",
-    housingLocationNo: "",
-    housingArea: "",
-    housingValue: "",
-    shopLocationNo: "",
-    shopArea: "",
-    shopValue: "",
-    ownershipStatus: "",
-    employeeRelation: "",
-    acquisitionSource: "",
-    acquisitionDate: "",
-    acquisitionPerson: "",
-    annualIncome: "",
-    businessDetails: "",
-    remark: "",
+    gpfNumber: '',
+    district: '',
+    subDistrict: '',
+    village: '',
+    residentialLocationNo: '',
+    residentialArea: '',
+    residentialValue: '',
+    agricultureLocationNo: '',
+    agricultureArea: '',
+    agricultureValue: '',
+    housingLocationNo: '',
+    housingArea: '',
+    housingValue: '',
+    shopLocationNo: '',
+    shopArea: '',
+    shopValue: '',
+    ownershipStatus: '',
+    employeeRelation: '',
+    acquisitionSource: '',
+    acquisitionDate: '',
+    acquisitionPerson: '',
+    annualIncome: '',
+    businessDetails: '',
+    remark: '',
   };
 
   const [forms, setForms] = useState([emptyForm]);
 
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear() - 1;
 
   // Handle field change
   const handleChange = (index, field, value) => {
@@ -107,60 +106,10 @@ const ImmovableProperty = () => {
     setForms(forms.filter((_, i) => i !== index));
   };
 
-  // Submit Immaovable Property
-  // const submitImmovableForm = async () => {
-  //   const payload = {
-  //     empCode: sessionStorage.getItem("empCode"),
-  //     gpfPranEpfNo: forms[0].gpfNumber,
-  //     district: forms[0].district,
-  //     subDistrict: forms[0].subDistrict,
-  //     talukaVillage: forms[0].village,
-
-  //     residentialLocation: forms[0].residentialLocationNo,
-  //     residentialSizeArea: parseFloat(forms[0].residentialArea) || null,
-  //     residentialPresentValue: parseFloat(forms[0].residentialValue) || null,
-
-  //     agriculturalLocation: forms[0].agricultureLocationNo,
-  //     agriculturalSizeArea: parseFloat(forms[0].agricultureArea) || null,
-  //     agriculturalPresentValue: parseFloat(forms[0].agricultureValue) || null,
-
-  //     housingLocation: forms[0].housingLocationNo,
-  //     housingSizeBuildUpArea: parseFloat(forms[0].housingArea) || null,
-  //     housingPresentValue: parseFloat(forms[0].housingValue) || null,
-
-  //     shopLocation: forms[0].shopLocationNo,
-  //     shopSizeBuildUpArea: parseFloat(forms[0].shopArea) || null,
-  //     shopPresentValue: parseFloat(forms[0].shopValue) || null,
-
-  //     ownershipStatus: forms[0].ownershipStatus,
-  //     relationWithBoard: forms[0].employeeRelation,
-  //     acquisitionMode: forms[0].acquisitionSource,
-  //     acquisitionDate: forms[0].acquisitionDate,
-  //     fromWhomAcquired: forms[0].acquisitionPerson,
-  //     annualIncome: parseFloat(forms[0].annualIncome) || null,
-  //     privateBusinessDetails: forms[0].businessDetails,
-  //     remarks: forms[0].remark,
-  //     createdBy: sessionStorage.getItem("empCode"),
-  //     year: new Date().getFullYear(),
-  //   };
-  //   console.log(payload);
-  //   try {
-  //     const response = await submitImmovableProperty(payload);
-  //     console.log(response);
-  //     if (response.data.code == "200") {
-  //       alert("Successfully Submitted");
-  //     } else {
-  //       alert(response.data.message);
-  //     }
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
-
   // Submit Immovable Property
   const submitImmovableForm = async () => {
     const payload = forms.map((form) => ({
-      empCode: sessionStorage.getItem("empCode"),
+      empCode: sessionStorage.getItem('empCode'),
       gpfPranEpfNo: form.gpfNumber,
       district: form.district,
       subDistrict: form.subDistrict,
@@ -190,26 +139,121 @@ const ImmovableProperty = () => {
       annualIncome: parseFloat(form.annualIncome) || null,
       privateBusinessDetails: form.businessDetails,
       remarks: form.remark,
-      createdBy: sessionStorage.getItem("empCode"),
+      createdBy: sessionStorage.getItem('empCode'),
       year: new Date().getFullYear(),
     }));
 
-    console.log("Payload to send:", payload);
+    // console.log('Payload to send:', payload);
 
     try {
       const response = await submitImmovableProperty(payload);
-      console.log(response);
+      // console.log(response);
 
-      if (response.data.code === "200") {
-        alert("Successfully Submitted");
+      if (response.data.code === '200') {
+        alert('Successfully Submitted');
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
   };
 
+  const [otp, setOtp] = useState('');
+  const [otpModal, setOtpModal] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [resendTimer, setResendTimer] = useState(0);
+  const [openBackdrop, setOpenBackdrop] = useState(false);
+
+  // Send OTP API
+  const sendOtp = async () => {
+    // if (selected.length === 0) {
+    //   alert('Please select at least one record!');
+    //   return;
+    // }
+
+    // if (!validate()) return;
+    const payload = {
+      username: sessionStorage.getItem('empCode'),
+      source: 'OTP for approval of IMMOVABLE PROPERTY RETURN',
+    };
+    try {
+      setOpenBackdrop(true);
+
+      const response = await getOtp(payload);
+      if (response.data.code === '200') {
+        alert('OTP sent successfully');
+        setOtp('');
+        setOtpError('');
+        setOtpModal(true);
+        setResendTimer(15);
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.log('Error', error);
+    } finally {
+      setOpenBackdrop(false);
+    }
+  };
+
+  // Timer effect for resend
+  useEffect(() => {
+    if (!otpModal) {
+      setResendTimer(0);
+      return;
+    }
+
+    if (resendTimer === 0) return;
+
+    const interval = setInterval(() => {
+      setResendTimer((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [otpModal, resendTimer]);
+
+  // Resend OTP
+  const handleResend = () => {
+    if (resendTimer > 0) return;
+    sendOtp();
+  };
+
+  // Submit OTP API
+  const submitOtp = async () => {
+    if (!otp || otp.length !== 4) {
+      setOtpError('Please enter a valid 4-digit OTP.');
+      return;
+    }
+
+    try {
+      const payload = {
+        username: sessionStorage.getItem('empCode'),
+        source: 'OTP for approval of IMMOVABLE PROPERTY RETURN',
+        otp: otp,
+      };
+      const response = await verifyOtp(payload);
+      if (response.data.code === '200') {
+        // alert('OTP verified successfully');
+        submitImmovableForm();
+        setOtpModal(false);
+        setOtp('');
+        setOtpError('');
+      } else {
+        setOtpError(response.data.message || 'Invalid OTP');
+      }
+    } catch (error) {
+      console.log('Error', error);
+      setOtpError('Something went wrong, please try again.');
+    }
+  };
+  const handleCloseOtpModal = () => {
+    setOtpModal(false);
+    setOtp('');
+    setOtpError('');
+    setResendTimer(0);
+  };
   return (
     <>
       <Card className="shadow-lg rounded mt-4">
@@ -218,13 +262,13 @@ const ImmovableProperty = () => {
             variant="h5"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             MADHYA PRADESH MADHYA KSHETRA VIDYUT VITARAN COMPANY LIMITED BHOPAL
-            IMMOVABLE PROPERTY RETURN DETAILS - As on DECEMBER {currentYear}{" "}
+            IMMOVABLE PROPERTY RETURN DETAILS - As on DECEMBER {currentYear}{' '}
             (Year)
           </Typography>
         </Card.Header>
@@ -238,9 +282,9 @@ const ImmovableProperty = () => {
                     variant="h6"
                     sx={{
                       mb: 2,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
-                      color: "#0a1f83",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
+                      color: '#0a1f83',
                     }}
                   >
                     Please fill all the Information
@@ -309,8 +353,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "gpfNumber",
-                                    e.target.value
+                                    'gpfNumber',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -328,8 +372,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "district",
-                                    e.target.value
+                                    'district',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -347,8 +391,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "subDistrict",
-                                    e.target.value
+                                    'subDistrict',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -364,7 +408,7 @@ const ImmovableProperty = () => {
                                 placeholder="Enter Name"
                                 value={form.village}
                                 onChange={(e) =>
-                                  handleChange(index, "village", e.target.value)
+                                  handleChange(index, 'village', e.target.value)
                                 }
                               />
                             </Card.Body>
@@ -390,8 +434,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "residentialLocationNo",
-                                    e.target.value
+                                    'residentialLocationNo',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -409,8 +453,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "residentialArea",
-                                    e.target.value
+                                    'residentialArea',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -428,8 +472,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "residentialValue",
-                                    e.target.value
+                                    'residentialValue',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -449,8 +493,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "agricultureLocationNo",
-                                    e.target.value
+                                    'agricultureLocationNo',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -468,8 +512,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "agricultureArea",
-                                    e.target.value
+                                    'agricultureArea',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -487,8 +531,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "agricultureValue",
-                                    e.target.value
+                                    'agricultureValue',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -515,8 +559,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "housingLocationNo",
-                                    e.target.value
+                                    'housingLocationNo',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -534,8 +578,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "housingArea",
-                                    e.target.value
+                                    'housingArea',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -553,8 +597,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "housingValue",
-                                    e.target.value
+                                    'housingValue',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -575,8 +619,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "shopLocationNo",
-                                    e.target.value
+                                    'shopLocationNo',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -594,8 +638,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "shopArea",
-                                    e.target.value
+                                    'shopArea',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -613,8 +657,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "shopValue",
-                                    e.target.value
+                                    'shopValue',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -625,7 +669,6 @@ const ImmovableProperty = () => {
                     </Card.Body>
                   </Card>
 
-                  {/* ================= Ownership ================= */}
                   <Card className="mt-2">
                     <Card.Header>
                       Whether In Own Name Or In The Spouse Or Family Member
@@ -645,8 +688,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "ownershipStatus",
-                                    e.target.value
+                                    'ownershipStatus',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -666,8 +709,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "employeeRelation",
-                                    e.target.value
+                                    'employeeRelation',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -678,7 +721,6 @@ const ImmovableProperty = () => {
                     </Card.Body>
                   </Card>
 
-                  {/* ================= Acquisition ================= */}
                   <Card className="mt-2">
                     <Card.Header>
                       How Acquired Whether Owned By Purchase Lease Or Mortgage
@@ -699,8 +741,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "acquisitionSource",
-                                    e.target.value
+                                    'acquisitionSource',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -717,8 +759,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "acquisitionDate",
-                                    e.target.value
+                                    'acquisitionDate',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -737,8 +779,8 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(
                                     index,
-                                    "acquisitionPerson",
-                                    e.target.value
+                                    'acquisitionPerson',
+                                    e.target.value,
                                   )
                                 }
                               />
@@ -749,7 +791,6 @@ const ImmovableProperty = () => {
                     </Card.Body>
                   </Card>
 
-                  {/* ================= Income & Business ================= */}
                   <Row className="mt-2">
                     <Col md={4}>
                       <Card className="mb-2">
@@ -762,8 +803,8 @@ const ImmovableProperty = () => {
                             onChange={(e) =>
                               handleChange(
                                 index,
-                                "annualIncome",
-                                e.target.value
+                                'annualIncome',
+                                e.target.value,
                               )
                             }
                           />
@@ -787,8 +828,8 @@ const ImmovableProperty = () => {
                             onChange={(e) =>
                               handleChange(
                                 index,
-                                "businessDetails",
-                                e.target.value
+                                'businessDetails',
+                                e.target.value,
                               )
                             }
                           />
@@ -797,7 +838,6 @@ const ImmovableProperty = () => {
                     </Col>
                   </Row>
 
-                  {/* ================= Remark ================= */}
                   <Card className="mb-2">
                     <Card.Header>Remark</Card.Header>
                     <Card.Body>
@@ -807,7 +847,7 @@ const ImmovableProperty = () => {
                         rows={3}
                         value={form.remark}
                         onChange={(e) =>
-                          handleChange(index, "remark", e.target.value)
+                          handleChange(index, 'remark', e.target.value)
                         }
                       />
                     </Card.Body>
@@ -855,12 +895,147 @@ const ImmovableProperty = () => {
           <Button
             variant="contained"
             className="green-button"
-            onClick={submitImmovableForm}
+            onClick={sendOtp}
           >
             Submit
           </Button>
         </Card.Footer>
       </Card>
+
+      <Modal open={otpModal} onClose={handleCloseOtpModal}>
+        <Paper
+          elevation={8}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 420,
+            borderRadius: 3,
+            overflow: 'hidden',
+          }}
+        >
+          <Box
+            sx={{
+              background:
+                'linear-gradient(135deg, #1565C0 0%, #1E88E5 50%, #42A5F5 100%)',
+              color: 'white',
+              py: 1.5,
+              px: 2.2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              OTP Verification
+            </Typography>
+
+            <IconButton onClick={handleCloseOtpModal} sx={{ color: 'white' }}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+
+          <Box sx={{ p: 3 }}>
+            <Typography
+              variant="body1"
+              sx={{ mb: 2, color: '#555', lineHeight: 1.4 }}
+            >
+              Please enter the 4-digit OTP sent to your registered mobile
+              number.
+            </Typography>
+
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Enter OTP"
+              required
+              placeholder="••••"
+              value={otp}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (/^\d{0,4}$/.test(value)) {
+                  setOtp(value);
+                  setOtpError('');
+                }
+              }}
+              error={!!otpError}
+              helperText={otpError || 'OTP is valid for a limited time.'}
+              inputProps={{
+                maxLength: 4,
+                inputMode: 'numeric',
+                style: {
+                  textAlign: 'center',
+                  fontSize: '20px',
+                  letterSpacing: '4px',
+                  padding: '10px 0',
+                },
+              }}
+              sx={{
+                mb: 3,
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2,
+                  backgroundColor: '#fafafa',
+                },
+              }}
+            />
+
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <Button
+                variant="contained"
+                onClick={submitOtp}
+                sx={{
+                  flex: 1,
+                  py: 1,
+                  fontWeight: 600,
+                  borderRadius: 2,
+                  background:
+                    'linear-gradient(135deg, #1E88E5 0%, #42A5F5 100%)',
+                }}
+              >
+                Submit OTP
+              </Button>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  flex: 1,
+                }}
+              >
+                <Button
+                  variant="outlined"
+                  onClick={handleResend}
+                  disabled={resendTimer > 0}
+                  sx={{
+                    py: 1,
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    borderWidth: '1.8px',
+                  }}
+                >
+                  {resendTimer > 0 ? `Resend in ${resendTimer}s` : 'Resend OTP'}
+                </Button>
+                <Typography variant="caption" sx={{ mt: 0.5, color: '#888' }}>
+                  You can resend OTP after 15 seconds.
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
+      </Modal>
+
+      <Backdrop sx={{ color: '#fff', zIndex: 9999 }} open={openBackdrop}>
+        <PropagateLoader />
+      </Backdrop>
     </>
   );
 };

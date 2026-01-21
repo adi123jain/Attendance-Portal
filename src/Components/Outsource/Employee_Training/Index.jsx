@@ -1,19 +1,19 @@
-import React, { useState, useRef } from "react";
-import { Backdrop, Typography } from "@mui/material";
-import { Card, Form, Row, Col } from "react-bootstrap";
-import { PropagateLoader } from "react-spinners";
-import { outsourceEmpTraning } from "../../../Services/Auth";
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
+import React, { useState, useRef } from 'react';
+import { Backdrop, Typography } from '@mui/material';
+import { Card, Form, Row, Col } from 'react-bootstrap';
+import { PropagateLoader } from 'react-spinners';
+import { outsourceEmpTraning } from '../../../Services/Auth';
+import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 function OutsourceEmployeeTraining() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   // Form states
-  const [trainingSubject, setTrainingSubject] = useState("");
-  const [trainingDate, setTrainingDate] = useState("");
-  const [employeeCodesInput, setEmployeeCodesInput] = useState("");
-  const [remark, setRemark] = useState("");
+  const [trainingSubject, setTrainingSubject] = useState('');
+  const [trainingDate, setTrainingDate] = useState('');
+  const [employeeCodesInput, setEmployeeCodesInput] = useState('');
+  const [remark, setRemark] = useState('');
 
   const [errors, setErrors] = useState({});
 
@@ -28,11 +28,11 @@ function OutsourceEmployeeTraining() {
     let newErrors = {};
 
     if (!trainingSubject.trim())
-      newErrors.trainingSubject = "*Subject is required";
-    if (!trainingDate) newErrors.trainingDate = "*Date is required";
+      newErrors.trainingSubject = '*Subject is required';
+    if (!trainingDate) newErrors.trainingDate = '*Date is required';
     if (!employeeCodesInput.trim())
-      newErrors.employeeCodesInput = "*Employee Code(s) required";
-    if (!remark.trim()) newErrors.remark = "*Remark is required";
+      newErrors.employeeCodesInput = '*Employee Code(s) required';
+    if (!remark.trim()) newErrors.remark = '*Remark is required';
 
     setErrors(newErrors);
 
@@ -52,16 +52,16 @@ function OutsourceEmployeeTraining() {
 
     // Convert input to array of trimmed codes
     const employeeCodes = employeeCodesInput
-      .split(",")
+      .split(',')
       .map((code) => code.trim())
-      .filter((code) => code !== "");
+      .filter((code) => code !== '');
 
     const payload = {
       subject: trainingSubject,
       date: trainingDate,
       empCode: employeeCodes,
       remark: remark,
-      createdBy: sessionStorage.getItem("empCode"),
+      createdBy: sessionStorage.getItem('empCode'),
     };
     console.log(payload);
 
@@ -70,8 +70,8 @@ function OutsourceEmployeeTraining() {
       // Call API
       const response = await outsourceEmpTraning(payload);
       console.log(response);
-      if (response.data.code == "200" && response.data.message == "Success") {
-        alert("Training record saved successfully!");
+      if (response.data.code === '200' && response.data.message === 'Success') {
+        alert('Training record saved successfully!');
         window.location.reload();
         setOpenBackdrop(false);
       } else {
@@ -79,8 +79,8 @@ function OutsourceEmployeeTraining() {
         setOpenBackdrop(false);
       }
     } catch (err) {
-      console.error("Error saving training:", err);
-      alert("Failed to save training!");
+      console.error('Error saving training:', err);
+      alert('Failed to save training!');
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -95,9 +95,9 @@ function OutsourceEmployeeTraining() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Outsource Employee Training
@@ -205,7 +205,7 @@ function OutsourceEmployeeTraining() {
           <Button
             className="cancel-button"
             variant="contained"
-            style={{ borderRadius: "20px", padding: "6px 20px" }}
+            style={{ borderRadius: '20px', padding: '6px 20px' }}
             component={Link}
             to="/"
           >
@@ -217,21 +217,21 @@ function OutsourceEmployeeTraining() {
             variant="contained"
             onClick={handleSubmit}
             style={{
-              borderRadius: "20px",
-              backgroundColor: "#0a1f83",
-              color: "#fff",
-              padding: "6px 20px",
-              border: "none",
+              borderRadius: '20px',
+              backgroundColor: '#0a1f83',
+              color: '#fff',
+              padding: '6px 20px',
+              border: 'none',
             }}
             disabled={openBackdrop}
           >
-            {openBackdrop ? "Updating..." : "Update"}
+            {openBackdrop ? 'Updating...' : 'Update'}
           </Button>
         </Card.Footer>
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

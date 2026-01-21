@@ -13,7 +13,6 @@ import {
   IconButton,
   Stack,
   Backdrop,
-  Paper,
   Modal,
   Fade,
 } from '@mui/material';
@@ -201,9 +200,6 @@ const Login = () => {
     let newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
-    // if (value && index < 3) {
-    //   inputRefs.current[index + 1].focus();
-    // }
     if (value && index < otp.length - 1) {
       inputRefs.current[index + 1].focus();
     }
@@ -212,12 +208,10 @@ const Login = () => {
   const handleKeyDown = (event, index) => {
     if (event.key === 'Backspace') {
       if (otp[index]) {
-        // If current has value, clear it first
         const newOtp = [...otp];
         newOtp[index] = '';
         setOtp(newOtp);
       } else if (index > 0) {
-        // Move focus to previous input
         inputRefs.current[index - 1].focus();
       }
     }
@@ -284,10 +278,7 @@ const Login = () => {
     try {
       const response = await userAuthentication(sendReq);
       if (response.data.code === '200' && response.data.message === 'Success') {
-        // console.log("Double Auth", response);
-        // console.log("Double Auth", response.headers.authorization);
         const token = response.headers.authorization;
-
         const base64Url = token.split('.')[1];
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const decodedData = JSON.parse(atob(base64));
@@ -295,7 +286,6 @@ const Login = () => {
           'isNominationSubmitted',
           decodedData.isNominationSubmitted,
         );
-        // console.log("Decoded Token Data:", decodedData.isNominationSubmitted);
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('empCode', response.data.list[0].empCode);
         sessionStorage.setItem('fullName', response.data.list[0].fullName);
@@ -308,7 +298,6 @@ const Login = () => {
           'isReportingOfficer',
           response.data.list[0].isReportingOfficer,
         );
-        // sessionStorage.setItem('designation', response.data.list[0].designation);
         sessionStorage.setItem(
           'designationId',
           response.data.list[0].designationId,
@@ -790,55 +779,3 @@ const Login = () => {
 };
 
 export default Login;
-
-{
-  /* <>
-<Box
-  sx={{
-    display: "flex",
-    justifyContent: "center",
-    gap: "10px",
-  }}
->
-  {otp.map((_, index) => (
-    <TextField
-      key={index}
-      type="text"
-      inputProps={{ maxLength: 1 }}
-      value={otp[index]}
-      onChange={(e) => handleOtpChange(e, index)}
-      inputRef={(el) => (inputRefs.current[index] = el)}
-      style={{ width: "50px", textAlign: "center" }}
-    />
-  ))}
-</Box>
-<Button
-  variant="contained"
-  color="primary"
-  onClick={OtpVerification}
-  fullWidth
-  sx={{ mt: 2 }}
->
-  Submit OTP
-</Button>
-<Button
-  variant="outlined"
-  color="secondary"
-  onClick={clearValues}
-  fullWidth
-  sx={{ mt: 2 }}
->
-  Clear
-</Button>
-
-<Button
-  variant="outlined"
-  color="inherit"
-  onClick={handleResendOtp}
-  disabled={isResendDisabled}
-  sx={{ mt: 2 }}
->
-  Resend OTP {isResendDisabled && `(${timer}s)`}
-</Button>
-</> */
-}

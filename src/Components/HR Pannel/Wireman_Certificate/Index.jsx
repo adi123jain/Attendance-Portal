@@ -27,6 +27,7 @@ import {
   TableHead,
   Paper,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 function WiremanCertificateByHr() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -324,7 +325,7 @@ function WiremanCertificateByHr() {
 
       if (response?.data?.code === '200') {
         alert('Submitted Successfully');
-
+        window.location.reload();
         setExamDate('');
         setFromDate('');
         setToDate('');
@@ -570,6 +571,15 @@ function WiremanCertificateByHr() {
         </Card.Body>
 
         <Card.Footer className="text-center p-3">
+          <Button
+            variant="contained"
+            className="cancel-button"
+            component={Link}
+            to="/humanResourceDashboard"
+          >
+            Cancel
+          </Button>
+          &nbsp;
           <Button
             variant="contained"
             className="blue-button"

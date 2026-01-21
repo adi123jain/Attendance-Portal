@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from '../Constants/Navbar/Index';
 
 import Login from '../Components/User/Login';
-import Signup from '../Components/User/Signup';
+// import Signup from '../Components/User/Signup';
 import PrivateRoute from '../Router/PrivateRoute';
 import PublicRoute from '../Router/PublicRoute';
 import { AuthProvider } from '../Authentication/Context/AuthContext';
@@ -97,14 +97,14 @@ function CustomRouter() {
               </PublicRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/signup"
             element={
               <PublicRoute>
                 <Signup />
               </PublicRoute>
             }
-          />
+          /> */}
 
           <Route
             path="/forgetPassword"

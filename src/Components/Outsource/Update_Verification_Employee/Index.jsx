@@ -68,6 +68,9 @@ function UpdateVerifyEmployee() {
   const [selectedDC, setSelectedDC] = useState('');
   const [selectedSubStation, setSelectedSubStation] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
+  const [employeeAttendanceLocationId, setEmployeeAttendanceLocationId] =
+    useState(null);
+
   const [selectedOfficer, setSelectedOfficer] = useState('');
   const [selectedRoName, setSelectedRoName] = useState('');
   const [selectedHr, setSelectedHr] = useState('');
@@ -150,8 +153,11 @@ function UpdateVerifyEmployee() {
             response.data.list[0]?.substation?.substationId || '',
           );
 
-          setSelectedLocation(
-            response.data.list[0]?.attendanceLocationId?.id || '',
+          // setSelectedLocation(
+          //   response.data.list[0]?.attendanceLocationId?.id || '',
+          // );
+          setEmployeeAttendanceLocationId(
+            response.data.list[0]?.attendanceLocationId?.id || null,
           );
 
           setSelectedOfficer(
@@ -353,12 +359,31 @@ function UpdateVerifyEmployee() {
   };
 
   useEffect(() => {
+    // auto-select only once from employee data
+    if (
+      employeeAttendanceLocationId === null ||
+      attendanceLocations.length === 0 ||
+      selectedLocation
+    ) {
+      return;
+    }
+
+    const matched = attendanceLocations.find(
+      (loc) => Number(loc.locationId) === Number(employeeAttendanceLocationId),
+    );
+
+    if (matched) {
+      setSelectedLocation(matched.locationId);
+    }
+  }, [attendanceLocations, employeeAttendanceLocationId]);
+
+  useEffect(() => {
     if (selectedRegion) {
-      // setSelectedLocation("");
       fetchAttendanceLocation();
+      setSelectedLocation(''); // 🔥 IMPORTANT
     } else {
       setAttendanceLocations([]);
-      // setSelectedLocation("");
+      setSelectedLocation('');
     }
   }, [
     selectedRegion,
@@ -577,7 +602,9 @@ function UpdateVerifyEmployee() {
       education: education || '',
     };
 
-    // Call API
+    console.log(payload);
+
+    // // Call API
     try {
       const response = await updateVerifyOutEmployee(payload);
       // console.log(response);
@@ -1548,7 +1575,7 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Attendance Location Name </Card.Header>
                     <Card.Body>
-                      <Form.Select
+                      {/* <Form.Select
                         value={selectedLocation}
                         id="attendanceLocation"
                         onChange={(e) => setSelectedLocation(e.target.value)}
@@ -1570,7 +1597,25 @@ function UpdateVerifyEmployee() {
                         ) : (
                           <option disabled>No data found</option>
                         )}
+                      </Form.Select> */}
+
+                      <Form.Select
+                        value={selectedLocation}
+                        onChange={(e) =>
+                          setSelectedLocation(Number(e.target.value))
+                        }
+                      >
+                        <option value="" disabled>
+                          -- select Name --
+                        </option>
+
+                        {attendanceLocations.map((item) => (
+                          <option key={item.locationId} value={item.locationId}>
+                            {item.locationName}
+                          </option>
+                        ))}
                       </Form.Select>
+
                       {errors.attendanceLocation && (
                         <Typography
                           variant="caption"

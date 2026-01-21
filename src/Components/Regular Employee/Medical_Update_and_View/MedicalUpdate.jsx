@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Card, Row, Col, Container, Form } from 'react-bootstrap';
+import { Card, Row, Col, Form } from 'react-bootstrap';
 import {
   Typography,
   Tooltip,
@@ -8,25 +8,15 @@ import {
   Button,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  tableCellClasses,
-  TextField,
   Backdrop,
   Radio,
   RadioGroup,
   FormControlLabel,
   FormControl,
-  FormLabel,
-  Divider,
   Box,
-  MenuItem,
-  InputLabel,
-  Select,
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
 
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -36,43 +26,12 @@ import {
   currentGradePay,
   deteleDrugDetails,
   getDrugDetails,
-  submitMedicalReimbursement,
   updateMedicalForm,
 } from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 
 function MedicalFormUpdate() {
   const navigate = useNavigate();
@@ -82,7 +41,6 @@ function MedicalFormUpdate() {
   const sessionSubdivision = sessionStorage.getItem('subdivisionName');
   const sessionDc = sessionStorage.getItem('dcName');
   const designationName = sessionStorage.getItem('designationName');
-  const sessionEmpCode = sessionStorage.getItem('empCode');
   const sessionEmpName = sessionStorage.getItem('fullName');
   const departmentName = sessionStorage.getItem('departmentName');
 
@@ -157,13 +115,11 @@ function MedicalFormUpdate() {
   const location = useLocation();
   const { item: preItem } = location.state || {};
 
-  console.log('Received item:', preItem);
   const [drugEntry, setDrugEntry] = useState([]);
   useEffect(() => {
     const fetchDrugsDetails = async () => {
       try {
         const response = await getDrugDetails(preItem.refNo);
-        // console.log(response);
         if (response.data.code === '200') {
           setDrugEntry(response.data.list);
         } else {
@@ -389,16 +345,12 @@ function MedicalFormUpdate() {
       updatedBy: sessionStorage.getItem('empCode'),
     };
     const response = await deteleDrugDetails(payload);
-    // console.log(response);
     if (response.data.code === '200') {
       alert('Record Delete Successfully !!');
     } else {
       alert(response.data.message);
     }
   };
-
-  // if (preItem.appliPresentAtEmpCode === sessionStorage.getItem("empCode")) {
-  // }
 
   return (
     <>

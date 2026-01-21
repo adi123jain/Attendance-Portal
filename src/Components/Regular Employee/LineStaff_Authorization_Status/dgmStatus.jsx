@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
   Typography,
   Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   TextField,
   Backdrop,
@@ -19,18 +17,9 @@ import {
 } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/Verified';
 
-import { useLocation } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { useNavigate } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+
 import {
   getLineSatusByDgm,
   updateLineSatusByDgm,
@@ -39,38 +28,6 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(135deg, #4F77AA, #1E3C72)";
-// const oddRowBackground = "#F8FAFF";
-// const evenRowBackground = "#EEF2F6";
-// const hoverBackground = "#E3F2FD";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: 600,
-//     textAlign: "center",
-//     fontSize: "15px",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//     transition: "background-color 0.3s ease",
-//   },
-// }));
 
 function DgmLineStaffStatus() {
   const tableRef = useRef(null);
@@ -112,16 +69,10 @@ function DgmLineStaffStatus() {
       ...prev,
       [index]: {
         ...(prev[index] || {}),
-        remark: false, // clear remark error
+        remark: false,
       },
     }));
   };
-
-  // Handle select change
-  // const handleSelectChange = (index, value) => {
-  //   setActionValues((prev) => ({ ...prev, [index]: value }));
-  //   setErrors((prev) => ({ ...prev, [index]: false }));
-  // };
 
   const handleSelectChange = (index, value) => {
     setActionValues((prev) => ({ ...prev, [index]: value }));
@@ -136,16 +87,6 @@ function DgmLineStaffStatus() {
   };
   // On update click
   const updateStatus = async (index, id) => {
-    // const selectedValue = actionValues[index];
-
-    // //  Validation check
-    // if (!selectedValue) {
-    //   setErrors((prev) => ({ ...prev, [index]: true }));
-    //   const ref = selectRefs.current[index];
-    //   if (ref) ref.focus();
-    //   return;
-    // }
-
     const selectedValue = actionValues[index];
     const remarkValue = remarkValues[index];
 
@@ -188,11 +129,11 @@ function DgmLineStaffStatus() {
         id,
         remarkValue,
       );
-      console.log('Update API Response:', response);
+      // console.log('Update API Response:', response);
 
       if (response?.data?.code === '200') {
         alert('Successfully Updated!');
-        //window.location.reload();
+        window.location.reload();
       } else {
         alert(response?.data?.message || 'Update failed!');
       }

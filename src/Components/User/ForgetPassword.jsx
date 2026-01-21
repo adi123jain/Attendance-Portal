@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from 'react';
 import {
   Button,
   TextField,
@@ -13,37 +13,37 @@ import {
   Fade,
   Backdrop,
   IconButton,
-} from "@mui/material";
-import { PropagateLoader } from "react-spinners";
-import { Link } from "react-router-dom";
-import { styled } from "@mui/system";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import { getOtp, updatePassword, verifyOtp } from "../../Services/Auth";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+} from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
+import { Link } from 'react-router-dom';
+import { styled } from '@mui/system';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { getOtp, updatePassword, verifyOtp } from '../../Services/Auth';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-const BackgroundContainer = styled("div")(({ theme }) => ({
+const BackgroundContainer = styled('div')(({ theme }) => ({
   backgroundImage: 'url("/assets/backgroundImg.avif")',
-  backgroundSize: "cover",
-  backgroundPosition: "center",
-  minHeight: "100vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  padding: "40px",
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '40px',
 }));
 
 function ForgetPassword() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [empCode, setEmpCode] = useState("");
-  const [error, setError] = useState("");
+  const [empCode, setEmpCode] = useState('');
+  const [error, setError] = useState('');
   const [otpSent, setOtpSent] = useState(false);
-  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(20);
   const [canResend, setCanResend] = useState(false);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passError, setPassError] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passError, setPassError] = useState('');
   const [openModal, setOpenModal] = useState(false);
 
   const inputRefs = useRef([]);
@@ -51,27 +51,27 @@ function ForgetPassword() {
   // ---- Handle Employee Code Change ----
   const handleEmpCodeChange = (e) => {
     setEmpCode(e.target.value);
-    if (error) setError("");
+    if (error) setError('');
   };
 
   // ---- Send OTP ----
   const handleSendOtp = async () => {
     if (!empCode) {
-      setError("Employee Code is required");
+      setError('Employee Code is required');
       return;
     }
 
     try {
       setOpenBackdrop(true);
-      const otpReq = { username: empCode, source: "Change Password OTP" };
+      const otpReq = { username: empCode, source: 'Change Password OTP' };
       const otpResponse = await getOtp(otpReq);
       setOpenBackdrop(false);
 
-      if (otpResponse.data.code === "200") {
+      if (otpResponse.data.code === '200') {
         setOtpSent(true);
         setCanResend(false);
         setTimer(20);
-        alert("OTP sent successfully!");
+        alert('OTP sent successfully!');
 
         // Focus on first OTP box after a small delay
         setTimeout(() => {
@@ -90,18 +90,18 @@ function ForgetPassword() {
           });
         }, 1000);
       } else {
-        alert(otpResponse.data.message || "Failed to send OTP");
+        alert(otpResponse.data.message || 'Failed to send OTP');
       }
     } catch (err) {
       console.error(err);
       setOpenBackdrop(false);
-      alert("Error while sending OTP");
+      alert('Error while sending OTP');
     }
   };
 
   // ---- Handle OTP Change ----
   const handleOtpChange = (e, index) => {
-    const value = e.target.value.replace(/[^0-9]/g, "");
+    const value = e.target.value.replace(/[^0-9]/g, '');
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
@@ -113,16 +113,16 @@ function ForgetPassword() {
 
   // ---- Handle Keyboard Navigation ----
   const handleKeyDown = (e, index) => {
-    if (e.key === "Backspace" && !otp[index] && index > 0) {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
       inputRefs.current[index - 1].focus();
     }
   };
 
   // ---- Verify OTP ----
   const handleVerifyOtp = async () => {
-    const enteredOtp = otp.join("");
+    const enteredOtp = otp.join('');
     if (enteredOtp.length !== 4) {
-      alert("Please enter complete 4-digit OTP");
+      alert('Please enter complete 4-digit OTP');
       return;
     }
 
@@ -130,25 +130,25 @@ function ForgetPassword() {
       setOpenBackdrop(true);
       const sendReq = {
         username: empCode,
-        source: "Change Password OTP",
+        source: 'Change Password OTP',
         otp: enteredOtp,
       };
       const response = await verifyOtp(sendReq);
       setOpenBackdrop(false);
 
       if (
-        response.data?.code === "200" &&
-        response.data.message === "Success"
+        response.data?.code === '200' &&
+        response.data.message === 'Success'
       ) {
-        alert("OTP Verified Successfully!");
+        alert('OTP Verified Successfully!');
         setOpenModal(true);
       } else {
-        alert(response.message || "Invalid OTP");
+        alert(response.message || 'Invalid OTP');
       }
     } catch (err) {
       console.error(err);
       setOpenBackdrop(false);
-      alert("Error verifying OTP");
+      alert('Error verifying OTP');
     }
   };
 
@@ -160,7 +160,7 @@ function ForgetPassword() {
 
   // ---- Resend OTP ----
   const handleResendOtp = () => {
-    setOtp(["", "", "", ""]);
+    setOtp(['', '', '', '']);
     handleSendOtp();
   };
 
@@ -170,28 +170,27 @@ function ForgetPassword() {
 
   const handleUpdate = async () => {
     if (!password || !confirmPassword) {
-      setPassError("Both fields are required");
+      setPassError('Both fields are required');
       return;
     }
     if (password !== confirmPassword) {
-      setPassError("Passwords do not match");
+      setPassError('Passwords do not match');
       return;
     }
 
-    setPassError("");
+    setPassError('');
 
     const payload = {
       username: empCode,
       password: password,
     };
     const res = await updatePassword(payload);
-    if (res.data.code === "200" && res.data.message === "Success") {
-      alert("Password updated successfully!");
+    if (res.data.code === '200' && res.data.message === 'Success') {
+      alert('Password updated successfully!');
       modalClose();
       window.location.reload();
     } else {
       alert(res.data.message);
-      //   setPassError("Failed to update password, please try again");
     }
   };
 
@@ -199,36 +198,36 @@ function ForgetPassword() {
     <>
       <BackgroundContainer>
         <Container maxWidth="md">
-          <Card style={{ padding: "20px", maxWidth: 400, margin: "auto" }}>
+          <Card style={{ padding: '20px', maxWidth: 400, margin: 'auto' }}>
             <CardContent>
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}
               >
                 <img
                   src="/assets/mpebLogo.jpg"
                   alt="Logo"
                   style={{
-                    height: "100px",
-                    width: "100px",
-                    marginBottom: "20px",
-                    borderRadius: "50%",
-                    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+                    height: '100px',
+                    width: '100px',
+                    marginBottom: '20px',
+                    borderRadius: '50%',
+                    boxShadow: '0 5px 15px rgba(0,0,0,0.2)',
                   }}
                 />
 
                 <Typography
                   variant="h5"
                   gutterBottom
-                  fontFamily={"serif"}
+                  fontFamily={'serif'}
                   sx={{
-                    color: "#0a1f83",
-                    fontFamily: "serif",
-                    fontWeight: "bold",
+                    color: '#0a1f83',
+                    fontFamily: 'serif',
+                    fontWeight: 'bold',
                   }}
                 >
                   Change Password
@@ -261,7 +260,7 @@ function ForgetPassword() {
                     variant="contained"
                     color="primary"
                     fullWidth
-                    sx={{ mt: 2, mb: 2, textTransform: "capitalize" }}
+                    sx={{ mt: 2, mb: 2, textTransform: 'capitalize' }}
                     onClick={handleSendOtp}
                   >
                     Send OTP
@@ -277,22 +276,22 @@ function ForgetPassword() {
                       spacing={2}
                       mb={2}
                       sx={{
-                        "& .MuiOutlinedInput-root": {
+                        '& .MuiOutlinedInput-root': {
                           borderRadius: 3,
-                          backgroundColor: "#f5f7fa",
-                          boxShadow: "inset 0 1px 2px rgba(0,0,0,0.08)",
-                          transition: "all 0.2s ease",
-                          "&.Mui-focused": {
-                            boxShadow: "0 0 10px rgba(25,118,210,0.4)",
-                            backgroundColor: "#fff",
-                            transform: "scale(1.05)",
+                          backgroundColor: '#f5f7fa',
+                          boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.08)',
+                          transition: 'all 0.2s ease',
+                          '&.Mui-focused': {
+                            boxShadow: '0 0 10px rgba(25,118,210,0.4)',
+                            backgroundColor: '#fff',
+                            transform: 'scale(1.05)',
                           },
                         },
-                        "& input": {
+                        '& input': {
                           fontWeight: 700,
-                          fontSize: "1.8rem",
-                          textAlign: "center",
-                          color: "#0d1b2a",
+                          fontSize: '1.8rem',
+                          textAlign: 'center',
+                          color: '#0d1b2a',
                         },
                         mt: 2,
                       }}
@@ -308,7 +307,7 @@ function ForgetPassword() {
                           inputRef={(el) => (inputRefs.current[index] = el)}
                           sx={{
                             width: 65,
-                            "& .MuiInputBase-root": { height: 65 },
+                            '& .MuiInputBase-root': { height: 65 },
                           }}
                         />
                       ))}
@@ -318,7 +317,7 @@ function ForgetPassword() {
                       variant="contained"
                       color="success"
                       fullWidth
-                      sx={{ mb: 1, textTransform: "capitalize" }}
+                      sx={{ mb: 1, textTransform: 'capitalize' }}
                       onClick={handleVerifyOtp}
                     >
                       Verify OTP
@@ -331,13 +330,13 @@ function ForgetPassword() {
                       onClick={handleResendOtp}
                       disabled={!canResend}
                     >
-                      {canResend ? "Resend OTP" : `Resend OTP in ${timer}s`}
+                      {canResend ? 'Resend OTP' : `Resend OTP in ${timer}s`}
                     </Button>
                   </>
                 )}
               </Box>
 
-              <Box sx={{ textAlign: "center", mt: 2 }}>
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
                 <Link to="/login" className="LinkButton">
                   User Login ?
                 </Link>
@@ -355,8 +354,8 @@ function ForgetPassword() {
             backdrop: {
               timeout: 500,
               sx: {
-                backdropFilter: "blur(8px)",
-                backgroundColor: "rgba(0, 0, 0, 0.45)",
+                backdropFilter: 'blur(8px)',
+                backgroundColor: 'rgba(0, 0, 0, 0.45)',
               },
             },
           }}
@@ -364,16 +363,16 @@ function ForgetPassword() {
           <Fade in={openModal}>
             <Box
               sx={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
                 width: 400,
-                bgcolor: "background.paper",
+                bgcolor: 'background.paper',
                 borderRadius: 3,
                 boxShadow: 24,
                 p: 4,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -382,7 +381,7 @@ function ForgetPassword() {
 
               <TextField
                 label="Enter Password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 fullWidth
                 sx={{ mb: 2 }}
                 value={password}
@@ -400,7 +399,7 @@ function ForgetPassword() {
 
               <TextField
                 label="Confirm Password"
-                type={showConfirm ? "text" : "password"}
+                type={showConfirm ? 'text' : 'password'}
                 fullWidth
                 sx={{ mb: 2 }}
                 value={confirmPassword}
@@ -434,7 +433,7 @@ function ForgetPassword() {
         </Modal>
 
         <Backdrop
-          sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={openBackdrop}
         >
           <PropagateLoader />

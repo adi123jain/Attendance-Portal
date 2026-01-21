@@ -17,7 +17,6 @@ function LeaveReports() {
   const [toDate, setToDate] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [reportData, setReportData] = useState([]);
 
   useEffect(() => {
     (async () => {
@@ -42,18 +41,6 @@ function LeaveReports() {
       setCircles([]);
     }
   };
-
-  // const validateInputs = () => {
-  //   const newErrors = {};
-  //   if (!selectedRegion) newErrors.region = 'Please select a region';
-  //   if (!fromDate) newErrors.fromDate = 'Please select From Date';
-  //   if (!toDate) newErrors.toDate = 'Please select To Date';
-  //   if (fromDate && toDate && new Date(toDate) < new Date(fromDate)) {
-  //     newErrors.toDate = 'To Date cannot be before From Date';
-  //   }
-  //   setErrors(newErrors);
-  //   return Object.keys(newErrors).length === 0;
-  // };
 
   const formatDateForAPI = (date) => {
     const d = new Date(date);

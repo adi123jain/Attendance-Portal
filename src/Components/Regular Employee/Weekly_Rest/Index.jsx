@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 import {
   getEmpWeeklyRest,
@@ -12,10 +12,8 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   Box,
   Backdrop,
@@ -25,8 +23,6 @@ import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import {
   StyledTableRow,
@@ -218,13 +214,6 @@ function OutsourceEmpWeeklyRest() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            {/* <Typography
-              variant="body1"
-              sx={{ color: '#0a1f83', fontFamily: 'serif', fontWeight: 'bold' }}
-            >
-              Weekly Rest Change
-            </Typography> */}
-
             <Typography
               variant="h6"
               sx={{

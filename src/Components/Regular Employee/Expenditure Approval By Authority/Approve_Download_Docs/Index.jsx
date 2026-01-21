@@ -1,76 +1,42 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link, useLocation } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
   Typography,
   Button,
   Backdrop,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Paper,
   Tooltip,
-} from "@mui/material";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import { getIncentiveByrefNo, submitExpByRo } from "../../../../Services/Auth";
+} from '@mui/material';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
+import { getIncentiveByrefNo, submitExpByRo } from '../../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../../Constants/TableStyles/Index';
 
 function ApproveExpenditureByAuthority() {
   const location = useLocation();
-  const referenceNo = location.state?.referenceNo || "";
+  const referenceNo = location.state?.referenceNo || '';
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [headsInTable, setHeadsInTable] = useState([]);
-  const [region, setRegion] = useState("");
-  const [circle, setCircle] = useState("");
-  const [division, setDivision] = useState("");
-  const [subDivision, setSubDivision] = useState("");
-  const [dc, setDc] = useState("");
-  const [designation, setDesignation] = useState("");
-  const [currentMonth, setCurrentMonth] = useState("");
-  const [requestedAmt, setRequestedAmt] = useState("");
+  const [region, setRegion] = useState('');
+  const [circle, setCircle] = useState('');
+  const [division, setDivision] = useState('');
+  const [subDivision, setSubDivision] = useState('');
+  const [dc, setDc] = useState('');
+  const [designation, setDesignation] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
+  const [requestedAmt, setRequestedAmt] = useState('');
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -78,7 +44,7 @@ function ApproveExpenditureByAuthority() {
       try {
         const response = await getIncentiveByrefNo(referenceNo);
         console.log(response);
-        if (response.data.code == "200") {
+        if (response.data.code === '200') {
           setOpenBackdrop(false);
           setHeadsInTable(response.data.list[0].heads);
           setRegion(response.data.list[0].region.name);
@@ -94,26 +60,26 @@ function ApproveExpenditureByAuthority() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.log("error", error);
+        console.log('error', error);
         setOpenBackdrop(false);
       }
     };
     fetchDetails();
   }, []);
 
-  const [status, setStatus] = useState("");
-  const [remark, setRemark] = useState("");
+  const [status, setStatus] = useState('');
+  const [remark, setRemark] = useState('');
   const statusRef = useRef(null);
   const remarkRef = useRef(null);
 
   const expenditureApproval = async () => {
     if (!status) {
-      alert("Status is required");
+      alert('Status is required');
       statusRef.current.focus();
       return;
     }
     if (!remark.trim()) {
-      alert("Remark is required");
+      alert('Remark is required');
       remarkRef.current.focus();
       return;
     }
@@ -123,23 +89,23 @@ function ApproveExpenditureByAuthority() {
         action: status,
         remark: remark,
         refNo: referenceNo,
-        updatedBy: sessionStorage.getItem("empCode"),
+        updatedBy: sessionStorage.getItem('empCode'),
       };
 
       const response = await submitExpByRo(payload);
       console.log(response);
-      if (response.data.code === "200") {
-        alert("Submitted successfully!");
-        setStatus("");
-        setRemark("");
+      if (response.data.code === '200') {
+        alert('Submitted successfully!');
+        setStatus('');
+        setRemark('');
         setOpenBackdrop(false);
       } else {
-        alert(response.data.message || "Something went wrong");
+        alert(response.data.message || 'Something went wrong');
         setOpenBackdrop(false);
       }
     } catch (error) {
       console.error(error);
-      alert("Error submitting data");
+      alert('Error submitting data');
       setOpenBackdrop(false);
     }
   };
@@ -158,11 +124,11 @@ function ApproveExpenditureByAuthority() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Expenditure Approval
@@ -175,11 +141,11 @@ function ApproveExpenditureByAuthority() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
+                  textAlign: 'center',
+                  color: '#0a1f83',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Basic Information
@@ -266,7 +232,7 @@ function ApproveExpenditureByAuthority() {
 
           <Card className="mt-4">
             <Card.Body>
-              <TableContainer component={Paper} sx={{ marginTop: "15px" }}>
+              <TableContainer component={Paper} sx={{ marginTop: '15px' }}>
                 <Table>
                   <TableHead>
                     <StyledTableRow>
@@ -287,22 +253,22 @@ function ApproveExpenditureByAuthority() {
                           <StyledTableCell>{index + 1}</StyledTableCell>
 
                           <StyledTableCell>
-                            {item.head?.name || "-"}
+                            {item.head?.name || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.vendorName || "-"}
+                            {item.vendorName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.headCount || "-"}
+                            {item.headCount || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.amount || "-"}
+                            {item.amount || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.usedAmount || "-"}
+                            {item.usedAmount || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.docDate || "-"}
+                            {item.docDate || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
                             {item.docPath ? (
@@ -319,7 +285,7 @@ function ApproveExpenditureByAuthority() {
                                 />
                               </Button>
                             ) : (
-                              "NA"
+                              'NA'
                             )}
                           </StyledTableCell>
                         </StyledTableRow>
@@ -361,7 +327,6 @@ function ApproveExpenditureByAuthority() {
                   </Card>
                 </Col>
 
-                {/* Remark Textarea */}
                 <Col xs={12} md={8}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
@@ -401,7 +366,7 @@ function ApproveExpenditureByAuthority() {
         </Card.Footer>
       </Card>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

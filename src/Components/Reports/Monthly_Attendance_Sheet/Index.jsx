@@ -84,20 +84,6 @@ function MonthlyAttendanceView() {
   return (
     <>
       <Card>
-        {/* <Card.Header className="text-center text-primary p-3">
-          <Typography
-            variant="h4"
-            sx={{
-              color: '#0a1f83',
-              mb: 2,
-              fontFamily: 'serif',
-              fontWeight: 'bold',
-            }}
-          >
-            Monthly Attendance Sheet
-          </Typography>
-        </Card.Header> */}
-
         <Card.Header className="p-3 d-flex align-items-center position-relative">
           <Tooltip title="Back" arrow placement="top">
             <Button className="position-absolute start-2">

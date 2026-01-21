@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { Button, Typography, Backdrop } from '@mui/material';
@@ -73,7 +73,6 @@ function PaySlip() {
 
           <Card.Body>
             <div className="row justify-content-center mt-4 mb-4">
-              {/* Month Selector */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Month</Card.Header>
@@ -96,7 +95,6 @@ function PaySlip() {
                 </Card>
               </div>
 
-              {/* Year Selector */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Year</Card.Header>
@@ -133,7 +131,6 @@ function PaySlip() {
         </Card>
       </div>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

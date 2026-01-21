@@ -294,6 +294,7 @@ function AddNewEmployee({
       if (response.data.code === '200') {
         alert('New Employee Created Successfully !!');
         setOpenBackdrop(false);
+        window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);

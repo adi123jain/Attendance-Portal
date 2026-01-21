@@ -43,7 +43,6 @@ function EmployeeForm16() {
     <>
       <div className="container d-flex justify-content-center">
         <Card style={{ width: '100%', maxWidth: '1000px' }}>
-          {/* Header */}
           <Card.Header className="text-center text-primary p-3">
             <Typography
               variant="h4"
@@ -58,10 +57,8 @@ function EmployeeForm16() {
             </Typography>
           </Card.Header>
 
-          {/* Body */}
           <Card.Body>
             <div className="row justify-content-center mt-4 mb-4">
-              {/* Employee Code */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Employee Code</Card.Header>
@@ -71,7 +68,6 @@ function EmployeeForm16() {
                 </Card>
               </div>
 
-              {/* Year Selector */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Year</Card.Header>
@@ -96,7 +92,6 @@ function EmployeeForm16() {
             </div>
           </Card.Body>
 
-          {/* Footer */}
           <Card.Footer className="text-center p-3">
             <Button
               onClick={handleDownloadForm16}
@@ -109,7 +104,6 @@ function EmployeeForm16() {
         </Card>
       </div>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

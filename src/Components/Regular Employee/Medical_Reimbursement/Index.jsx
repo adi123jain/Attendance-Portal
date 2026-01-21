@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col, Form } from 'react-bootstrap';
 import {
@@ -151,14 +151,6 @@ function MedicalReimbirsement() {
     }
   };
 
-  // const handleChange = (e) => {
-  //   const { name, value, files, type } = e.target;
-  //   setFormData({
-  //     ...formData,
-  //     [name]: type === 'file' ? files[0] : value,
-  //   });
-  // };
-
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
 
@@ -185,8 +177,6 @@ function MedicalReimbirsement() {
     const fetchGradePay = async () => {
       try {
         const response = await currentGradePay();
-        // console.log('API Response:', response);
-
         setGradePays(response.data.list || []);
       } catch (err) {
         console.error('Error fetching grade pay:', err);
@@ -220,18 +210,6 @@ function MedicalReimbirsement() {
     );
     updated[entryIdx].drugs = drugList;
     setDrugEntries(updated);
-  };
-
-  const handleAdd = () => {
-    setDrugEntries([
-      ...drugEntries,
-      {
-        shopName: '',
-        cashMemoNo: '',
-        cashMemoDate: '',
-        drugs: [{ drugName: '', quantity: '', totalValue: '' }],
-      },
-    ]);
   };
 
   const handleDelete = (index) => {
@@ -330,36 +308,9 @@ function MedicalReimbirsement() {
 
     if (formData.uploadMemo)
       dataToSend.append('memoDoc', formData.uploadMemo || '');
-
     dataToSend.append('bankName', formData.bankName || '');
     dataToSend.append('bankIfsc', formData.bankIfsc || '');
     dataToSend.append('bankAccount', formData.bankAccount || '');
-
-    // drugEntries.forEach((entry, entryIndex) => {
-    //   dataToSend.append(`medi.shopName`, entry.shopName || '');
-    //   dataToSend.append(`medi.cashMemoNo`, entry.cashMemoNo || '');
-    //   dataToSend.append(`medi.cashMemoDate`, entry.cashMemoDate || '');
-
-    //   entry.drugs.forEach((drug, drugIndex) => {
-    //     dataToSend.append(
-    //       `medi.memoList[${drugIndex}].cashMemoNo`,
-    //       entry.cashMemoNo || '',
-    //     );
-
-    //     dataToSend.append(
-    //       `medi.memoList[${drugIndex}].drugName`,
-    //       drug.drugName || '',
-    //     );
-    //     dataToSend.append(
-    //       `medi.memoList[${drugIndex}].quantity`,
-    //       drug.quantity || '',
-    //     );
-    //     dataToSend.append(
-    //       `medi.memoList[${drugIndex}].totalValue`,
-    //       drug.totalValue || '',
-    //     );
-    //   });
-    // });
 
     // Debug: check FormData
     for (let pair of dataToSend.entries()) {
@@ -385,8 +336,6 @@ function MedicalReimbirsement() {
   };
 
   const medicineSubmission = async (refNo) => {
-    // Build Medicine JSON payload
-    // alert(refNo);
     const mediPayload = {
       refNo: refNo,
       shopName: drugEntries[0]?.shopName || '',
@@ -408,18 +357,13 @@ function MedicalReimbirsement() {
       });
     });
 
-    // console.log('Medicine JSON', mediPayload);
-
     try {
-      // Call API
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
         window.location.reload();
       } else {
         alert(response.data.message);
       }
-
-      // console.log('Medicine Response:', response);
     } catch (error) {
       console.log('Error', error);
     }
@@ -458,7 +402,6 @@ function MedicalReimbirsement() {
         </Card.Header>
 
         <Card.Body>
-          {/* Radio Control */}
           <Box display="flex" justifyContent="center">
             <FormControl component="fieldset">
               <RadioGroup
@@ -601,7 +544,6 @@ function MedicalReimbirsement() {
               </Card.Body>
             </Card>
 
-            {/* ================== PATIENT INFO ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={5} className="g-3">
@@ -760,7 +702,6 @@ function MedicalReimbirsement() {
               </Card>
             )}
 
-            {/* ================== DISEASE & DOCTOR ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={4} className="g-3">
@@ -825,7 +766,6 @@ function MedicalReimbirsement() {
               </Card.Body>
             </Card>
 
-            {/* ================== CERTIFICATE ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={4} className="g-3">
@@ -908,7 +848,6 @@ function MedicalReimbirsement() {
                         <Form.Control
                           type="file"
                           name="essentialityCertificate"
-                          // value={formData.essentialityCertificate}
                           onChange={handleChange}
                         />
                       </Card.Body>
@@ -959,7 +898,6 @@ function MedicalReimbirsement() {
             </Card>
           </div>
 
-          {/* Extra fields for IPD */}
           {formType === 'IPD' && (
             <>
               <Card className="mb-3">
@@ -977,7 +915,6 @@ function MedicalReimbirsement() {
                 </Card.Header>
 
                 <Card.Body>
-                  {/* Hospital Details */}
                   <Row xs={1} md={4} className="mt-2 g-3">
                     <Col>
                       <Card>
@@ -1037,8 +974,6 @@ function MedicalReimbirsement() {
                       </Card>
                     </Col>
                   </Row>
-
-                  {/* Packages and Tests */}
 
                   <Row className="mt-3 g-3">
                     <Col md={3}>
@@ -1108,7 +1043,6 @@ function MedicalReimbirsement() {
                     </Col>
                   </Row>
 
-                  {/* Hospital Treatment */}
                   <Row className="mt-3">
                     <Col>
                       <Card>
@@ -1176,7 +1110,6 @@ function MedicalReimbirsement() {
                             </Col>
                           </Row>
 
-                          {/* Pathological Tests */}
                           <Card className="mt-3">
                             <Card.Header className="text-center p-3">
                               <Typography
@@ -1244,7 +1177,6 @@ function MedicalReimbirsement() {
                             </Card.Body>
                           </Card>
 
-                          {/* Other Charges */}
                           <Row className="g-3 mt-3">
                             <Col md={4}>
                               <Card>
@@ -1483,7 +1415,6 @@ function MedicalReimbirsement() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { Divider } from "@mui/material";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import ImageIcon from "@mui/icons-material/Image";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+import { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link, useLocation } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
+import ImageIcon from '@mui/icons-material/Image';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 import {
   Typography,
@@ -19,62 +14,24 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   approveCorrections,
   approveLeave,
   getImpressionImage,
   getEmpAttSummary,
   getEmpCorrectionsDetails,
-} from "../../../Services/Auth";
-import Modal from "react-bootstrap/Modal";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+} from '../../../Services/Auth';
+import Modal from 'react-bootstrap/Modal';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function CorrectionApproval() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -91,7 +48,7 @@ function CorrectionApproval() {
       try {
         const response = await getEmpAttSummary(empCode, month, year);
         // console.log(response);
-        if (response.data.code == "200") {
+        if (response.data.code === '200') {
           setAttSummary(response.data.list);
           setOpenBackdrop(false);
         } else {
@@ -99,7 +56,7 @@ function CorrectionApproval() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
         setOpenBackdrop(false);
       }
     };
@@ -114,7 +71,7 @@ function CorrectionApproval() {
       try {
         const response = await getEmpCorrectionsDetails(empCode, month, year);
         // console.log("100-", response);
-        if (response.data.code == "200") {
+        if (response.data.code === '200') {
           setEmpCorrections(response.data.list);
           setOpenBackdrop(false);
         } else {
@@ -122,7 +79,7 @@ function CorrectionApproval() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
         setOpenBackdrop(false);
       }
     };
@@ -131,8 +88,8 @@ function CorrectionApproval() {
   }, []);
 
   const [selectedRows, setSelectedRows] = useState([]);
-  const [selectValue, setSelectValue] = useState("");
-  const [remark, setRemark] = useState("");
+  const [selectValue, setSelectValue] = useState('');
+  const [remark, setRemark] = useState('');
   const [selectAll, setSelectAll] = useState(false);
 
   //  Handle select all checkbox
@@ -161,17 +118,17 @@ function CorrectionApproval() {
 
   const handleSubmit = async () => {
     if (!selectValue) {
-      alert("Please select a status (Approved/Rejected).");
+      alert('Please select a status (Approved/Rejected).');
       selectRef.current?.focus();
       return;
     }
     if (!remark.trim()) {
-      alert("Remark is required.");
+      alert('Remark is required.');
       remarkRef.current?.focus();
       return;
     }
     if (selectedRows.length === 0) {
-      alert("Please select at least one record.");
+      alert('Please select at least one record.');
       return;
     }
 
@@ -182,7 +139,7 @@ function CorrectionApproval() {
       const messages = [];
 
       for (const record of selectedData) {
-        if (record.applyFor === "Present") {
+        if (record.applyFor === 'Present') {
           const payload = {
             empCode: record.empCode,
             punchDate: record.punchDate,
@@ -191,14 +148,14 @@ function CorrectionApproval() {
           };
 
           const correctionResponse = await approveCorrections(payload);
-          console.log("Present response:", correctionResponse.data);
+          console.log('Present response:', correctionResponse.data);
 
-          if (correctionResponse.data.code === "200") {
+          if (correctionResponse.data.code === '200') {
             messages.push(`Status Updated Successfully!!`);
           } else {
             messages.push(`${correctionResponse.data.message}`);
           }
-        } else if (record.applyFor === "Leave") {
+        } else if (record.applyFor === 'Leave') {
           const payload = {
             empCode: record.empCode,
             leaveDate: record.punchDate,
@@ -210,8 +167,8 @@ function CorrectionApproval() {
           };
 
           const leaveResponse = await approveLeave(payload);
-          console.log("Leave response:", leaveResponse.data);
-          if (leaveResponse.data.code === "200") {
+          console.log('Leave response:', leaveResponse.data);
+          if (leaveResponse.data.code === '200') {
             messages.push(`Status Updated Successfully!!`);
           } else {
             messages.push(`${leaveResponse.data.message}`);
@@ -220,11 +177,11 @@ function CorrectionApproval() {
       }
 
       // Show all results at once
-      alert(messages.join("\n"));
+      alert(messages.join('\n'));
       window.location.reload();
     } catch (err) {
-      console.error("Error submitting:", err);
-      alert("Something went wrong while submitting!");
+      console.error('Error submitting:', err);
+      alert('Something went wrong while submitting!');
     }
   };
 
@@ -240,28 +197,31 @@ function CorrectionApproval() {
     const inputDate = new Date(items.punchDate);
 
     const months = [
-      "JAN",
-      "FEB",
-      "MAR",
-      "APR",
-      "MAY",
-      "JUN",
-      "JUL",
-      "AUG",
-      "SEP",
-      "OCT",
-      "NOV",
-      "DEC",
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC',
     ];
 
-    const formattedDate = `${String(inputDate.getDate()).padStart(2, "0")}-${
+    const formattedDate = `${String(inputDate.getDate()).padStart(2, '0')}-${
       months[inputDate.getMonth()]
     }-${inputDate.getFullYear().toString().slice(-2)}`;
 
     try {
       const response = await getImpressionImage(items.empCode, formattedDate);
       // console.log("impResponse", response);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
         setImpressionData(response?.data.list);
         setOpenBackdrop(false);
       } else {
@@ -269,7 +229,7 @@ function CorrectionApproval() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
       setOpenBackdrop(false);
     }
   };
@@ -298,11 +258,11 @@ function CorrectionApproval() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Approve Leave's / Correction's
@@ -317,10 +277,10 @@ function CorrectionApproval() {
                   <Typography
                     variant="h5"
                     sx={{
-                      color: "#0a1f83",
+                      color: '#0a1f83',
                       mb: 2,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
                     }}
                   >
                     Attendance Count
@@ -371,10 +331,10 @@ function CorrectionApproval() {
                   <Typography
                     variant="h5"
                     sx={{
-                      color: "#0a1f83",
+                      color: '#0a1f83',
                       mb: 2,
-                      fontFamily: "serif",
-                      fontWeight: "bold",
+                      fontFamily: 'serif',
+                      fontWeight: 'bold',
                     }}
                   >
                     Employee Information
@@ -410,10 +370,10 @@ function CorrectionApproval() {
               <Typography
                 variant="h5"
                 sx={{
-                  color: "#0a1f83",
+                  color: '#0a1f83',
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Update Leave's and Corrections
@@ -510,7 +470,7 @@ function CorrectionApproval() {
                                 </Button>
                               </Tooltip>
                             ) : (
-                              "-"
+                              '-'
                             )}
                           </StyledTableCell>
                           <StyledTableCell>{item.empCode}</StyledTableCell>
@@ -557,10 +517,10 @@ function CorrectionApproval() {
             <Typography
               variant="h5"
               sx={{
-                color: "#0a1f83",
+                color: '#0a1f83',
                 // mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
               }}
             >
               Employee Impressions
@@ -594,17 +554,17 @@ function CorrectionApproval() {
                       <StyledTableCell>{item.empCode}</StyledTableCell>
                       <StyledTableCell>{item.empName}</StyledTableCell>
                       <StyledTableCell>
-                        {item.punchTime ? item.punchTime.split("T")[0] : "--"}
+                        {item.punchTime ? item.punchTime.split('T')[0] : '--'}
                       </StyledTableCell>
                       <StyledTableCell>
                         {item.punchTime
-                          ? item.punchTime.split("T")[1].split(".")[0]
-                          : "--"}
+                          ? item.punchTime.split('T')[1].split('.')[0]
+                          : '--'}
                       </StyledTableCell>
                       <StyledTableCell>{item.logType}</StyledTableCell>
                       <StyledTableCell>{item.source}</StyledTableCell>
                       <StyledTableCell>
-                        {item.source === "BIOMETRIC" || !item.imgPath ? (
+                        {item.source === 'BIOMETRIC' || !item.imgPath ? (
                           <Button color="secondary" size="small" disabled>
                             View
                           </Button>
@@ -638,7 +598,7 @@ function CorrectionApproval() {
       </Modal>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

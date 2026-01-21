@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
-import Form from "react-bootstrap/Form";
+import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { useNavigate } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import { styled } from '@mui/material/styles';
+import { tableCellClasses } from '@mui/material/TableCell';
+import '../../../Constants/Style/styles.css';
+import Form from 'react-bootstrap/Form';
 
 import {
   Typography,
@@ -23,7 +23,7 @@ import {
   Button,
   TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   getDepartment,
   getDesignation,
@@ -31,13 +31,13 @@ import {
   getOutsourcePlaceOfPosting,
   submitOutsourcePlaceOfPosting,
   submitPlaceOfPosting,
-} from "../../../Services/Auth";
-import SearchUtils from "../../../Constants/Search_Utils/Index";
-import SearchForPostings from "./Search";
+} from '../../../Services/Auth';
+import SearchUtils from '../../../Constants/Search_Utils/Index';
+import SearchForPostings from './Search';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -77,19 +77,19 @@ function OutsourcePlaceOfPosting() {
   const [dataInTable, setDataInTable] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
-    designation: "",
-    department: "",
-    fromDate: "",
-    toDate: "",
-    feeder: "",
-    focType: "",
-    feederName: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
+    designation: '',
+    department: '',
+    fromDate: '',
+    toDate: '',
+    feeder: '',
+    focType: '',
+    feederName: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -101,8 +101,8 @@ function OutsourcePlaceOfPosting() {
         const response = await getOutsourcePlaceOfPosting(empCode);
         console.log(response);
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code == '200' &&
+          response?.data.message == 'Success'
         ) {
           setOpenBackdrop(false);
           setDataInTable(response?.data.list);
@@ -111,7 +111,7 @@ function OutsourcePlaceOfPosting() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.error("Error fetching place of posting:", error);
+        console.error('Error fetching place of posting:', error);
         setOpenBackdrop(false);
       }
     };
@@ -128,13 +128,13 @@ function OutsourcePlaceOfPosting() {
       try {
         const response = await getDesignation();
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code == '200' &&
+          response?.data.message == 'Success'
         ) {
           setDesignations(response?.data.list || []);
         }
       } catch (error) {
-        console.error("Error fetching designations", error);
+        console.error('Error fetching designations', error);
       }
     };
 
@@ -149,13 +149,13 @@ function OutsourcePlaceOfPosting() {
       try {
         const response = await getDepartment();
         if (
-          response?.data.code == "200" &&
-          response?.data.message == "Success"
+          response?.data.code == '200' &&
+          response?.data.message == 'Success'
         ) {
           setDepartment(response?.data.list || []);
         }
       } catch (error) {
-        console.log("Error", error);
+        console.log('Error', error);
       }
     };
 
@@ -174,7 +174,7 @@ function OutsourcePlaceOfPosting() {
     const { name, value } = e.target;
 
     // For feeder, also get the text
-    if (name === "feeder") {
+    if (name === 'feeder') {
       const feederName = e.target.selectedOptions[0].text;
 
       setSearchValues((prev) => ({
@@ -194,32 +194,32 @@ function OutsourcePlaceOfPosting() {
     const newErrors = {};
     // region validation (keep as you already have)
     if (!searchValues.region) {
-      newErrors.region = " *region is required.";
+      newErrors.region = ' *region is required.';
     }
 
     if (!searchValues.focType) {
-      newErrors.focType = " *Foc Type is required.";
+      newErrors.focType = ' *Foc Type is required.';
     }
     // designation validation
     if (!searchValues.designation) {
-      newErrors.designation = " *designation is required.";
+      newErrors.designation = ' *designation is required.';
     }
     // department validation
     if (!searchValues.department) {
-      newErrors.department = " *department is required.";
+      newErrors.department = ' *department is required.';
     }
     // date validations
     if (!searchValues.fromDate) {
-      newErrors.fromDate = " *From Date is required.";
+      newErrors.fromDate = ' *From Date is required.';
     }
 
     if (!searchValues.toDate) {
-      newErrors.toDate = " *To Date is required.";
+      newErrors.toDate = ' *To Date is required.';
     } else if (
       searchValues.fromDate &&
       searchValues.toDate < searchValues.fromDate
     ) {
-      newErrors.toDate = " *To Date cannot be earlier than From Date.";
+      newErrors.toDate = ' *To Date cannot be earlier than From Date.';
     }
 
     setErrors(newErrors);
@@ -250,18 +250,21 @@ function OutsourcePlaceOfPosting() {
       feederName: searchValues.feederName,
       feeder: searchValues.feeder,
       focType: searchValues.focType,
-      createdBy: String(sessionStorage.getItem("empCode")),
+      createdBy: String(sessionStorage.getItem('empCode')),
     };
     try {
       const response = await submitOutsourcePlaceOfPosting(payload);
-      if (response?.data.code == "200" && response?.data.message == "Success") {
-        alert("Employee Posting Successfully !!");
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
+        alert('Employee Posting Successfully !!');
         window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -274,7 +277,7 @@ function OutsourcePlaceOfPosting() {
         className="shadow-lg rounded"
         style={{
           //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -282,9 +285,9 @@ function OutsourcePlaceOfPosting() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             View and Update Employee Place of Postings (Outsource)
@@ -295,8 +298,8 @@ function OutsourcePlaceOfPosting() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
-              marginTop: "20px",
+              textAlign: 'center',
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -304,9 +307,9 @@ function OutsourcePlaceOfPosting() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
                 // color="primary"
               >
@@ -342,44 +345,44 @@ function OutsourcePlaceOfPosting() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.employeeName || "-"}
+                            {item.employeeName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>{item.empCode}</StyledTableCell>
                           <StyledTableCell>
-                            {item.regionName || "-"}
+                            {item.regionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.circleName || "-"}
+                            {item.circleName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.divisionName || "-"}
+                            {item.divisionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.subDivisionName || "-"}
+                            {item.subDivisionName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.dcName || "-"}
+                            {item.dcName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.subStation || "-"}
+                            {item.subStation || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.feederName || "-"}
+                            {item.feederName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.focType || "-"}
+                            {item.focType || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.designation || "-"}
+                            {item.designation || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.departmentName || "-"}
+                            {item.departmentName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.fromDate || "-"}
+                            {item.fromDate || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.toDate || "-"}
+                            {item.toDate || '-'}
                           </StyledTableCell>
                         </StyledTableRow>
                       ))
@@ -399,7 +402,7 @@ function OutsourcePlaceOfPosting() {
           <Card
             // className="shadow-lg rounded"
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center p-3">
@@ -407,9 +410,9 @@ function OutsourcePlaceOfPosting() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Insert Employee's Place of Posting (Outsource)
@@ -580,7 +583,7 @@ function OutsourcePlaceOfPosting() {
                         value={searchValues.toDate}
                         onChange={handleInputChange}
                         isInvalid={!!errors.toDate}
-                        min={searchValues.fromDate || ""}
+                        min={searchValues.fromDate || ''}
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.toDate}
@@ -624,7 +627,7 @@ function OutsourcePlaceOfPosting() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

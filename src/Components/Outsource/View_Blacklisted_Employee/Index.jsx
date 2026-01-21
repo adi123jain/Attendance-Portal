@@ -1,73 +1,36 @@
-import React, { useState, useEffect, useRef } from "react";
-import Card from "react-bootstrap/Card";
-import Form from "react-bootstrap/Form";
+import React, { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import {
   getBlackListedEmp,
   getCircle,
-  getEmpMasterData,
   getRegion,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Button,
   TextField,
   Backdrop,
-} from "@mui/material";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
+} from '@mui/material';
+import { PropagateLoader } from 'react-spinners';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function ViewBlacklistedEmployee() {
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const tableRef = useRef(null);
 
   useEffect(() => {
@@ -76,7 +39,7 @@ function ViewBlacklistedEmployee() {
         const response = await getRegion();
         setRegions(response?.data?.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     };
     fetchRegions();
@@ -85,12 +48,12 @@ function ViewBlacklistedEmployee() {
   const handleRegionChange = async (e) => {
     const regionId = e.target.value;
     setSelectedRegion(regionId);
-    setSelectedCircle("");
+    setSelectedCircle('');
     try {
       const circleResponse = await getCircle(regionId);
       setCircles(circleResponse?.data?.list || []);
     } catch (error) {
-      console.error("Error fetching circles:", error);
+      console.error('Error fetching circles:', error);
       setCircles([]);
     }
   };
@@ -100,13 +63,13 @@ function ViewBlacklistedEmployee() {
 
   useEffect(() => {
     if (showTableCard && blacklistedEmployees.length > 0 && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showTableCard, blacklistedEmployees]);
 
   const viewBlacklistedEmp = async () => {
     const validationErrors = {};
-    if (!selectedRegion) validationErrors.region = "Region is required";
+    if (!selectedRegion) validationErrors.region = 'Region is required';
     setErrors(validationErrors);
     if (Object.keys(validationErrors).length > 0) return;
 
@@ -115,9 +78,9 @@ function ViewBlacklistedEmployee() {
     try {
       setLoading(true);
       const response = await getBlackListedEmp(selectedRegion, circle);
-      if (response.data.code == "200" && response.data.message == "Success") {
+      if (response.data.code == '200' && response.data.message == 'Success') {
         const list = response?.data?.list || [];
-        console.log("123", list);
+        console.log('123', list);
 
         setBlacklistedEmployees(list);
         setShowTableCard(list.length > 0);
@@ -134,7 +97,7 @@ function ViewBlacklistedEmployee() {
         setShowTableCard(false);
       }
     } catch (error) {
-      console.error("Error fetching blacklisted employees:", error);
+      console.error('Error fetching blacklisted employees:', error);
     } finally {
       setLoading(false);
     }
@@ -148,9 +111,9 @@ function ViewBlacklistedEmployee() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             View Blacklisted Employee Information
@@ -233,9 +196,9 @@ function ViewBlacklistedEmployee() {
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Blacklisted Records
@@ -246,10 +209,10 @@ function ViewBlacklistedEmployee() {
               sx={{
                 mb: 2,
                 mt: 1,
-                width: "50%",
+                width: '50%',
                 mr: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px',
                 },
               }}
               value={searchQuery}
@@ -274,10 +237,10 @@ function ViewBlacklistedEmployee() {
                       .filter((item) => {
                         const query = searchQuery.toLowerCase();
                         return (
-                          String(item.aadharNo || "")
+                          String(item.aadharNo || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.fullName || "")
+                          String(item.fullName || '')
                             .toLowerCase()
                             .includes(query)
                         );
@@ -308,7 +271,7 @@ function ViewBlacklistedEmployee() {
       )}
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}
       >
         <PropagateLoader />

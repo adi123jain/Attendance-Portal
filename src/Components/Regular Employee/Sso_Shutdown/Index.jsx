@@ -1,28 +1,19 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { useNavigate } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
 } from '@mui/material';
 import { getShutDown, submitShutDown } from '../../../Services/Auth';
@@ -31,35 +22,6 @@ import {
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function SsoShutDown() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -72,7 +34,7 @@ function SsoShutDown() {
       setOpenBackdrop(true);
       const response = await getShutDown(sessionEmp, sessionDcId);
       console.log(response);
-      if (response.data.code == '200') {
+      if (response.data.code === '200') {
         setShutdownRecords(response.data.list);
         setOpenBackdrop(false);
       } else {
@@ -123,7 +85,7 @@ function SsoShutDown() {
 
     try {
       const response = await submitShutDown(payload);
-      if (response.data.code == '200') {
+      if (response.data.code === '200') {
         alert('successfully Shutdown !');
         setOpenBackdrop(false);
         window.location.reload();
@@ -194,8 +156,6 @@ function SsoShutDown() {
                       <StyledTableCell>DC Name</StyledTableCell>
                       <StyledTableCell>Shutdown Tagging</StyledTableCell>
                       <StyledTableCell>FY Year</StyledTableCell>
-                      {/* <StyledTableCell>Updated By </StyledTableCell>
-                      <StyledTableCell>Updated Date</StyledTableCell> */}
                       <StyledTableCell>Remark</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
@@ -217,12 +177,7 @@ function SsoShutDown() {
                           <StyledTableCell>
                             {item.fyYear || '-'}
                           </StyledTableCell>
-                          {/* <StyledTableCell>
-                            {item.updatedBy || "-"}
-                          </StyledTableCell> */}
-                          {/* <StyledTableCell>
-                            {item.updated || "-"}
-                          </StyledTableCell> */}
+
                           <StyledTableCell>
                             {item.remark || '-'}
                           </StyledTableCell>

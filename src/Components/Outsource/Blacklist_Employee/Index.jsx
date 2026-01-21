@@ -106,7 +106,7 @@ function BlacklistEmployee() {
     try {
       const response = await employeeBlacklist(payload);
       console.log('Response:', response);
-      if (response.code == '200') {
+      if (response.code === '200') {
         alert(response.data.message);
         window.location.reload();
       } else {

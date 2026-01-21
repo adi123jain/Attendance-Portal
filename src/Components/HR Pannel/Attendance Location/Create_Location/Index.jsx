@@ -88,7 +88,7 @@ function CreateAttendanceLocation() {
       // console.log("create response", response);
       if (response.data.code === '200' && response.data.message === 'Success') {
         alert('Location Created Successfully !!');
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }

@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useLocation } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import { useNavigate } from "react-router-dom";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import { PropagateLoader } from 'react-spinners';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
   Typography,
@@ -18,71 +13,33 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
-} from "@mui/material";
+} from '@mui/material';
 import {
   getPtrFailure,
   getSubstation,
   submitPtrFailure,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const headerBackground = "linear-gradient(135deg, #4F77AA, #1E3C72)";
-// const oddRowBackground = "#F0F6FF"; // soft blue tint
-// const evenRowBackground = "#E4EDFA"; // deeper blue tone
-// const hoverBackground = "#D7E7FF"; // distinct hover glow
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function PowerTransformerReport() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [ptrRecords, setPtrRecords] = useState([]);
-  const sessionEmp = sessionStorage.getItem("empCode");
-  const sessionDcId = sessionStorage.getItem("dcId");
+  const sessionEmp = sessionStorage.getItem('empCode');
+  const sessionDcId = sessionStorage.getItem('dcId');
 
   useEffect(() => {
     const fetchRecords = async () => {
       setOpenBackdrop(true);
       const response = await getPtrFailure(sessionEmp);
-      //console.log(response);
-      if (response.data.code == "200") {
+      if (response.data.code === '200') {
         setPtrRecords(response.data.list);
         setOpenBackdrop(false);
       } else {
@@ -94,13 +51,12 @@ function PowerTransformerReport() {
   }, []);
 
   const [substation, setSubstation] = useState([]);
-  //   const [selectSubstation, setSelectSubstation] = useState("");
 
   useEffect(() => {
     const fetchsubstation = async () => {
       const response = await getSubstation(sessionDcId);
       console.log(response);
-      if (response.data.code == "200") {
+      if (response.data.code === '200') {
         setSubstation(response.data.list);
       } else {
         alert(response.data.message);
@@ -109,11 +65,11 @@ function PowerTransformerReport() {
     fetchsubstation();
   }, []);
 
-  const [selectSubstation, setSelectSubstation] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [year, setYear] = useState("");
+  const [selectSubstation, setSelectSubstation] = useState('');
+  const [capacity, setCapacity] = useState('');
+  const [year, setYear] = useState('');
   const [file, setFile] = useState(null);
-  const [remark, setRemark] = useState("");
+  const [remark, setRemark] = useState('');
   const [errors, setErrors] = useState({});
 
   // refs for focusing
@@ -126,11 +82,11 @@ function PowerTransformerReport() {
   const validateForm = () => {
     let newErrors = {};
 
-    if (!selectSubstation) newErrors.substation = "Substation is required";
-    if (!capacity) newErrors.capacity = "Capacity is required";
-    if (!year) newErrors.year = "Year is required";
-    if (!file) newErrors.file = "File is required";
-    if (!remark.trim()) newErrors.remark = "Remark is required";
+    if (!selectSubstation) newErrors.substation = 'Substation is required';
+    if (!capacity) newErrors.capacity = 'Capacity is required';
+    if (!year) newErrors.year = 'Year is required';
+    if (!file) newErrors.file = 'File is required';
+    if (!remark.trim()) newErrors.remark = 'Remark is required';
 
     setErrors(newErrors);
 
@@ -150,19 +106,19 @@ function PowerTransformerReport() {
     if (!validateForm()) return;
     setOpenBackdrop(true);
     const formData = new FormData();
-    formData.append("substationId", selectSubstation);
-    formData.append("capacityOfPtr", capacity);
-    formData.append("dateOfFailure", year);
-    formData.append("document", file);
-    formData.append("remark", remark);
-    formData.append("jeEmpCode", sessionEmp);
-    formData.append("dcId", sessionDcId);
+    formData.append('substationId', selectSubstation);
+    formData.append('capacityOfPtr', capacity);
+    formData.append('dateOfFailure', year);
+    formData.append('document', file);
+    formData.append('remark', remark);
+    formData.append('jeEmpCode', sessionEmp);
+    formData.append('dcId', sessionDcId);
 
     try {
       const response = await submitPtrFailure(formData);
       //console.log(" Success:", response);
-      if (response.data.code == "200") {
-        alert("PTR Submit Successfully!!");
+      if (response.data.code === '200') {
+        alert('PTR Submit Successfully!!');
         setOpenBackdrop(false);
         window.location.reload();
       } else {
@@ -170,18 +126,18 @@ function PowerTransformerReport() {
         setOpenBackdrop(false);
       }
     } catch (err) {
-      console.error(" Error:", err);
+      console.error(' Error:', err);
       setOpenBackdrop(false);
     }
   };
 
   function downloadPtrDoc(path) {
     if (!path) {
-      alert("Data Not Found");
+      alert('Data Not Found');
       return;
     }
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/OnM/downPtrDoc/${path}`;
-    window.open(url, "_blank");
+    window.open(url, '_blank');
   }
 
   return (
@@ -189,8 +145,7 @@ function PowerTransformerReport() {
       <Card
         className="shadow-lg rounded"
         style={{
-          //   textAlign: "center",
-          marginTop: "20px",
+          marginTop: '20px',
         }}
       >
         <Card.Header className="text-center p-3">
@@ -198,9 +153,9 @@ function PowerTransformerReport() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Power Transformer Report Failure
@@ -209,9 +164,8 @@ function PowerTransformerReport() {
 
         <Card.Body>
           <Card
-            // className="shadow-lg rounded"
             style={{
-              textAlign: "center",
+              textAlign: 'center',
             }}
           >
             <Card.Header className="text-center">
@@ -219,9 +173,9 @@ function PowerTransformerReport() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
                 // color="primary"
               >
@@ -241,8 +195,6 @@ function PowerTransformerReport() {
                       <StyledTableCell>Substation Name</StyledTableCell>
                       <StyledTableCell>Capacity of Failure</StyledTableCell>
                       <StyledTableCell>Date of Failure</StyledTableCell>
-                      {/* <StyledTableCell>Updated By </StyledTableCell>
-                      <StyledTableCell>Updated Date</StyledTableCell> */}
                       <StyledTableCell>Remark</StyledTableCell>
                       <StyledTableCell>Action</StyledTableCell>
                     </StyledTableRow>
@@ -253,29 +205,23 @@ function PowerTransformerReport() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.jeName || "-"}
+                            {item.jeName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>{item.jeEmpCode}</StyledTableCell>
                           <StyledTableCell>
-                            {item.dcName || "-"}
+                            {item.dcName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.substationName || "-"}
+                            {item.substationName || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.capacityOfPtr || "-"}
-                          </StyledTableCell>
-                          {/* <StyledTableCell>
-                            {item.updatedBy || "-"}
-                          </StyledTableCell> */}
-                          {/* <StyledTableCell>
-                            {item.updated || "-"}
-                          </StyledTableCell> */}
-                          <StyledTableCell>
-                            {item.dateOfFailure || "-"}
+                            {item.capacityOfPtr || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.remark || "-"}
+                            {item.dateOfFailure || '-'}
+                          </StyledTableCell>
+                          <StyledTableCell>
+                            {item.remark || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
                             <Tooltip title="Download" arrow placement="top">
@@ -308,7 +254,7 @@ function PowerTransformerReport() {
 
           <Card
             style={{
-              marginTop: "20px",
+              marginTop: '20px',
             }}
           >
             <Card.Header className="text-center">
@@ -316,9 +262,9 @@ function PowerTransformerReport() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Submit Power Transformer Report
@@ -466,7 +412,7 @@ function PowerTransformerReport() {
 
       {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

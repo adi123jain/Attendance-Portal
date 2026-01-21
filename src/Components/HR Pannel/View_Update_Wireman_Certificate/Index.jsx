@@ -200,6 +200,7 @@ function UpdateWiremanCertificateStatus() {
       const response = await updateWiremanCertificateGM(payload);
       if (response.data.code === '200') {
         alert('Updated Successfully!');
+        window.location.reload();
         fetchDetails();
         setRowData({});
         setSelected([]);
@@ -506,7 +507,7 @@ function UpdateWiremanCertificateStatus() {
         >
           <Button
             component={Link}
-            to="/"
+            to="/humanResourceDashboard"
             variant="contained"
             className="cancel-button"
           >

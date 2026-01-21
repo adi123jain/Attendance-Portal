@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, Row, Col, Form } from 'react-bootstrap';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,15 +9,11 @@ import {
   Tooltip,
   Button,
   Backdrop,
-  CardContent,
   Grid,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Box,
   Paper,
 } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
@@ -105,8 +101,6 @@ function MedicalHealthInsuranceView() {
       setErrorMsg('Aadhaar number must be exactly 12 digits.');
       return;
     }
-
-    // If valid → prepare object
 
     const payload = {
       id: memberId,

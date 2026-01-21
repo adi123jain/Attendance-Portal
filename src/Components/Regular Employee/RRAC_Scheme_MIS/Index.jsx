@@ -1,19 +1,13 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import Card from 'react-bootstrap/Card';
-import { Link, useLocation } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import {
-  Divider,
   Typography,
   Button,
   Backdrop,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -21,14 +15,9 @@ import {
   Collapse,
   Box,
 } from '@mui/material';
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
-import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { getIncentiveMisHostory } from '../../../Services/Auth';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -36,36 +25,6 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 
 function RRAC_MIS() {
   const [historyInTable, setHistoryInTable] = useState([]);
@@ -79,7 +38,7 @@ function RRAC_MIS() {
   //  Set default current month & year
   useEffect(() => {
     const today = new Date();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // 01–12
+    const month = String(today.getMonth() + 1).padStart(2, '0');
     const year = today.getFullYear();
     setSelectedMonth(month);
     setSelectedYear(year.toString());
@@ -114,18 +73,8 @@ function RRAC_MIS() {
     }
   };
 
-  // if (response.data.code == "200") {
-  //   setOpenBackdrop(false);
-  //   setHistoryInTable(response.data.list || []);
-  //   setTimeout(() => {
-  //     tableRef.current?.focus();
-  //   }, 100);
-  // } else {
-  //   setOpenBackdrop(false);
-  // }
-
   const [openRow, setOpenRow] = useState(null);
-  const [filter, setFilter] = useState('All'); //  radio filter
+  const [filter, setFilter] = useState('All');
 
   const toggleRow = (index) => {
     setOpenRow(openRow === index ? null : index);
@@ -176,19 +125,20 @@ function RRAC_MIS() {
     const monthYear = `${selectedYear}-${selectedMonth}`;
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/incentive/getIncentiveMIS?monthYear=${monthYear}`;
     window.open(url, '_blank');
-
-    // try {
-    //   const link = document.createElement("a");
-    //   link.href = url;
-    //   link.setAttribute("download", `${monthYear}.xlsx`);
-    //   document.body.appendChild(link);
-    //   link.click();
-    //   document.body.removeChild(link);
-    // } catch (error) {
-    //   console.error("Download failed:", error);
-    //   alert("Something went wrong while downloading Excel.");
-    // }
   };
+
+  const downloadDocument = () => {
+    if (!selectedMonth || !selectedYear) {
+      alert('Please select Month and Year before downloading');
+      return;
+    }
+
+    const monthYear = `${selectedYear}-${selectedMonth}`;
+    const url = `https://attendance.mpcz.in:8888/E-Attendance/api/incentive/getIncentiveMIS?monthYear=${monthYear}`;
+
+    window.open(url, '_blank');
+  };
+
   return (
     <>
       <Card>
@@ -208,8 +158,7 @@ function RRAC_MIS() {
           </Typography>
         </Card.Header>
         <Card.Body>
-          <Row xs={1} sm={3} md={3} className="g-3 mt-2">
-            {/* Month Select */}
+          <Row xs={1} sm={2} md={4} className="g-3 mt-2">
             <Col>
               <Card>
                 <Card.Header>Month</Card.Header>
@@ -238,7 +187,6 @@ function RRAC_MIS() {
               </Card>
             </Col>
 
-            {/* Year Select */}
             <Col>
               <Card>
                 <Card.Header>Year</Card.Header>
@@ -259,7 +207,6 @@ function RRAC_MIS() {
               </Card>
             </Col>
 
-            {/* Search Button */}
             <Col>
               <Card>
                 <Card.Header>click to Search</Card.Header>
@@ -268,6 +215,21 @@ function RRAC_MIS() {
                     variant="contained"
                     className="blue-button w-100"
                     onClick={handleSubmit}
+                  >
+                    Search
+                  </Button>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col>
+              <Card>
+                <Card.Header>Download Excel</Card.Header>
+                <Card.Body>
+                  <Button
+                    variant="contained"
+                    className="green-button w-100"
+                    onClick={downloadDocument}
                   >
                     Search
                   </Button>
@@ -305,7 +267,6 @@ function RRAC_MIS() {
                 />
               </div>
               <Row className="align-items-center g-3">
-                {/* Export Button */}
                 <Col xs={12} md="auto" className="text-center">
                   <Button
                     onClick={downloadExcel}
@@ -316,7 +277,6 @@ function RRAC_MIS() {
                   </Button>
                 </Col>
 
-                {/* Form Groups */}
                 <Col xs={12} md className="d-flex flex-wrap gap-3">
                   <Form.Group
                     controlId="grandTotal"

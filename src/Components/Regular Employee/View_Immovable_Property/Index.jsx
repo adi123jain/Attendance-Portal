@@ -1,12 +1,10 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { viewImmProperty } from '../../../Services/Auth';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import { PropagateLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
 import {
@@ -15,47 +13,20 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   Backdrop,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   Grid,
 } from '@mui/material';
 import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(() => ({
-//   "&:nth-of-type(odd)": { backgroundColor: oddRowBackground },
-//   "&:nth-of-type(even)": { backgroundColor: evenRowBackground },
-//   "&:hover": { backgroundColor: hoverBackground },
-// }));
 
 const years = [2022, 2023, 2024, 2025, 2026, 2027];
 
@@ -148,7 +119,6 @@ function ImmovablePropertyView() {
 
         <Card.Body>
           <Row className="g-3 mt-3 mb-3">
-            {/* Employee Code */}
             <Col xs={12} md={4}>
               <Card className="h-100">
                 <Card.Header>Employee Code</Card.Header>
@@ -163,7 +133,6 @@ function ImmovablePropertyView() {
               </Card>
             </Col>
 
-            {/* Year */}
             <Col xs={12} md={4}>
               <Card className="h-100">
                 <Card.Header>Year</Card.Header>
@@ -187,7 +156,6 @@ function ImmovablePropertyView() {
               </Card>
             </Col>
 
-            {/* View Button */}
             <Col xs={12} md={4}>
               <Card className="h-100">
                 <Card.Header>Details</Card.Header>
@@ -200,7 +168,6 @@ function ImmovablePropertyView() {
             </Col>
           </Row>
 
-          {/* Data Table */}
           <TableContainer component={Paper}>
             <Table ref={tableRef} tabIndex={-1}>
               <TableHead>
@@ -264,7 +231,6 @@ function ImmovablePropertyView() {
           },
         }}
       >
-        {/* Header */}
         <DialogTitle
           sx={{
             textAlign: 'center',
@@ -285,7 +251,6 @@ function ImmovablePropertyView() {
           </Typography>
         </DialogTitle>
 
-        {/* Body */}
         <DialogContent
           dividers
           sx={{
@@ -372,10 +337,6 @@ function ImmovablePropertyView() {
               {fieldCard('Taluka/Village', selectedRow.talukaVillage, 25)}
               {fieldCard('Annual Income', selectedRow.annualIncome, 26)}
               {fieldCard('GPF / PRAN / EPF No', selectedRow.gpfPranEpfNo, 27)}
-              {/* {fieldCard("Is Active", selectedRow.isActive ? "Yes" : "No", 28)}
-              {fieldCard("Created On", selectedRow.created, 29)}
-              {fieldCard("Created By", selectedRow.createdBy, 30)}
-              {fieldCard("Record ID", selectedRow.id, 31)} */}
             </Grid>
           )}
         </DialogContent>

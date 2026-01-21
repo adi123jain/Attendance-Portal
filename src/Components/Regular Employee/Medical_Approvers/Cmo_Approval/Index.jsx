@@ -5,21 +5,16 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   Backdrop,
-  tableCellClasses,
   Tooltip,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Divider,
   Grid,
-  TextField,
   OutlinedInput,
 } from '@mui/material';
 
@@ -27,18 +22,13 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { motion } from 'framer-motion';
-
-import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { styled } from '@mui/material/styles';
 import { PropagateLoader } from 'react-spinners';
 import {
   getMedicalByCmo,
   getMedicalByRefNo,
-  getMedicineDetailByRefNo,
   submitMedicalCmoStatus,
 } from '../../../../Services/Auth';
 import {
@@ -47,71 +37,6 @@ import {
   SubTableRow,
   SubTableCell,
 } from '../../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
-
-// const fieldCard = (label, value, index) => (
-//   <Grid item xs={12} sm={6} md={3} key={index}>
-//     <motion.div
-//       initial={{ opacity: 0, scale: 0.9 }}
-//       animate={{ opacity: 1, scale: 1 }}
-//       transition={{ delay: index * 0.05 }}
-//     >
-//       <Paper
-//         elevation={4}
-//         sx={{
-//           p: 2,
-//           borderRadius: 3,
-//           textAlign: 'center',
-//           transition: 'all 0.3s ease',
-//           background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
-//           '&:hover': {
-//             transform: 'translateY(-5px)',
-//             boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
-//           },
-//         }}
-//       >
-//         <Typography
-//           variant="body2"
-//           sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
-//         >
-//           {label}
-//         </Typography>
-//         <Typography variant="body1" sx={{ color: '#333' }}>
-//           {value || '—'}
-//         </Typography>
-//       </Paper>
-//     </motion.div>
-//   </Grid>
-// );
 
 const fieldCard = (label, value, index, onClick) => (
   <Grid item xs={12} sm={6} md={3} key={index}>
@@ -190,13 +115,8 @@ function MedicalApprovalByCmo() {
   const handlePreview = async (refNo) => {
     try {
       setReferenceNo(refNo);
-
-      // Fetch medicine details (no await? If async, add await)
-      // fetchMedicineDetails(refNo);
-
       const response = await getMedicalByRefNo(refNo);
-      console.log('API Response:', response);
-
+      // console.log('API Response:', response);
       if (
         response?.data?.code === '200' &&
         response?.data?.message === 'Success'
@@ -228,8 +148,6 @@ function MedicalApprovalByCmo() {
       alert('Memo list data not found');
       return;
     }
-
-    // Toggle expand / collapse
     setExpandedRow(expandedRow === index ? null : index);
   };
 
@@ -378,8 +296,6 @@ function MedicalApprovalByCmo() {
       return;
     }
 
-    // console.log('Downloading:', docPath);
-
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
@@ -390,8 +306,6 @@ function MedicalApprovalByCmo() {
       return;
     }
 
-    // console.log('Downloading:', docPath);
-
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
@@ -401,8 +315,6 @@ function MedicalApprovalByCmo() {
       alert('Document not available');
       return;
     }
-
-    // console.log('Downloading:', docPath);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');

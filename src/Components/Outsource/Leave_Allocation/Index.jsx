@@ -293,7 +293,10 @@ function OutsourceLeaveAllocation() {
 
     try {
       const response = await updateEmployeeLeaves(payload);
-      if (response?.data.code == '200' && response?.data.message == 'Success') {
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
         alert('Leave Updated Successfully!!');
         modalClose();
         window.location.reload();

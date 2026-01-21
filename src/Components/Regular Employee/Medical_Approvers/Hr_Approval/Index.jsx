@@ -43,41 +43,6 @@ import {
   SubTableCell,
 } from '../../../../Constants/TableStyles/Index';
 
-// const fieldCard = (label, value, index) => (
-//   <Grid item xs={12} sm={6} md={3} key={index}>
-//     <motion.div
-//       initial={{ opacity: 0, scale: 0.9 }}
-//       animate={{ opacity: 1, scale: 1 }}
-//       transition={{ delay: index * 0.05 }}
-//     >
-//       <Paper
-//         elevation={4}
-//         sx={{
-//           p: 2,
-//           borderRadius: 3,
-//           textAlign: 'center',
-//           transition: 'all 0.3s ease',
-//           background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
-//           '&:hover': {
-//             transform: 'translateY(-5px)',
-//             boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
-//           },
-//         }}
-//       >
-//         <Typography
-//           variant="body2"
-//           sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
-//         >
-//           {label}
-//         </Typography>
-//         <Typography variant="body1" sx={{ color: '#333' }}>
-//           {value || '—'}
-//         </Typography>
-//       </Paper>
-//     </motion.div>
-//   </Grid>
-// );
-
 const fieldCard = (label, value, index, onClick) => (
   <Grid item xs={12} sm={6} md={3} key={index}>
     <motion.div
@@ -124,7 +89,6 @@ function MedicalApprovalByHr() {
       try {
         setOpenBackdrop(true);
         const response = await getMedicalByHr();
-        // console.log(response);
         if (response.data.code === '200') {
           setOpenBackdrop(false);
           setRecords(response.data.list);
@@ -160,8 +124,6 @@ function MedicalApprovalByHr() {
       // fetchMedicineDetails(refNo);
 
       const response = await getMedicalByRefNo(refNo);
-      // console.log('API Response:', response);
-
       if (
         response?.data?.code === '200' &&
         response?.data?.message === 'Success'

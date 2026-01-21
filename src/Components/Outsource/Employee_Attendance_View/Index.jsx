@@ -326,7 +326,10 @@ function OutsourceEmpAttendaceView() {
     try {
       const response = await getImpressionImage(items.empCode, formattedDate);
       // console.log("impResponse", response);
-      if (response?.data.code == '200' && response?.data.message == 'Success') {
+      if (
+        response?.data.code === '200' &&
+        response?.data.message === 'Success'
+      ) {
         setImpressionData(response?.data.list);
         setOpenBackdrop(false);
       } else {

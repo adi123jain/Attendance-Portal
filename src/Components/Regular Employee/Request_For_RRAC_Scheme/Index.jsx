@@ -1,29 +1,20 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import Tooltip from "@mui/material/Tooltip";
+import { useState, useEffect, useRef, useMemo } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 import {
-  Divider,
   Typography,
   Button,
   Backdrop,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Paper,
-} from "@mui/material";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
+} from '@mui/material';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
 
 import {
   empWalletAmount,
@@ -37,11 +28,11 @@ import {
   getVendorArmedForce,
   maxAmountByDesignation,
   requestRRAC,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
+} from '../../../Constants/TableStyles/Index';
 
 // const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
 // const oddRowBackground = "#F9FAFB";
@@ -74,17 +65,17 @@ import {
 // }));
 
 function RRAC_Scheme() {
-  const sessionRegion = sessionStorage.getItem("regionId");
-  const sessionCircle = sessionStorage.getItem("circleId");
-  const sessionDivision = sessionStorage.getItem("divisionId");
-  const sessionSubdivision = sessionStorage.getItem("subdivisionId");
-  const sessionDc = sessionStorage.getItem("dcId");
-  const designationName = sessionStorage.getItem("designationName");
-  const departmentName = sessionStorage.getItem("departmentName");
-  const sessionEmpCode = sessionStorage.getItem("empCode");
+  const sessionRegion = sessionStorage.getItem('regionId');
+  const sessionCircle = sessionStorage.getItem('circleId');
+  const sessionDivision = sessionStorage.getItem('divisionId');
+  const sessionSubdivision = sessionStorage.getItem('subdivisionId');
+  const sessionDc = sessionStorage.getItem('dcId');
+  const designationName = sessionStorage.getItem('designationName');
+  const departmentName = sessionStorage.getItem('departmentName');
+  const sessionEmpCode = sessionStorage.getItem('empCode');
 
-  const departmentId = sessionStorage.getItem("departmentId");
-  const designationId = sessionStorage.getItem("designationId");
+  const departmentId = sessionStorage.getItem('departmentId');
+  const designationId = sessionStorage.getItem('designationId');
 
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
@@ -94,11 +85,11 @@ function RRAC_Scheme() {
   const [subStations, setSubStations] = useState([]);
   const [errors, setErrors] = useState({});
 
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   // Load Regions
@@ -108,7 +99,7 @@ function RRAC_Scheme() {
         const response = await getRegion();
         setRegions(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -121,7 +112,7 @@ function RRAC_Scheme() {
         const res = await getCircle(selectedRegion);
         setCircles(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching circles:", error);
+        console.error('Error fetching circles:', error);
       }
     })();
   }, [selectedRegion]);
@@ -134,7 +125,7 @@ function RRAC_Scheme() {
         const res = await getDivision(selectedCircle);
         setDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error('Error fetching divisions:', error);
       }
     })();
   }, [selectedCircle]);
@@ -147,7 +138,7 @@ function RRAC_Scheme() {
         const res = await getSubDivision(selectedDivision);
         setSubDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching sub divisions:", error);
+        console.error('Error fetching sub divisions:', error);
       }
     })();
   }, [selectedDivision]);
@@ -160,7 +151,7 @@ function RRAC_Scheme() {
         const res = await getDC(selectedSubDivision);
         setDCs(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching DCs:", error);
+        console.error('Error fetching DCs:', error);
       }
     })();
   }, [selectedSubDivision]);
@@ -176,7 +167,7 @@ function RRAC_Scheme() {
   useEffect(() => {
     const init = async () => {
       try {
-        if (sessionRegion && sessionRegion !== "null" && sessionRegion !== "") {
+        if (sessionRegion && sessionRegion !== 'null' && sessionRegion !== '') {
           setSelectedRegion(sessionRegion);
           setDisabledLevels((prev) => ({ ...prev, region: true }));
 
@@ -184,7 +175,7 @@ function RRAC_Scheme() {
           setCircles(circleRes.data.list || []);
         }
 
-        if (sessionCircle && sessionCircle !== "null" && sessionCircle !== "") {
+        if (sessionCircle && sessionCircle !== 'null' && sessionCircle !== '') {
           setSelectedCircle(sessionCircle);
           setDisabledLevels((prev) => ({ ...prev, circle: true }));
 
@@ -194,8 +185,8 @@ function RRAC_Scheme() {
 
         if (
           sessionDivision &&
-          sessionDivision !== "null" &&
-          sessionDivision !== ""
+          sessionDivision !== 'null' &&
+          sessionDivision !== ''
         ) {
           setSelectedDivision(sessionDivision);
           setDisabledLevels((prev) => ({ ...prev, division: true }));
@@ -206,8 +197,8 @@ function RRAC_Scheme() {
 
         if (
           sessionSubdivision &&
-          sessionSubdivision !== "null" &&
-          sessionSubdivision !== ""
+          sessionSubdivision !== 'null' &&
+          sessionSubdivision !== ''
         ) {
           setSelectedSubDivision(sessionSubdivision);
           setDisabledLevels((prev) => ({ ...prev, subDivision: true }));
@@ -216,12 +207,12 @@ function RRAC_Scheme() {
           setDCs(dcRes.data.list || []);
         }
 
-        if (sessionDc && sessionDc !== "null" && sessionDc !== "") {
+        if (sessionDc && sessionDc !== 'null' && sessionDc !== '') {
           setSelectedDC(sessionDc);
           setDisabledLevels((prev) => ({ ...prev, dc: true }));
         }
       } catch (error) {
-        console.error("Error initializing dropdowns:", error);
+        console.error('Error initializing dropdowns:', error);
       }
     };
 
@@ -237,7 +228,7 @@ function RRAC_Scheme() {
         //console.log(response);
         setMonthlyAmount(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -251,7 +242,7 @@ function RRAC_Scheme() {
         const response = await empWalletAmount();
         setTotalAmount(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -264,7 +255,7 @@ function RRAC_Scheme() {
         console.log(response);
         setHeadsInTable(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -275,14 +266,14 @@ function RRAC_Scheme() {
   const getArmedForce = async () => {
     try {
       const response = await getVendorArmedForce();
-      console.log("API 1 Response:", response);
+      console.log('API 1 Response:', response);
 
       return response.data.list.map((item) => ({
         id: item.id,
         name: item.name,
       }));
     } catch (error) {
-      console.error("Error fetching vendors for 1:", error);
+      console.error('Error fetching vendors for 1:', error);
       return [];
     }
   };
@@ -290,14 +281,14 @@ function RRAC_Scheme() {
   const getAll = async () => {
     try {
       const response = await getAllVendors();
-      console.log("API 2 Response:", response);
+      console.log('API 2 Response:', response);
 
       return response.data.list.map((item) => ({
         id: item.id,
         name: item.companyName,
       }));
     } catch (error) {
-      console.error("Error fetching vendors for 2:", error);
+      console.error('Error fetching vendors for 2:', error);
       return [];
     }
   };
@@ -325,9 +316,9 @@ function RRAC_Scheme() {
       [item.id]: {
         checked: true,
         vendors,
-        vendor: "",
-        count: "",
-        amount: "",
+        vendor: '',
+        count: '',
+        amount: '',
       },
     }));
   };
@@ -365,18 +356,18 @@ function RRAC_Scheme() {
   const handleSubmit = async () => {
     // 1. DC validation
     if (!selectedDC) {
-      alert("DC is required");
-      document.getElementById("dc-select")?.focus();
+      alert('DC is required');
+      document.getElementById('dc-select')?.focus();
       return;
     }
 
     const checkedRows = Object.entries(rowData).filter(
-      ([_, row]) => row.checked
+      ([_, row]) => row.checked,
     );
 
     // 2. At least one checkbox
     if (checkedRows.length === 0) {
-      alert("Please check at least one head.");
+      alert('Please check at least one head.');
       return;
     }
 
@@ -386,34 +377,34 @@ function RRAC_Scheme() {
 
       if (itemId === 1 || itemId === 2) {
         if (!row.vendor) {
-          alert("Vendor is required");
+          alert('Vendor is required');
           formRefs.current[itemId]?.vendor?.focus();
           return;
         }
         if (!row.count) {
-          alert("Count is required");
+          alert('Count is required');
           formRefs.current[itemId]?.count?.focus();
           return;
         }
         if (!row.amount) {
-          alert("Amount is required");
+          alert('Amount is required');
           formRefs.current[itemId]?.amount?.focus();
           return;
         }
       } else if (itemId === 4) {
         if (!row.count) {
-          alert("Count is required");
+          alert('Count is required');
           formRefs.current[itemId]?.count?.focus();
           return;
         }
         if (!row.amount) {
-          alert("Amount is required");
+          alert('Amount is required');
           formRefs.current[itemId]?.amount?.focus();
           return;
         }
       } else {
         if (!row.amount) {
-          alert("Amount is required");
+          alert('Amount is required');
           formRefs.current[itemId]?.amount?.focus();
           return;
         }
@@ -446,11 +437,11 @@ function RRAC_Scheme() {
 
       const response = await requestRRAC(payload);
       // console.log(response);
-      if (response.data.code == "200") {
+      if (response.data.code === '200') {
         alert(
           response.data.message +
-            "Please Save Your Reference Number : " +
-            response.data.list[0].refNo
+            'Please Save Your Reference Number : ' +
+            response.data.list[0].refNo,
         );
         setOpenBackdrop(false);
         window.location.reload();
@@ -459,7 +450,7 @@ function RRAC_Scheme() {
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.log("Error", error);
+      console.log('Error', error);
       setOpenBackdrop(false);
     }
   };
@@ -472,9 +463,9 @@ function RRAC_Scheme() {
             variant="h4"
             sx={{
               mb: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
-              color: "#0a1f83",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
             }}
           >
             Request for Revenue Realization & Commercial Activity
@@ -488,9 +479,9 @@ function RRAC_Scheme() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Basic Information
@@ -509,13 +500,13 @@ function RRAC_Scheme() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedRegion(value);
-                          setSelectedCircle("");
+                          setSelectedCircle('');
                           setCircles([]);
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={disabledLevels.region}
@@ -543,11 +534,11 @@ function RRAC_Scheme() {
                           const value = e.target.value;
                           setSelectedCircle(value);
 
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={!selectedRegion || disabledLevels.circle}
@@ -574,9 +565,9 @@ function RRAC_Scheme() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedDivision(value);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={!selectedCircle || disabledLevels.division}
@@ -603,7 +594,7 @@ function RRAC_Scheme() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedSubDivision(value);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={
@@ -702,9 +693,9 @@ function RRAC_Scheme() {
                 variant="h5"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Expenses
@@ -768,8 +759,8 @@ function RRAC_Scheme() {
             variant="h6"
             sx={{
               mt: 2,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
               //color: "#0a1f83",
             }}
             color="error"
@@ -777,7 +768,7 @@ function RRAC_Scheme() {
             *Please select the checkbox and enter amount in given input.
           </Typography>
 
-          <TableContainer component={Paper} sx={{ marginTop: "15px" }}>
+          <TableContainer component={Paper} sx={{ marginTop: '15px' }}>
             <Table>
               <TableHead>
                 <StyledTableRow>
@@ -850,15 +841,15 @@ function RRAC_Scheme() {
                         <StyledTableCell>
                           {row.checked && (item.id === 1 || item.id === 2) && (
                             <Form.Select
-                              value={row.vendor || ""}
+                              value={row.vendor || ''}
                               onChange={(e) =>
                                 updateRowField(
                                   item.id,
-                                  "vendor",
-                                  e.target.value
+                                  'vendor',
+                                  e.target.value,
                                 )
                               }
-                              ref={(el) => setInputRef(item.id, "vendor", el)}
+                              ref={(el) => setInputRef(item.id, 'vendor', el)}
                             >
                               <option value="" disabled>
                                 -- select Company --
@@ -880,16 +871,16 @@ function RRAC_Scheme() {
                               item.id === 4) && (
                               <Form.Control
                                 type="number"
-                                value={row.count || ""}
+                                value={row.count || ''}
                                 placeholder="Enter Count"
                                 onChange={(e) =>
                                   updateRowField(
                                     item.id,
-                                    "count",
-                                    e.target.value
+                                    'count',
+                                    e.target.value,
                                   )
                                 }
-                                ref={(el) => setInputRef(item.id, "count", el)}
+                                ref={(el) => setInputRef(item.id, 'count', el)}
                               />
                             )}
                         </StyledTableCell>
@@ -898,13 +889,13 @@ function RRAC_Scheme() {
                         <StyledTableCell>
                           <Form.Control
                             type="number"
-                            value={row.amount || ""}
+                            value={row.amount || ''}
                             placeholder="Enter Amount"
                             disabled={!row.checked}
                             onChange={(e) =>
-                              updateRowField(item.id, "amount", e.target.value)
+                              updateRowField(item.id, 'amount', e.target.value)
                             }
-                            ref={(el) => setInputRef(item.id, "amount", el)}
+                            ref={(el) => setInputRef(item.id, 'amount', el)}
                           />
                         </StyledTableCell>
                       </StyledTableRow>
@@ -933,7 +924,7 @@ function RRAC_Scheme() {
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />
