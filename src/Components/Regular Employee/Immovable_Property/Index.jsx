@@ -52,6 +52,17 @@ const ImmovableProperty = () => {
     officeName = sessionDc;
   }
 
+  const circleVal = (val) => val !== null && val !== 'null' && val !== '';
+
+  let cirName = null;
+
+  if (circleVal(sessionRegion)) {
+    cirName = sessionRegion;
+  }
+  if (circleVal(sessionCircle)) {
+    cirName = sessionCircle;
+  }
+
   const emptyForm = {
     // officeName: "",
     // year: "",
@@ -294,6 +305,15 @@ const ImmovableProperty = () => {
                   <Row className="mb-4">
                     <Col>
                       <Card className="mb-2">
+                        <Card.Header>Circle</Card.Header>
+                        <Card.Body>
+                          <Form.Control disabled value={cirName} />
+                        </Card.Body>
+                      </Card>
+                    </Col>
+
+                    <Col>
+                      <Card className="mb-2">
                         <Card.Header>Name of Office</Card.Header>
                         <Card.Body>
                           <Form.Control disabled value={officeName} />
@@ -418,262 +438,275 @@ const ImmovableProperty = () => {
                     </Card.Body>
                   </Card>
 
-                  {/* ================= Land ================= */}
-                  <Card className="mb-3">
-                    <Card.Header>Land</Card.Header>
+                  <Card className="mt-2">
+                    <Card.Header>Name & Details of Property</Card.Header>
                     <Card.Body>
-                      <Row>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Residential Location</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Name"
-                                value={form.residentialLocationNo}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'residentialLocationNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Residential Area</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Area"
-                                value={form.residentialArea}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'residentialArea',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Residential Value</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Value"
-                                value={form.residentialValue}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'residentialValue',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Agriculture Location</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Name"
-                                value={form.agricultureLocationNo}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'agricultureLocationNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Agriculture Area</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Area"
-                                value={form.agricultureArea}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'agricultureArea',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Agriculture Value</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Value"
-                                value={form.agricultureValue}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'agricultureValue',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>
-                    </Card.Body>
-                  </Card>
+                      {/* ================= Land ================= */}
+                      <Card className="mb-3">
+                        <Card.Header>Land</Card.Header>
+                        <Card.Body>
+                          <Row>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Residential Location</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={form.residentialLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>
+                                  Residential Area (sq. ft.)
+                                </Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.residentialArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>
+                                  Residential Present Value
+                                </Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.residentialValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Agriculture Location</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={form.agricultureLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>
+                                  Agriculture Area (sq. ft.)
+                                </Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.agricultureArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Agriculture Value</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.agricultureValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
 
-                  {/* ================= Housing & Other Building ================= */}
-                  <Card className="mb-3">
-                    <Card.Header>Housing & Other Building</Card.Header>
-                    <Card.Body>
-                      <Row>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Housing Location</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Location"
-                                value={form.housingLocationNo}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'housingLocationNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Housing Area</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Area"
-                                value={form.housingArea}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'housingArea',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Housing Value</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Value"
-                                value={form.housingValue}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'housingValue',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>
+                      {/* ================= Housing & Other Building ================= */}
+                      <Card className="mb-3">
+                        <Card.Header>Housing & Other Building</Card.Header>
+                        <Card.Body>
+                          <Row>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Housing Location</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Location"
+                                    value={form.housingLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>
+                                  Housing Area (sq. ft.)
+                                </Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.housingArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Housing Present Value</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.housingValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
 
-                      <Row>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Shop Location</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Name"
-                                value={form.shopLocationNo}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'shopLocationNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Shop Area</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Area"
-                                value={form.shopArea}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'shopArea',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                        <Col md={4}>
-                          <Card className="mb-2">
-                            <Card.Header>Shop Value</Card.Header>
-                            <Card.Body>
-                              <Form.Control
-                                type="text"
-                                placeholder="Enter Value"
-                                value={form.shopValue}
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    'shopValue',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </Card.Body>
-                          </Card>
-                        </Col>
-                      </Row>
+                          <Row>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Shop Location</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={form.shopLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Shop Area (sq. ft.)</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.shopArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                            <Col md={4}>
+                              <Card className="mb-2">
+                                <Card.Header>Shop Value</Card.Header>
+                                <Card.Body>
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.shopValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  />
+                                </Card.Body>
+                              </Card>
+                            </Col>
+                          </Row>
+                        </Card.Body>
+                      </Card>
                     </Card.Body>
                   </Card>
 
                   <Card className="mt-2">
                     <Card.Header>
-                      Whether In Own Name Or In The Spouse Or Family Member
-                      State Relationship With Board Servant Share of Board
-                      Servant Etc.
+                      Whether In Own Name Or In The Name of Spouse Or Family
+                      Member "STATE" Relationship With Board Servant Share of
+                      Board Servant Etc.
                     </Card.Header>
                     <Card.Body>
                       <Row>

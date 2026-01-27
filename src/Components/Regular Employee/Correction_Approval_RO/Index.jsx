@@ -266,11 +266,11 @@ function CorrectionUpdateByRO() {
           correctionStatus: 'Approved',
           correctionRemark: remark,
         };
-        console.log(payload);
+        // console.log(payload);
         response = await approveCorrections(payload);
         console.log(response);
       } else if (preference === '2') {
-        alert(preference);
+        // alert(preference);
         payload = {
           empCode: item.empCode,
           leaveDate: DateFormate,
@@ -280,10 +280,10 @@ function CorrectionUpdateByRO() {
           leaveStatus: 'Approved',
           roRemark: remark,
         };
-        console.log(payload);
+        // console.log(payload);
 
         response = await approveLeave(payload);
-        console.log(response);
+        // console.log(response);
       } else if (preference === '3') {
         // Half-day
         payload = {
@@ -311,8 +311,10 @@ function CorrectionUpdateByRO() {
     if (success) {
       if (preference === '1') {
         alert('Corrections Applied Successfully !!');
+        window.location.reload();
       } else {
         alert('Leave Applied Successfully !!');
+        window.location.reload();
       }
     } else {
       alert(message);
