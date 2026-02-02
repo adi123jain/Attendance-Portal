@@ -31,7 +31,7 @@ function MedicalFormView() {
       try {
         setOpenBackdrop(true);
         const response = await getMedicalFormByEmpCode();
-        // console.log(response);
+        console.log(response);
         if (response.data.code === '200') {
           setOpenBackdrop(false);
           setData(response.data.list);
@@ -71,8 +71,8 @@ function MedicalFormView() {
                   <StyledTableCell>S.No.</StyledTableCell>
                   <StyledTableCell>Patient Name</StyledTableCell>
                   <StyledTableCell>Patient Code</StyledTableCell>
-
                   <StyledTableCell>Reference No.</StyledTableCell>
+                  <StyledTableCell>Submission Date</StyledTableCell>
                   <StyledTableCell>Action</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
@@ -86,6 +86,7 @@ function MedicalFormView() {
                       </StyledTableCell>
                       <StyledTableCell>{item.empCode || '-'}</StyledTableCell>
                       <StyledTableCell>{item.refNo || '-'}</StyledTableCell>
+                      <StyledTableCell>{item.created || '-'}</StyledTableCell>
 
                       <StyledTableCell>
                         <Tooltip title="Preview" arrow>

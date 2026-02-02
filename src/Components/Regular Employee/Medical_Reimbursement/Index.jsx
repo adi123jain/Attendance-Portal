@@ -313,10 +313,10 @@ function MedicalReimbirsement() {
     dataToSend.append('bankAccount', formData.bankAccount || '');
 
     // Debug: check FormData
-    for (let pair of dataToSend.entries()) {
-      const payload = pair[0] + ':' + pair[1];
-      console.log(payload);
-    }
+    // for (let pair of dataToSend.entries()) {
+    //   const payload = pair[0] + ':' + pair[1];
+    //   console.log(payload);
+    // }
 
     try {
       const response = await submitMedicalReimbursement(dataToSend);
@@ -331,6 +331,8 @@ function MedicalReimbirsement() {
       }
     } catch (error) {
       console.log('error', error);
+      alert('Something went wrong');
+    } finally {
       setOpenBackdrop(false);
     }
   };
@@ -360,17 +362,17 @@ function MedicalReimbirsement() {
     try {
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.log('Error', error);
+      alert('Something went wrong');
     }
   };
 
   const today = new Date().toISOString().split('T')[0];
-
   const sixMonthsAgo = new Date();
   sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
   const minDate = sixMonthsAgo.toISOString().split('T')[0];

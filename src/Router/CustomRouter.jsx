@@ -83,6 +83,9 @@ import HigherPayScale from '../Components/Regular Employee/Higher_Pay_Scale/Inde
 import WiremanCertificateByHr from '../Components/HR Pannel/Wireman_Certificate/Index';
 import UpdateWiremanCertificateStatus from '../Components/HR Pannel/View_Update_Wireman_Certificate/Index';
 import MainDashboard from '../Components/Dashboards/Main_Dashboard';
+import ProNews from '../Components/Regular Employee/Pro_News/Index';
+import ProNewsEmployee from '../Components/Regular Employee/Pro_News_Employee/Index';
+import ProNewsMD from '../Components/Regular Employee/Pro_News_MD/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -168,6 +171,10 @@ function CustomRouter() {
               path="correctionApprovalRO"
               element={<CorrectionUpdateByRO />}
             />
+
+            <Route path="proNews" element={<ProNews />} />
+            <Route path="proNewsEmployee" element={<ProNewsEmployee />} />
+            <Route path="proNewsMD" element={<ProNewsMD />} />
 
             <Route path="shiftChange" element={<ShiftChange />} />
             <Route path="paySlip" element={<PaySlip />} />

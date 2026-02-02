@@ -142,16 +142,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
-    // {
-    //   label: 'Immovable Property Return',
-    //   path: '/immovableProperty',
-    //   icon: <HomeWorkIcon />,
-    // },
-    // {
-    //   label: 'Immovable Property Return View',
-    //   path: '/immovablePropertyView',
-    //   icon: <VisibilityIcon />,
-    // },
+    {
+      label: 'Immovable Property Return',
+      path: '/immovableProperty',
+      icon: <HomeWorkIcon />,
+    },
+    {
+      label: 'Immovable Property Return View',
+      path: '/immovablePropertyView',
+      icon: <VisibilityIcon />,
+    },
     {
       label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',
@@ -162,6 +162,25 @@ function EmployeeDashboard() {
       path: '/medicalApprovalByAo',
       icon: <AssignmentTurnedInIcon />,
     },
+
+    {
+      label: 'Pro News',
+      path: '/proNews',
+      icon: <HomeWorkIcon />,
+    },
+
+    {
+      label: 'Pro News Employee',
+      path: '/proNewsEmployee',
+      icon: <LocalHospitalIcon />,
+    },
+
+    {
+      label: 'Pro News MD',
+      path: '/proNewsMD',
+      icon: <HealthAndSafetyIcon />,
+    },
+
     // {
     //   label: 'Higher Pay Scale',
     //   path: '/higherPayScale',

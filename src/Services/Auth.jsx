@@ -4,6 +4,7 @@ const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
 // const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
+// 12334
 
 // 1.Get Daily Attendance Records
 export const attendanceRecords = (punchDate) => {
@@ -964,4 +965,44 @@ export const getEmpNameByCode = (empCode) => {
 // 147 Update Status of Wireman Certificate by GM
 export const updateWiremanCertificateGM = (payload) => {
   return axios.post(base_url + `/outsource/updateWiremanGmStatus`, payload);
+};
+
+// 148 Pro News Submit By Authority
+export const proNewsSubmit = (payload) => {
+  return axios.post(base_url + `/pro/saveProNewsApi`, payload);
+};
+
+// https://attendance.mpcz.in:8888/E-Attendance/api/employee/setDefaultPassword/12345/Pass@123
+// 149. Get Officer's Designation
+export const getOfficerByDesignation = (value) => {
+  return axios.get(
+    base_url + `/employee/getEmployeesByDesignation?designation=${value}`,
+  );
+};
+
+// 150. Get Pro News Details on Employee Side
+export const getProNewsEmployee = (status, empCode) => {
+  return axios.get(base_url + `/pro/getProNewsByEmpCode/85390317/${status}`);
+};
+
+// 151. Submit Pro News on Employee Side
+export const proNewsEmployeeSubmit = (payload) => {
+  return axios.post(base_url + `/pro/saveEmpNewsApi`, payload);
+};
+
+//http://172.16.17.34:8084/e-Attendance/api/pro/getProNewsByEmpCode/91577089/false
+// /e-Attendance/api/employee/getEmployeesByDesignation?designation=DGM
+// /e-Attendance/api/employee/getEmployeesByDesignation?designation=DIR
+
+// 152. Get Status After Employee Submission
+export const getAfterEmpSubmitted = (empCode) => {
+  return axios.get(base_url + `/pro/getNewsByProEmpCode/12345`);
+};
+
+export const proNewsSubmitByMD = (payload) => {
+  return axios.post(base_url + `/pro/saveMdCommentApi`, payload);
+};
+
+export const getAllProNews = (MonthYear) => {
+  return axios.get(base_url + `/pro/getNewsByMonthYear/JAN-2026`);
 };
