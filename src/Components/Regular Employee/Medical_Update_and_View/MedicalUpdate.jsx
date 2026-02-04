@@ -232,7 +232,11 @@ function MedicalFormUpdate() {
   }, []);
 
   const canUpdate =
-    preItem.appliPresentAtEmpCode === sessionStorage.getItem('empCode');
+    preItem.appliPresentAtEmpCode == sessionStorage.getItem('empCode');
+  // console.log(canUpdate);
+  // console.log(preItem.appliPresentAtEmpCode);
+  // console.log(sessionStorage.getItem('empCode'));
+
   const handleUpdate = async () => {
     const dataToSend = new FormData();
     if (!canUpdate) {

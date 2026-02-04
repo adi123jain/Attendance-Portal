@@ -2,7 +2,9 @@ import { useRef, useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import {
   getAfterEmpSubmitted,
+  getCircle,
   getOfficerByDesignation,
+  getRegion,
   proNewsSubmit,
 } from '../../../Services/Auth';
 import { PropagateLoader } from 'react-spinners';
@@ -20,42 +22,65 @@ import {
   TableBody,
   Tooltip,
 } from '@mui/material';
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+
+import { Modal, Fade, Box } from '@mui/material';
+
 import { Col, Form, Row } from 'react-bootstrap';
 import {
   StyledTableCell,
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
+import { Link } from 'react-router-dom';
 function ProNews() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  // selected employee
   const [selectedOfficer, setSelectedOfficer] = useState({
     empCode: '',
     fullName: '',
   });
+
+  const [regions, setRegions] = useState([]);
+  const [circles, setCircles] = useState([]);
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+
+  useEffect(() => {
+    const fetchRegions = async () => {
+      try {
+        const response = await getRegion();
+        setRegions(response?.data?.list || []);
+      } catch (error) {
+        console.error('Error fetching regions:', error);
+      }
+    };
+    fetchRegions();
+  }, []);
+
+  const handleRegionChange = async (e) => {
+    const regionId = e.target.value;
+    setSelectedRegion(regionId);
+    setSelectedCircle('');
+    try {
+      const circleResponse = await getCircle(regionId);
+      setCircles(circleResponse?.data?.list || []);
+    } catch (error) {
+      console.error('Error fetching circles:', error);
+      setCircles([]);
+    }
+  };
 
   const [designation, setDesignation] = useState('');
   const [officerList, setOfficerList] = useState([]);
   const [officerName, setOfficerName] = useState('');
   const [loadingOfficer, setLoadingOfficer] = useState(false);
 
-  const handleDesignationChange = async (e) => {
-    const value = e.target.value;
+  const isDGM = designation === 'DGM';
 
-    setDesignation(value);
-    setOfficerName('');
-    setOfficerList([]);
-
-    if (!value) return;
-
+  const fetchOfficers = async (designation, circleId = '') => {
     try {
       setLoadingOfficer(true);
 
-      const res = await getOfficerByDesignation(value);
-      console.log(res);
+      const res = await getOfficerByDesignation(designation, circleId);
 
       if (res?.data?.code === '200') {
         setOfficerList(res.data.list || []);
@@ -70,6 +95,32 @@ function ProNews() {
     }
   };
 
+  const handleDesignationChange = (e) => {
+    const value = e.target.value;
+
+    setDesignation(value);
+    setOfficerName('');
+    setOfficerList([]);
+    setSelectedRegion('');
+    setSelectedCircle('');
+
+    if (value && value !== 'DGM') {
+      fetchOfficers(value);
+    }
+  };
+
+  const handleCircleChange = (e) => {
+    const circleId = e.target.value;
+
+    setSelectedCircle(circleId);
+    setOfficerName('');
+    setOfficerList([]);
+
+    if (designation === 'DGM' && circleId) {
+      fetchOfficers('DGM', circleId);
+    }
+  };
+
   // dropdown & inputs
   const [type, setType] = useState('');
   const [newsDate, setNewsDate] = useState('');
@@ -78,10 +129,11 @@ function ProNews() {
   const [documentFile, setDocumentFile] = useState(null);
   const [remark, setRemark] = useState('');
 
-  // errors
   const [formErrors, setFormErrors] = useState({
     type: '',
     designation: '',
+    region: '',
+    circle: '',
     officerName: '',
     date: '',
     document: '',
@@ -115,6 +167,18 @@ function ProNews() {
     if (!designation) {
       errors.designation = '*Designation is required';
       valid = false;
+    }
+
+    if (designation === 'DGM') {
+      if (!selectedRegion) {
+        errors.region = '*Region is required';
+        valid = false;
+      }
+
+      if (!selectedCircle) {
+        errors.circle = '*Circle is required';
+        valid = false;
+      }
     }
 
     if (!officerName) {
@@ -169,7 +233,8 @@ function ProNews() {
       const response = await proNewsSubmit(formData);
 
       if (response?.data?.code === '200') {
-        alert('Submitted Successfully');
+        alert('Successfully Submitted !!');
+        window.location.reload();
       } else {
         alert(response?.data?.message);
       }
@@ -187,9 +252,7 @@ function ProNews() {
     const fetchEmployees = async () => {
       try {
         setOpenBackdrop(true);
-
         const response = await getAfterEmpSubmitted();
-
         if (response?.data?.code === '200') {
           setEmployeeList(response?.data?.list);
         }
@@ -204,11 +267,33 @@ function ProNews() {
   }, []);
 
   const shortText = (text, len = 35) =>
-    text && text.length > len ? text.slice(0, len) + '...' : text || 'NA';
+    text && text.length > len
+      ? text.slice(0, len) + '...'
+      : text || 'Not Found';
 
   const downloadDocument = (path) => {
-    const downloadPath = `http://172.16.17.34:8084/e-Attendance/api/pro/downloadProDoc/${path}`;
+    const downloadPath = `https://attendance.mpcz.in:8888/E-Attendance/api/pro/downloadProDoc/${path}`;
     window.open(downloadPath, '_blank');
+  };
+
+  const [openRemarkModal, setOpenRemarkModal] = useState(false);
+  const [remarkContent, setRemarkContent] = useState('');
+  const [remarkTitle, setRemarkTitle] = useState('');
+  const hoverTimer = useRef(null);
+
+  const handleOpenRemark = (title, content) => {
+    clearTimeout(hoverTimer.current);
+
+    hoverTimer.current = setTimeout(() => {
+      setRemarkTitle(title);
+      setRemarkContent(content || 'Not Found');
+      setOpenRemarkModal(true);
+    }, 300);
+  };
+
+  const handleCloseRemark = () => {
+    clearTimeout(hoverTimer.current);
+    setOpenRemarkModal(false);
   };
 
   return (
@@ -224,13 +309,13 @@ function ProNews() {
               fontWeight: 'bold',
             }}
           >
-            Pro News
+            News Assign to Employee
           </Typography>
         </Card.Header>
 
         <Card.Body>
           <Row className="g-1 mt-1 mb-4">
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Type</Card.Header>
                 <Card.Body>
@@ -255,7 +340,7 @@ function ProNews() {
                 </Card.Body>
               </Card>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Officer's Designation</Card.Header>
                 <Card.Body>
@@ -279,7 +364,57 @@ function ProNews() {
               </Card>
             </Col>
 
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
+              <Card>
+                <Card.Header>Region</Card.Header>
+                <Card.Body>
+                  <Form.Select
+                    aria-label="Select Region"
+                    value={selectedRegion}
+                    disabled={!isDGM}
+                    isInvalid={isDGM && !!formErrors.region}
+                    onChange={handleRegionChange}
+                  >
+                    <option disabled value="">
+                      -- select Region --
+                    </option>
+                    {regions.map(({ regionId, name }) => (
+                      <option key={regionId} value={regionId}>
+                        {name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col xs={12} md={3}>
+              <Card>
+                <Card.Header>Circle</Card.Header>
+                <Card.Body>
+                  <Form.Select
+                    aria-label="Select Circle"
+                    value={selectedCircle}
+                    disabled={!isDGM || !selectedRegion}
+                    isInvalid={isDGM && !!formErrors.circle}
+                    onChange={handleCircleChange}
+                  >
+                    <option value="" disabled>
+                      -- select Circle --
+                    </option>
+                    {circles.map(({ circleId, name }) => (
+                      <option key={circleId} value={circleId}>
+                        {name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
+          <Row className="g-1 mt-1 mb-2">
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Officer's Name</Card.Header>
                 <Card.Body>
@@ -324,10 +459,8 @@ function ProNews() {
                 </Card.Body>
               </Card>
             </Col>
-          </Row>
 
-          <Row className="g-1 mt-1 mb-2">
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Date</Card.Header>
                 <Card.Body>
@@ -349,7 +482,7 @@ function ProNews() {
               </Card>
             </Col>
 
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Upload Document</Card.Header>
                 <Card.Body>
@@ -369,7 +502,7 @@ function ProNews() {
                 </Card.Body>
               </Card>
             </Col>
-            <Col xs={12} md={4}>
+            <Col xs={12} md={3}>
               <Card>
                 <Card.Header>Remark</Card.Header>
                 <Card.Body>
@@ -394,7 +527,7 @@ function ProNews() {
           </Row>
         </Card.Body>
         <Card.Footer className="text-center">
-          <Button className="green-button" onClick={handleSubmit}>
+          <Button className="blue-button" onClick={handleSubmit}>
             Submit
           </Button>
         </Card.Footer>
@@ -411,7 +544,7 @@ function ProNews() {
               fontWeight: 'bold',
             }}
           >
-            Records after Submitted by Employee
+            Assigned Records
           </Typography>
         </Card.Header>
 
@@ -423,9 +556,14 @@ function ProNews() {
                   <StyledTableCell>S.No.</StyledTableCell>
                   <StyledTableCell>Employee Code</StyledTableCell>
                   <StyledTableCell>Employee Name</StyledTableCell>
+                  <StyledTableCell>Employee Location</StyledTableCell>
+                  <StyledTableCell>Assigned Date</StyledTableCell>
                   <StyledTableCell>MD Remark</StyledTableCell>
                   <StyledTableCell>Pro Remark</StyledTableCell>
                   <StyledTableCell>Document</StyledTableCell>
+                  <StyledTableCell>User Submitted Date</StyledTableCell>
+                  <StyledTableCell>User Remark</StyledTableCell>
+                  <StyledTableCell>User Document</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
 
@@ -433,31 +571,53 @@ function ProNews() {
                 {employeeList.map((row, index) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell>{index + 1}</StyledTableCell>
-                    <StyledTableCell>{row.empCode}</StyledTableCell>
-                    <StyledTableCell>{row.empName}</StyledTableCell>
-
                     <StyledTableCell>
-                      <Tooltip
-                        title={row.mdComment || ''}
-                        arrow
-                        placement="top"
-                      >
-                        <Typography variant="body1">
-                          {shortText(row.mdComment)}
-                        </Typography>
-                      </Tooltip>
+                      {row.empCode || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.empName || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.employeeDetail.postingLocation || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.dateOfNews || 'Not Found'}
                     </StyledTableCell>
 
                     <StyledTableCell>
-                      <Tooltip
-                        title={row.proRemark || ''}
-                        arrow
-                        placement="top"
+                      <div
+                        onMouseEnter={() =>
+                          handleOpenRemark('MD Remark', row.mdComment)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
                       >
-                        <Typography variant="body1">
-                          {shortText(row.proRemark)}
-                        </Typography>
-                      </Tooltip>
+                        {shortText(row.mdComment)}
+                      </div>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      <div
+                        onMouseEnter={() =>
+                          handleOpenRemark('Assigned Remark', row.proRemark)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {shortText(row.proRemark)}
+                      </div>
                     </StyledTableCell>
 
                     <StyledTableCell>
@@ -471,6 +631,47 @@ function ProNews() {
                         </Button>
                       </Tooltip>
                     </StyledTableCell>
+
+                    <StyledTableCell>
+                      {row.empUpdatedNo || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <div
+                        onMouseEnter={() =>
+                          handleOpenRemark('Employee Remark', row.empRemark)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {shortText(row.empRemark)}
+                      </div>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      {row.empDoc ? (
+                        <Tooltip
+                          title="Download Emp Document"
+                          arrow
+                          placement="top"
+                        >
+                          <Button
+                            onClick={() => downloadDocument(row.empDoc)}
+                            variant="contained"
+                            color="dark"
+                          >
+                            <CloudDownloadIcon color="success" />
+                          </Button>
+                        </Tooltip>
+                      ) : (
+                        'Not Found'
+                      )}
+                    </StyledTableCell>
                   </StyledTableRow>
                 ))}
               </TableBody>
@@ -478,7 +679,13 @@ function ProNews() {
           </TableContainer>
         </Card.Body>
         <Card.Footer className="text-center">
-          <Button className="cancel-button">Cancel</Button>
+          <Button
+            className="cancel-button"
+            component={Link}
+            to="/employeeDashboard"
+          >
+            Cancel
+          </Button>
         </Card.Footer>
       </Card>
 
@@ -489,6 +696,58 @@ function ProNews() {
       >
         <PropagateLoader />
       </Backdrop>
+
+      <Modal
+        open={openRemarkModal}
+        onClose={handleCloseRemark}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 300,
+        }}
+      >
+        <Fade in={openRemarkModal}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '65%',
+              maxHeight: '70vh',
+              bgcolor: '#fff',
+              borderRadius: 3,
+              boxShadow: 24,
+              p: 4,
+              outline: 'none',
+              overflowY: 'auto',
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                fontWeight: 600,
+                color: '#0a1f83',
+                borderBottom: '1px solid #eee',
+                pb: 1,
+              }}
+            >
+              {remarkTitle}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              sx={{
+                whiteSpace: 'pre-wrap',
+                color: '#444',
+                lineHeight: 1.6,
+              }}
+            >
+              {remarkContent}
+            </Typography>
+          </Box>
+        </Fade>
+      </Modal>
     </>
   );
 }

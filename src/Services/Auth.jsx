@@ -1,10 +1,9 @@
 import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
-// const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
+// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
-// 12334
 
 // 1.Get Daily Attendance Records
 export const attendanceRecords = (punchDate) => {
@@ -151,9 +150,15 @@ export const getSubstationByDivision = (divisionId) => {
 
 // 26. Get Substation By Division
 export const getFeederBySubstation = (substationId) => {
+  // return axios.get(
+  //   `https://htsanyojanuat.mpcz.in:8088/api/FeederDetails/by-ss/${substationId}`,
+  // );
+
   return axios.get(
-    `https://htsanyojanuat.mpcz.in:8088/api/FeederDetails/by-ss/${substationId}`,
+    `https://isampark.mpcz.in:81/api/FeederDetails/by-ss/${substationId}`,
   );
+
+  // https://isampark.mpcz.in:81/api/FeederDetails/by-ss/30502010206
 };
 
 // 27. Get Officer User Details on DC Change
@@ -972,17 +977,20 @@ export const proNewsSubmit = (payload) => {
   return axios.post(base_url + `/pro/saveProNewsApi`, payload);
 };
 
-// https://attendance.mpcz.in:8888/E-Attendance/api/employee/setDefaultPassword/12345/Pass@123
 // 149. Get Officer's Designation
-export const getOfficerByDesignation = (value) => {
+export const getOfficerByDesignation = (value, cirId) => {
   return axios.get(
-    base_url + `/employee/getEmployeesByDesignation?designation=${value}`,
+    base_url +
+      `/employee/getEmployeesByDesignation?designation=${value}&cirId=${cirId}`,
   );
 };
 
 // 150. Get Pro News Details on Employee Side
-export const getProNewsEmployee = (status, empCode) => {
-  return axios.get(base_url + `/pro/getProNewsByEmpCode/85390317/${status}`);
+export const getProNewsEmployee = (status) => {
+  // return axios.get(base_url + `/pro/getProNewsByEmpCode/85390317/${status}`);
+  return axios.get(
+    base_url + `/pro/getProNewsByEmpCode/${sessionEmpCode}/${status}`,
+  );
 };
 
 // 151. Submit Pro News on Employee Side
@@ -990,19 +998,17 @@ export const proNewsEmployeeSubmit = (payload) => {
   return axios.post(base_url + `/pro/saveEmpNewsApi`, payload);
 };
 
-//http://172.16.17.34:8084/e-Attendance/api/pro/getProNewsByEmpCode/91577089/false
-// /e-Attendance/api/employee/getEmployeesByDesignation?designation=DGM
-// /e-Attendance/api/employee/getEmployeesByDesignation?designation=DIR
-
 // 152. Get Status After Employee Submission
-export const getAfterEmpSubmitted = (empCode) => {
-  return axios.get(base_url + `/pro/getNewsByProEmpCode/12345`);
+export const getAfterEmpSubmitted = () => {
+  return axios.get(base_url + `/pro/getNewsByProEmpCode/${sessionEmpCode}`);
 };
 
+// 153. Pro News Submitted by MD
 export const proNewsSubmitByMD = (payload) => {
   return axios.post(base_url + `/pro/saveMdCommentApi`, payload);
 };
 
+// 154. Get All Pro News Details
 export const getAllProNews = (MonthYear) => {
-  return axios.get(base_url + `/pro/getNewsByMonthYear/JAN-2026`);
+  return axios.get(base_url + `/pro/getNewsByMonthYear/${MonthYear}`);
 };

@@ -142,16 +142,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
-    {
-      label: 'Immovable Property Return',
-      path: '/immovableProperty',
-      icon: <HomeWorkIcon />,
-    },
-    {
-      label: 'Immovable Property Return View',
-      path: '/immovablePropertyView',
-      icon: <VisibilityIcon />,
-    },
+    // {
+    //   label: 'Immovable Property Return',
+    //   path: '/immovableProperty',
+    //   icon: <HomeWorkIcon />,
+    // },
+    // {
+    //   label: 'Immovable Property Return View',
+    //   path: '/immovablePropertyView',
+    //   icon: <VisibilityIcon />,
+    // },
     {
       label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',
@@ -164,19 +164,19 @@ function EmployeeDashboard() {
     },
 
     {
-      label: 'Pro News',
+      label: 'News Entries',
       path: '/proNews',
       icon: <HomeWorkIcon />,
     },
 
     {
-      label: 'Pro News Employee',
+      label: 'News Reply',
       path: '/proNewsEmployee',
       icon: <LocalHospitalIcon />,
     },
 
     {
-      label: 'Pro News MD',
+      label: 'News Comment (MD)',
       path: '/proNewsMD',
       icon: <HealthAndSafetyIcon />,
     },
@@ -194,6 +194,14 @@ function EmployeeDashboard() {
 
   const showCmoApproval = designationId === 18 || empCode === '12345';
   const showAoApproval = designationId === 13 || empCode === '12345';
+
+  const NewsEntries = ['220315', '12345', '94320833', '160046'].includes(
+    String(empCode),
+  );
+  const NewsMd =
+    designationId === 1 || ['12345', '160046'].includes(String(empCode));
+
+  // const NewsEmployee = designationId === 1 || empCode === '12345';
 
   //  Don’t render until session is ready
   if (!empCode || designationId === null) return null;
@@ -243,6 +251,18 @@ function EmployeeDashboard() {
 
           // AO Approval condition
           if (item.label === 'Medical AO Approval' && !showAoApproval) {
+            return null;
+          }
+
+          // if (item.label === 'News Reply' && !NewsEmployee) {
+          //   return null;
+          // }
+
+          if (item.label === 'News Entries' && !NewsEntries) {
+            return null;
+          }
+
+          if (item.label === 'News Comment (MD)' && !NewsMd) {
             return null;
           }
 

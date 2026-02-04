@@ -19,6 +19,7 @@ import {
   FormControlLabel,
   FormControl,
 } from '@mui/material';
+import { Modal, Fade, Box } from '@mui/material';
 
 import {
   StyledTableCell,
@@ -29,19 +30,17 @@ import {
   getProNewsEmployee,
   proNewsEmployeeSubmit,
 } from '../../../Services/Auth';
+import { Link } from 'react-router-dom';
 
 function ProNewsEmployee() {
   const [employeeList, setEmployeeList] = useState([]);
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
-  // false = Pending (default)
-  // true  = Submitted
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const remarkRefs = useRef({});
   const fileRefs = useRef({});
 
-  // ---------------- FETCH API ----------------
   const fetchEmployees = async (status) => {
     try {
       setOpenBackdrop(true);
@@ -71,12 +70,10 @@ function ProNewsEmployee() {
     }
   };
 
-  // ---------------- INITIAL LOAD ----------------
   useEffect(() => {
-    fetchEmployees(false); // default Pending
+    fetchEmployees(false);
   }, []);
 
-  // ---------------- RADIO CHANGE ----------------
   const handleRadioChange = (e) => {
     const value = e.target.value === 'true';
 
@@ -84,7 +81,6 @@ function ProNewsEmployee() {
     fetchEmployees(value);
   };
 
-  // ---------------- SUBMIT ----------------
   const handleRowSubmit = async (row) => {
     let hasError = false;
 
@@ -127,13 +123,14 @@ function ProNewsEmployee() {
 
     try {
       setOpenBackdrop(true);
-      await proNewsEmployeeSubmit(formData);
-
-      alert('Submitted Successfully');
-
-      // refresh pending list after submit
-      fetchEmployees(false);
-      setIsSubmitted(false);
+      const response = await proNewsEmployeeSubmit(formData);
+      if (response.data.code === '200') {
+        alert('Submitted Successfully');
+        fetchEmployees(false);
+        setIsSubmitted(false);
+      } else {
+        alert(response.data.message);
+      }
     } catch (err) {
       alert('Submission failed');
     } finally {
@@ -142,21 +139,49 @@ function ProNewsEmployee() {
   };
 
   const shortText = (text, len = 35) =>
-    text && text.length > len ? text.slice(0, len) + '...' : text || 'NA';
+    text && text.length > len
+      ? text.slice(0, len) + '...'
+      : text || 'Not Found';
 
   const downloadDocument = (path) => {
-    const downloadPath = `http://172.16.17.34:8084/e-Attendance/api/pro/downloadProDoc/${path}`;
+    const downloadPath = `https://attendance.mpcz.in:8888/E-Attendance/api/pro/downloadProDoc/${path}`;
     window.open(downloadPath, '_blank');
   };
+
+  const [openRemarkModal, setOpenRemarkModal] = useState(false);
+  const [remarkContent, setRemarkContent] = useState('');
+  const [remarkTitle, setRemarkTitle] = useState('');
+  const hoverTimer = useRef(null);
+
+  const handleOpenRemark = (title, content) => {
+    clearTimeout(hoverTimer.current);
+
+    hoverTimer.current = setTimeout(() => {
+      setRemarkTitle(title);
+      setRemarkContent(content || 'Not Found');
+      setOpenRemarkModal(true);
+    }, 300);
+  };
+
+  const handleCloseRemark = () => {
+    clearTimeout(hoverTimer.current);
+    setOpenRemarkModal(false);
+  };
+
   return (
     <>
       <Card className="shadow-lg rounded">
         <Card.Header className="text-center p-3">
           <Typography
             variant="h4"
-            sx={{ color: '#0a1f83', fontWeight: 'bold' }}
+            sx={{
+              color: '#0a1f83',
+              mb: 2,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+            }}
           >
-            Pro News Employee
+            News Reply By Employee
           </Typography>
 
           <FormControl sx={{ mt: 2 }}>
@@ -185,11 +210,16 @@ function ProNewsEmployee() {
               <TableHead>
                 <StyledTableRow>
                   <StyledTableCell>S.No.</StyledTableCell>
-                  <StyledTableCell>Emp Code</StyledTableCell>
-                  <StyledTableCell>Name</StyledTableCell>
+                  <StyledTableCell>Employee Code</StyledTableCell>
+                  <StyledTableCell>Employee Name</StyledTableCell>
+                  <StyledTableCell>Employee Location</StyledTableCell>
+                  <StyledTableCell>Assigned Date</StyledTableCell>
                   <StyledTableCell>MD Remark</StyledTableCell>
                   <StyledTableCell>Pro Remark</StyledTableCell>
                   <StyledTableCell>Document</StyledTableCell>
+                  <StyledTableCell>Submitted Date</StyledTableCell>
+                  <StyledTableCell>Your Remark</StyledTableCell>
+                  <StyledTableCell>Your Document</StyledTableCell>
 
                   {!isSubmitted && (
                     <>
@@ -206,19 +236,54 @@ function ProNewsEmployee() {
                   employeeList.map((row, index) => (
                     <StyledTableRow key={row.id}>
                       <StyledTableCell>{index + 1}</StyledTableCell>
-                      <StyledTableCell>{row.empCode}</StyledTableCell>
-                      <StyledTableCell>{row.empName}</StyledTableCell>
-
                       <StyledTableCell>
-                        <Tooltip title={row.mdComment || ''} arrow>
-                          <span>{shortText(row.mdComment)}</span>
-                        </Tooltip>
+                        {row.empCode || 'Not Found'}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {row.empName || 'Not Found'}
                       </StyledTableCell>
 
                       <StyledTableCell>
-                        <Tooltip title={row.proRemark || ''} arrow>
-                          <span>{shortText(row.proRemark)}</span>
-                        </Tooltip>
+                        {row.employeeDetail.postingLocation || 'Not Found'}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {row.dateOfNews || 'Not Found'}
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        <div
+                          onMouseEnter={() =>
+                            handleOpenRemark('MD Remark', row.mdComment)
+                          }
+                          style={{
+                            maxWidth: 220,
+                            cursor: 'default',
+                            color: '#333',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {shortText(row.mdComment)}
+                        </div>
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        <div
+                          onMouseEnter={() =>
+                            handleOpenRemark('Assigned Remark', row.proRemark)
+                          }
+                          style={{
+                            maxWidth: 220,
+                            cursor: 'default',
+                            color: '#333',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {shortText(row.proRemark)}
+                        </div>
                       </StyledTableCell>
 
                       <StyledTableCell>
@@ -232,9 +297,51 @@ function ProNewsEmployee() {
                           </Button>
                         </Tooltip>
                       </StyledTableCell>
+
+                      <StyledTableCell>
+                        {row.empUpdatedNo || 'Not Found'}
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        <div
+                          onMouseEnter={() =>
+                            handleOpenRemark('Employee Remark', row.empRemark)
+                          }
+                          style={{
+                            maxWidth: 220,
+                            cursor: 'default',
+                            color: '#333',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {shortText(row.empRemark)}
+                        </div>
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        {row.empDoc ? (
+                          <Tooltip
+                            title="Download Emp Document"
+                            arrow
+                            placement="top"
+                          >
+                            <Button
+                              onClick={() => downloadDocument(row.empDoc)}
+                              variant="contained"
+                              color="dark"
+                            >
+                              <CloudDownloadIcon color="success" />
+                            </Button>
+                          </Tooltip>
+                        ) : (
+                          'Not Found'
+                        )}
+                      </StyledTableCell>
+
                       {!isSubmitted && (
                         <>
-                          {/* FILE */}
                           <StyledTableCell>
                             <TextField
                               type="file"
@@ -262,7 +369,6 @@ function ProNewsEmployee() {
                             />
                           </StyledTableCell>
 
-                          {/* REMARK */}
                           <StyledTableCell>
                             <TextField
                               fullWidth
@@ -293,7 +399,6 @@ function ProNewsEmployee() {
                             />
                           </StyledTableCell>
 
-                          {/* SUBMIT */}
                           <StyledTableCell align="center">
                             <Tooltip title="Submit" arrow placement="top">
                               <Button
@@ -302,7 +407,7 @@ function ProNewsEmployee() {
                                 size="small"
                                 onClick={() => handleRowSubmit(row)}
                               >
-                                <TaskAltIcon />
+                                <TaskAltIcon color="success" />
                               </Button>
                             </Tooltip>
                           </StyledTableCell>
@@ -311,10 +416,9 @@ function ProNewsEmployee() {
                     </StyledTableRow>
                   ))
                 ) : (
-                  // ✅ NO DATA FOUND
                   <StyledTableRow>
                     <StyledTableCell
-                      colSpan={isSubmitted ? 5 : 8}
+                      colSpan={isSubmitted ? 11 : 14}
                       align="center"
                       sx={{ fontWeight: 'bold', color: '#777' }}
                     >
@@ -326,12 +430,73 @@ function ProNewsEmployee() {
             </Table>
           </TableContainer>
         </Card.Body>
+
+        <Card.Footer className="text-center">
+          <Button
+            className="cancel-button"
+            component={Link}
+            to="/employeeDashboard"
+          >
+            Cancel
+          </Button>
+        </Card.Footer>
       </Card>
 
-      {/* LOADER */}
       <Backdrop sx={{ color: '#fff', zIndex: 2000 }} open={openBackdrop}>
         <PropagateLoader />
       </Backdrop>
+
+      <Modal
+        open={openRemarkModal}
+        onClose={handleCloseRemark}
+        closeAfterTransition
+        BackdropProps={{
+          timeout: 300,
+        }}
+      >
+        <Fade in={openRemarkModal}>
+          <Box
+            sx={{
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              width: '65%',
+              maxHeight: '70vh',
+              bgcolor: '#fff',
+              borderRadius: 3,
+              boxShadow: 24,
+              p: 4,
+              outline: 'none',
+              overflowY: 'auto',
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                mb: 2,
+                fontWeight: 600,
+                color: '#0a1f83',
+                borderBottom: '1px solid #eee',
+                pb: 1,
+              }}
+            >
+              {remarkTitle}
+            </Typography>
+
+            <Typography
+              variant="body1"
+              sx={{
+                whiteSpace: 'pre-wrap',
+                color: '#444',
+                lineHeight: 1.6,
+              }}
+            >
+              {remarkContent}
+            </Typography>
+          </Box>
+        </Fade>
+      </Modal>
     </>
   );
 }
