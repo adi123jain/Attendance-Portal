@@ -7,6 +7,8 @@ import Col from 'react-bootstrap/Col';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { PropagateLoader } from 'react-spinners';
 import { motion } from 'framer-motion';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+
 import {
   Typography,
   Tooltip,
@@ -105,6 +107,13 @@ function ImmovablePropertyView() {
     setOpen(false);
     setSelectedRow(null);
   };
+
+  const DownloadDoc = async (item) => {
+    //const URL = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
+    const URL = `http://172.16.17.79:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
+    window.open(URL, '_blank');
+  };
+
   return (
     <>
       <Card className="shadow">
@@ -177,6 +186,7 @@ function ImmovablePropertyView() {
                   <StyledTableCell>Employee Name</StyledTableCell>
                   <StyledTableCell>Designation</StyledTableCell>
                   <StyledTableCell>Preview</StyledTableCell>
+                  <StyledTableCell>Download (pdf)</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
 
@@ -198,6 +208,22 @@ function ImmovablePropertyView() {
                             onClick={() => handlePreview(item)}
                           >
                             <VisibilityIcon fontSize="small" />
+                          </Button>
+                        </Tooltip>
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        <Tooltip title="Download" arrow>
+                          <Button
+                            variant="contained"
+                            color="dark"
+                            //sx={{ backgroundColor: "#37474F", color: "#fff" }}
+                            onClick={() => DownloadDoc(item)}
+                          >
+                            <CloudDownloadIcon
+                              fontSize="small"
+                              color="success"
+                            />
                           </Button>
                         </Tooltip>
                       </StyledTableCell>

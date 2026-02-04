@@ -277,7 +277,7 @@ function LeaveAllocation() {
       ) {
         alert('Leave Updated Successfully!!');
         modalClose();
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response.data.message);
       }

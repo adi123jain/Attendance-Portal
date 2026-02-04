@@ -20,7 +20,6 @@ import {
   MenuItem,
   FormControl,
 } from '@mui/material';
-import { Popover } from '@mui/material';
 import {
   StyledTableCell,
   StyledTableRow,
@@ -336,31 +335,6 @@ function ProNewsMD() {
                         )}
                       </StyledTableCell>
 
-                      {/* <StyledTableCell sx={{ width: 500 }}>
-                        <TextField
-                          fullWidth
-                          size="small"
-                          placeholder="Enter remark"
-                          value={row.remark}
-                          inputRef={(el) => (remarkRefs.current[row.id] = el)}
-                          error={!!row.errors.remark}
-                          helperText={row.errors.remark}
-                          onChange={(e) =>
-                            setEmployeeList((prev) =>
-                              prev.map((item) =>
-                                item.id === row.id
-                                  ? {
-                                      ...item,
-                                      remark: e.target.value,
-                                      errors: { remark: '' },
-                                    }
-                                  : item,
-                              ),
-                            )
-                          }
-                        />
-                      </StyledTableCell> */}
-
                       <StyledTableCell sx={{ width: 220 }}>
                         <Box
                           onClick={() => {
@@ -521,7 +495,6 @@ function ProNewsMD() {
               outline: 'none',
             }}
           >
-            {/* Header */}
             <Typography
               variant="h6"
               sx={{
@@ -535,7 +508,6 @@ function ProNewsMD() {
               Enter Remark
             </Typography>
 
-            {/* Textarea */}
             <TextField
               fullWidth
               multiline
@@ -550,7 +522,6 @@ function ProNewsMD() {
               }}
             />
 
-            {/* Actions */}
             <Box
               sx={{
                 mt: 3,

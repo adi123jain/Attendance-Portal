@@ -14,6 +14,7 @@ import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
 import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import AssessmentIcon from '@mui/icons-material/Assessment';
 
 function EmployeeDashboard() {
   // const menuItems = [
@@ -123,6 +124,11 @@ function EmployeeDashboard() {
       icon: <SecurityIcon />,
     },
     {
+      label: 'Revenue Realization & Commercial Activity (MIS)',
+      path: '/RRACMIS',
+      icon: <AssessmentIcon />,
+    },
+    {
       label: 'Medical Reimbursement',
       path: '/medicalReimbursement',
       icon: <LocalHospitalIcon />,
@@ -142,16 +148,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon />,
     },
-    // {
-    //   label: 'Immovable Property Return',
-    //   path: '/immovableProperty',
-    //   icon: <HomeWorkIcon />,
-    // },
-    // {
-    //   label: 'Immovable Property Return View',
-    //   path: '/immovablePropertyView',
-    //   icon: <VisibilityIcon />,
-    // },
+    {
+      label: 'Immovable Property Return',
+      path: '/immovableProperty',
+      icon: <HomeWorkIcon />,
+    },
+    {
+      label: 'Immovable Property Return View',
+      path: '/immovablePropertyView',
+      icon: <VisibilityIcon />,
+    },
     {
       label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',

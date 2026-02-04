@@ -231,7 +231,7 @@ function RRAC_MIS() {
                     className="green-button w-100"
                     onClick={downloadDocument}
                   >
-                    Search
+                    Download
                   </Button>
                 </Card.Body>
               </Card>

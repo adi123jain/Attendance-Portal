@@ -446,8 +446,10 @@ function CorrectionUpdateByRO() {
                             </StyledTableRow>
                           ))
                         ) : (
-                          <StyledTableRow colSpan={6}>
-                            <StyledTableCell>Data Not Found</StyledTableCell>
+                          <StyledTableRow>
+                            <StyledTableCell colSpan={6}>
+                              Data Not Found
+                            </StyledTableCell>
                           </StyledTableRow>
                         )}
                       </TableBody>

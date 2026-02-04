@@ -38,7 +38,7 @@ const cards = [
   },
   {
     title: 'SOP for Revenue Realization & Commercial Activity (Download SOP)',
-    link: 'https://attendance.mpcz.in:8084/E_Attendance_rebuild/media/SOP%20of%20Revenue%20Realization%20and%20Commercial%20Activity.docx',
+    link: 'https://attendance.mpcz.in:8083/E_Attendance_rebuild/media/SOP_Revenue_Realization_and_Commercial_Activity.pdf',
     icon: <ArticleIcon fontSize="large" color="action" />,
   },
   {
@@ -222,7 +222,7 @@ function OperationmaintenanceDashboard() {
         >
           {cards.filter(isCardVisible).map((card, idx) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={idx}>
-              <Link to={card.link} style={{ textDecoration: 'none' }}>
+              {/* <Link to={card.link} style={{ textDecoration: 'none' }}>
                 <Card
                   sx={{
                     height: '100%',
@@ -264,7 +264,103 @@ function OperationmaintenanceDashboard() {
                     </Typography>
                   </CardContent>
                 </Card>
-              </Link>
+              </Link> */}
+              {card.link.startsWith('http') ? (
+                <a
+                  href={card.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Card
+                    sx={{
+                      height: '100%',
+                      p: 2,
+                      textAlign: 'center',
+                      boxShadow: 3,
+                      borderRadius: 3,
+                      background:
+                        'linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)',
+                      color: '#0d47a1',
+                      transition: '0.3s',
+                      '&:hover': {
+                        boxShadow: 6,
+                        backgroundColor: '#f1f8ff',
+                        transform: 'translateY(-5px)',
+                      },
+                    }}
+                  >
+                    {/* card content */}
+                    <Box
+                      sx={{
+                        fontSize: 48,
+                        color: '#1a237e',
+                        mb: 1,
+                        '& svg': { fontSize: 48 },
+                      }}
+                    >
+                      {card.icon}
+                    </Box>
+                    <CardContent>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 'bold',
+                          color: '#1a237e',
+                          fontFamily: 'Roboto, serif',
+                        }}
+                      >
+                        {card.title}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </a>
+              ) : (
+                <Link to={card.link} style={{ textDecoration: 'none' }}>
+                  <Card
+                    sx={{
+                      height: '100%',
+                      p: 2,
+                      textAlign: 'center',
+                      boxShadow: 3,
+                      borderRadius: 3,
+                      background:
+                        'linear-gradient(135deg, #f5f7fa 0%, #e8ebef 100%)',
+                      color: '#0d47a1',
+                      transition: '0.3s',
+                      '&:hover': {
+                        boxShadow: 6,
+                        backgroundColor: '#f1f8ff',
+                        transform: 'translateY(-5px)',
+                      },
+                    }}
+                  >
+                    {/* card content */}
+                    <Box
+                      sx={{
+                        fontSize: 48,
+                        color: '#1a237e',
+                        mb: 1,
+                        '& svg': { fontSize: 48 },
+                      }}
+                    >
+                      {card.icon}
+                    </Box>
+                    <CardContent>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          fontWeight: 'bold',
+                          color: '#1a237e',
+                          fontFamily: 'Roboto, serif',
+                        }}
+                      >
+                        {card.title}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Link>
+              )}
             </Grid>
           ))}
         </Grid>

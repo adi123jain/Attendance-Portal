@@ -78,7 +78,7 @@ function Navbar({ children }) {
               sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
             />
             <Typography
-              variant="h6"
+              variant="h5"
               component={Link}
               to="/"
               sx={{
@@ -89,7 +89,9 @@ function Navbar({ children }) {
                 letterSpacing: '.3rem',
                 color: '#424242',
                 textDecoration: 'none',
-                textShadow: '2px 2px 4px #000000',
+                textShadow: '4px 4px 6px #000000',
+                // textShadow: '4px 4px 6px #0a1f83',
+                // color: '#0a1f83',
               }}
             >
               e-Attendance
