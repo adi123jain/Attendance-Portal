@@ -84,10 +84,8 @@ function LineStaffAuthorization() {
     fetchDgm();
   }, []);
 
-  // const [selectLine, setSelectLine] = useState("");
   const [is11kv, setIs11kv] = useState('No');
   const [is33kv, setIs33kv] = useState('No');
-  // const [selectDgm, setSelectDgm] = useState("");
   const [errors, setErrors] = useState({});
   const [remark, setRemark] = useState('');
 
@@ -366,7 +364,6 @@ function LineStaffAuthorization() {
 
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
-                {/* Select Line Staff */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Line Staff</Card.Header>
@@ -393,7 +390,6 @@ function LineStaffAuthorization() {
                   </Card>
                 </Col>
 
-                {/* Select Voltage */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Voltage</Card.Header>
@@ -427,7 +423,6 @@ function LineStaffAuthorization() {
                   </Card>
                 </Col>
 
-                {/* Select DGM */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select DGM</Card.Header>
@@ -497,7 +492,6 @@ function LineStaffAuthorization() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

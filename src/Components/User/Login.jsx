@@ -432,7 +432,6 @@ const Login = () => {
     <BackgroundContainer>
       <Container maxWidth="lg">
         <Grid container spacing={4} justifyContent="center">
-          {/* Left Side: Stats Cards */}
           <Grid item xs={12} md={6}>
             <Grid container spacing={3}>
               {cardData.map((data, index) => (
@@ -458,7 +457,6 @@ const Login = () => {
             </Grid>
           </Grid>
 
-          {/* Right Side: Login Form */}
           <Grid item xs={12} md={6}>
             <Card style={{ padding: '40px' }}>
               <CardContent>
@@ -623,7 +621,6 @@ const Login = () => {
                             mobile number
                           </Typography>
 
-                          {/* OTP Input Fields */}
                           <Stack
                             direction="row"
                             justifyContent="center"
@@ -670,7 +667,6 @@ const Login = () => {
                             ))}
                           </Stack>
 
-                          {/* Buttons */}
                           <Stack spacing={1.6}>
                             <Button
                               variant="contained"

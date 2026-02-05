@@ -110,7 +110,6 @@ function MonthlyAttendanceView() {
 
         <Card.Body>
           <div className="row row-cols-1 row-cols-md-4 g-3 mt-4 mb-4">
-            {/* Region */}
             <div className="col">
               <Card>
                 <Card.Header>Region</Card.Header>
@@ -137,7 +136,6 @@ function MonthlyAttendanceView() {
               </Card>
             </div>
 
-            {/* Circle */}
             <div className="col">
               <Card>
                 <Card.Header>Circle</Card.Header>
@@ -160,7 +158,6 @@ function MonthlyAttendanceView() {
               </Card>
             </div>
 
-            {/* Month */}
             <div className="col">
               <Card>
                 <Card.Header>Month</Card.Header>
@@ -187,7 +184,6 @@ function MonthlyAttendanceView() {
               </Card>
             </div>
 
-            {/* Year */}
             <div className="col">
               <Card>
                 <Card.Header>Year</Card.Header>

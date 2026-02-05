@@ -91,7 +91,7 @@ function SsoAuthorization() {
   useEffect(() => {
     const fetchDgm = async () => {
       const response = await getDgmByJe(sessionEmp);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         setDgmList(response.data.list);
       } else {
@@ -381,7 +381,6 @@ function SsoAuthorization() {
 
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
-                {/* Select Substation */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>select Substation</Card.Header>
@@ -408,7 +407,6 @@ function SsoAuthorization() {
                   </Card>
                 </Col>
 
-                {/* Select SSO */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select SSO</Card.Header>
@@ -435,7 +433,6 @@ function SsoAuthorization() {
                   </Card>
                 </Col>
 
-                {/* 11KV Checkbox */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select Voltage</Card.Header>
@@ -469,7 +466,6 @@ function SsoAuthorization() {
                   </Card>
                 </Col>
 
-                {/* Select DGM */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Select DGM</Card.Header>
@@ -497,7 +493,6 @@ function SsoAuthorization() {
                 </Col>
               </Row>
               <Row className="mt-2">
-                {/* Enter Remark */}
                 <Col md={12}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
@@ -541,7 +536,6 @@ function SsoAuthorization() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

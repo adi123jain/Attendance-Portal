@@ -1,73 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { useNavigate } from 'react-router-dom';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import '../../../Constants/Style/styles.css';
 import Form from 'react-bootstrap/Form';
 
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
 } from '@mui/material';
 import {
   getDepartment,
   getDesignation,
-  getEmployeePlaceOfPosting,
   getOutsourcePlaceOfPosting,
   submitOutsourcePlaceOfPosting,
-  submitPlaceOfPosting,
 } from '../../../Services/Auth';
-import SearchUtils from '../../../Constants/Search_Utils/Index';
 import SearchForPostings from './Search';
 import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function OutsourcePlaceOfPosting() {
   const location = useLocation();
   const { empCode, fullName } = location.state || {};
@@ -99,7 +59,6 @@ function OutsourcePlaceOfPosting() {
       setOpenBackdrop(true);
       try {
         const response = await getOutsourcePlaceOfPosting(empCode);
-        console.log(response);
         if (
           response?.data.code == '200' &&
           response?.data.message == 'Success'
@@ -162,18 +121,9 @@ function OutsourcePlaceOfPosting() {
     fetchDepartment();
   }, []);
 
-  // const handleInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setSearchValues((prev) => ({
-  //     ...prev,
-  //     [name]: value,
-  //   }));
-  // };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
-    // For feeder, also get the text
     if (name === 'feeder') {
       const feederName = e.target.selectedOptions[0].text;
 
@@ -491,7 +441,6 @@ function OutsourcePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* Designation */}
                 <div className="col">
                   <Card>
                     <Card.Header>Designation</Card.Header>
@@ -523,7 +472,6 @@ function OutsourcePlaceOfPosting() {
               </div>
 
               <div className="row row-cols-1 row-cols-md-3 p-3">
-                {/* Department */}
                 <div className="col">
                   <Card>
                     <Card.Header>Department</Card.Header>
@@ -553,7 +501,6 @@ function OutsourcePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* From Date */}
                 <div className="col">
                   <Card>
                     <Card.Header>From Date</Card.Header>
@@ -572,7 +519,6 @@ function OutsourcePlaceOfPosting() {
                   </Card>
                 </div>
 
-                {/* To Date */}
                 <div className="col">
                   <Card>
                     <Card.Header>To Date</Card.Header>
@@ -592,16 +538,6 @@ function OutsourcePlaceOfPosting() {
                   </Card>
                 </div>
               </div>
-
-              {/* <div className="text-center mt-4 mb-3">
-                <Button
-                  onClick={handleSubmit}
-                  variant="outlined"
-                  className="blue-button"
-                >
-                  Submit
-                </Button>
-              </div> */}
             </Card.Body>
             <Card.Footer className="text-center mt-4 mb-3">
               <Button
@@ -625,7 +561,6 @@ function OutsourcePlaceOfPosting() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

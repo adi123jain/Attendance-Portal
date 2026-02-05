@@ -63,13 +63,10 @@ function OutsourceEmployeeTraining() {
       remark: remark,
       createdBy: sessionStorage.getItem('empCode'),
     };
-    console.log(payload);
 
     try {
       setOpenBackdrop(true);
-      // Call API
       const response = await outsourceEmpTraning(payload);
-      console.log(response);
       if (response.data.code === '200' && response.data.message === 'Success') {
         alert('Training record saved successfully!');
         window.location.reload();

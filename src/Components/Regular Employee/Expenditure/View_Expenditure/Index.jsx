@@ -53,7 +53,7 @@ function ViewExpenditure() {
 
     try {
       const response = await getIncentiveByCode(requestParam);
-      console.log('API Response:', response);
+      // console.log('API Response:', response);
       setDataInTable(response?.data?.list || []);
       setOpenBackdrop(false);
       setTimeout(() => {
@@ -95,7 +95,6 @@ function ViewExpenditure() {
 
         <Card.Body>
           <Row xs={1} sm={3} md={3} className="g-3 mt-2">
-            {/* Month Select */}
             <Col>
               <Card>
                 <Card.Header>Month</Card.Header>
@@ -124,7 +123,6 @@ function ViewExpenditure() {
               </Card>
             </Col>
 
-            {/* Year Select */}
             <Col>
               <Card>
                 <Card.Header>Year</Card.Header>
@@ -145,7 +143,6 @@ function ViewExpenditure() {
               </Card>
             </Col>
 
-            {/* Search Button */}
             <Col>
               <Card>
                 <Card.Header>click to Search</Card.Header>
@@ -189,10 +186,8 @@ function ViewExpenditure() {
                     {dataInTable && dataInTable.length > 0 ? (
                       dataInTable.map((item, index) => (
                         <React.Fragment key={index}>
-                          {/* Main Row */}
                           <StyledTableRow>
                             <StyledTableCell>{index + 1}</StyledTableCell>
-
                             <StyledTableCell>
                               {item.region.name}
                             </StyledTableCell>

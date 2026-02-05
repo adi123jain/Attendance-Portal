@@ -180,7 +180,6 @@ function MedicalHealthInsuranceView() {
 
             <Card.Body>
               <Grid container spacing={2}>
-                {/* Row 1 */}
                 <Grid item xs={12} md={4}>
                   <Typography variant="subtitle2" color="textSecondary">
                     Employee Code
@@ -217,7 +216,6 @@ function MedicalHealthInsuranceView() {
                   </Typography>
                 </Grid>
 
-                {/* Row 2 */}
                 <Grid item xs={12} md={4}>
                   <Typography variant="subtitle2" color="textSecondary">
                     Department

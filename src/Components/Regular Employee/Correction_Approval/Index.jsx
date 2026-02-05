@@ -148,7 +148,7 @@ function CorrectionApproval() {
           };
 
           const correctionResponse = await approveCorrections(payload);
-          console.log('Present response:', correctionResponse.data);
+          // console.log('Present response:', correctionResponse.data);
 
           if (correctionResponse.data.code === '200') {
             messages.push(`Status Updated Successfully!!`);
@@ -167,7 +167,7 @@ function CorrectionApproval() {
           };
 
           const leaveResponse = await approveLeave(payload);
-          console.log('Leave response:', leaveResponse.data);
+          // console.log('Leave response:', leaveResponse.data);
           if (leaveResponse.data.code === '200') {
             messages.push(`Status Updated Successfully!!`);
           } else {
@@ -190,7 +190,7 @@ function CorrectionApproval() {
   const modalClose = () => setModalShow(false);
 
   const modalOpen = async (items) => {
-    console.log(items);
+    // console.log(items);
     setModalShow(true);
     // setImpressionData(items);
     setOpenBackdrop(true);
@@ -244,7 +244,6 @@ function CorrectionApproval() {
     <>
       <Card>
         <Card.Header className="p-3 d-flex align-items-center position-relative">
-          {/* Back button on left */}
           <Tooltip title="Back" arrow>
             <Button className="position-absolute start-2">
               <Link to="/correctionApplication">
@@ -253,7 +252,6 @@ function CorrectionApproval() {
             </Button>
           </Tooltip>
 
-          {/* Centered Title */}
           <Typography
             variant="h4"
             sx={{
@@ -381,7 +379,6 @@ function CorrectionApproval() {
             </Card.Header>
             <Card.Body>
               <Row className="justify-content-center my-1 g-3">
-                {/* Dropdown */}
                 <Col xs={12} sm={6} md={2}>
                   <Form.Select
                     value={selectValue}
@@ -396,7 +393,6 @@ function CorrectionApproval() {
                   </Form.Select>
                 </Col>
 
-                {/* Remark Input */}
                 <Col xs={12} sm={6} md={3}>
                   <Form.Control
                     placeholder="Enter Remark"
@@ -406,7 +402,6 @@ function CorrectionApproval() {
                   />
                 </Col>
 
-                {/* Submit Button */}
                 <Col xs={12} sm={4} md={2} className="d-grid">
                   <Button
                     variant="contained"
@@ -543,7 +538,6 @@ function CorrectionApproval() {
                   <StyledTableCell>Download</StyledTableCell>
                   <StyledTableCell>Longitude</StyledTableCell>
                   <StyledTableCell>Lattitude</StyledTableCell>
-                  {/* <StyledTableCell>Status</StyledTableCell> */}
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -593,8 +587,6 @@ function CorrectionApproval() {
             </Table>
           </TableContainer>
         </Modal.Body>
-
-        {/* <Modal.Footer></Modal.Footer> */}
       </Modal>
 
       <Backdrop

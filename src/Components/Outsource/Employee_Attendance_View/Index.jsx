@@ -121,16 +121,13 @@
 
 // export default OutsourceEmpAttendaceView;
 
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { Link } from 'react-router-dom';
 import {
   employeeAttendaceView,
   getImpressionImage,
 } from '../../../Services/Auth';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -139,16 +136,12 @@ import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 
 import {
   Typography,
-  Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
 } from '@mui/material';
 import { PropagateLoader } from 'react-spinners';
@@ -156,36 +149,6 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 
 function OutsourceEmpAttendaceView() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -224,7 +187,6 @@ function OutsourceEmpAttendaceView() {
     setOpenBackdrop(true);
     try {
       const response = await employeeAttendaceView(empCode, month, year);
-      // console.log("Response", response);
       if (response?.data.code == '200' && response?.data.message == 'Success') {
         setShowTable(true);
         setOpenBackdrop(false);
@@ -293,14 +255,11 @@ function OutsourceEmpAttendaceView() {
   };
 
   const [modalShow, setModalShow] = useState(false);
-  const [showImpressionTable, setShowImpressionTable] = useState(false);
   const [impressionData, setImpressionData] = useState([]);
   const modalClose = () => setModalShow(false);
 
   const modalOpen = async (items) => {
-    // console.log(items);
     setModalShow(true);
-    // setImpressionData(items);
     setOpenBackdrop(true);
     const parts = items.punchDate.split('/');
     const inputDate = new Date(parts[2], parts[1] - 1, parts[0]);
@@ -325,7 +284,6 @@ function OutsourceEmpAttendaceView() {
 
     try {
       const response = await getImpressionImage(items.empCode, formattedDate);
-      // console.log("impResponse", response);
       if (
         response?.data.code === '200' &&
         response?.data.message === 'Success'
@@ -365,9 +323,7 @@ function OutsourceEmpAttendaceView() {
           </Typography>
         </Card.Header>
         <Card.Body>
-          {/* Row 1 */}
           <div className="row row-cols-1 row-cols-md-3 g-3">
-            {/* Employee Code */}
             <div className="col">
               <Card>
                 <Card.Header>Employee Code</Card.Header>
@@ -386,7 +342,6 @@ function OutsourceEmpAttendaceView() {
               </Card>
             </div>
 
-            {/* Month */}
             <div className="col">
               <Card>
                 <Card.Header>Month</Card.Header>
@@ -419,7 +374,6 @@ function OutsourceEmpAttendaceView() {
               </Card>
             </div>
 
-            {/* Year */}
             <div className="col">
               <Card>
                 <Card.Header>Year</Card.Header>
@@ -459,12 +413,7 @@ function OutsourceEmpAttendaceView() {
       {showTable && (
         <>
           <div className="d-flex justify-content-start mb-3">
-            <Button
-              // color="secondary"
-              // variant="contained"
-              className="purple-button me-2"
-              onClick={exportToExcel}
-            >
+            <Button className="purple-button me-2" onClick={exportToExcel}>
               Download Excel
             </Button>
             <Button className="cancel-button" onClick={exportToPDF}>
@@ -586,7 +535,6 @@ function OutsourceEmpAttendaceView() {
               variant="h5"
               sx={{
                 color: '#0a1f83',
-                // mb: 2,
                 fontFamily: 'serif',
                 fontWeight: 'bold',
               }}
@@ -611,7 +559,6 @@ function OutsourceEmpAttendaceView() {
                   <StyledTableCell>Impression</StyledTableCell>
                   <StyledTableCell>Longitude</StyledTableCell>
                   <StyledTableCell>Lattitude</StyledTableCell>
-                  {/* <StyledTableCell>Status</StyledTableCell> */}
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -661,10 +608,7 @@ function OutsourceEmpAttendaceView() {
             </Table>
           </TableContainer>
         </Modal.Body>
-
-        {/* <Modal.Footer></Modal.Footer> */}
       </Modal>
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

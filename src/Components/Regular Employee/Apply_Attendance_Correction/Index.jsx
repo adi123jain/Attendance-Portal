@@ -5,7 +5,6 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 import { PropagateLoader } from 'react-spinners';
-// import "../../../Constants/Style/styles.css";
 import {
   Typography,
   Paper,
@@ -340,7 +339,6 @@ function ApplyAttendanceCorrection() {
         </Card.Header>
 
         <Card.Body>
-          {/* Outer Row */}
           <Row className="g-3">
             <Col md={4}>
               <TableContainer component={Paper}>
@@ -376,7 +374,6 @@ function ApplyAttendanceCorrection() {
             </Col>
 
             <Col md={8}>
-              {/* Inner Row 1 */}
               <Card>
                 <Card.Header className="text-center p-1">
                   <Typography
@@ -407,9 +404,6 @@ function ApplyAttendanceCorrection() {
                             onChange={(e) => setMonth(e.target.value)}
                             value={month}
                           >
-                            {/* <option value="" disabled>
-                              -- Select --
-                            </option> */}
                             <option value="1">January</option>
                             <option value="2">February</option>
                             <option value="3">March</option>
@@ -423,9 +417,6 @@ function ApplyAttendanceCorrection() {
                             <option value="11">November</option>
                             <option value="12">December</option>
                           </Form.Select>
-                          {/* {monthError && (
-                            <div className="text-danger mt-1">{monthError}</div>
-                          )} */}
                         </Card.Body>
                       </Card>
                     </Col>
@@ -444,9 +435,6 @@ function ApplyAttendanceCorrection() {
                             onChange={(e) => setYear(e.target.value)}
                             value={year}
                           >
-                            {/* <option value="" disabled>
-                              -- Select --
-                            </option> */}
                             <option value="2022">2022</option>
                             <option value="2023">2023</option>
                             <option value="2024">2024</option>
@@ -454,9 +442,6 @@ function ApplyAttendanceCorrection() {
                             <option value="2026">2026</option>
                             <option value="2027">2027</option>
                           </Form.Select>
-                          {/* {yearError && (
-                            <div className="text-danger mt-1">{yearError}</div>
-                          )} */}
                         </Card.Body>
                       </Card>
                     </Col>
@@ -479,8 +464,6 @@ function ApplyAttendanceCorrection() {
                 </Card.Body>
               </Card>
 
-              {/* Inner Row 2 */}
-
               <Card className="mt-4">
                 <Card.Header className="text-center">
                   <Typography
@@ -497,7 +480,6 @@ function ApplyAttendanceCorrection() {
                 </Card.Header>
                 <Card.Body>
                   <Row md={3}>
-                    {/* First Dropdown */}
                     <Col>
                       <Card>
                         <Card.Header>
@@ -530,7 +512,6 @@ function ApplyAttendanceCorrection() {
                       </Card>
                     </Col>
 
-                    {/* Second Dropdown */}
                     <Col>
                       <Card>
                         <Card.Header>
@@ -558,14 +539,11 @@ function ApplyAttendanceCorrection() {
                             >
                               {correctionError}
                             </Typography>
-
-                            // <p className="text-danger">{correctionError}</p>
                           )}
                         </Card.Body>
                       </Card>
                     </Col>
 
-                    {/* Remark Field */}
                     <Col>
                       <Card>
                         <Card.Header>
@@ -595,12 +573,6 @@ function ApplyAttendanceCorrection() {
                 <Card.Footer className="text-center">
                   {showCheckbox && (
                     <div className="">
-                      {/* <input
-                        type="checkbox"
-                        checked={isHql}
-                        onChange={handleCheckboxChange}
-                      />
-                      <span>On HeadQuarter Leave</span> */}
                       <input
                         class="form-check-input"
                         checked={isHql}

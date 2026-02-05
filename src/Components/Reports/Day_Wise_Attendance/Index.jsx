@@ -75,7 +75,7 @@ function DayWiseAttendace() {
         circle,
         formattedDate,
       );
-      console.log(response);
+      // console.log(response);
       const list = response?.data?.list || [];
 
       if (list.length === 0) {

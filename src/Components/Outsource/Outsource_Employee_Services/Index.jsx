@@ -1,13 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-
 import { useNavigate } from 'react-router-dom';
 import {
   getOutsourceEmpByEmpCode,
@@ -15,8 +8,6 @@ import {
 } from '../../../Services/Auth';
 import SearchUtils from '../../../Constants/Search_Utils/Index';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import '../../../Constants/Style/styles.css';
 import {
   Typography,
@@ -24,10 +15,8 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   TextField,
   Backdrop,
@@ -46,46 +35,8 @@ import {
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
 
-// Styled Components
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
-
 function OutsourceEmployeeServices() {
   const regionRef = useRef(null);
-  // const circleRef = useRef(null);
-  // const divisionRef = useRef(null);
   const tableRef = useRef(null);
   const empTableRef = useRef(null);
   const navigate = useNavigate();
@@ -143,12 +94,10 @@ function OutsourceEmployeeServices() {
         substationId: searchValues.subStation,
       };
       const res = await getOutsourceEmpByLevel(payload);
-      // console.log("Employee Data:", res?.data);
       if (res?.data.code === '200' && res?.data.message === 'Success') {
         setOpenBackdrop(true);
         setDataInLevelTable(res?.data.list);
         setShowLevelTable(true);
-        //tableRef.current.scrollIntoView({ behavior: "smooth" });
       } else {
         alert(res?.data.message);
       }
@@ -203,11 +152,9 @@ function OutsourceEmployeeServices() {
         substationId: null,
       };
       const res = await getOutsourceEmpByEmpCode(payload);
-      console.log('Response:', res?.data);
 
       if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
-        // console.log("___", dataInEmpTable);
         setShowEmpTable(true);
       } else {
         setDataInEmpTable(null);
@@ -220,26 +167,6 @@ function OutsourceEmployeeServices() {
       setOpenBackdrop(false);
     }
   };
-
-  // const getEmpInformation = (e) => {
-  //   e.preventDefault();
-
-  //   const empCode = sessionStorage.getItem("empCode");
-  //   if (!empCode) {
-  //     console.error("Employee Code not found in sessionStorage.");
-  //     return;
-  //   }
-
-  //   const downloadUrl = `https://attendance.mpcz.in:8888/E-Attendance/api/outsource/getEmployeeMis?empCode=${empCode}`;
-
-  //   const downloadLink = document.createElement("a");
-  //   downloadLink.href = downloadUrl;
-  //   downloadLink.target = "_blank";
-  //   downloadLink.download = "";
-  //   document.body.appendChild(downloadLink);
-  //   downloadLink.click();
-  //   document.body.removeChild(downloadLink);
-  // };
 
   const [modalState, setModalState] = useState({
     open: false,
@@ -261,14 +188,10 @@ function OutsourceEmployeeServices() {
         <Card.Header className="p-3">
           <Box
             sx={{
-              // display: "flex",
-              // alignItems: "center",
-              // justifyContent: "space-between",
               textAlign: 'center',
               mb: 2,
             }}
           >
-            {/* Centered Typography */}
             <Typography
               variant="h4"
               sx={{
@@ -281,18 +204,6 @@ function OutsourceEmployeeServices() {
             >
               Employee Services (Outsource)
             </Typography>
-
-            {/* Right-side Download Button */}
-            {/* <Link to="#" onClick={getEmpInformation}>
-              <Tooltip
-                title="Click here to download Employee Information in Excel Sheet"
-                arrow
-              >
-                <Button variant="contained" color="dark">
-                  <CloudDownloadIcon fontSize="large" color="success" />
-                </Button>
-              </Tooltip>
-            </Link> */}
           </Box>
         </Card.Header>
 
@@ -303,8 +214,6 @@ function OutsourceEmployeeServices() {
             errors={errors}
             refs={{
               region: regionRef,
-              // circle: circleRef,
-              // division: divisionRef,
             }}
           />
           <div className="text-center mt-4 mb-3">
@@ -326,7 +235,6 @@ function OutsourceEmployeeServices() {
                 </Card.Header>
                 <Card.Body>
                   <div className="row gx-2">
-                    {/* Input Field */}
                     <div className="col-8">
                       <input
                         type="number"
@@ -346,7 +254,6 @@ function OutsourceEmployeeServices() {
                       )}
                     </div>
 
-                    {/* Search Button */}
                     <div className="col-4">
                       <Button
                         onClick={searchByEmpCode}
@@ -643,127 +550,6 @@ function OutsourceEmployeeServices() {
                               </Tooltip>
                             </Button>
                           </StyledTableCell>
-                          {/* <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              // className="download-button"
-                              color="dark"
-                            >
-                              <Tooltip title="Click here" arrow>
-                                <OpenInNewIcon
-                                  fontSize="small"
-                                  color="primary"
-                                />
-                              </Tooltip>
-                            </Button>
-                          </StyledTableCell> */}
                         </StyledTableRow>
                       ))
                   ) : (
@@ -1025,7 +811,6 @@ function OutsourceEmployeeServices() {
         </Card>
       )}
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
@@ -1033,7 +818,6 @@ function OutsourceEmployeeServices() {
         <PropagateLoader />
       </Backdrop>
 
-      {/* Conditional Rendering of Modals */}
       {modalState.type === 'punishmentModal' && (
         <PunishmentModal
           open={modalState.open}

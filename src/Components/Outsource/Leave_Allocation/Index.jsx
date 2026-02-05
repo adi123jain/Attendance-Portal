@@ -1,25 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import '../../../Constants/Style/styles.css';
 import {
   Typography,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   TextField,
   Backdrop,
 } from '@mui/material';
 import {
-  getLeaveAllocation,
   leaveAllocationOutsource,
   updateEmployeeLeaves,
 } from '../../../Services/Auth';
@@ -29,40 +24,6 @@ import {
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
 
-// import {
-//   StyledTableRow,
-//   StyledTableCell,
-// } from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 function OutsourceLeaveAllocation() {
   const regionRef = useRef(null);
   const tableRef = useRef(null);
@@ -117,10 +78,8 @@ function OutsourceLeaveAllocation() {
         dcId: searchValues.dc,
         empCode: null,
       };
-      // console.log(payload);
 
       const response = await leaveAllocationOutsource(payload);
-      // console.log("response", response);
 
       if (response?.data.code == '200' && response?.data.message == 'Success') {
         setShowLevelTable(true);
@@ -210,14 +169,6 @@ function OutsourceLeaveAllocation() {
   const [modalShow, setModalShow] = useState(false);
   const [leaveData, setLeaveData] = useState({
     casualLeave: '',
-    // earnLeave: "",
-    // commutedLeave: "",
-    // optionalLeave: "",
-    // paternityLeave: "",
-    // specialLeave: "",
-    // maternityLeave: "",
-    // childCareLeave: "",
-    // lwpLeave: "",
     empCode: '',
   });
   const handleChange = (e) => {
@@ -237,29 +188,11 @@ function OutsourceLeaveAllocation() {
     setModalShow(true);
     setLeaveData({
       casualLeave: items.casualLeave || '0',
-      // earnLeave: items.earnLeave || "",
-      // commutedLeave: items.commutedLeave || "",
-      // optionalLeave: items.optionalLeave || "",
-      // paternityLeave: items.paternityLeave || "",
-      // specialLeave: items.specialLeave || "",
-      // maternityLeave: items.maternityLeave || "",
-      // childCareLeave: items.childCareLeave || "",
-      // lwpLeave: items.lwp || "",
       empCode: items.empCode || '',
     });
   };
   const validateForm = () => {
-    const requiredFields = [
-      'casualLeave',
-      // "earnLeave",
-      // "commutedLeave",
-      // "optionalLeave",
-      // "paternityLeave",
-      // "specialLeave",
-      // "maternityLeave",
-      // "childCareLeave",
-      // "lwpLeave",
-    ];
+    const requiredFields = ['casualLeave'];
 
     for (let field of requiredFields) {
       const value = leaveData[field];
@@ -356,7 +289,6 @@ function OutsourceLeaveAllocation() {
                 </Card.Header>
                 <Card.Body>
                   <div className="row gx-2">
-                    {/* Input Field */}
                     <div className="col-8">
                       <input
                         type="number"
@@ -376,7 +308,6 @@ function OutsourceLeaveAllocation() {
                       )}
                     </div>
 
-                    {/* Search Button */}
                     <div className="col-4">
                       <Button
                         onClick={searchByEmpCode}
@@ -392,11 +323,9 @@ function OutsourceLeaveAllocation() {
               </Card>
             </div>
           </div>
-          {/* <Divider /> */}
         </Card.Body>
       </Card>
 
-      {/* Table by Level */}
       {showLevelTable && (
         <Card
           className="shadow-lg rounded"
@@ -443,14 +372,6 @@ function OutsourceLeaveAllocation() {
                     <StyledTableCell>Employee Code</StyledTableCell>
                     <StyledTableCell>Employee Name</StyledTableCell>
                     <StyledTableCell>Casual Leave</StyledTableCell>
-                    {/* <StyledTableCell>Earn Leave</StyledTableCell>
-                    <StyledTableCell>Commuted Leave</StyledTableCell>
-                    <StyledTableCell>Optional Leave</StyledTableCell>
-                    <StyledTableCell>Paternity Leave</StyledTableCell>
-                    <StyledTableCell>Special Leave</StyledTableCell>
-                    <StyledTableCell>Maternity Leave</StyledTableCell>
-                    <StyledTableCell>Child Leave</StyledTableCell>
-                    <StyledTableCell>LWP</StyledTableCell>*/}
                     <StyledTableCell>Action</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -477,25 +398,6 @@ function OutsourceLeaveAllocation() {
                           <StyledTableCell>
                             {item.casualLeave || '0'}
                           </StyledTableCell>
-                          {/* <StyledTableCell>{item.earnLeave}</StyledTableCell>
-                          <StyledTableCell>
-                            {item.commutedLeave}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.optionalLeave}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.paternityLeave}
-                          </StyledTableCell>
-                          <StyledTableCell>{item.specialLeave}</StyledTableCell>
-                          <StyledTableCell>
-                            {item.maternityLeave}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.childCareLeave}
-                          </StyledTableCell>
-                          <StyledTableCell>{item.lwp}</StyledTableCell> */}
-
                           <StyledTableCell>
                             <Button
                               variant="outlined"
@@ -522,7 +424,6 @@ function OutsourceLeaveAllocation() {
         </Card>
       )}
 
-      {/* Show Table By EmpCode */}
       {showEmpTable && (
         <Card
           className="shadow-lg rounded"
@@ -551,14 +452,6 @@ function OutsourceLeaveAllocation() {
                     <StyledTableCell>Employee Code</StyledTableCell>
                     <StyledTableCell>Employee Name</StyledTableCell>
                     <StyledTableCell>Casual Leave</StyledTableCell>
-                    {/* <StyledTableCell>Earn Leave</StyledTableCell>
-                    <StyledTableCell>Commuted Leave</StyledTableCell>
-                    <StyledTableCell>Optional Leave</StyledTableCell>
-                    <StyledTableCell>Paternity Leave</StyledTableCell>
-                    <StyledTableCell>Special Leave</StyledTableCell>
-                    <StyledTableCell>Maternity Leave</StyledTableCell>
-                    <StyledTableCell>Child Leave</StyledTableCell>
-                    <StyledTableCell>LWP</StyledTableCell> */}
                     <StyledTableCell>Action</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -576,28 +469,6 @@ function OutsourceLeaveAllocation() {
                       <StyledTableCell>
                         {dataInEmpTable.casualLeave}
                       </StyledTableCell>
-                      {/* <StyledTableCell>
-                        {dataInEmpTable.earnLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.commutedLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.optionalLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.paternityLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.specialLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.maternityLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        {dataInEmpTable.childCareLeave}
-                      </StyledTableCell>
-                      <StyledTableCell>{dataInEmpTable.lwp}</StyledTableCell> */}
 
                       <StyledTableCell>
                         <Button
@@ -656,46 +527,6 @@ function OutsourceLeaveAllocation() {
                   name: 'casualLeave',
                   ref: inputRefs.casualLeave || '0',
                 },
-                // {
-                //   label: "Earned Leave",
-                //   name: "earnLeave",
-                //   ref: inputRefs.earnLeave,
-                // },
-                // {
-                //   label: "Commuted Leave",
-                //   name: "commutedLeave",
-                //   ref: inputRefs.commutedLeave,
-                // },
-                // {
-                //   label: "Optional Leave",
-                //   name: "optionalLeave",
-                //   ref: inputRefs.optionalLeave,
-                // },
-                // {
-                //   label: "Paternity Leave",
-                //   name: "paternityLeave",
-                //   ref: inputRefs.paternityLeave,
-                // },
-                // {
-                //   label: "Special Leave",
-                //   name: "specialLeave",
-                //   ref: inputRefs.specialLeave,
-                // },
-                // {
-                //   label: "Maternity Leave",
-                //   name: "maternityLeave",
-                //   ref: inputRefs.maternityLeave,
-                // },
-                // {
-                //   label: "Child Care Leave",
-                //   name: "childCareLeave",
-                //   ref: inputRefs.childCareLeave,
-                // },
-                // {
-                //   label: "LWP Leave",
-                //   name: "lwpLeave",
-                //   ref: inputRefs.lwpLeave,
-                // },
               ].map((field, index) => (
                 <div className="col-md-6 mb-3" key={index}>
                   <label
@@ -759,7 +590,6 @@ function OutsourceLeaveAllocation() {
         </Modal.Footer>
       </Modal>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

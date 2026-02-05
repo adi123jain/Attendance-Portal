@@ -66,8 +66,6 @@ function UpdateEmployeeInformation({
   userName,
   userInformation,
 }) {
-  // console.log(userInformation);
-
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -156,8 +154,6 @@ function UpdateEmployeeInformation({
 
   useEffect(() => {
     if (userInformation) {
-      console.log(userInformation);
-      //  Update all text/number fields in formData
       const mappedData = {
         employeeCode: userInformation.empCode || '',
         firstName: userInformation.firstName,
@@ -446,11 +442,8 @@ function UpdateEmployeeInformation({
       updatedBy: sessionStorage.getItem('empCode'),
     };
 
-    console.log(' Final Payload:', payload);
-
     try {
       const response = await createNewEmployee(payload);
-      //console.log(response);
       if (response.data.code === '200') {
         alert('Employee Information Successfully Updated !!');
         setOpenBackdrop(false);
@@ -469,7 +462,6 @@ function UpdateEmployeeInformation({
     <>
       <Card>
         <Card.Header className="p-3 d-flex align-items-center position-relative">
-          {/* Back button */}
           <Tooltip title="Back" arrow placement="top">
             <Button className="position-absolute start-2">
               <Link to="/employeeInformation">
@@ -478,7 +470,6 @@ function UpdateEmployeeInformation({
             </Button>
           </Tooltip>
 
-          {/* Title Section */}
           <Box
             sx={{
               flex: 1,
@@ -515,7 +506,6 @@ function UpdateEmployeeInformation({
         </Card.Header>
 
         <Card.Body>
-          {/* Basic Information */}
           <Card>
             <Card.Header className="text-center">
               <Typography
@@ -532,7 +522,6 @@ function UpdateEmployeeInformation({
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
@@ -624,7 +613,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -731,7 +719,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 3 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -809,16 +796,8 @@ function UpdateEmployeeInformation({
                         name="fatherName"
                         value={formData.fatherName}
                         onChange={handleChange}
-                        // isInvalid={!!errors.fatherName}
-                        // ref={(el) => (inputRefs.current.fatherName = el)}
                         placeholder="Enter Father's Name"
                       />
-                      {/* <Form.Control.Feedback type="invalid">
-                        <Typography variant="caption">
-                          {' '}
-                          {errors.fatherName}
-                        </Typography>
-                      </Form.Control.Feedback> */}
                     </Card.Body>
                   </Card>
                 </Col>
@@ -917,7 +896,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 5 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -991,7 +969,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 6 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1077,7 +1054,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Department and Grade */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -1094,7 +1070,6 @@ function UpdateEmployeeInformation({
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
@@ -1108,8 +1083,8 @@ function UpdateEmployeeInformation({
                       <Form.Select
                         value={selectedRegion}
                         onChange={(e) => onRegionChange(e.target.value)}
-                        isInvalid={!!errors.selectedRegion} // validation key matches
-                        ref={(el) => (inputRefs.current.selectedRegion = el)} // ref for focusing
+                        isInvalid={!!errors.selectedRegion}
+                        ref={(el) => (inputRefs.current.selectedRegion = el)}
                       >
                         <option value="" disabled selected>
                           -- select Region --
@@ -1229,7 +1204,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1335,10 +1309,10 @@ function UpdateEmployeeInformation({
                       <Form.Select
                         value={selectedDepartment}
                         onChange={(e) => onDepartmentChange(e.target.value)}
-                        isInvalid={!!errors.selectedDepartment} // show red border
+                        isInvalid={!!errors.selectedDepartment}
                         ref={(el) =>
                           (inputRefs.current.selectedDepartment = el)
-                        } // focus target
+                        }
                       >
                         <option value="" disabled selected>
                           -- select Department --
@@ -1371,7 +1345,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Reporting and Approvers */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -1491,7 +1464,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Attendance and Leave Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -1582,7 +1554,6 @@ function UpdateEmployeeInformation({
                   </Card>
                 </Col>
 
-                {/* Default Shift */}
                 <Col>
                   <Card>
                     <Card.Header>Default Shift</Card.Header>
@@ -1636,7 +1607,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Roles & Responsibilies */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -1653,7 +1623,6 @@ function UpdateEmployeeInformation({
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={3} md={3} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1704,7 +1673,6 @@ function UpdateEmployeeInformation({
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={3} md={3} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1777,7 +1745,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Salary Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -2066,7 +2033,6 @@ function UpdateEmployeeInformation({
             </Card.Body>
           </Card>
 
-          {/* Personal Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <Typography
@@ -2258,7 +2224,6 @@ function UpdateEmployeeInformation({
           </Button>
         </Card.Footer>
       </Card>
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

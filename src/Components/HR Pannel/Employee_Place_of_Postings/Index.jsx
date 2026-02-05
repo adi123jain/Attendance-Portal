@@ -200,24 +200,9 @@ function EmployeePlaceOfPosting() {
       <Card
         className="shadow-lg rounded"
         style={{
-          //   textAlign: "center",
           marginTop: '20px',
         }}
       >
-        {/* <Card.Header className="text-center p-3">
-          <Typography
-            variant="h4"
-            sx={{
-              mb: 2,
-              fontFamily: 'serif',
-              fontWeight: 'bold',
-              color: '#0a1f83',
-            }}
-          >
-            View and Update Employee Place of Postings
-          </Typography>
-        </Card.Header> */}
-
         <Card.Header className="p-3 d-flex align-items-center position-relative">
           <Tooltip title="Back" arrow>
             <Button className="position-absolute start-2">
@@ -244,7 +229,6 @@ function EmployeePlaceOfPosting() {
 
         <Card.Body>
           <Card
-            // className="shadow-lg rounded"
             style={{
               textAlign: 'center',
               marginTop: '20px',
@@ -259,7 +243,6 @@ function EmployeePlaceOfPosting() {
                   fontWeight: 'bold',
                   color: '#0a1f83',
                 }}
-                // color="primary"
               >
                 {fullName} ({empCode})
               </Typography>
@@ -323,7 +306,6 @@ function EmployeePlaceOfPosting() {
           </Card>
 
           <Card
-            // className="shadow-lg rounded"
             style={{
               marginTop: '20px',
             }}
@@ -337,7 +319,6 @@ function EmployeePlaceOfPosting() {
                   fontWeight: 'bold',
                   color: '#0a1f83',
                 }}
-                // color="primary"
               >
                 Insert Employee's Place of Posting
               </Typography>
@@ -350,8 +331,6 @@ function EmployeePlaceOfPosting() {
                 errors={errors}
                 refs={{
                   region: regionRef,
-                  // circle: circleRef,
-                  // division: divisionRef,
                 }}
               />
 

@@ -3,7 +3,6 @@ import React, { createContext, useState, useEffect } from 'react';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // Set initial state based on sessionStorage
   const [auth, setAuth] = useState(() => {
     return sessionStorage.getItem('auth') === 'true';
   });
@@ -18,7 +17,6 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('auth');
   };
 
-  // Revalidate auth state on mount
   useEffect(() => {
     const storedAuth = sessionStorage.getItem('auth') === 'true';
     if (storedAuth) setAuth(true);

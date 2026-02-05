@@ -144,9 +144,7 @@ function AttendanceView() {
   const modalClose = () => setModalShow(false);
 
   const modalOpen = async (items) => {
-    // console.log(items);
     setModalShow(true);
-    // setImpressionData(items);
     setOpenBackdrop(true);
     const parts = items.punchDate.split('/');
     const inputDate = new Date(parts[2], parts[1] - 1, parts[0]);
@@ -171,7 +169,6 @@ function AttendanceView() {
 
     try {
       const response = await getImpressionImage(items.empCode, formattedDate);
-      // console.log("impResponse", response);
       if (
         response?.data.code === '200' &&
         response?.data.message === 'Success'
@@ -197,20 +194,6 @@ function AttendanceView() {
   return (
     <>
       <Card>
-        {/* <Card.Header className="text-primary text-center p-3">
-          <Typography
-            variant="h4"
-            sx={{
-              mb: 2,
-              fontFamily: 'serif',
-              fontWeight: 'bold',
-              color: '#0a1f83',
-            }}
-          >
-            Employee Attendance View
-          </Typography>
-        </Card.Header> */}
-
         <Card.Header className="p-3 d-flex align-items-center position-relative">
           <Tooltip title="Back" arrow placement="top">
             <Button className="position-absolute start-2">
@@ -447,7 +430,6 @@ function AttendanceView() {
               variant="h5"
               sx={{
                 color: '#0a1f83',
-                // mb: 2,
                 fontFamily: 'serif',
                 fontWeight: 'bold',
               }}
@@ -522,7 +504,7 @@ function AttendanceView() {
           </TableContainer>
         </Modal.Body>
       </Modal>
-      {/* Backdrop */}
+
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

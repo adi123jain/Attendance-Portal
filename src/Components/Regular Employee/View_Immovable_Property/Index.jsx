@@ -81,7 +81,7 @@ function ImmovablePropertyView() {
     try {
       setOpenBackdrop(true);
       const response = await viewImmProperty(selectedYear);
-      console.log(response);
+      // console.log(response);
       if (response?.data.code == '200') {
         setImmovableData(response.data.list);
         setOpenBackdrop(false);
@@ -109,8 +109,8 @@ function ImmovablePropertyView() {
   };
 
   const DownloadDoc = async (item) => {
-    //const URL = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
-    const URL = `http://172.16.17.79:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
+    const URL = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
+    //const URL = `http://172.16.17.79:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
     window.open(URL, '_blank');
   };
 
@@ -367,7 +367,6 @@ function ImmovablePropertyView() {
           )}
         </DialogContent>
 
-        {/* Footer */}
         <DialogActions sx={{ justifyContent: 'center', p: 2 }}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Button

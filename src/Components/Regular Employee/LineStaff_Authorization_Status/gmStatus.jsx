@@ -35,7 +35,7 @@ function GmLineStaffStatus() {
     const fetchDetails = async () => {
       try {
         const response = await getLineSatusByGm(sessionEmp);
-        console.log(response);
+        // console.log(response);
         if (response.data.code === '200') {
           setRecords(response.data.list);
         } else {
@@ -230,7 +230,6 @@ function GmLineStaffStatus() {
 
                         <StyledTableCell>{item.dcName || '-'}</StyledTableCell>
 
-                        {/* Action Select */}
                         <StyledTableCell>
                           <FormControl
                             fullWidth
@@ -278,7 +277,6 @@ function GmLineStaffStatus() {
                           />
                         </StyledTableCell>
 
-                        {/* Update Button */}
                         <StyledTableCell>
                           <Tooltip title="Update Status" arrow>
                             <Button
@@ -317,7 +315,6 @@ function GmLineStaffStatus() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

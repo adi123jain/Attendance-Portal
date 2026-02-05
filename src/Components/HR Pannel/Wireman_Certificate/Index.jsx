@@ -247,57 +247,9 @@ function WiremanCertificateByHr() {
     return true;
   };
 
-  // const handleSubmit = async () => {
-  //   if (!validate()) return;
-
-  //   setOpenBackdrop(true);
-
-  //   const payload = entries.map((item) => ({
-  //     empCode: item.empCode,
-  //     dateOfExamination: examDate,
-  //     result: item.result,
-  //     remark: item.remark,
-  //     startDate: fromDate,
-  //     endDate: toDate,
-  //     circle: sessionStorage.getItem('circleId'),
-  //     createdBy: sessionStorage.getItem('empCode'),
-  //     doc: document,
-  //   }));
-
-  //   console.log('FINAL PAYLOAD:', payload);
-
-  //   try {
-  //     const response = await createWiremanCertificate(payload);
-
-  //     if (response?.data?.code === '200') {
-  //       alert('Submitted Successfully!');
-
-  //       // Reset everything
-  //       setExamDate('');
-  //       setFromDate('');
-  //       setToDate('');
-  //       setDocument('');
-  //       setDateErrors({ examDate: '', fromDate: '', toDate: '' });
-
-  //       setEntries([{ empCode: '', FULLNAME: '', result: '', remark: '' }]);
-
-  //       setErrors([]);
-  //     } else {
-  //       alert(response?.data?.message || 'Submission failed!');
-  //     }
-  //   } catch (error) {
-  //     alert('Something went wrong!');
-  //     console.error(error);
-  //   } finally {
-  //     setOpenBackdrop(false);
-  //   }
-  // };
-
   const handleSubmit = async () => {
     if (!validate()) return;
-
     setOpenBackdrop(true);
-
     try {
       const wiremanList = entries.map((item) => ({
         empCode: Number(item.empCode),
@@ -314,7 +266,6 @@ function WiremanCertificateByHr() {
       }));
 
       const formData = new FormData();
-
       formData.append('list', JSON.stringify(wiremanList));
 
       if (document instanceof File) {
@@ -465,7 +416,6 @@ function WiremanCertificateByHr() {
                         onChange={(e) => {
                           const value = e.target.value;
                           handleChange(index, 'empCode', value);
-
                           fetchEmployeeName(index, value);
                         }}
                       />

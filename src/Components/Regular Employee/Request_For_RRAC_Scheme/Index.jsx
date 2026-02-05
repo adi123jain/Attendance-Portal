@@ -34,36 +34,6 @@ import {
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
 
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
-
 function RRAC_Scheme() {
   const sessionRegion = sessionStorage.getItem('regionId');
   const sessionCircle = sessionStorage.getItem('circleId');
@@ -73,18 +43,12 @@ function RRAC_Scheme() {
   const designationName = sessionStorage.getItem('designationName');
   const departmentName = sessionStorage.getItem('departmentName');
   const sessionEmpCode = sessionStorage.getItem('empCode');
-
-  const departmentId = sessionStorage.getItem('departmentId');
   const designationId = sessionStorage.getItem('designationId');
-
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [subDivisions, setSubDivisions] = useState([]);
   const [dcs, setDCs] = useState([]);
-  const [subStations, setSubStations] = useState([]);
-  const [errors, setErrors] = useState({});
-
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedCircle, setSelectedCircle] = useState('');
   const [selectedDivision, setSelectedDivision] = useState('');
@@ -252,7 +216,7 @@ function RRAC_Scheme() {
     (async () => {
       try {
         const response = await getIncentiveHeads();
-        console.log(response);
+        // console.log(response);
         setHeadsInTable(response.data.list || []);
       } catch (error) {
         console.error('Error fetching regions:', error);
@@ -266,7 +230,7 @@ function RRAC_Scheme() {
   const getArmedForce = async () => {
     try {
       const response = await getVendorArmedForce();
-      console.log('API 1 Response:', response);
+      // console.log('API 1 Response:', response);
 
       return response.data.list.map((item) => ({
         id: item.id,
@@ -281,7 +245,7 @@ function RRAC_Scheme() {
   const getAll = async () => {
     try {
       const response = await getAllVendors();
-      console.log('API 2 Response:', response);
+      // console.log('API 2 Response:', response);
 
       return response.data.list.map((item) => ({
         id: item.id,
@@ -780,41 +744,6 @@ function RRAC_Scheme() {
                   <StyledTableCell>Enter Amount</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
-              {/* <TableBody>
-              {headsInTable && headsInTable.length > 0 ? (
-                headsInTable.map((item, index) => (
-                  <StyledTableRow key={index}>
-                    <StyledTableCell>{index + 1}</StyledTableCell>
-
-                    <StyledTableCell>
-                      <input
-                        type="checkbox"
-                        value={item.id}
-                        className="getID"
-                      />
-                    </StyledTableCell>
-                    <StyledTableCell>{item.name}</StyledTableCell>
-                    <StyledTableCell>
-                      <Form.Select>
-                        <option disabled value="">
-                          -- select Company --
-                        </option>
-                      </Form.Select>
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <Form.Control type="number" placeholder="Enter Count" />
-                    </StyledTableCell>
-                    <StyledTableCell>
-                      <Form.Control type="number" placeholder="Enter Amount" />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))
-              ) : (
-                <StyledTableRow>
-                  <StyledTableCell colSpan={14}>Data Not Found</StyledTableCell>
-                </StyledTableRow>
-              )}
-            </TableBody> */}
 
               <TableBody>
                 {headsInTable && headsInTable.length > 0 ? (
@@ -824,7 +753,6 @@ function RRAC_Scheme() {
                       <StyledTableRow key={item.id}>
                         <StyledTableCell>{index + 1}</StyledTableCell>
 
-                        {/* Checkbox */}
                         <StyledTableCell>
                           <input
                             type="checkbox"
@@ -837,7 +765,6 @@ function RRAC_Scheme() {
 
                         <StyledTableCell>{item.name}</StyledTableCell>
 
-                        {/* Vendors Select */}
                         <StyledTableCell>
                           {row.checked && (item.id === 1 || item.id === 2) && (
                             <Form.Select
@@ -863,7 +790,6 @@ function RRAC_Scheme() {
                           )}
                         </StyledTableCell>
 
-                        {/* Head Count */}
                         <StyledTableCell>
                           {row.checked &&
                             (item.id === 1 ||
@@ -885,7 +811,6 @@ function RRAC_Scheme() {
                             )}
                         </StyledTableCell>
 
-                        {/* Amount */}
                         <StyledTableCell>
                           <Form.Control
                             type="number"

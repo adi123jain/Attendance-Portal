@@ -27,9 +27,6 @@ function UpdateDataContainer() {
 
   const location = useLocation();
   const { empCode, fullName } = location.state || {};
-  //   console.log(empCode, fullName);
-  // State for Employment Types
-
   const [empInfo, seEmpInfo] = useState([]);
   useEffect(() => {
     const fetchEmpInfo = async () => {
@@ -295,26 +292,6 @@ function UpdateDataContainer() {
   const [attendanceLocations, setAttendanceLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState('');
 
-  // const fetchAttendanceLocation = async () => {
-  //   const payload = {
-  //     regionId: selectedRegion,
-  //     circleId: selectedCircle || null,
-  //     divisionId: selectedDivision || null,
-  //     subDivisionId: selectedSubDivision || null,
-  //     dcId: selectedDC || null,
-  //     substationId: selectedSubstation || null,
-  //   };
-
-  //   try {
-  //     const response = await getAttendanceLocation(payload);
-  //     const list = response?.data?.value ?? response?.data?.list ?? [];
-  //     setAttendanceLocations(Array.isArray(list) ? list : []);
-  //   } catch (error) {
-  //     console.error('Error fetching Attendance Location:', error);
-  //     setAttendanceLocations([]);
-  //   }
-  // };
-
   useEffect(() => {
     const fetchAttendanceLocation = async () => {
       if (!selectedRegion) {
@@ -355,23 +332,6 @@ function UpdateDataContainer() {
     selectedDC,
     selectedSubstation,
   ]);
-
-  // useEffect(() => {
-  //   if (selectedRegion) {
-  //     // setSelectedLocation("");
-  //     fetchAttendanceLocation();
-  //   } else {
-  //     setAttendanceLocations([]);
-  //     // setSelectedLocation("");
-  //   }
-  // }, [
-  //   selectedRegion,
-  //   selectedCircle,
-  //   selectedDivision,
-  //   selectedSubDivision,
-  //   selectedDC,
-  //   selectedSubstation,
-  // ]);
 
   const [holidayList, setHolidayList] = useState([]);
   const [selectedHoliday, setSelectedHoliday] = useState('');

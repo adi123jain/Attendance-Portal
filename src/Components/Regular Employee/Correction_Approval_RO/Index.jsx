@@ -5,24 +5,18 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { PropagateLoader } from 'react-spinners';
-import { styled } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ImageIcon from '@mui/icons-material/Image';
 
-// import "../../../Constants/Style/styles.css";
 import {
   Typography,
   Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
-  TextField,
   Backdrop,
 } from '@mui/material';
 import {
@@ -38,41 +32,6 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
-
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
 
 function CorrectionUpdateByRO() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -253,7 +212,7 @@ function CorrectionUpdateByRO() {
 
     for (let item of selectedItems) {
       const DateFormate = formatDate(item.punchDate);
-      console.log(item);
+      // console.log(item);
 
       let payload;
       let response;
@@ -268,7 +227,7 @@ function CorrectionUpdateByRO() {
         };
         // console.log(payload);
         response = await approveCorrections(payload);
-        console.log(response);
+        // console.log(response);
       } else if (preference === '2') {
         // alert(preference);
         payload = {
@@ -295,10 +254,10 @@ function CorrectionUpdateByRO() {
           leaveStatus: 'Approved',
           roRemark: remark,
         };
-        console.log(payload);
+        // console.log(payload);
 
         response = await approveLeave(payload);
-        console.log(response);
+        // console.log(response);
       }
 
       if (response.data.code !== '200') {
@@ -322,7 +281,6 @@ function CorrectionUpdateByRO() {
   };
 
   const [modalShow, setModalShow] = useState(false);
-  const [showImpressionTable, setShowImpressionTable] = useState(false);
   const [impressionData, setImpressionData] = useState([]);
   const modalClose = () => setModalShow(false);
 
@@ -790,7 +748,6 @@ function CorrectionUpdateByRO() {
                   <StyledTableCell>Download</StyledTableCell>
                   <StyledTableCell>Longitude</StyledTableCell>
                   <StyledTableCell>Lattitude</StyledTableCell>
-                  {/* <StyledTableCell>Status</StyledTableCell> */}
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -840,8 +797,6 @@ function CorrectionUpdateByRO() {
             </Table>
           </TableContainer>
         </Modal.Body>
-
-        {/* <Modal.Footer></Modal.Footer> */}
       </Modal>
 
       <Backdrop

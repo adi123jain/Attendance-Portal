@@ -48,7 +48,6 @@ function AdditionalChargesEmployee() {
       setOpenBackdrop(true);
       try {
         const response = await getAdditionalCharges(empCode);
-        console.log(response);
         if (
           response?.data.code === '200' &&
           response?.data.message === 'Success'
@@ -256,7 +255,7 @@ function AdditionalChargesEmployee() {
         'Are you sure you want to delete this record?',
       );
       if (!confirmDelete) {
-        return; // Stop if user cancels
+        return;
       }
 
       const payload = {
@@ -303,7 +302,6 @@ function AdditionalChargesEmployee() {
 
         <Card.Body>
           <Card
-            // className="shadow-lg rounded"
             style={{
               textAlign: 'center',
               marginTop: '20px',
@@ -408,7 +406,6 @@ function AdditionalChargesEmployee() {
           </Card>
 
           <Card
-            // className="shadow-lg rounded"
             style={{
               marginTop: '20px',
             }}
@@ -420,7 +417,6 @@ function AdditionalChargesEmployee() {
                   mb: 2,
                   fontFamily: 'serif',
                   fontWeight: 'bold',
-                  //   color: "#0a1f83",
                 }}
                 color="primary"
               >
@@ -430,7 +426,6 @@ function AdditionalChargesEmployee() {
 
             <Card.Body>
               <Row xs={1} sm={2} md={4} className="mt-2">
-                {/* Region */}
                 <Col>
                   <Card>
                     <Card.Header>Region</Card.Header>
@@ -459,7 +454,6 @@ function AdditionalChargesEmployee() {
                   </Card>
                 </Col>
 
-                {/* Circle */}
                 <Col>
                   <Card>
                     <Card.Header>Circle</Card.Header>
@@ -488,14 +482,10 @@ function AdditionalChargesEmployee() {
                           </option>
                         ))}
                       </Form.Select>
-                      {/* {errors.circle && (
-                        <div className="text-danger">{errors.circle}</div>
-                      )} */}
                     </Card.Body>
                   </Card>
                 </Col>
 
-                {/* Division */}
                 <Col>
                   <Card>
                     <Card.Header>Division</Card.Header>
@@ -522,14 +512,10 @@ function AdditionalChargesEmployee() {
                           </option>
                         ))}
                       </Form.Select>
-                      {/* {errors.division && (
-                        <div className="text-danger">{errors.division}</div>
-                      )} */}
                     </Card.Body>
                   </Card>
                 </Col>
 
-                {/* Sub Division */}
                 <Col>
                   <Card>
                     <Card.Header>Sub Division</Card.Header>
@@ -541,8 +527,6 @@ function AdditionalChargesEmployee() {
                           setSelectedSubDivision(value);
                           setSelectedDC('');
                           setDCs([]);
-                          // setSelectedSubstation("");
-                          // setSubStations([]);
                         }}
                       >
                         <option disabled value="">
@@ -557,16 +541,12 @@ function AdditionalChargesEmployee() {
                           </option>
                         ))}
                       </Form.Select>
-                      {/* {errors.subDivision && (
-                        <div className="text-danger">{errors.subDivision}</div>
-                      )} */}
                     </Card.Body>
                   </Card>
                 </Col>
               </Row>
 
               <Row xs={1} sm={2} md={4} className="mt-2 g-3">
-                {/* DC */}
                 <Col>
                   <Card>
                     <Card.Header>Distribution Center</Card.Header>
@@ -587,14 +567,10 @@ function AdditionalChargesEmployee() {
                           </option>
                         ))}
                       </Form.Select>
-                      {/* {<errors className="dc"></errors> && (
-                        <div className="text-danger">{errors.dc}</div>
-                      )} */}
                     </Card.Body>
                   </Card>
                 </Col>
 
-                {/* Substation */}
                 <Col>
                   <Card>
                     <Card.Header>Sub Station</Card.Header>
@@ -618,14 +594,10 @@ function AdditionalChargesEmployee() {
                           </option>
                         ))}
                       </Form.Select>
-                      {/* {errors.subStation && (
-                        <div className="text-danger">{errors.subStation}</div>
-                      )} */}
                     </Card.Body>
                   </Card>
                 </Col>
 
-                {/* Designation */}
                 <Col>
                   <Card>
                     <Card.Header>Designation</Card.Header>
@@ -657,7 +629,6 @@ function AdditionalChargesEmployee() {
                   </Card>
                 </Col>
 
-                {/* Department */}
                 <Col>
                   <Card>
                     <Card.Header>Department</Card.Header>
@@ -712,7 +683,6 @@ function AdditionalChargesEmployee() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

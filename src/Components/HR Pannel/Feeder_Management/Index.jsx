@@ -149,9 +149,6 @@ function FeederManagement() {
           getFeederInchargeByDc(selectedDC),
         ]);
 
-        console.log(res1);
-        console.log(res2);
-
         setFeederManager(res1.data.list || []);
         setFeederIncharge(res2.data.list || []);
       } catch (error) {
@@ -274,7 +271,6 @@ function FeederManagement() {
     const feederObj = feeder.find(
       (f) => String(f.feederCode) === String(selectedFeeder),
     );
-    console.log(feederObj);
     try {
       const payload = {
         dc: selectedDC,
@@ -482,8 +478,6 @@ function FeederManagement() {
                       setSelectedSubDivision(value);
                       setSelectedDC('');
                       setDCs([]);
-                      // setSelectedSubstation("");
-                      // setSubStations([]);
                       setSelectedFeeder('');
                       setFeeder([]);
                       setSelectedFeederManager('');
@@ -520,8 +514,6 @@ function FeederManagement() {
                     onChange={(e) => {
                       const value = e.target.value;
                       setSelectedDC(value);
-                      // setSelectedSubstation("");
-                      // setSubStations([]);
                       setSelectedFeeder('');
                       setFeeder([]);
                       setSelectedFeederManager('');
@@ -729,7 +721,6 @@ function FeederManagement() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

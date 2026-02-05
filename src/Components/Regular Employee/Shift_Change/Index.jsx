@@ -41,7 +41,7 @@ function ShiftChange() {
       setOpenBackdrop(true);
       try {
         const response = await getEmpShiftByRo();
-        console.log(response);
+        // console.log(response);
         if (response.data.code === '200') {
           setDetails(response.data.list);
           setOpenBackdrop(false);
@@ -67,7 +67,7 @@ function ShiftChange() {
     const fetchAllShifts = async () => {
       try {
         const response = await getShifts();
-        console.log(response);
+        // console.log(response);
         setShiftData(response?.data?.list || []);
       } catch (error) {
         console.error('Error fetching shifts:', error);

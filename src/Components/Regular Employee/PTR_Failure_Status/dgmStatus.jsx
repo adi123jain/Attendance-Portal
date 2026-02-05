@@ -200,7 +200,6 @@ function DgmPtrStatus() {
                           {item.substationName || '-'}
                         </StyledTableCell>
 
-                        {/* Document column can stay same */}
                         <StyledTableCell>
                           <Tooltip title="Download Document" arrow>
                             <Button
@@ -224,7 +223,6 @@ function DgmPtrStatus() {
                           </Tooltip>
                         </StyledTableCell>
 
-                        {/* Action Select */}
                         <StyledTableCell>
                           <FormControl
                             fullWidth
@@ -256,7 +254,6 @@ function DgmPtrStatus() {
                           </FormControl>
                         </StyledTableCell>
 
-                        {/* Remark TextArea */}
                         <StyledTableCell>
                           <TextField
                             value={remarks[index] || ''}
@@ -276,7 +273,6 @@ function DgmPtrStatus() {
                           />
                         </StyledTableCell>
 
-                        {/* Update Button */}
                         <StyledTableCell>
                           <Tooltip title="Update Status" arrow>
                             <Button
@@ -315,7 +311,6 @@ function DgmPtrStatus() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

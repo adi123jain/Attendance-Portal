@@ -55,7 +55,7 @@ function PowerTransformerReport() {
   useEffect(() => {
     const fetchsubstation = async () => {
       const response = await getSubstation(sessionDcId);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         setSubstation(response.data.list);
       } else {
@@ -273,7 +273,6 @@ function PowerTransformerReport() {
 
             <Card.Body>
               <Row className="g-3 mt-1 mb-1">
-                {/* Substation */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header> Substation</Card.Header>
@@ -300,7 +299,6 @@ function PowerTransformerReport() {
                   </Card>
                 </Col>
 
-                {/* Capacity */}
                 <Col xs={12} md={3}>
                   <Card className="h-100">
                     <Card.Header>Capacity of PTR</Card.Header>
@@ -326,7 +324,6 @@ function PowerTransformerReport() {
                   </Card>
                 </Col>
 
-                {/* Year */}
                 <Col xs={12} md={3}>
                   <Card>
                     <Card.Header>Date</Card.Header>
@@ -345,7 +342,6 @@ function PowerTransformerReport() {
                   </Card>
                 </Col>
 
-                {/* File Upload */}
                 <Col xs={12} md={3}>
                   <Card>
                     <Card.Header>Upload File</Card.Header>
@@ -364,7 +360,6 @@ function PowerTransformerReport() {
                 </Col>
               </Row>
 
-              {/* Remark */}
               <Row className="mt-3">
                 <Col>
                   <Card className="h-100">
@@ -410,7 +405,6 @@ function PowerTransformerReport() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

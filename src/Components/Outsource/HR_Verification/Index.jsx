@@ -22,28 +22,8 @@ import {
 function HRverification() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [employeeList, setEmployeeList] = useState([]);
-  // const empCode = sessionStorage.getItem('empCode');
 
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   const fetchDetails = async () => {
-  //     setOpenBackdrop(true);
-  //     try {
-  //       const response = await getEmpForVerification(empCode);
-  //       // console.log(response);
-  //       if (response?.data?.list?.length > 0) {
-  //         setEmployeeList(response.data.list);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching data:', error);
-  //     } finally {
-  //       setOpenBackdrop(false);
-  //     }
-  //   };
-
-  //   fetchDetails();
-  // }, []);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -158,7 +138,6 @@ function HRverification() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

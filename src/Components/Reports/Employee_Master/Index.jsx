@@ -169,7 +169,6 @@ function EmployeeMaster() {
           </Card.Header>
           <Card.Body>
             <div className="row justify-content-center mt-4 mb-4">
-              {/* Region */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Region</Card.Header>
@@ -196,7 +195,6 @@ function EmployeeMaster() {
                 </Card>
               </div>
 
-              {/* Circle */}
               <div className="col-md-6 mb-3">
                 <Card>
                   <Card.Header>Circle</Card.Header>
@@ -233,7 +231,6 @@ function EmployeeMaster() {
         </Card>
       </div>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={loading}

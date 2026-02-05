@@ -43,7 +43,7 @@ function ApproveExpenditureByAuthority() {
       setOpenBackdrop(true);
       try {
         const response = await getIncentiveByrefNo(referenceNo);
-        console.log(response);
+        // console.log(response);
         if (response.data.code === '200') {
           setOpenBackdrop(false);
           setHeadsInTable(response.data.list[0].heads);
@@ -93,7 +93,7 @@ function ApproveExpenditureByAuthority() {
       };
 
       const response = await submitExpByRo(payload);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         alert('Submitted successfully!');
         setStatus('');
@@ -306,7 +306,6 @@ function ApproveExpenditureByAuthority() {
           <Card className="mt-4">
             <Card.Body>
               <Row className="g-3 mt-2">
-                {/* Status Dropdown */}
                 <Col xs={12} md={4}>
                   <Card>
                     <Card.Header>Status</Card.Header>

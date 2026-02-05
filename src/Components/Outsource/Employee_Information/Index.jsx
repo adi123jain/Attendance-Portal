@@ -1,105 +1,57 @@
-import React, { useRef, useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-
-import { useNavigate } from "react-router-dom";
+import { useRef, useState, useEffect } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
+import { useNavigate } from 'react-router-dom';
 import {
-  getEmployeeByEmpCode,
-  getEmployeeByLevel,
   getOutsourceEmpByEmpCode,
   getOutsourceEmpByLevel,
-} from "../../../Services/Auth";
-import SearchUtils from "../../../Constants/Search_Utils/Index";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import "../../../Constants/Style/styles.css";
+} from '../../../Services/Auth';
+import SearchUtils from '../../../Constants/Search_Utils/Index';
+import { PropagateLoader } from 'react-spinners';
+import '../../../Constants/Style/styles.css';
 import {
   Typography,
   Tooltip,
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Button,
   TextField,
   Backdrop,
   Box,
-} from "@mui/material";
+} from '@mui/material';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// Styled Components
-// const headerBackground = "linear-gradient(to right, #1E88E5, #42A5F5)";
-// const oddRowBackground = "#E3F2FD";
-// const evenRowBackground = "#BBDEFB";
-// const hoverBackground = "#90CAF9";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function OutsourceEmployeeInformation() {
   const regionRef = useRef(null);
-  // const circleRef = useRef(null);
-  // const divisionRef = useRef(null);
   const tableRef = useRef(null);
   const empTableRef = useRef(null);
   const navigate = useNavigate();
   const [searchValues, setSearchValues] = useState({
-    region: "",
-    circle: "",
-    division: "",
-    subDivision: "",
-    dc: "",
-    subStation: "",
+    region: '',
+    circle: '',
+    division: '',
+    subDivision: '',
+    dc: '',
+    subStation: '',
   });
 
   const [errors, setErrors] = useState({});
   const [showLevelTable, setShowLevelTable] = useState(false);
   const [openBackdrop, setOpenBackdrop] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [dataInLevelTable, setDataInLevelTable] = useState([]);
 
   const validate = () => {
     const newErrors = {};
     if (!searchValues.region) {
-      newErrors.region = " *region is required.";
+      newErrors.region = ' *region is required.';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -107,17 +59,17 @@ function OutsourceEmployeeInformation() {
 
   useEffect(() => {
     if (showLevelTable && dataInLevelTable.length > 0 && tableRef.current) {
-      tableRef.current.scrollIntoView({ behavior: "smooth" });
+      tableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showLevelTable, dataInLevelTable]);
 
   // Search Employee By Level
   const searchEmpByLevel = async () => {
     setShowEmpTable(false);
-    setEmpCode("");
-    setEmpCodeError("");
+    setEmpCode('');
+    setEmpCodeError('');
     if (!validate()) {
-      setEmpCodeError("");
+      setEmpCodeError('');
       if (!searchValues.region && regionRef.current) {
         regionRef.current.focus();
       }
@@ -135,17 +87,15 @@ function OutsourceEmployeeInformation() {
         substationId: searchValues.subStation,
       };
       const res = await getOutsourceEmpByLevel(payload);
-      // console.log("Employee Data:", res?.data);
-      if (res?.data.code == "200" && res?.data.message == "Success") {
+      if (res?.data.code == '200' && res?.data.message == 'Success') {
         setOpenBackdrop(true);
         setDataInLevelTable(res?.data.list);
         setShowLevelTable(true);
-        //tableRef.current.scrollIntoView({ behavior: "smooth" });
       } else {
         alert(res?.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
       setOpenBackdrop(false);
     } finally {
       setOpenBackdrop(false);
@@ -153,33 +103,33 @@ function OutsourceEmployeeInformation() {
   };
 
   // Search By Emp Code
-  const [empCode, setEmpCode] = useState("");
-  const [empCodeError, setEmpCodeError] = useState("");
+  const [empCode, setEmpCode] = useState('');
+  const [empCodeError, setEmpCodeError] = useState('');
   const [showEmpTable, setShowEmpTable] = useState(false);
   const [dataInEmpTable, setDataInEmpTable] = useState([]);
 
   useEffect(() => {
     if (showEmpTable && empTableRef.current) {
-      empTableRef.current.scrollIntoView({ behavior: "smooth" });
+      empTableRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [showEmpTable, dataInEmpTable]);
 
   const searchByEmpCode = async () => {
     setShowLevelTable(false);
     setSearchValues({
-      region: "",
-      circle: "",
-      division: "",
-      subDivision: "",
-      dc: "",
-      subStation: "",
+      region: '',
+      circle: '',
+      division: '',
+      subDivision: '',
+      dc: '',
+      subStation: '',
     });
-    setErrors("");
+    setErrors('');
     if (!empCode.trim()) {
-      setEmpCodeError("Employee Code is Required.");
+      setEmpCodeError('Employee Code is Required.');
       return;
     } else {
-      setEmpCodeError("");
+      setEmpCodeError('');
     }
 
     setOpenBackdrop(true);
@@ -195,11 +145,8 @@ function OutsourceEmployeeInformation() {
         substationId: null,
       };
       const res = await getOutsourceEmpByEmpCode(payload);
-      console.log("Response:", res?.data);
-
-      if (res?.data.code === "200" && res?.data.message === "Success") {
+      if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
-        // console.log("___", dataInEmpTable);
         setShowEmpTable(true);
       } else {
         setDataInEmpTable(null);
@@ -207,7 +154,7 @@ function OutsourceEmployeeInformation() {
         alert(res?.data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      console.error('API Error:', error);
     } finally {
       setOpenBackdrop(false);
     }
@@ -216,18 +163,18 @@ function OutsourceEmployeeInformation() {
   const getEmpInformation = (e) => {
     e.preventDefault();
 
-    const empCode = sessionStorage.getItem("empCode");
+    const empCode = sessionStorage.getItem('empCode');
     if (!empCode) {
-      console.error("Employee Code not found in sessionStorage.");
+      console.error('Employee Code not found in sessionStorage.');
       return;
     }
 
     const downloadUrl = `https://attendance.mpcz.in:8888/E-Attendance/api/outsource/getEmployeeMis?empCode=${empCode}`;
 
-    const downloadLink = document.createElement("a");
+    const downloadLink = document.createElement('a');
     downloadLink.href = downloadUrl;
-    downloadLink.target = "_blank";
-    downloadLink.download = "";
+    downloadLink.target = '_blank';
+    downloadLink.download = '';
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -239,27 +186,25 @@ function OutsourceEmployeeInformation() {
         <Card.Header className="p-3">
           <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
               mb: 2,
             }}
           >
-            {/* Centered Typography */}
             <Typography
               variant="h4"
               sx={{
-                color: "#0a1f83",
-                fontFamily: "serif",
-                fontWeight: "bold",
+                color: '#0a1f83',
+                fontFamily: 'serif',
+                fontWeight: 'bold',
                 flex: 1,
-                textAlign: "center",
+                textAlign: 'center',
               }}
             >
               Employee Information (Outsource)
             </Typography>
 
-            {/* Right-side Download Button */}
             <Link to="#" onClick={getEmpInformation}>
               <Tooltip
                 title="Click here to download Employee Information in Excel Sheet"
@@ -280,8 +225,6 @@ function OutsourceEmployeeInformation() {
             errors={errors}
             refs={{
               region: regionRef,
-              // circle: circleRef,
-              // division: divisionRef,
             }}
           />
           <div className="text-center mt-4 mb-3">
@@ -303,19 +246,18 @@ function OutsourceEmployeeInformation() {
                 </Card.Header>
                 <Card.Body>
                   <div className="row gx-2">
-                    {/* Input Field */}
                     <div className="col-8">
                       <input
                         type="number"
                         id="empCode"
                         className={`form-control ${
-                          empCodeError ? "is-invalid" : ""
+                          empCodeError ? 'is-invalid' : ''
                         }`}
                         placeholder="Enter Employee Code"
                         value={empCode}
                         onChange={(e) => {
                           setEmpCode(e.target.value);
-                          if (empCodeError) setEmpCodeError("");
+                          if (empCodeError) setEmpCodeError('');
                         }}
                       />
                       {empCodeError && (
@@ -323,7 +265,6 @@ function OutsourceEmployeeInformation() {
                       )}
                     </div>
 
-                    {/* Search Button */}
                     <div className="col-4">
                       <Button
                         onClick={searchByEmpCode}
@@ -346,8 +287,8 @@ function OutsourceEmployeeInformation() {
         <Card
           className="shadow-lg rounded"
           style={{
-            textAlign: "center",
-            marginTop: "20px",
+            textAlign: 'center',
+            marginTop: '20px',
           }}
         >
           <Card.Header className="text-center p-3">
@@ -355,9 +296,9 @@ function OutsourceEmployeeInformation() {
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Records (Outsource)
@@ -368,10 +309,10 @@ function OutsourceEmployeeInformation() {
               sx={{
                 mb: 2,
                 mt: 1,
-                width: "50%",
+                width: '50%',
                 mr: 2,
-                "& .MuiOutlinedInput-root": {
-                  borderRadius: "10px",
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: '10px',
                 },
               }}
               value={searchQuery}
@@ -391,7 +332,6 @@ function OutsourceEmployeeInformation() {
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
                     <StyledTableCell>Edit Info</StyledTableCell>
-                    {/* <StyledTableCell>Place of Posting</StyledTableCell> */}
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -400,13 +340,13 @@ function OutsourceEmployeeInformation() {
                       .filter((item) => {
                         const query = searchQuery.toLowerCase();
                         return (
-                          String(item.empCode || "")
+                          String(item.empCode || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.fullName || "")
+                          String(item.fullName || '')
                             .toLowerCase()
                             .includes(query) ||
-                          String(item.designation || "")
+                          String(item.designation || '')
                             .toLowerCase()
                             .includes(query)
                         );
@@ -424,7 +364,7 @@ function OutsourceEmployeeInformation() {
                               variant="outlined"
                               className="green-button"
                               onClick={() =>
-                                navigate("/updateVerifyEmployee", {
+                                navigate('/updateVerifyEmployee', {
                                   state: {
                                     empCode: item.empCode,
                                     empName: item.fullName,
@@ -435,23 +375,6 @@ function OutsourceEmployeeInformation() {
                               Edit
                             </Button>
                           </StyledTableCell>
-                          {/* <StyledTableCell>
-                            <Button
-                              variant="contained"
-                              size="small"
-                              className="download-button"
-                              onClick={() =>
-                                navigate("/employeePosting", {
-                                  state: {
-                                    empCode: item.empCode,
-                                    fullName: item.fullName,
-                                  },
-                                })
-                              }
-                            >
-                              <ArrowOutwardIcon />
-                            </Button>
-                          </StyledTableCell> */}
                         </StyledTableRow>
                       ))
                   ) : (
@@ -471,16 +394,16 @@ function OutsourceEmployeeInformation() {
       {showEmpTable && (
         <Card
           className="shadow-lg rounded"
-          style={{ textAlign: "center", marginTop: "20px" }}
+          style={{ textAlign: 'center', marginTop: '20px' }}
         >
           <Card.Header className="text-center p-3">
             <Typography
               variant="h5"
               sx={{
                 mb: 2,
-                fontFamily: "serif",
-                fontWeight: "bold",
-                color: "#0a1f83",
+                fontFamily: 'serif',
+                fontWeight: 'bold',
+                color: '#0a1f83',
               }}
             >
               Employee Records
@@ -499,7 +422,6 @@ function OutsourceEmployeeInformation() {
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
                     <StyledTableCell>Edit Info</StyledTableCell>
-                    {/* <StyledTableCell>Place of Posting</StyledTableCell> */}
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -526,7 +448,7 @@ function OutsourceEmployeeInformation() {
                           variant="outlined"
                           className="green-button"
                           onClick={() =>
-                            navigate("/updateVerifyEmployee", {
+                            navigate('/updateVerifyEmployee', {
                               state: {
                                 empCode: dataInEmpTable.empCode,
                                 empName: dataInEmpTable.fullName,
@@ -537,23 +459,6 @@ function OutsourceEmployeeInformation() {
                           Edit
                         </Button>
                       </StyledTableCell>
-                      {/* <StyledTableCell>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          className="download-button"
-                          onClick={() =>
-                            navigate("/employeePosting", {
-                              state: {
-                                empCode: item.empCode,
-                                fullName: item.fullName,
-                              },
-                            })
-                          }
-                        >
-                          <ArrowOutwardIcon />
-                        </Button>
-                      </StyledTableCell> */}
                     </StyledTableRow>
                   ) : (
                     <StyledTableRow>
@@ -569,9 +474,8 @@ function OutsourceEmployeeInformation() {
         </Card>
       )}
 
-      {/* Backdrop */}
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

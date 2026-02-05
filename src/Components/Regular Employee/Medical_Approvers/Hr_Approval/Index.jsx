@@ -109,19 +109,9 @@ function MedicalApprovalByHr() {
   const [referenceNo, setReferenceNo] = useState('');
   const [medicineData, setMedicineData] = useState([]);
 
-  // const handlePreview = (row) => {
-  //   setSelectedRow(row);
-  //   setOpen(true);
-  //   fetchMedicineDetails(row.refNo);
-  //   setReferenceNo(row.refNo);
-  // };
-
   const handlePreview = async (refNo) => {
     try {
       setReferenceNo(refNo);
-
-      // Fetch medicine details (no await? If async, add await)
-      // fetchMedicineDetails(refNo);
 
       const response = await getMedicalByRefNo(refNo);
       if (
@@ -142,16 +132,6 @@ function MedicalApprovalByHr() {
     }
   };
 
-  // useEffect(() => {
-  //   if (selectedRow) {
-  //     console.log('Updated Selected Row:', selectedRow);
-  //     console.log('medicineData:', medicineData);
-
-  //     if (selectedRow.aoStatus === 'Approved') {
-  //     }
-  //   }
-  // }, [selectedRow]);
-
   const handleClose = () => {
     setOpen(false);
     setSelectedRow([]);
@@ -166,28 +146,8 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    // Toggle expand / collapse
     setExpandedRow(expandedRow === index ? null : index);
   };
-
-  // const [medicineData, setMedicineData] = useState([]);
-  // const fetchMedicineDetails = async (refNo) => {
-  //   const response = await getMedicineDetailByRefNo(refNo);
-  //   // console.log(response);
-  //   setMedicineData(response.data.list[0]);
-  // };
-
-  // function downloadDocument(path) {
-  //   console.log(path);
-  //   console.log(records);
-
-  //   if (!path) {
-  //     alert('Data not Found.');
-  //     return;
-  //   }
-  //   const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${path}`;
-  //   window.open(url, '_blank');
-  // }
 
   const [erpNumber, setErpNumber] = useState('');
   const [hrStatus, setHrStatus] = useState('');
@@ -198,32 +158,12 @@ function MedicalApprovalByHr() {
   const remarkRef = useRef(null);
   const erpRef = useRef(null);
 
-  //  Validation function
-  // const validate = () => {
-  //   const newErrors = {};
-  //   if (!hrStatus) newErrors.hrStatus = 'Status is required';
-  //   if (!hrRemark.trim()) newErrors.hrRemark = 'Remark is required';
-  //   setErrors(newErrors);
-
-  //   if (Object.keys(newErrors).length > 0) {
-  //     if (newErrors.hrStatus && statusRef.current) statusRef.current.focus();
-  //     else if (newErrors.hrRemark && remarkRef.current)
-  //       remarkRef.current.focus();
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
   const validate = () => {
     const newErrors = {};
-
-    // Status field validation
     if (!hrStatus) newErrors.hrStatus = 'Status is required';
 
-    // Remark field validation
     if (!hrRemark.trim()) newErrors.hrRemark = 'Remark is required';
 
-    // ERP Number validation — ONLY when the field is visible
     if (selectedRow?.cmoStatus === 'Approved') {
       if (!erpNumber || erpNumber.trim() === '') {
         newErrors.erpNumber = 'ERP Number is required';
@@ -246,36 +186,6 @@ function MedicalApprovalByHr() {
 
     return true;
   };
-
-  //  Submit function
-  // const HrStatusUpdate = async () => {
-  //   if (!validate()) return;
-  //   setOpenBackdrop(true);
-  //   const payload = {
-  //     refNo: referenceNo,
-  //     status: hrStatus,
-  //     remark: hrRemark,
-  //     next: null,
-  //   };
-
-  //   try {
-  //     // replace with your API call
-  //     const response = await submitMedicalHrStatus(payload);
-  //     console.log('Success:', response);
-  //     if (response.data.code == '200') {
-  //       alert('Status Updated Successfully !!');
-  //       setOpenBackdrop(false);
-  //       //window.location.reload();
-  //     } else {
-  //       alert(response.data.message);
-  //       setOpenBackdrop(false);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting:', error);
-  //     alert('Submission failed!');
-  //     setOpenBackdrop(false);
-  //   }
-  // };
 
   const [rows, setRows] = useState([
     {
@@ -327,26 +237,6 @@ function MedicalApprovalByHr() {
     setRows(updated);
   };
 
-  // GET FILLED ROWS ONLY
-  // const getFilledRows = () => {
-  //   const filledRows = rows.filter((row) => {
-  //     // Check if at least one field is filled
-  //     return (
-  //       row.accountCode ||
-  //       row.accountHead ||
-  //       row.estimateNo ||
-  //       row.dc ||
-  //       row.amount ||
-  //       row.billRef ||
-  //       row.billRefDate ||
-  //       row.details
-  //     );
-  //   });
-
-  //   console.log('FILLED ROWS:', filledRows);
-  //   alert(JSON.stringify(filledRows, null, 2));
-  // };
-
   const [journalRows, setJournalRows] = useState([
     {
       sno: 1,
@@ -395,75 +285,10 @@ function MedicalApprovalByHr() {
     setJournalRows(updated);
   };
 
-  // GET FILLED JOURNAL ROWS
-  // const journalGetFilledRows = () => {
-  //   const filled = journalRows.filter((row) => {
-  //     return (
-  //       row.journalAccountCode ||
-  //       row.journalAccountHead ||
-  //       row.journalEstimateNo ||
-  //       row.journalDC ||
-  //       row.journalDebitAmount ||
-  //       row.journalCreditAmount ||
-  //       row.journalDetails
-  //     );
-  //   });
-
-  //   console.log('JOURNAL SELECTED ROWS:', filled);
-  //   alert(JSON.stringify(filled, null, 2));
-  // };
-
-  // const [bankCode, setBankCode] = useState('');
-  // const [bankName, setBankName] = useState('');
-  // const [chequeNo, setChequeNo] = useState('');
-  // const [date, setDate] = useState('');
-
-  // const handleSubmit = () => {
-  //   const data = {
-  //     bankCode,
-  //     bankName,
-  //     chequeNo,
-  //     date,
-  //   };
-
-  //   console.log('Bank Form Data:', data);
-  //   alert(JSON.stringify(data, null, 2));
-  // };
-
-  //  const HrStatusUpdate = async () => {
-  //   if (!validate()) return;
-  //   setOpenBackdrop(true);
-  //   const payload = {
-  //     refNo: referenceNo,
-  //     status: hrStatus,
-  //     remark: hrRemark,
-  //     next: null,
-  //   };
-
-  //   try {
-  //     // replace with your API call
-  //     const response = await submitMedicalHrStatus(payload);
-  //     console.log('Success:', response);
-  //     if (response.data.code == '200') {
-  //       alert('Status Updated Successfully !!');
-  //       setOpenBackdrop(false);
-  //       //window.location.reload();
-  //     } else {
-  //       alert(response.data.message);
-  //       setOpenBackdrop(false);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error submitting:', error);
-  //     alert('Submission failed!');
-  //     setOpenBackdrop(false);
-  //   }
-  // };
-
   const HrStatusUpdate = async () => {
     if (!validate()) return;
     setOpenBackdrop(true);
 
-    // Get Petty Cash Rows (Converted to Backend Format)
     const pettyCashConverted = rows
       .filter((row) => row.accountCode || row.amount)
       .map((row, index) => ({
@@ -480,7 +305,6 @@ function MedicalApprovalByHr() {
         refNo: referenceNo,
       }));
 
-    //  Get Journal Rows (Converted to Backend Format)
     const journalConverted = journalRows
       .filter(
         (row) =>
@@ -502,35 +326,21 @@ function MedicalApprovalByHr() {
         refNo: referenceNo,
       }));
 
-    //  Bank Form Data
-    // const bankData = {
-    //   bankCode: bankCode,
-    //   bankName: bankName,
-    //   chequeNo: chequeNo,
-    //   chequeDate: date || null,
-    // };
-
-    // FINAL PAYLOAD EXACT MATCH AS YOUR GIVEN JSON
     const payload = {
       refNo: referenceNo,
       remark: hrRemark,
       status: hrStatus,
-      // next: null,
-      // ...bankData,
       erpInvoiceNo: erpNumber,
       medicalPcvList: pettyCashConverted,
       medicalJvs: journalConverted,
     };
 
-    // console.log('FINAL READY PAYLOAD:', payload);
-
     try {
       const response = await submitMedicalHrStatus(payload);
-      // console.log(response);
 
       if (response.data.code === '200') {
         alert('Status Updated Successfully !!');
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -548,8 +358,6 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    // console.log('Downloading:', docPath);
-
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
@@ -559,8 +367,6 @@ function MedicalApprovalByHr() {
       alert('Document not available');
       return;
     }
-
-    // console.log('Downloading:', docPath);
 
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
@@ -572,8 +378,6 @@ function MedicalApprovalByHr() {
       return;
     }
 
-    // console.log('Downloading:', docPath);
-
     const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${docPath}`;
     window.open(url, '_blank');
   };
@@ -583,20 +387,6 @@ function MedicalApprovalByHr() {
   return (
     <>
       <Card className="shadow">
-        {/* <Card.Header className="text-center p-3">
-          <Typography
-            variant="h4"
-            sx={{
-              color: '#0a1f83',
-              mb: 2,
-              fontFamily: 'serif',
-              fontWeight: 'bold',
-            }}
-          >
-            HR Verification for Medical Reimbursement
-          </Typography>
-        </Card.Header> */}
-
         <Card.Header className="p-3 d-flex align-items-center position-relative">
           <Tooltip title="Back" arrow placement="top">
             <Button className="position-absolute start-2">
@@ -649,8 +439,6 @@ function MedicalApprovalByHr() {
                           <Button
                             variant="contained"
                             color="dark"
-                            //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                            // onClick={() => handlePreview(item)}
                             onClick={() => handlePreview(item.refNo)}
                           >
                             <VisibilityIcon fontSize="small" />
@@ -695,7 +483,6 @@ function MedicalApprovalByHr() {
           },
         }}
       >
-        {/* Header */}
         <DialogTitle
           sx={{
             textAlign: 'center',
@@ -716,7 +503,6 @@ function MedicalApprovalByHr() {
           </Typography>
         </DialogTitle>
 
-        {/* Body */}
         <DialogContent
           dividers
           sx={{
@@ -817,55 +603,6 @@ function MedicalApprovalByHr() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <StyledTableRow>
-                      <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>ShopName</StyledTableCell>
-                      <StyledTableCell>Cash Memo No</StyledTableCell>
-                      <StyledTableCell>Cash Memo Date</StyledTableCell>
-                      <StyledTableCell>View</StyledTableCell>
-                    </StyledTableRow>
-                  </TableHead>
-                  <TableBody>
-                    {medicineData && medicineData.length > 0 ? (
-                      medicineData.map((item, index) => (
-                        <StyledTableRow key={index}>
-                          <StyledTableCell>{index + 1}</StyledTableCell>
-                          <StyledTableCell>
-                            {item.shopName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoNo || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoDate || '-'}
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            <Tooltip title="Preview" arrow>
-                              <Button variant="contained" color="dark">
-                                <VisibilityIcon
-                                  fontSize="small"
-                                  color="success"
-                                />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    ) : (
-                      <StyledTableRow>
-                        <StyledTableCell colSpan={8}>
-                          Data Not Found
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
-
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
@@ -882,7 +619,6 @@ function MedicalApprovalByHr() {
                     {medicineData && medicineData.length > 0 ? (
                       medicineData.map((item, index) => (
                         <React.Fragment key={index}>
-                          {/* Main Row */}
                           <StyledTableRow>
                             <StyledTableCell>{index + 1}</StyledTableCell>
                             <StyledTableCell>
@@ -911,7 +647,6 @@ function MedicalApprovalByHr() {
                                   onClick={() => handlePreviewMemo(item, index)}
                                   sx={{ minWidth: 40 }}
                                 >
-                                  {/* Toggle icon same, but color changes */}
                                   <VisibilityIcon
                                     fontSize="small"
                                     color={
@@ -925,7 +660,6 @@ function MedicalApprovalByHr() {
                             </StyledTableCell>
                           </StyledTableRow>
 
-                          {/* Sub Table - Expandable */}
                           {expandedRow === index && (
                             <StyledTableRow>
                               <StyledTableCell colSpan={5} sx={{ padding: 1 }}>
@@ -1014,7 +748,6 @@ function MedicalApprovalByHr() {
                           <StyledTableCell>S.No.</StyledTableCell>
                           <StyledTableCell>Account Code</StyledTableCell>
                           <StyledTableCell>Account Head</StyledTableCell>
-                          {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                           <StyledTableCell>D or C</StyledTableCell>
                           <StyledTableCell>Amount</StyledTableCell>
                           <StyledTableCell>Bill Reference</StyledTableCell>
@@ -1058,21 +791,6 @@ function MedicalApprovalByHr() {
                                 }
                               />
                             </StyledTableCell>
-
-                            {/* <StyledTableCell>
-                              <TextField
-                                size="small"
-                                placeholder="Enter..."
-                                value={row.estimateNo}
-                                onChange={(e) =>
-                                  pettyChange(
-                                    index,
-                                    'estimateNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </StyledTableCell> */}
 
                             <StyledTableCell>
                               <Select
@@ -1154,65 +872,6 @@ function MedicalApprovalByHr() {
                       </TableBody>
                     </Table>
                   </TableContainer>
-
-                  {/* <div className=" my-3">
-                    <Row className="mt-3 g-3">
-                      <Col xs={12} md={3}>
-                        <Card className="h-100">
-                          <Card.Header>Bank Code</Card.Header>
-                          <Card.Body>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter Bank Code"
-                              value={bankCode}
-                              onChange={(e) => setBankCode(e.target.value)}
-                            />
-                          </Card.Body>
-                        </Card>
-                      </Col>
-
-                      <Col xs={12} md={3}>
-                        <Card className="h-100">
-                          <Card.Header>Bank Name</Card.Header>
-                          <Card.Body>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter Bank Name"
-                              value={bankName}
-                              onChange={(e) => setBankName(e.target.value)}
-                            />
-                          </Card.Body>
-                        </Card>
-                      </Col>
-
-                      <Col xs={12} md={3}>
-                        <Card className="h-100">
-                          <Card.Header>Cheque No.</Card.Header>
-                          <Card.Body>
-                            <Form.Control
-                              type="text"
-                              placeholder="Enter Cheque No."
-                              value={chequeNo}
-                              onChange={(e) => setChequeNo(e.target.value)}
-                            />
-                          </Card.Body>
-                        </Card>
-                      </Col>
-
-                      <Col xs={12} md={3}>
-                        <Card className="h-100">
-                          <Card.Header>Date</Card.Header>
-                          <Card.Body>
-                            <Form.Control
-                              type="date"
-                              value={date}
-                              onChange={(e) => setDate(e.target.value)}
-                            />
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    </Row>
-                  </div> */}
                 </Card.Body>
                 <Card.Footer className="text-center"></Card.Footer>
               </Card>
@@ -1249,7 +908,6 @@ function MedicalApprovalByHr() {
                           <StyledTableCell>S.No.</StyledTableCell>
                           <StyledTableCell>Account Code</StyledTableCell>
                           <StyledTableCell>Account Head</StyledTableCell>
-                          {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                           <StyledTableCell>D / C</StyledTableCell>
                           <StyledTableCell>Debit Amount</StyledTableCell>
                           <StyledTableCell>Credit Amount</StyledTableCell>
@@ -1292,21 +950,6 @@ function MedicalApprovalByHr() {
                                 }
                               />
                             </StyledTableCell>
-
-                            {/* <StyledTableCell>
-                              <TextField
-                                placeholder="Enter..."
-                                size="small"
-                                value={row.journalEstimateNo}
-                                onChange={(e) =>
-                                  journalChange(
-                                    index,
-                                    'journalEstimateNo',
-                                    e.target.value,
-                                  )
-                                }
-                              />
-                            </StyledTableCell> */}
 
                             <StyledTableCell>
                               <Select
@@ -1412,70 +1055,7 @@ function MedicalApprovalByHr() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* <Row>
-                {selectedRow?.cmoStatus === 'Approved' && (
-                  <Col xs={12} md={3}>
-                    <Card>
-                      <Card.Header>ERP Number</Card.Header>
-                      <Card.Body>
-                        <Form.Control
-                          placeholder="Enter ERP Number"
-                          value={erpNumber}
-                          onChange={(e) => setErpNumber(e.target.value)}
-                        />
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                )}
-
-                 
-                <Col xs={12} md={4} className="mb-2">
-                  <Card>
-                    <Card.Header>Select Status</Card.Header>
-                    <Card.Body>
-                      <Form.Select
-                        ref={statusRef}
-                        value={hrStatus}
-                        onChange={(e) => setHrStatus(e.target.value)}
-                        isInvalid={!!errors.hrStatus}
-                      >
-                        <option value="" disabled>
-                          -- select --
-                        </option>
-                        <option value="Approved">Approved</option>
-                        <option value="Rejected">Rejected</option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid" className="d-block">
-                        {errors.hrStatus}
-                      </Form.Control.Feedback>
-                    </Card.Body>
-                  </Card>
-                </Col>
-
-                
-                <Col xs={12} md={8}>
-                  <Card>
-                    <Card.Header>Remark</Card.Header>
-                    <Card.Body>
-                      <Form.Control
-                        as="textarea"
-                        rows={2}
-                        placeholder="Enter Remark..."
-                        ref={remarkRef}
-                        value={hrRemark}
-                        onChange={(e) => setHrRemark(e.target.value)}
-                        isInvalid={!!errors.hrRemark}
-                      />
-                      <Form.Control.Feedback type="invalid" className="d-block">
-                        {errors.hrRemark}
-                      </Form.Control.Feedback>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row> */}
-
               <Row className="g-3">
-                {/* ERP Number */}
                 {showErp && (
                   <Col xs={12} md={4}>
                     <Card>
@@ -1499,7 +1079,6 @@ function MedicalApprovalByHr() {
                   </Col>
                 )}
 
-                {/* Status */}
                 <Col xs={12} md={4}>
                   <Card>
                     <Card.Header>Select Status</Card.Header>
@@ -1523,7 +1102,6 @@ function MedicalApprovalByHr() {
                   </Card>
                 </Col>
 
-                {/* Remark */}
                 <Col xs={12} md={showErp ? 4 : 8}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
@@ -1549,7 +1127,6 @@ function MedicalApprovalByHr() {
           </Card>
         </DialogContent>
 
-        {/* Footer */}
         <DialogActions sx={{ justifyContent: 'center', p: 2 }}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Button
@@ -1571,7 +1148,6 @@ function MedicalApprovalByHr() {
         </DialogActions>
       </Dialog>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

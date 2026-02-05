@@ -233,9 +233,6 @@ function MedicalFormUpdate() {
 
   const canUpdate =
     preItem.appliPresentAtEmpCode == sessionStorage.getItem('empCode');
-  // console.log(canUpdate);
-  // console.log(preItem.appliPresentAtEmpCode);
-  // console.log(sessionStorage.getItem('empCode'));
 
   const handleUpdate = async () => {
     const dataToSend = new FormData();
@@ -383,7 +380,6 @@ function MedicalFormUpdate() {
         </Card.Header>
 
         <Card.Body>
-          {/* Radio Control */}
           <Box display="flex" justifyContent="center">
             <FormControl component="fieldset">
               <RadioGroup
@@ -396,16 +392,10 @@ function MedicalFormUpdate() {
                   control={<Radio />}
                   label="OPD Form"
                 />
-                {/* <FormControlLabel
-                  value="IPD"
-                  control={<Radio />}
-                  label="IPD Form"
-                /> */}
               </RadioGroup>
             </FormControl>
           </Box>
 
-          {/* Common Fields */}
           <div className="my-4">
             <Card className="mb-3 shadow-sm">
               <Card.Body>
@@ -532,7 +522,6 @@ function MedicalFormUpdate() {
               </Card.Body>
             </Card>
 
-            {/* ================== PATIENT INFO ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={4} className="g-3">
@@ -600,7 +589,6 @@ function MedicalFormUpdate() {
               </Card.Body>
             </Card>
 
-            {/* ================== DISEASE & DOCTOR ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={4} className="g-3">
@@ -665,7 +653,6 @@ function MedicalFormUpdate() {
               </Card.Body>
             </Card>
 
-            {/* ================== CERTIFICATE ================== */}
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <Row xs={1} md={4} className="g-3">
@@ -1024,7 +1011,6 @@ function MedicalFormUpdate() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

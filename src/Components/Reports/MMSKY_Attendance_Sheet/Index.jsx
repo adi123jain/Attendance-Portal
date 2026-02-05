@@ -108,7 +108,6 @@ function MMSKYattendance() {
       </Card.Header>
       <Card.Body>
         <div className="row row-cols-1 row-cols-md-4 g-3 mt-4 mb-5">
-          {/* Region */}
           <div className="col">
             <Card>
               <Card.Header>Region</Card.Header>
@@ -135,7 +134,6 @@ function MMSKYattendance() {
             </Card>
           </div>
 
-          {/* Circle */}
           <div className="col">
             <Card>
               <Card.Header>Circle</Card.Header>
@@ -158,7 +156,6 @@ function MMSKYattendance() {
             </Card>
           </div>
 
-          {/* Month */}
           <div className="col">
             <Card>
               <Card.Header>Month</Card.Header>
@@ -185,7 +182,6 @@ function MMSKYattendance() {
             </Card>
           </div>
 
-          {/* Year */}
           <div className="col">
             <Card>
               <Card.Header>Year</Card.Header>

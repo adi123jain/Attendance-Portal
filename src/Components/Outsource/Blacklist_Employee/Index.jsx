@@ -105,14 +105,12 @@ function BlacklistEmployee() {
 
     try {
       const response = await employeeBlacklist(payload);
-      console.log('Response:', response);
       if (response.code === '200') {
         alert(response.data.message);
         window.location.reload();
       } else {
         alert(response.data.message);
       }
-      // Reset form if needed
     } catch (err) {
       console.error('Error while blacklisting:', err);
       alert('Error during submission. Please try again.');

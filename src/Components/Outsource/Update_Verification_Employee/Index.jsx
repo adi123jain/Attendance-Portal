@@ -84,8 +84,6 @@ function UpdateVerifyEmployee() {
   const [contractEndDate, setContractEndDate] = useState('');
   const [vendorId, setVendorId] = useState('');
   const [vendorName, setVendorName] = useState('');
-  // const [hrEmpCode, setHrEmpCode] = useState("");
-  // const [hrAction, setHrAction] = useState("");
   const [deviceId, setDeviceId] = useState('');
 
   // Concate First Middle and Last name into Full Name
@@ -153,9 +151,6 @@ function UpdateVerifyEmployee() {
             response.data.list[0]?.substation?.substationId || '',
           );
 
-          // setSelectedLocation(
-          //   response.data.list[0]?.attendanceLocationId?.id || '',
-          // );
           setEmployeeAttendanceLocationId(
             response.data.list[0]?.attendanceLocationId?.id || null,
           );
@@ -380,7 +375,7 @@ function UpdateVerifyEmployee() {
   useEffect(() => {
     if (selectedRegion) {
       fetchAttendanceLocation();
-      setSelectedLocation(''); // 🔥 IMPORTANT
+      setSelectedLocation('');
     } else {
       setAttendanceLocations([]);
       setSelectedLocation('');
@@ -602,16 +597,12 @@ function UpdateVerifyEmployee() {
       education: education || '',
     };
 
-    console.log(payload);
-
-    // // Call API
     try {
       const response = await updateVerifyOutEmployee(payload);
-      // console.log(response);
       if (response.data.code === '200') {
         alert('Updated Successfully !!');
         setOpenBackdrop(false);
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
@@ -660,7 +651,6 @@ function UpdateVerifyEmployee() {
           </div>
         </Card.Header>
         <Card.Body>
-          {/* Basic Information */}
           <Card>
             <Card.Header className="text-center">
               <h4
@@ -674,8 +664,6 @@ function UpdateVerifyEmployee() {
               </h4>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
-
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
@@ -778,7 +766,6 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 2 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -814,7 +801,7 @@ function UpdateVerifyEmployee() {
                         value={mobileNumber}
                         onChange={(e) => {
                           const val = e.target.value;
-                          if (/^\d*$/.test(val)) setMobileNumber(val); // allow only digits
+                          if (/^\d*$/.test(val)) setMobileNumber(val);
                         }}
                         // onChange={(e) => setMobileNumber(e.target.value)}
                       />
@@ -889,7 +876,6 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 3 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -986,9 +972,7 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 4 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
-                {/* Mother's Name */}
                 <Col>
                   <Card>
                     <Card.Header>Mother's Name</Card.Header>
@@ -1007,9 +991,8 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Marital Status</Card.Header>
                     <Card.Body>
-                      {/* Marital Status */}
                       <Form.Select
-                        value={maritalStatus} // controlled
+                        value={maritalStatus}
                         onChange={(e) => setMaritalStatus(e.target.value)}
                       >
                         <option value="" disabled>
@@ -1029,7 +1012,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Physically Handicapped</Card.Header>
                     <Card.Body>
-                      {/* Physically Handicapped */}
                       <Form.Select
                         value={physicallyHandicapped}
                         id="physicallyHandicapped"
@@ -1061,7 +1043,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Percentage of Disablement (%)</Card.Header>
                     <Card.Body>
-                      {/* Percentage of Disablement */}
                       <Form.Control
                         type="number"
                         placeholder="Enter Here ....."
@@ -1073,13 +1054,11 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 5 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
                     <Card.Header>Status</Card.Header>
                     <Card.Body>
-                      {/* Status */}
                       <Form.Select
                         value={status}
                         id="status"
@@ -1110,7 +1089,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Category of Employee</Card.Header>
                     <Card.Body>
-                      {/* Category of Employee */}
                       <Form.Select
                         value={employeeCategory}
                         id="employeeCategory"
@@ -1141,7 +1119,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Skill Type</Card.Header>
                     <Card.Body>
-                      {/* Skill Type */}
                       <Form.Select
                         value={skillType}
                         id="skillType"
@@ -1173,7 +1150,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Default Shift</Card.Header>
                     <Card.Body>
-                      {/* Default Shift */}
                       <Form.Select
                         value={defaultShift}
                         id="defaultShift"
@@ -1204,7 +1180,6 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 6 */}
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1339,7 +1314,6 @@ function UpdateVerifyEmployee() {
             </Card.Body>
           </Card>
 
-          {/* Department and Grade */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <h4
@@ -1354,7 +1328,6 @@ function UpdateVerifyEmployee() {
               </h4>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={3} md={3} className="g-3">
                 <Col>
                   <Card>
@@ -1472,8 +1445,6 @@ function UpdateVerifyEmployee() {
                 </Col>
               </Row>
 
-              {/* Row 2 */}
-
               <Row xs={1} sm={3} md={3} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -1555,7 +1526,6 @@ function UpdateVerifyEmployee() {
             </Card.Body>
           </Card>
 
-          {/* Reporting and Approvers */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <h4
@@ -1575,30 +1545,6 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Attendance Location Name </Card.Header>
                     <Card.Body>
-                      {/* <Form.Select
-                        value={selectedLocation}
-                        id="attendanceLocation"
-                        onChange={(e) => setSelectedLocation(e.target.value)}
-                      >
-                        <option value="" disabled>
-                          -- select Name --
-                        </option>
-
-                        {attendanceLocations &&
-                        attendanceLocations.length > 0 ? (
-                          attendanceLocations.map((item) => (
-                            <option
-                              key={item.locationId}
-                              value={item.locationId}
-                            >
-                              {item.locationName}
-                            </option>
-                          ))
-                        ) : (
-                          <option disabled>No data found</option>
-                        )}
-                      </Form.Select> */}
-
                       <Form.Select
                         value={selectedLocation}
                         onChange={(e) =>
@@ -1729,7 +1675,6 @@ function UpdateVerifyEmployee() {
             </Card.Body>
           </Card>
 
-          {/* Attendance and Leave Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <h4
@@ -1992,7 +1937,6 @@ function UpdateVerifyEmployee() {
             </Card.Body>
           </Card>
 
-          {/* Vendor's Details */}
           <Card className="mt-4">
             <Card.Header className="text-center">
               <h4
@@ -2007,7 +1951,6 @@ function UpdateVerifyEmployee() {
               </h4>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={3} md={3} className="g-3 mt-2">
                 <Col>
                   <Card>
@@ -2086,7 +2029,6 @@ function UpdateVerifyEmployee() {
         </Card.Footer>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

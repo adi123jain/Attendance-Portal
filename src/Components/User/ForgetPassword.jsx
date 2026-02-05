@@ -267,7 +267,6 @@ function ForgetPassword() {
                   </Button>
                 )}
 
-                {/* OTP Section */}
                 {otpSent && (
                   <>
                     <Stack

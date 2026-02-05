@@ -33,7 +33,7 @@ function SsoShutDown() {
     const fetchRecords = async () => {
       setOpenBackdrop(true);
       const response = await getShutDown(sessionEmp, sessionDcId);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         setShutdownRecords(response.data.list);
         setOpenBackdrop(false);
@@ -306,7 +306,6 @@ function SsoShutDown() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

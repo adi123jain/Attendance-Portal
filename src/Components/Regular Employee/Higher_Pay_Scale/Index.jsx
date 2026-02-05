@@ -16,7 +16,7 @@ function HigherPayScale() {
   function submitImmovableForm() {
     const emp = '9754712687';
     const encoded = btoa(emp);
-    console.log(encoded);
+    // console.log(encoded);
   }
 
   const [selectedOption, setSelectedOption] = useState('option1');

@@ -43,7 +43,7 @@ function CorrectionApplication() {
     try {
       setOpenBackdrop(true);
       const response = await getCorrectionsByRoId(month, year);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         setDetails(response.data.list);
         setOpenBackdrop(false);

@@ -1,109 +1,51 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import Card from "react-bootstrap/Card";
-import { Link, useLocation } from "react-router-dom";
-import Form from "react-bootstrap/Form";
-import GroupAddIcon from "@mui/icons-material/GroupAdd";
-import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
+import React, { useState, useEffect, useRef } from 'react';
+import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
+import Tooltip from '@mui/material/Tooltip';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  Divider,
   Typography,
   Button,
   Backdrop,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
-  TableRow,
   Paper,
-} from "@mui/material";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { PropagateLoader } from "react-spinners";
-import { styled } from "@mui/material/styles";
-import { tableCellClasses } from "@mui/material/TableCell";
-import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+} from '@mui/material';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import { PropagateLoader } from 'react-spinners';
+import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 
 import {
   deleteDiscontinuationRecords,
-  empWalletAmount,
-  getAllVendors,
   getCircle,
   getDC,
   getDiscontinuationRecords,
   getDivision,
-  getIncentiveHeads,
   getRegion,
   getSubDivision,
-  getVendorArmedForce,
-  maxAmountByDesignation,
-  requestRRAC,
   updateDiscontinuationRecords,
-} from "../../../Services/Auth";
+} from '../../../Services/Auth';
 import {
   StyledTableRow,
   StyledTableCell,
-} from "../../../Constants/TableStyles/Index";
-
-// const headerBackground = "linear-gradient(to right, #90A4AE, #78909C)";
-// const oddRowBackground = "#F9FAFB";
-// const evenRowBackground = "#F1F3F4";
-// const hoverBackground = "#E0E0E0";
-
-// const StyledTableCell = styled(TableCell)(({ theme }) => ({
-//   [`&.${tableCellClasses.head}`]: {
-//     background: headerBackground,
-//     color: theme.palette.common.white,
-//     fontWeight: "bold",
-//     textAlign: "center",
-//   },
-//   [`&.${tableCellClasses.body}`]: {
-//     fontSize: 14,
-//     textAlign: "center",
-//   },
-// }));
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   "&:nth-of-type(odd)": {
-//     backgroundColor: oddRowBackground,
-//   },
-//   "&:nth-of-type(even)": {
-//     backgroundColor: evenRowBackground,
-//   },
-//   "&:hover": {
-//     backgroundColor: hoverBackground,
-//   },
-// }));
+} from '../../../Constants/TableStyles/Index';
 
 function RRAC_Discontinuation() {
-  const sessionRegion = sessionStorage.getItem("regionId");
-  const sessionCircle = sessionStorage.getItem("circleId");
-  const sessionDivision = sessionStorage.getItem("divisionId");
-  const sessionSubdivision = sessionStorage.getItem("subdivisionId");
-  const sessionDc = sessionStorage.getItem("dcId");
-  const designationName = sessionStorage.getItem("designationName");
-  const departmentName = sessionStorage.getItem("departmentName");
-  const sessionEmpCode = sessionStorage.getItem("empCode");
-
-  const departmentId = sessionStorage.getItem("departmentId");
-  const designationId = sessionStorage.getItem("designationId");
-
   const [regions, setRegions] = useState([]);
   const [circles, setCircles] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [subDivisions, setSubDivisions] = useState([]);
   const [dcs, setDCs] = useState([]);
-  const [subStations, setSubStations] = useState([]);
-  const [errors, setErrors] = useState({});
 
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCircle, setSelectedCircle] = useState("");
-  const [selectedDivision, setSelectedDivision] = useState("");
-  const [selectedSubDivision, setSelectedSubDivision] = useState("");
-  const [selectedDC, setSelectedDC] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState('');
+  const [selectedCircle, setSelectedCircle] = useState('');
+  const [selectedDivision, setSelectedDivision] = useState('');
+  const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  const [selectedDC, setSelectedDC] = useState('');
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
   const [discontInTable, setDiscontInTable] = useState([]);
@@ -115,8 +57,8 @@ function RRAC_Discontinuation() {
       try {
         setOpenBackdrop(true);
         const response = await getDiscontinuationRecords();
-        console.log(response);
-        if (response.data.code == "200") {
+        // console.log(response);
+        if (response.data.code == '200') {
           setOpenBackdrop(false);
           setDiscontInTable(response.data.list || []);
           setTimeout(() => {
@@ -126,7 +68,7 @@ function RRAC_Discontinuation() {
           setOpenBackdrop(false);
         }
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
         setOpenBackdrop(false);
       }
     })();
@@ -134,7 +76,7 @@ function RRAC_Discontinuation() {
 
   const deletRecords = async (id) => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this record?"
+      'Are you sure you want to delete this record?',
     );
 
     if (!confirmDelete) {
@@ -143,14 +85,14 @@ function RRAC_Discontinuation() {
 
     try {
       const response = await deleteDiscontinuationRecords(id);
-      if (response?.data?.code === "200") {
+      if (response?.data?.code === '200') {
         window.location.reload();
       } else {
-        alert(response?.data?.message || "Failed to delete records");
+        alert(response?.data?.message || 'Failed to delete records');
       }
       window.location.reload();
     } catch (error) {
-      console.error("Error deleting record:", error);
+      console.error('Error deleting record:', error);
     }
   };
 
@@ -161,7 +103,7 @@ function RRAC_Discontinuation() {
         const response = await getRegion();
         setRegions(response.data.list || []);
       } catch (error) {
-        console.error("Error fetching regions:", error);
+        console.error('Error fetching regions:', error);
       }
     })();
   }, []);
@@ -174,7 +116,7 @@ function RRAC_Discontinuation() {
         const res = await getCircle(selectedRegion);
         setCircles(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching circles:", error);
+        console.error('Error fetching circles:', error);
       }
     })();
   }, [selectedRegion]);
@@ -187,7 +129,7 @@ function RRAC_Discontinuation() {
         const res = await getDivision(selectedCircle);
         setDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching divisions:", error);
+        console.error('Error fetching divisions:', error);
       }
     })();
   }, [selectedCircle]);
@@ -200,7 +142,7 @@ function RRAC_Discontinuation() {
         const res = await getSubDivision(selectedDivision);
         setSubDivisions(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching sub divisions:", error);
+        console.error('Error fetching sub divisions:', error);
       }
     })();
   }, [selectedDivision]);
@@ -213,7 +155,7 @@ function RRAC_Discontinuation() {
         const res = await getDC(selectedSubDivision);
         setDCs(res.data.list || []);
       } catch (error) {
-        console.error("Error fetching DCs:", error);
+        console.error('Error fetching DCs:', error);
       }
     })();
   }, [selectedSubDivision]);
@@ -224,7 +166,7 @@ function RRAC_Discontinuation() {
   const handleSubmit = async () => {
     // Validation for region
     if (!selectedRegion) {
-      alert("Region is required");
+      alert('Region is required');
       if (regionRef.current) {
         regionRef.current.focus();
       }
@@ -238,7 +180,7 @@ function RRAC_Discontinuation() {
       divisionId: selectedDivision,
       subdivisionId: selectedSubDivision,
       dcId: selectedDC,
-      createdBy: sessionStorage.getItem("empCode"),
+      createdBy: sessionStorage.getItem('empCode'),
     };
 
     // console.log("Payload:", payload);
@@ -247,17 +189,17 @@ function RRAC_Discontinuation() {
       const response = await updateDiscontinuationRecords(payload);
       //   console.log("API Response:", response);
 
-      if (response?.data?.code === "200") {
-        alert("Records Updated Successfully");
+      if (response?.data?.code === '200') {
+        alert('Records Updated Successfully');
         setOpenBackdrop(false);
         window.location.reload();
       } else {
-        alert(response?.data?.message || "Failed to update records");
+        alert(response?.data?.message || 'Failed to update records');
         setOpenBackdrop(false);
       }
     } catch (error) {
-      console.error("Error updating records:", error);
-      alert("Something went wrong while updating records.");
+      console.error('Error updating records:', error);
+      alert('Something went wrong while updating records.');
       setOpenBackdrop(false);
     }
   };
@@ -278,34 +220,32 @@ function RRAC_Discontinuation() {
             variant="h4"
             sx={{
               flex: 1,
-              textAlign: "center",
-              color: "#0a1f83",
+              textAlign: 'center',
+              color: '#0a1f83',
               mb: 0,
-              fontFamily: "serif",
-              fontWeight: "bold",
+              fontFamily: 'serif',
+              fontWeight: 'bold',
             }}
           >
             Discontinuation of Delegation of Revenue Realisation
           </Typography>
         </Card.Header>
         <Card.Body>
-          {/* Card 1 */}
           <Card>
             <Card.Header className="text-center">
               <Typography
                 variant="h6"
                 sx={{
                   mb: 2,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
-                  color: "#0a1f83",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
                 }}
               >
                 Submit Discontinuation of Delegation
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={5} className="g-3">
                 <Col>
                   <Card>
@@ -318,13 +258,13 @@ function RRAC_Discontinuation() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedRegion(value);
-                          setSelectedCircle("");
+                          setSelectedCircle('');
                           setCircles([]);
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         // disabled={disabledLevels.region}
@@ -352,11 +292,11 @@ function RRAC_Discontinuation() {
                           const value = e.target.value;
                           setSelectedCircle(value);
 
-                          setSelectedDivision("");
+                          setSelectedDivision('');
                           setDivisions([]);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={!selectedRegion}
@@ -383,9 +323,9 @@ function RRAC_Discontinuation() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedDivision(value);
-                          setSelectedSubDivision("");
+                          setSelectedSubDivision('');
                           setSubDivisions([]);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={!selectedCircle}
@@ -412,7 +352,7 @@ function RRAC_Discontinuation() {
                         onChange={(e) => {
                           const value = e.target.value;
                           setSelectedSubDivision(value);
-                          setSelectedDC("");
+                          setSelectedDC('');
                           setDCs([]);
                         }}
                         disabled={!selectedDivision}
@@ -469,18 +409,18 @@ function RRAC_Discontinuation() {
                 variant="h6"
                 sx={{
                   flex: 1,
-                  textAlign: "center",
-                  color: "#0a1f83",
+                  textAlign: 'center',
+                  color: '#0a1f83',
                   mb: 0,
-                  fontFamily: "serif",
-                  fontWeight: "bold",
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
                 }}
               >
                 Discontinuation of Delegation Records
               </Typography>
             </Card.Header>
             <Card.Body>
-              <TableContainer component={Paper} sx={{ marginTop: "15px" }}>
+              <TableContainer component={Paper} sx={{ marginTop: '15px' }}>
                 <Table ref={tableRef} tabIndex={-1}>
                   <TableHead>
                     <StyledTableRow>
@@ -499,18 +439,18 @@ function RRAC_Discontinuation() {
                         <StyledTableRow key={index}>
                           <StyledTableCell>{index + 1}</StyledTableCell>
                           <StyledTableCell>
-                            {item.regionId || "-"}
+                            {item.regionId || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.circleId || "-"}
+                            {item.circleId || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.divisionId || "-"}
+                            {item.divisionId || '-'}
                           </StyledTableCell>
                           <StyledTableCell>
-                            {item.subDivisionId || "-"}
+                            {item.subDivisionId || '-'}
                           </StyledTableCell>
-                          <StyledTableCell>{item.dcId || "-"}</StyledTableCell>
+                          <StyledTableCell>{item.dcId || '-'}</StyledTableCell>
                           <StyledTableCell>
                             <Tooltip title="Delete Record" arrow>
                               <Button
@@ -540,7 +480,7 @@ function RRAC_Discontinuation() {
       </Card>
 
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
       >
         <PropagateLoader />

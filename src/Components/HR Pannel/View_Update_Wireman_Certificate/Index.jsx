@@ -78,20 +78,11 @@ function UpdateWiremanCertificateStatus() {
     if (checked) {
       setSelected(certificates.map((item) => item.id));
     } else {
-      // setSelected([]);
       setSelected([]);
       setRowData({});
       setErrors({});
     }
   };
-
-  // const handleSelectRow = (id) => {
-  //   if (selected.includes(id)) {
-  //     setSelected(selected.filter((item) => item !== id));
-  //   } else {
-  //     setSelected([...selected, id]);
-  //   }
-  // };
 
   const handleSelectRow = (id) => {
     const isSelected = selected.includes(id);
@@ -101,10 +92,7 @@ function UpdateWiremanCertificateStatus() {
 
       setRowData((prev) => {
         const updated = { ...prev };
-        // updated[id] = {
-        //   gmStatus: '',
-        //   gmRemark: '',
-        // };
+
         updated[id] = {
           ...updated[id],
           gmStatus: '',
@@ -166,19 +154,7 @@ function UpdateWiremanCertificateStatus() {
   };
 
   const handleSubmit = async () => {
-    // const payload = selected.map((id) => ({
-    //   id,
-    //   gmStatus: rowData[id]?.gmStatus,
-    //   gmRemark: rowData[id]?.gmRemark,
-    //   updatedBy: sessionStorage.getItem('empCode'),
-    //   gmEmpCode: sessionStorage.getItem('empCode'),
-    //   authLt440VLine: '',
-    //   authLt11KvLine: '',
-    //   authLt33KvLine: '',
-    // }));
-
     const payload = selected.map((id) => {
-      // const cert = certificates.find((c) => c.id === id);
       return {
         id,
         gmStatus: rowData[id]?.gmStatus,
@@ -191,8 +167,6 @@ function UpdateWiremanCertificateStatus() {
         authLt33KvLine: rowData[id]?.authLt33KvLine,
       };
     });
-
-    // console.log('FINAL PAYLOAD:', payload);
 
     try {
       setOpenBackdrop(true);

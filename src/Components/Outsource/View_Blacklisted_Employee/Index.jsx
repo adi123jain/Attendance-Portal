@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import {
@@ -80,18 +80,9 @@ function ViewBlacklistedEmployee() {
       const response = await getBlackListedEmp(selectedRegion, circle);
       if (response.data.code == '200' && response.data.message == 'Success') {
         const list = response?.data?.list || [];
-        console.log('123', list);
 
         setBlacklistedEmployees(list);
         setShowTableCard(list.length > 0);
-
-        // if (list.length > 0 && tableRef.current) {
-        //   setTimeout(() => {
-        //     tableRef.current.scrollIntoView({ behavior: "smooth" });
-        //   }, 300);
-        // } else {
-        //   alert("No employee data found.");
-        // }
       } else {
         alert(response.data.message);
         setShowTableCard(false);

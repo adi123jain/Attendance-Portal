@@ -92,12 +92,10 @@ function EmployeeInformation() {
         substationId: searchValues.subStation,
       };
       const res = await getEmployeeByLevel(payload);
-      // console.log("Employee Data:", res?.data);
       if (res?.data.code === '200' && res?.data.message === 'Success') {
         setOpenBackdrop(true);
         setDataInLevelTable(res?.data.list);
         setShowLevelTable(true);
-        //tableRef.current.scrollIntoView({ behavior: "smooth" });
       } else {
         alert(res?.data.message);
       }
@@ -143,11 +141,8 @@ function EmployeeInformation() {
 
     try {
       const res = await getEmployeeByEmpCode(empCode);
-      // console.log("Response:", res?.data);
-
       if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
-        // console.log("___", dataInEmpTable);
         setShowEmpTable(true);
       } else {
         setDataInEmpTable(null);
@@ -193,8 +188,6 @@ function EmployeeInformation() {
             errors={errors}
             refs={{
               region: regionRef,
-              // circle: circleRef,
-              // division: divisionRef,
             }}
           />
           <div className="text-center mt-4 mb-3">

@@ -87,11 +87,8 @@ function LeaveAllocation() {
         dcId: searchValues.dc,
         empCode: null,
       };
-      // console.log(payload);
 
       const response = await getLeaveAllocation(payload);
-      // console.log("response", response);
-
       if (
         response?.data.code === '200' &&
         response?.data.message === 'Success'
@@ -151,7 +148,6 @@ function LeaveAllocation() {
     };
     try {
       const res = await getLeaveAllocation(payload);
-      // console.log("Response:", res?.data);
 
       if (res?.data.code === '200' && res?.data.message === 'Success') {
         setDataInEmpTable(res?.data.list?.[0]);
@@ -277,7 +273,7 @@ function LeaveAllocation() {
       ) {
         alert('Leave Updated Successfully!!');
         modalClose();
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -323,7 +319,6 @@ function LeaveAllocation() {
             refs={{
               region: regionRef,
             }}
-            // disabledAll={isDisabledAll}
           />
 
           <div className="text-center mt-4 mb-3">
@@ -761,7 +756,6 @@ function LeaveAllocation() {
         </Modal.Footer>
       </Modal>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

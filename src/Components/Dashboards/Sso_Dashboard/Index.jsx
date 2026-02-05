@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Typography,
   Grid,
@@ -12,16 +12,14 @@ import {
   ListItemText,
   Chip,
   IconButton,
-  Button,
 } from '@mui/material';
-import { color, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   ArrowDropDown as ArrowDropDownIcon,
   ArrowDropUp as ArrowDropUpIcon,
 } from '@mui/icons-material';
 import { PropagateLoader } from 'react-spinners';
 import { useNavigate } from 'react-router-dom';
-// import NominationDeclarationModal from "../Regular Employee/Nomination_Declaration/Index";
 import WorkIcon from '@mui/icons-material/Work';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
@@ -55,7 +53,7 @@ function SsoDashboard() {
       try {
         setOpenBackdrop(true);
         const response = await getSsoList();
-        console.log(response);
+        // console.log(response);
         setSsoList(response.data.list || []);
       } catch (error) {
         console.error('Error fetching SSO list:', error);
@@ -200,7 +198,7 @@ function SsoDashboard() {
       }
 
       const data = await response.json();
-      console.log('Officer Login Response:', data);
+      // console.log('Officer Login Response:', data);
 
       if (!data.url || !data.data) {
         throw new Error('Invalid API response structure');
@@ -224,7 +222,7 @@ function SsoDashboard() {
       };
 
       Object.entries(resPayload).forEach(([key, value]) => {
-        console.log(key, value);
+        // console.log(key, value);
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = key;
@@ -263,7 +261,7 @@ function SsoDashboard() {
       if (!response.ok)
         throw new Error(`HTTP error! Status: ${response.status}`);
       const data = await response.json();
-      console.log('Bill Correction API Response:', data);
+      // console.log('Bill Correction API Response:', data);
       if (data.token)
         openUrl(
           `https://billcorrection.mpcz.in:8087/main/Officer_Dashboard_Page_View?token=${data.token}`,

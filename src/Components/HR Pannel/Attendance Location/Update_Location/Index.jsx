@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -11,7 +11,6 @@ function UpdateLocation() {
   const location = useLocation();
   const item = location.state?.item;
   const navigate = useNavigate();
-  // console.log(item);
 
   const [locationName, setLocationName] = useState(item?.locationName || '');
   const [latitude, setLatitude] = useState(item?.latitude || '');
@@ -70,9 +69,7 @@ function UpdateLocation() {
     };
 
     try {
-      //console.log("Payload to be sent:", payload);
       const response = await updateLocationCordinate(payload);
-      //console.log(response);
       if (
         response.data?.code === '200' &&
         response.data.message === 'Success'

@@ -34,7 +34,6 @@ function CreateAttendanceLocation() {
   const fetchDistricts = async () => {
     try {
       const res = await getDistrict();
-      // console.log(res);
       if (res?.data) {
         setDistricts(res.data.list);
       }
@@ -83,9 +82,7 @@ function CreateAttendanceLocation() {
     };
 
     try {
-      // console.log("Sending data:", payload);
       const response = await createAttendanceLocation(payload);
-      // console.log("create response", response);
       if (response.data.code === '200' && response.data.message === 'Success') {
         alert('Location Created Successfully !!');
         window.location.reload();
@@ -99,20 +96,6 @@ function CreateAttendanceLocation() {
 
   return (
     <Card className="shadow-lg rounded">
-      {/* <Card.Header className="text-center p-3">
-        <Typography
-          variant="h4"
-          sx={{
-            color: '#0a1f83',
-            mb: 2,
-            fontFamily: 'serif',
-            fontWeight: 'bold',
-          }}
-        >
-          Create Attendance Location
-        </Typography>
-      </Card.Header> */}
-
       <Card.Header className="p-3 d-flex align-items-center position-relative">
         <Tooltip title="Back" arrow placement="top">
           <Button className="position-absolute start-2">

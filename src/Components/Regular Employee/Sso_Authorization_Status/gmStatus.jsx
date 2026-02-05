@@ -34,7 +34,7 @@ function GmAuthorizationStatus() {
     const fetchDetails = async () => {
       try {
         const response = await getSsoSatusByGm(sessionEmp);
-        console.log(response);
+        // console.log(response);
         if (response.data.code === '200') {
           setRecords(response.data.list);
         } else {
@@ -83,16 +83,6 @@ function GmAuthorizationStatus() {
 
   // On update click
   const updateGmStatus = async (index, id) => {
-    // const selectedValue = actionValues[index];
-
-    // //  Validation check
-    // if (!selectedValue) {
-    //   setErrors((prev) => ({ ...prev, [index]: true }));
-    //   const ref = selectRefs.current[index];
-    //   if (ref) ref.focus();
-    //   return;
-    // }
-
     const selectedValue = actionValues[index];
     const remarkValue = remarkValues[index];
 
@@ -279,7 +269,6 @@ function GmAuthorizationStatus() {
                           />
                         </StyledTableCell>
 
-                        {/* Update Button */}
                         <StyledTableCell>
                           <Tooltip title="Update Status" arrow>
                             <Button
@@ -318,7 +307,6 @@ function GmAuthorizationStatus() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

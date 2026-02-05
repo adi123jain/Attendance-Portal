@@ -29,7 +29,6 @@ function Dashboard() {
         }}
       >
         <NominationDeclarationModal />
-        {/* Card 1 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card
             sx={{
@@ -318,7 +317,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Card 2 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia
@@ -431,7 +429,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Card 3 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia
@@ -519,7 +516,6 @@ function Dashboard() {
           </Card>
         </Grid>
 
-        {/* Card 4 */}
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Card sx={{ maxWidth: 345, mx: 'auto', boxShadow: 3 }}>
             <CardMedia

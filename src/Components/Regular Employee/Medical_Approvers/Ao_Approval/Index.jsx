@@ -148,21 +148,6 @@ function MedicalApprovalByAo() {
     setExpandedRow(expandedRow === index ? null : index);
   };
 
-  // const fetchMedicineDetails = async (refNo) => {
-  //   const response = await getMedicineDetailByRefNo(refNo);
-  //   // console.log(response);
-  //   setMedicineData(response.data.list);
-  // };
-
-  // function downloadDocument(path) {
-  //   if (!path) {
-  //     alert('Data not Found.');
-  //     return;
-  //   }
-  //   const url = `https://attendance.mpcz.in:8888/E-Attendance/api/medical/downloadMRDoc/${path}`;
-  //   window.open(url, '_blank');
-  // }
-
   const [aoStatus, setAoStatus] = useState('');
   const [aoRemark, setAoRemark] = useState('');
   // const [forwardTo, setForwardTo] = useState("");
@@ -176,19 +161,11 @@ function MedicalApprovalByAo() {
   const validate = () => {
     const newErrors = {};
     if (!aoStatus) newErrors.aoStatus = 'Status is required';
-
-    // if (aoStatus === "Rejected" && !forwardTo) {
-    //   newErrors.forwardTo = "Forward To is required when Rejected";
-    // }
-
     if (!aoRemark.trim()) newErrors.aoRemark = 'Remark is required';
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
       if (newErrors.aoStatus && statusRef.current) statusRef.current.focus();
-      // else if (newErrors.forwardTo && forwardToRef.current)
-      //   forwardToRef.current.focus();
       else if (newErrors.aoRemark && remarkRef.current)
         remarkRef.current.focus();
       return false;
@@ -305,8 +282,6 @@ function MedicalApprovalByAo() {
                           <Button
                             variant="contained"
                             color="dark"
-                            //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                            // onClick={() => handlePreview(item)}
                             onClick={() => handlePreview(item.refNo)}
                           >
                             <VisibilityIcon fontSize="small" />
@@ -351,7 +326,6 @@ function MedicalApprovalByAo() {
           },
         }}
       >
-        {/* Header */}
         <DialogTitle
           sx={{
             textAlign: 'center',
@@ -372,7 +346,6 @@ function MedicalApprovalByAo() {
           </Typography>
         </DialogTitle>
 
-        {/* Body */}
         <DialogContent
           dividers
           sx={{
@@ -477,72 +450,6 @@ function MedicalApprovalByAo() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <StyledTableRow>
-                      <StyledTableCell>S.No.</StyledTableCell>
-                      <StyledTableCell>Cash Memo Date</StyledTableCell>
-                      <StyledTableCell>Cash Memo No</StyledTableCell>
-                      <StyledTableCell>Drug Name</StyledTableCell>
-                      <StyledTableCell>Quantity</StyledTableCell>
-                      <StyledTableCell>ShopName</StyledTableCell>
-                      <StyledTableCell>Total Value</StyledTableCell>
-                      <StyledTableCell>Document</StyledTableCell>
-                    </StyledTableRow>
-                  </TableHead>
-                  <TableBody>
-                    {medicineData && medicineData.length > 0 ? (
-                      medicineData.map((item, index) => (
-                        <StyledTableRow key={index}>
-                          <StyledTableCell>{index + 1}</StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoDate || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.cashMemoNo || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.drugName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.quantity || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.shopName || '-'}
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            {item.totalValue || '-'}
-                          </StyledTableCell>
-
-                          <StyledTableCell>
-                            <Tooltip title="Preview" arrow>
-                              <Button
-                                variant="contained"
-                                color="dark"
-                                //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                                onClick={() => downloadDocument(item.memoPath)}
-                              >
-                                <CloudDownloadIcon
-                                  fontSize="small"
-                                  color="success"
-                                />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell>
-                        </StyledTableRow>
-                      ))
-                    ) : (
-                      <StyledTableRow>
-                        <StyledTableCell colSpan={8}>
-                          Data Not Found
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer> */}
-
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
@@ -559,7 +466,6 @@ function MedicalApprovalByAo() {
                     {medicineData && medicineData.length > 0 ? (
                       medicineData.map((item, index) => (
                         <React.Fragment key={index}>
-                          {/* Main Row */}
                           <StyledTableRow>
                             <StyledTableCell>{index + 1}</StyledTableCell>
                             <StyledTableCell>
@@ -588,7 +494,6 @@ function MedicalApprovalByAo() {
                                   onClick={() => handlePreviewMemo(item, index)}
                                   sx={{ minWidth: 40 }}
                                 >
-                                  {/* Toggle icon same, but color changes */}
                                   <VisibilityIcon
                                     fontSize="small"
                                     color={
@@ -602,7 +507,6 @@ function MedicalApprovalByAo() {
                             </StyledTableCell>
                           </StyledTableRow>
 
-                          {/* Sub Table - Expandable */}
                           {expandedRow === index && (
                             <StyledTableRow>
                               <StyledTableCell colSpan={5} sx={{ padding: 1 }}>
@@ -678,7 +582,6 @@ function MedicalApprovalByAo() {
                       <StyledTableCell>S.No.</StyledTableCell>
                       <StyledTableCell>Account Code</StyledTableCell>
                       <StyledTableCell>Account Head</StyledTableCell>
-                      {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                       <StyledTableCell>D or C</StyledTableCell>
                       <StyledTableCell>Amount</StyledTableCell>
                       <StyledTableCell>Bill Reference</StyledTableCell>
@@ -697,9 +600,7 @@ function MedicalApprovalByAo() {
                           <StyledTableCell>
                             {item.accountHead || '-'}
                           </StyledTableCell>
-                          {/* <StyledTableCell>
-                            {item.estimateNo || '-'}
-                          </StyledTableCell> */}
+
                           <StyledTableCell>{item.dOrC || '-'}</StyledTableCell>
                           <StyledTableCell>
                             {item.amountRs || '-'}
@@ -751,7 +652,6 @@ function MedicalApprovalByAo() {
                       <StyledTableCell>S.No.</StyledTableCell>
                       <StyledTableCell>Account Code</StyledTableCell>
                       <StyledTableCell>Account Head</StyledTableCell>
-                      {/* <StyledTableCell>Estimate No.</StyledTableCell> */}
                       <StyledTableCell>D or C</StyledTableCell>
                       <StyledTableCell>Debit Amount</StyledTableCell>
                       <StyledTableCell>Credit Amount</StyledTableCell>
@@ -769,9 +669,7 @@ function MedicalApprovalByAo() {
                           <StyledTableCell>
                             {item.accountHead || '-'}
                           </StyledTableCell>
-                          {/* <StyledTableCell>
-                            {item.estimateNo || '-'}
-                          </StyledTableCell> */}
+
                           <StyledTableCell>{item.dOrC || '-'}</StyledTableCell>
                           <StyledTableCell>
                             {item.debitAmountRs || '-'}
@@ -814,7 +712,6 @@ function MedicalApprovalByAo() {
             </Card.Header>
             <Card.Body>
               <Row>
-                {/* Status Select */}
                 <Col xs={12} md={6} className="mb-2">
                   <Card>
                     <Card.Header>Select Status</Card.Header>
@@ -824,9 +721,6 @@ function MedicalApprovalByAo() {
                         value={aoStatus}
                         onChange={(e) => {
                           setAoStatus(e.target.value);
-                          // if (e.target.value !== "Rejected") {
-                          //   setForwardTo(""); // reset forwardTo when not rejected
-                          // }
                         }}
                         isInvalid={!!errors.aoStatus}
                       >
@@ -843,33 +737,6 @@ function MedicalApprovalByAo() {
                   </Card>
                 </Col>
 
-                {/* Forward To Select */}
-                {/* <Col xs={12} md={3} className="mb-2">
-                  <Card>
-                    <Card.Header>Forward To</Card.Header>
-                    <Card.Body>
-                      <Form.Select
-                        ref={forwardToRef}
-                        value={forwardTo}
-                        onChange={(e) => setForwardTo(e.target.value)}
-                        isInvalid={!!errors.forwardTo}
-                        disabled={aoStatus !== "Rejected"} 
-                      >
-                        <option value="" disabled>
-                          -- select --
-                        </option>
-                        <option value="Employee">Employee</option>
-                        <option value="Manager HR">Manager HR</option>
-                        <option value="CMO">CMO</option>
-                      </Form.Select>
-                      <Form.Control.Feedback type="invalid" className="d-block">
-                        {errors.forwardTo}
-                      </Form.Control.Feedback>
-                    </Card.Body>
-                  </Card>
-                </Col> */}
-
-                {/* Remark Textarea */}
                 <Col xs={12} md={6}>
                   <Card>
                     <Card.Header>Remark</Card.Header>
@@ -895,7 +762,6 @@ function MedicalApprovalByAo() {
           </Card>
         </DialogContent>
 
-        {/* Footer */}
         <DialogActions sx={{ justifyContent: 'center', p: 2 }}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <Button
@@ -917,7 +783,6 @@ function MedicalApprovalByAo() {
         </DialogActions>
       </Dialog>
 
-      {/* Backdrop Loader */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

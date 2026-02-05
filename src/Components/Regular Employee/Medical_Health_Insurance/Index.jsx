@@ -236,7 +236,6 @@ function MedicalHealthInsurance() {
 
         <Card.Body>
           <div className="p-3">
-            {/* Employee Details */}
             <Card className="mb-3 shadow-sm">
               <Card.Header>Employee Details</Card.Header>
               <Card.Body>
@@ -473,7 +472,6 @@ function MedicalHealthInsurance() {
             </Card>
           </div>
 
-          {/* Members */}
           <div className="p-3">
             {formData.members.map((member, idx) => (
               <Card key={idx} className="mb-3 shadow-sm">
@@ -630,7 +628,6 @@ function MedicalHealthInsurance() {
                 fontFamily: "'Merriweather', serif",
               }}
             >
-              {/* Header */}
               <div
                 style={{
                   background: '#e2e2e2',
@@ -651,7 +648,6 @@ function MedicalHealthInsurance() {
                 </Typography>
               </div>
 
-              {/* Content */}
               <CardContent
                 sx={{
                   fontSize: '15px',
@@ -713,7 +709,6 @@ function MedicalHealthInsurance() {
                   कराने की सहमति देता/देती हूँ।
                 </Typography>
 
-                {/* Checkbox */}
                 <div className="form-check mt-4 d-flex align-items-center">
                   <input
                     className="form-check-input"

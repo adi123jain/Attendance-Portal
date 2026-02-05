@@ -39,7 +39,7 @@ function DgmLineStaffStatus() {
     const fetchDetails = async () => {
       try {
         const response = await getLineSatusByDgm(sessionEmp);
-        console.log(response);
+        // console.log(response);
         if (response.data.code === '200') {
           setRecords(response.data.list);
         } else {
@@ -217,7 +217,6 @@ function DgmLineStaffStatus() {
                         </StyledTableCell>
                         <StyledTableCell>{item.dcName || '-'}</StyledTableCell>
 
-                        {/* Action Select */}
                         <StyledTableCell>
                           <FormControl
                             fullWidth
@@ -265,7 +264,6 @@ function DgmLineStaffStatus() {
                           />
                         </StyledTableCell>
 
-                        {/* Update Button */}
                         <StyledTableCell>
                           <Tooltip title="Update Status" arrow>
                             <Button
@@ -304,7 +302,6 @@ function DgmLineStaffStatus() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}

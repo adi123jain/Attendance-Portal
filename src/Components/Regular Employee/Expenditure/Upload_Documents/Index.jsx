@@ -179,7 +179,6 @@ function UploadExpenditureDocuments() {
           </Typography>
         </Card.Header>
         <Card.Body>
-          {/* Card 1 */}
           <Card>
             <Card.Header className="text-center">
               <Typography
@@ -197,7 +196,6 @@ function UploadExpenditureDocuments() {
               </Typography>
             </Card.Header>
             <Card.Body>
-              {/* Row 1 */}
               <Row xs={1} sm={2} md={4} className="g-3">
                 <Col>
                   <Card>
@@ -235,8 +233,6 @@ function UploadExpenditureDocuments() {
                   </Card>
                 </Col>
               </Row>
-
-              {/* Row 2 */}
 
               <Row xs={1} sm={2} md={4} className="g-3 mt-2">
                 <Col>
@@ -375,7 +371,6 @@ function UploadExpenditureDocuments() {
                               {item.amount || '-'}
                             </StyledTableCell>
 
-                            {/* Expense Amount */}
                             <StyledTableCell>
                               <Form.Control
                                 type="number"
@@ -392,7 +387,6 @@ function UploadExpenditureDocuments() {
                               />
                             </StyledTableCell>
 
-                            {/* Upload / Download */}
                             <StyledTableCell>
                               {item.docPath ? (
                                 <Button
@@ -423,7 +417,6 @@ function UploadExpenditureDocuments() {
                               )}
                             </StyledTableCell>
 
-                            {/* Previous Document */}
                             <StyledTableCell>
                               {item.isResubmit && item.prevDocPath ? (
                                 <Button
@@ -443,7 +436,6 @@ function UploadExpenditureDocuments() {
                               )}
                             </StyledTableCell>
 
-                            {/* Previous Amount */}
                             <StyledTableCell>
                               {item.isResubmit ? (
                                 <Form.Control
@@ -455,7 +447,6 @@ function UploadExpenditureDocuments() {
                               )}
                             </StyledTableCell>
 
-                            {/* Submit */}
                             <StyledTableCell>
                               <Button
                                 variant="contained"

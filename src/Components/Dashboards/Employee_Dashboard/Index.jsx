@@ -17,84 +17,6 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 
 function EmployeeDashboard() {
-  // const menuItems = [
-  //   {
-  //     label: 'Apply Attendance Correction',
-  //     path: '/attendanceCorrection',
-  //     icon: <EditCalendarIcon />,
-  //   },
-  //   { label: 'Pay Slip', path: '/paySlip', icon: <ReceiptLongIcon /> },
-  //   {
-  //     label: 'Employee Form-16',
-  //     path: '/employeeForm16',
-  //     icon: <DescriptionIcon />,
-  //   },
-  //   {
-  //     label: 'Informer Scheme',
-  //     path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${sessionStorage.getItem(
-  //       'empCode',
-  //     )}`,
-  //     external: true,
-  //     icon: <SecurityIcon />,
-  //   },
-  //   {
-  //     label: 'Medical Reimbursement',
-  //     path: '/medicalReimbursement',
-  //     icon: <LocalHospitalIcon />,
-  //   },
-  //   {
-  //     label: 'Medical Reimbursement View',
-  //     path: '/medicalReimbursementView',
-  //     icon: <VisibilityIcon />,
-  //   },
-  //   {
-  //     label: 'MP Power Company Cashless Health Scheme',
-  //     path: '/medicalHealthInsurance',
-  //     icon: <HealthAndSafetyIcon />,
-  //   },
-
-  //   {
-  //     label: 'MP Power Company Cashless Health Scheme View',
-  //     path: '/medicalHealthInsuranceView',
-  //     icon: <HealthAndSafetyIcon />,
-  //   },
-  //   {
-  //     label: 'Immovable Property',
-  //     path: '/immovableProperty',
-  //     icon: <HomeWorkIcon />,
-  //   },
-  //   {
-  //     label: 'Immovable Property View',
-  //     path: '/immovablePropertyView',
-  //     icon: <VisibilityIcon />,
-  //   },
-  //   {
-  //     label: 'Medical CMO Approval',
-  //     path: '/medicalApprovalByCmo',
-  //     icon: <VerifiedUserIcon />,
-  //   },
-  //   {
-  //     label: 'Medical AO Approval',
-  //     path: '/medicalApprovalByAo',
-  //     icon: <AssignmentTurnedInIcon />,
-  //   },
-
-  //   {
-  //     label: 'Higher Pay Scale',
-  //     path: '/higherPayScale',
-  //     icon: <AssignmentTurnedInIcon />,
-  //   },
-  // ];
-
-  // const empCode = sessionStorage.getItem('empCode');
-  // const designationId = Number(sessionStorage.getItem('designationId'));
-  // const isManagerHr = sessionStorage.getItem('isManagerHr');
-
-  // const showInformerScheme =
-  //   designationId === 13 || empCode === '12345' || isManagerHr === true;
-  // const showCmoApproval = designationId === 18 || empCode === '12345';
-  // const showAoApproval = designationId === 13 || empCode === '12345';
-
   const [empCode, setEmpCode] = useState(null);
   const [designationId, setDesignationId] = useState(null);
   const [isManagerHr, setIsManagerHr] = useState(false);
@@ -207,8 +129,6 @@ function EmployeeDashboard() {
   const NewsMd =
     designationId === 1 || ['12345', '160046'].includes(String(empCode));
 
-  // const NewsEmployee = designationId === 1 || empCode === '12345';
-
   //  Don’t render until session is ready
   if (!empCode || designationId === null) return null;
   return (
@@ -259,10 +179,6 @@ function EmployeeDashboard() {
           if (item.label === 'Medical AO Approval' && !showAoApproval) {
             return null;
           }
-
-          // if (item.label === 'News Reply' && !NewsEmployee) {
-          //   return null;
-          // }
 
           if (item.label === 'News Entries' && !NewsEntries) {
             return null;

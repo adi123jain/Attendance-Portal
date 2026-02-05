@@ -312,15 +312,8 @@ function MedicalReimbirsement() {
     dataToSend.append('bankIfsc', formData.bankIfsc || '');
     dataToSend.append('bankAccount', formData.bankAccount || '');
 
-    // Debug: check FormData
-    // for (let pair of dataToSend.entries()) {
-    //   const payload = pair[0] + ':' + pair[1];
-    //   console.log(payload);
-    // }
-
     try {
       const response = await submitMedicalReimbursement(dataToSend);
-      // console.log('MR response', response);
       if (response.data.code === '200') {
         alert('Successfully Submitted!!');
         medicineSubmission(response.data.list[0].refNo);
@@ -362,7 +355,7 @@ function MedicalReimbirsement() {
     try {
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -416,16 +409,10 @@ function MedicalReimbirsement() {
                   control={<Radio />}
                   label="OPD Form"
                 />
-                {/* <FormControlLabel
-                  value="IPD"
-                  control={<Radio />}
-                  label="IPD Form"
-                /> */}
               </RadioGroup>
             </FormControl>
           </Box>
 
-          {/* Common Fields */}
           <div className="my-4">
             <Card className="mb-3 shadow-sm">
               <Card.Body>
@@ -470,17 +457,6 @@ function MedicalReimbirsement() {
                       </Card.Body>
                     </Card>
                   </Col>
-
-                  {/* <Col>
-                    <Card className="h-100">
-                      <Card.Header>
-                        Residential Address of Govt. Employee
-                      </Card.Header>
-                      <Card.Body>
-                        <Form.Control disabled value={empAddress} />
-                      </Card.Body>
-                    </Card>
-                  </Col> */}
                 </Row>
 
                 <Row xs={1} md={4} className="g-3 mt-2">

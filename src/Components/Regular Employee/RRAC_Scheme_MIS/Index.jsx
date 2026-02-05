@@ -51,13 +51,13 @@ function RRAC_MIS() {
     }
 
     const requestParam = `${selectedYear}${'-'}${selectedMonth}`;
-    console.log('Request Param:', requestParam);
+    // console.log('Request Param:', requestParam);
 
     setOpenBackdrop(true);
 
     try {
       const response = await getIncentiveMisHostory(requestParam);
-      console.log('API Response:', response);
+      // console.log('API Response:', response);
 
       setHistoryInTable(response?.data?.list || []);
 
@@ -427,15 +427,6 @@ function RRAC_MIS() {
                               {item.usedAmount || '-'}
                             </StyledTableCell>
                             <StyledTableCell>
-                              {/* <Button
-                                variant="contained"
-                                onClick={() => toggleRow(index)}
-                              >
-                                {openRow === index
-                                  ? "Hide Heads"
-                                  : "View Heads"}
-                              </Button> */}
-
                               <Button
                                 variant="contained"
                                 onClick={() => toggleRow(index)}
@@ -456,7 +447,6 @@ function RRAC_MIS() {
                             </StyledTableCell>
                           </StyledTableRow>
 
-                          {/* Collapsible Row */}
                           <StyledTableRow>
                             <StyledTableCell
                               style={{ paddingBottom: 0, paddingTop: 0 }}

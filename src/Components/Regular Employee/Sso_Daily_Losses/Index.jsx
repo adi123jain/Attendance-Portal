@@ -33,7 +33,7 @@ function SsoDailyLosses() {
     const fetchRecords = async () => {
       setOpenBackdrop(true);
       const response = await getDailyLosses(sessionEmp, sessionDcId);
-      console.log(response);
+      // console.log(response);
       if (response.data.code === '200') {
         setRecords(response.data.list);
         setOpenBackdrop(false);
@@ -305,7 +305,6 @@ function SsoDailyLosses() {
         </Card.Body>
       </Card>
 
-      {/* Backdrop */}
       <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={openBackdrop}
