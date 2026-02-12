@@ -241,7 +241,7 @@ function ProNewsMD() {
 
                       <StyledTableCell>
                         <div
-                          onMouseEnter={() =>
+                          onClick={() =>
                             handleOpenRemark('MD Remark', row.mdComment)
                           }
                           style={{
@@ -259,7 +259,7 @@ function ProNewsMD() {
 
                       <StyledTableCell>
                         <div
-                          onMouseEnter={() =>
+                          onClick={() =>
                             handleOpenRemark('Pro Remark', row.proRemark)
                           }
                           style={{
@@ -299,7 +299,7 @@ function ProNewsMD() {
                       </StyledTableCell>
                       <StyledTableCell>
                         <div
-                          onMouseEnter={() =>
+                          onClick={() =>
                             handleOpenRemark('Employee Remark', row.empRemark)
                           }
                           style={{

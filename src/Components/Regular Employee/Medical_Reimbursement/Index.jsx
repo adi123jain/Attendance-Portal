@@ -151,6 +151,26 @@ function MedicalReimbirsement() {
     }
   };
 
+  // const handleChange = (e) => {
+  //   const { name, value, files, type } = e.target;
+
+  //   // Limit totalAmountClaimed to max 20,000
+  //   if (name === 'totalAmountClaimed') {
+  //     const amount = Number(value);
+
+  //     // Prevent typing above 20000
+  //     if (amount > 20000) {
+  //       alert('Maximum claim allowed is ₹20,000.');
+  //       return;
+  //     }
+  //   }
+
+  //   setFormData({
+  //     ...formData,
+  //     [name]: type === 'file' ? files[0] : value,
+  //   });
+  // };
+
   const handleChange = (e) => {
     const { name, value, files, type } = e.target;
 
@@ -158,10 +178,24 @@ function MedicalReimbirsement() {
     if (name === 'totalAmountClaimed') {
       const amount = Number(value);
 
-      // Prevent typing above 20000
       if (amount > 20000) {
         alert('Maximum claim allowed is ₹20,000.');
         return;
+      }
+    }
+
+    // File size validation (Max 5MB)
+    if (type === 'file') {
+      const file = files[0];
+
+      if (file) {
+        const maxSize = 5 * 1024 * 1024;
+
+        if (file.size > maxSize) {
+          alert('File size must be less than 5MB.');
+          e.target.value = null;
+          return;
+        }
       }
     }
 
@@ -355,7 +389,7 @@ function MedicalReimbirsement() {
     try {
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response.data.message);
       }

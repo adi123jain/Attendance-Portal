@@ -3,6 +3,9 @@ import Card from 'react-bootstrap/Card';
 import { Link } from 'react-router-dom';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { useNavigate } from 'react-router-dom';
+// import RealEstateAgentIcon from '@mui/icons-material/RealEstateAgent';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+
 import {
   getEmployeeByEmpCode,
   getEmployeeByLevel,
@@ -299,6 +302,7 @@ function EmployeeInformation() {
                     <StyledTableCell>Edit Info</StyledTableCell>
                     <StyledTableCell>Place of Posting</StyledTableCell>
                     <StyledTableCell>Additional Charges</StyledTableCell>
+                    <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -404,6 +408,30 @@ function EmployeeInformation() {
                               </Button>
                             </Tooltip>
                           </StyledTableCell>
+
+                          <StyledTableCell>
+                            <Tooltip
+                              title="Immovable Property"
+                              arrow
+                              placement="top"
+                            >
+                              <Button
+                                variant="contained"
+                                size="small"
+                                color="dark"
+                                onClick={() =>
+                                  navigate('/immovablePropertyHr', {
+                                    state: {
+                                      empCode: item.empCode,
+                                      fullName: item.fullName,
+                                    },
+                                  })
+                                }
+                              >
+                                <LocationCityIcon color="success" />
+                              </Button>
+                            </Tooltip>
+                          </StyledTableCell>
                         </StyledTableRow>
                       ))
                   ) : (
@@ -453,6 +481,7 @@ function EmployeeInformation() {
                     <StyledTableCell>Edit Info</StyledTableCell>
                     <StyledTableCell>Place of Posting</StyledTableCell>
                     <StyledTableCell>Additional Charges</StyledTableCell>
+                    <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -538,6 +567,30 @@ function EmployeeInformation() {
                             }
                           >
                             <AddToPhotosIcon color="success" />
+                          </Button>
+                        </Tooltip>
+                      </StyledTableCell>
+
+                      <StyledTableCell>
+                        <Tooltip
+                          title="Immovable Property"
+                          arrow
+                          placement="top"
+                        >
+                          <Button
+                            variant="contained"
+                            size="small"
+                            color="dark"
+                            onClick={() =>
+                              navigate('/immovablePropertyHr', {
+                                state: {
+                                  empCode: dataInEmpTable.empCode,
+                                  fullName: dataInEmpTable.fullName,
+                                },
+                              })
+                            }
+                          >
+                            <LocationCityIcon color="success" />
                           </Button>
                         </Tooltip>
                       </StyledTableCell>

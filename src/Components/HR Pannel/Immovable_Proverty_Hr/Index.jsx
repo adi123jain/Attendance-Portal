@@ -29,6 +29,7 @@ import {
   StyledTableRow,
   StyledTableCell,
 } from '../../../Constants/TableStyles/Index';
+import { useLocation } from 'react-router-dom';
 
 const years = [2025, 2026, 2027, 2028];
 
@@ -67,7 +68,7 @@ const fieldCard = (label, value, index) => (
   </Grid>
 );
 
-function ImmovablePropertyView() {
+function ImmovablePropertyHr() {
   const [immovableData, setImmovableData] = useState([]);
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -75,8 +76,28 @@ function ImmovablePropertyView() {
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [open, setOpen] = useState(false);
 
-  const empCode = sessionStorage.getItem('empCode');
-  const fullName = sessionStorage.getItem('fullName');
+  const location = useLocation();
+  const { empCode, fullName } = location.state || {};
+
+  //   const viewImmovable = async () => {
+  //     try {
+  //       setOpenBackdrop(true);
+  //       const response = await viewImmProperty(selectedYear);
+  //       // console.log(response);
+  //       if (response?.data.code == '200') {
+  //         setImmovableData(response.data.list);
+  //         setOpenBackdrop(false);
+  //       } else {
+  //         setImmovableData([]);
+  //         setOpenBackdrop(false);
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       setImmovableData([]);
+  //       setOpenBackdrop(false);
+  //     }
+  //   };
+
   const [apiCalled, setApiCalled] = useState(false);
 
   const viewImmovable = async () => {
@@ -101,26 +122,6 @@ function ImmovablePropertyView() {
       setOpenBackdrop(false);
     }
   };
-
-  // const viewImmovable = async () => {
-  //   try {
-  //     setOpenBackdrop(true);
-  //     const response = await viewImmProperty(selectedYear);
-  //     // console.log(response);
-  //     if (response?.data.code == '200') {
-  //       setImmovableData(response.data.list);
-  //       setOpenBackdrop(false);
-  //     } else {
-  //       setImmovableData([]);
-  //       setOpenBackdrop(false);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setImmovableData([]);
-  //     setOpenBackdrop(false);
-  //   }
-  // };
-
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handlePreview = (row) => {
@@ -147,7 +148,7 @@ function ImmovablePropertyView() {
             variant="h4"
             sx={{ fontFamily: 'serif', fontWeight: 'bold', color: '#0a1f83' }}
           >
-            Immovable Property Record
+            Immovable Property Records
           </Typography>
         </Card.Header>
 
@@ -492,4 +493,4 @@ function ImmovablePropertyView() {
   );
 }
 
-export default ImmovablePropertyView;
+export default ImmovablePropertyHr;

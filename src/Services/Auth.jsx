@@ -1,7 +1,7 @@
 import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
-// const base_url = 'http://172.16.17.79:8084/e-Attendance/api';
+// const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
 
@@ -612,10 +612,9 @@ export const submitImmovableProperty = (payload) => {
 };
 
 // 97. Immovable Property View
-export const viewImmProperty = (year) => {
+export const viewImmProperty = (empCode, year) => {
   return axios.get(
-    base_url +
-      `/employee/getPropertyReturn?empCode=${sessionEmpCode}&year=${year}`,
+    base_url + `/employee/getPropertyReturn?empCode=${empCode}&year=${year}`,
   );
 };
 

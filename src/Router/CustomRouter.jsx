@@ -86,6 +86,7 @@ import MainDashboard from '../Components/Dashboards/Main_Dashboard';
 import ProNews from '../Components/Regular Employee/Pro_News/Index';
 import ProNewsEmployee from '../Components/Regular Employee/Pro_News_Employee/Index';
 import ProNewsMD from '../Components/Regular Employee/Pro_News_MD/Index';
+import ImmovablePropertyHr from '../Components/HR Pannel/Immovable_Proverty_Hr/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -302,6 +303,11 @@ function CustomRouter() {
             <Route
               path="updateWiremanCertificate"
               element={<UpdateWiremanCertificateStatus />}
+            />
+
+            <Route
+              path="immovablePropertyHr"
+              element={<ImmovablePropertyHr />}
             />
 
             {/* Report Section */}

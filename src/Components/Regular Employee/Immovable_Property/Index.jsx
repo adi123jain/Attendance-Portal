@@ -86,7 +86,7 @@ const ImmovableProperty = () => {
     shopArea: '',
     shopValue: '',
     ownershipStatus: '',
-    employeeRelation: '',
+    // employeeRelation: '',
     acquisitionSource: '',
     acquisitionDate: '',
     acquisitionPerson: '',
@@ -100,10 +100,22 @@ const ImmovableProperty = () => {
   const currentYear = new Date().getFullYear() - 1;
 
   // Handle field change
+  // const handleChange = (index, field, value) => {
+  //   const updated = [...forms];
+  //   updated[index][field] = value;
+  //   setForms(updated);
+  // };
+
   const handleChange = (index, field, value) => {
     const updated = [...forms];
     updated[index][field] = value;
     setForms(updated);
+
+    if (errors[index]?.[field]) {
+      const newErrors = [...errors];
+      delete newErrors[index][field];
+      setErrors(newErrors);
+    }
   };
 
   // Add new form
@@ -143,7 +155,8 @@ const ImmovableProperty = () => {
       shopPresentValue: parseFloat(form.shopValue) || null,
 
       ownershipStatus: form.ownershipStatus,
-      relationWithBoard: form.employeeRelation,
+      // relationWithBoard: form.employeeRelation,
+      relationWithBoard: '',
       acquisitionMode: form.acquisitionSource,
       acquisitionDate: form.acquisitionDate,
       fromWhomAcquired: form.acquisitionPerson,
@@ -151,7 +164,8 @@ const ImmovableProperty = () => {
       privateBusinessDetails: form.businessDetails,
       remarks: form.remark,
       createdBy: sessionStorage.getItem('empCode'),
-      year: new Date().getFullYear(),
+      // year: new Date().getFullYear(),
+      year: currentYear,
     }));
 
     // console.log('Payload to send:', payload);
@@ -179,12 +193,6 @@ const ImmovableProperty = () => {
 
   // Send OTP API
   const sendOtp = async () => {
-    // if (selected.length === 0) {
-    //   alert('Please select at least one record!');
-    //   return;
-    // }
-
-    // if (!validate()) return;
     const payload = {
       username: sessionStorage.getItem('empCode'),
       source: 'OTP for approval of IMMOVABLE PROPERTY RETURN',
@@ -265,6 +273,39 @@ const ImmovableProperty = () => {
     setOtpError('');
     setResendTimer(0);
   };
+
+  const [errors, setErrors] = useState([]);
+  const validateForms = () => {
+    let isValid = true;
+    const newErrors = [];
+
+    forms.forEach((form, index) => {
+      const formErrors = {};
+
+      Object.keys(emptyForm).forEach((field) => {
+        if (!form[field] || form[field].toString().trim() === '') {
+          formErrors[field] = '*This field is required';
+          isValid = false;
+        }
+      });
+
+      newErrors[index] = formErrors;
+    });
+
+    setErrors(newErrors);
+
+    if (!isValid) {
+      setTimeout(() => {
+        const firstErrorField = document.querySelector('.is-invalid');
+        if (firstErrorField) {
+          firstErrorField.focus();
+        }
+      }, 0);
+    }
+
+    return isValid;
+  };
+
   return (
     <>
       <Card className="shadow-lg rounded mt-4">
@@ -305,7 +346,7 @@ const ImmovableProperty = () => {
                   <Row className="mb-4">
                     <Col>
                       <Card className="mb-2">
-                        <Card.Header>Circle</Card.Header>
+                        <Card.Header>Office/Region/Circle</Card.Header>
                         <Card.Body>
                           <Form.Control disabled value={cirName} />
                         </Card.Body>
@@ -320,14 +361,14 @@ const ImmovableProperty = () => {
                         </Card.Body>
                       </Card>
                     </Col>
-                    <Col>
+                    {/* <Col>
                       <Card className="mb-2">
                         <Card.Header>Year</Card.Header>
                         <Card.Body>
                           <Form.Control disabled value={currentYear} />
                         </Card.Body>
                       </Card>
-                    </Col>
+                    </Col> */}
 
                     <Col>
                       <Card className="mb-2">
@@ -353,6 +394,35 @@ const ImmovableProperty = () => {
                         </Card.Body>
                       </Card>
                     </Col>
+
+                    <Col>
+                      <Card className="mb-2">
+                        <Card.Header>GPF/PRAN/EPF Number</Card.Header>
+                        <Card.Body>
+                          {/* <Form.Control
+                            type="number"
+                            placeholder="Enter Number"
+                            value={form.gpfNumber}
+                            onChange={(e) =>
+                              handleChange(index, 'gpfNumber', e.target.value)
+                            }
+                          /> */}
+
+                          <Form.Control
+                            type="text"
+                            placeholder="Enter Number"
+                            value={form.gpfNumber}
+                            onChange={(e) =>
+                              handleChange(index, 'gpfNumber', e.target.value)
+                            }
+                            isInvalid={!!errors[index]?.gpfNumber}
+                          />
+                          <Form.Control.Feedback type="invalid">
+                            {errors[index]?.gpfNumber}
+                          </Form.Control.Feedback>
+                        </Card.Body>
+                      </Card>
+                    </Col>
                   </Row>
 
                   {/* ================= Location ================= */}
@@ -362,7 +432,7 @@ const ImmovableProperty = () => {
                     </Card.Header>
                     <Card.Body>
                       <Row>
-                        <Col md={3}>
+                        {/* <Col md={3}>
                           <Card className="mb-2">
                             <Card.Header>GPF/PRAN/EPF Number</Card.Header>
                             <Card.Body>
@@ -380,11 +450,24 @@ const ImmovableProperty = () => {
                               />
                             </Card.Body>
                           </Card>
-                        </Col>
-                        <Col md={3}>
+                        </Col> */}
+                        <Col md={4}>
                           <Card className="mb-2">
                             <Card.Header>Name of District</Card.Header>
                             <Card.Body>
+                              {/* <Form.Control
+                                type="text"
+                                placeholder="Enter Name"
+                                value={form.district}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'district',
+                                    e.target.value,
+                                  )
+                                }
+                              /> */}
+
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Name"
@@ -396,14 +479,31 @@ const ImmovableProperty = () => {
                                     e.target.value,
                                   )
                                 }
+                                isInvalid={!!errors[index]?.district}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.district}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
-                        <Col md={3}>
+                        <Col md={4}>
                           <Card className="mb-2">
-                            <Card.Header>Sub District</Card.Header>
+                            <Card.Header>Tehsil / Sub-Division </Card.Header>
                             <Card.Body>
+                              {/* <Form.Control
+                                type="text"
+                                placeholder="Enter Name"
+                                value={form.subDistrict}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'subDistrict',
+                                    e.target.value,
+                                  )
+                                }
+                              /> */}
+
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Name"
@@ -415,14 +515,27 @@ const ImmovableProperty = () => {
                                     e.target.value,
                                   )
                                 }
+                                isInvalid={!!errors[index]?.subDistrict}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.subDistrict}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
-                        <Col md={3}>
+                        <Col md={4}>
                           <Card className="mb-2">
                             <Card.Header>Taluka & Village</Card.Header>
                             <Card.Body>
+                              {/* <Form.Control
+                                type="text"
+                                placeholder="Enter Name"
+                                value={form.village}
+                                onChange={(e) =>
+                                  handleChange(index, 'village', e.target.value)
+                                }
+                              /> */}
+
                               <Form.Control
                                 type="text"
                                 placeholder="Enter Name"
@@ -430,7 +543,11 @@ const ImmovableProperty = () => {
                                 onChange={(e) =>
                                   handleChange(index, 'village', e.target.value)
                                 }
+                                isInvalid={!!errors[index]?.village}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.village}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
@@ -448,8 +565,23 @@ const ImmovableProperty = () => {
                           <Row>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Residential Location</Card.Header>
+                                <Card.Header>
+                                  Residential Land-Location
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={form.residentialLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Name"
@@ -461,16 +593,35 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={
+                                      !!errors[index]?.residentialLocationNo
+                                    }
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.residentialLocationNo}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
                                 <Card.Header>
-                                  Residential Area (sq. ft.)
+                                  Residential Land-Size Area (sq. ft.)
                                 </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.residentialArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Area"
@@ -482,16 +633,33 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.residentialArea}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.residentialArea}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
                                 <Card.Header>
-                                  Residential Present Value
+                                  Residential Land-Present Value
                                 </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.residentialValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'residentialValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Value"
@@ -503,7 +671,13 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={
+                                      !!errors[index]?.residentialValue
+                                    }
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.residentialValue}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
@@ -511,9 +685,11 @@ const ImmovableProperty = () => {
                           <Row>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Agriculture Location</Card.Header>
+                                <Card.Header>
+                                  Agriculture Land-Location
+                                </Card.Header>
                                 <Card.Body>
-                                  <Form.Control
+                                  {/* <Form.Control
                                     type="text"
                                     placeholder="Enter Name"
                                     value={form.agricultureLocationNo}
@@ -524,16 +700,48 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                  /> */}
+
+                                  <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.agricultureLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                    isInvalid={
+                                      !!errors[index]?.agricultureLocationNo
+                                    }
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.agricultureLocationNo}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
                                 <Card.Header>
-                                  Agriculture Area (sq. ft.)
+                                  Agriculture Land-Size Area (sq. ft.)
                                 </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.agricultureArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Area"
@@ -545,14 +753,33 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.agricultureArea}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.agricultureArea}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Agriculture Value</Card.Header>
+                                <Card.Header>
+                                  Agriculture Land-Present Value
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.agricultureValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'agricultureValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Value"
@@ -564,7 +791,13 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={
+                                      !!errors[index]?.agricultureValue
+                                    }
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.agricultureValue}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
@@ -579,8 +812,23 @@ const ImmovableProperty = () => {
                           <Row>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Housing Location</Card.Header>
+                                <Card.Header>
+                                  Housing & Other Building-Location
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Location"
+                                    value={form.housingLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Location"
@@ -592,16 +840,36 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={
+                                      !!errors[index]?.housingLocationNo
+                                    }
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.housingLocationNo}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
                                 <Card.Header>
-                                  Housing Area (sq. ft.)
+                                  Housing & Other Building-Size Buildup Area
+                                  (sq. ft.)
                                 </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.housingArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Area"
@@ -613,14 +881,33 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.housingArea}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.housingArea}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Housing Present Value</Card.Header>
+                                <Card.Header>
+                                  Housing & Other Building-Present Value
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.housingValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'housingValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Value"
@@ -632,7 +919,11 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.housingValue}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.housingValue}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
@@ -641,8 +932,23 @@ const ImmovableProperty = () => {
                           <Row>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Shop Location</Card.Header>
+                                <Card.Header>
+                                  Shop or other Commercial Buildings-Location
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Name"
+                                    value={form.shopLocationNo}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopLocationNo',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Name"
@@ -654,14 +960,34 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.shopLocationNo}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.shopLocationNo}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Shop Area (sq. ft.)</Card.Header>
+                                <Card.Header>
+                                  Shop or other Commercial Buildings-Size
+                                  Buildup Area (sq. ft.)
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Area"
+                                    value={form.shopArea}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopArea',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Area"
@@ -673,14 +999,34 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.shopArea}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.shopArea}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
                             <Col md={4}>
                               <Card className="mb-2">
-                                <Card.Header>Shop Value</Card.Header>
+                                <Card.Header>
+                                  Shop or other Commercial Buildings-Present
+                                  Value
+                                </Card.Header>
                                 <Card.Body>
+                                  {/* <Form.Control
+                                    type="text"
+                                    placeholder="Enter Value"
+                                    value={form.shopValue}
+                                    onChange={(e) =>
+                                      handleChange(
+                                        index,
+                                        'shopValue',
+                                        e.target.value,
+                                      )
+                                    }
+                                  /> */}
+
                                   <Form.Control
                                     type="text"
                                     placeholder="Enter Value"
@@ -692,7 +1038,11 @@ const ImmovableProperty = () => {
                                         e.target.value,
                                       )
                                     }
+                                    isInvalid={!!errors[index]?.shopValue}
                                   />
+                                  <Form.Control.Feedback type="invalid">
+                                    {errors[index]?.shopValue}
+                                  </Form.Control.Feedback>
                                 </Card.Body>
                               </Card>
                             </Col>
@@ -705,18 +1055,18 @@ const ImmovableProperty = () => {
                   <Card className="mt-2">
                     <Card.Header>
                       Whether In Own Name Or In The Name of Spouse Or Family
-                      Member "STATE" Relationship With Board Servant Share of
-                      Board Servant Etc.
+                      Member "STATE" Relationship With Employee Share of
+                      Employee Etc.
                     </Card.Header>
                     <Card.Body>
                       <Row>
-                        <Col md={6}>
+                        <Col>
                           <Card className="mb-2">
-                            <Card.Header>Ownership Status</Card.Header>
+                            <Card.Header>Enter Details</Card.Header>
                             <Card.Body>
-                              <Form.Control
+                              {/* <Form.Control
                                 type="text"
-                                placeholder="Enter Status"
+                                placeholder="Enter Details"
                                 value={form.ownershipStatus}
                                 onChange={(e) =>
                                   handleChange(
@@ -725,11 +1075,28 @@ const ImmovableProperty = () => {
                                     e.target.value,
                                   )
                                 }
+                              /> */}
+
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Details"
+                                value={form.ownershipStatus}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'ownershipStatus',
+                                    e.target.value,
+                                  )
+                                }
+                                isInvalid={!!errors[index]?.ownershipStatus}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.ownershipStatus}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
-                        <Col md={6}>
+                        {/* <Col md={6}>
                           <Card className="mb-2">
                             <Card.Header>
                               Relationship with Employee
@@ -749,7 +1116,7 @@ const ImmovableProperty = () => {
                               />
                             </Card.Body>
                           </Card>
-                        </Col>
+                        </Col> */}
                       </Row>
                     </Card.Body>
                   </Card>
@@ -766,7 +1133,7 @@ const ImmovableProperty = () => {
                           <Card className="mb-2">
                             <Card.Header>Acquisition Mode & Source</Card.Header>
                             <Card.Body>
-                              <Form.Control
+                              {/* <Form.Control
                                 as="textarea"
                                 placeholder="Enter Source"
                                 rows={1}
@@ -778,7 +1145,24 @@ const ImmovableProperty = () => {
                                     e.target.value,
                                   )
                                 }
+                              /> */}
+
+                              <Form.Control
+                                type="text"
+                                placeholder="Enter Source"
+                                value={form.acquisitionSource}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'acquisitionSource',
+                                    e.target.value,
+                                  )
+                                }
+                                isInvalid={!!errors[index]?.acquisitionSource}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.acquisitionSource}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
@@ -797,6 +1181,22 @@ const ImmovableProperty = () => {
                                   )
                                 }
                               />
+
+                              {/* <Form.Control
+                                type="date"
+                                value={form.acquisitionDate}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'acquisitionDate',
+                                    e.target.value,
+                                  )
+                                }
+                                isInvalid={!!errors[index]?.acquisitionDate}
+                              />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.acquisitionDate}
+                              </Form.Control.Feedback> */}
                             </Card.Body>
                           </Card>
                         </Col>
@@ -804,7 +1204,7 @@ const ImmovableProperty = () => {
                           <Card className="mb-2">
                             <Card.Header>Person From Whom Acquired</Card.Header>
                             <Card.Body>
-                              <Form.Control
+                              {/* <Form.Control
                                 as="textarea"
                                 placeholder="Enter"
                                 rows={1}
@@ -816,7 +1216,25 @@ const ImmovableProperty = () => {
                                     e.target.value,
                                   )
                                 }
+                              /> */}
+
+                              <Form.Control
+                                as="textarea"
+                                placeholder="Enter..."
+                                rows={1}
+                                value={form.acquisitionPerson}
+                                onChange={(e) =>
+                                  handleChange(
+                                    index,
+                                    'acquisitionPerson',
+                                    e.target.value,
+                                  )
+                                }
+                                isInvalid={!!errors[index]?.acquisitionPerson}
                               />
+                              <Form.Control.Feedback type="invalid">
+                                {errors[index]?.acquisitionPerson}
+                              </Form.Control.Feedback>
                             </Card.Body>
                           </Card>
                         </Col>
@@ -829,6 +1247,19 @@ const ImmovableProperty = () => {
                       <Card className="mb-2">
                         <Card.Header>Annual Income From Property</Card.Header>
                         <Card.Body>
+                          {/* <Form.Control
+                            type="number"
+                            placeholder="Enter Annual Income"
+                            value={form.annualIncome}
+                            onChange={(e) =>
+                              handleChange(
+                                index,
+                                'annualIncome',
+                                e.target.value,
+                              )
+                            }
+                          /> */}
+
                           <Form.Control
                             type="number"
                             placeholder="Enter Annual Income"
@@ -840,19 +1271,36 @@ const ImmovableProperty = () => {
                                 e.target.value,
                               )
                             }
+                            isInvalid={!!errors[index]?.annualIncome}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors[index]?.annualIncome}
+                          </Form.Control.Feedback>
                         </Card.Body>
                       </Card>
                     </Col>
                     <Col md={8}>
                       <Card className="mb-2">
                         <Card.Header>
-                          Details Of Private Business Related With Board's
-                          Cuitivators By The Spouse Family Member Alongwith the
-                          Annual Income There From Also Indicate The Details of
-                          Business.
+                          Details Of Private Business Related With Employee's By
+                          The Spouse/Family Member Alongwith the Annual Income
+                          There From Also Indicate The Details of Business.
                         </Card.Header>
                         <Card.Body>
+                          {/* <Form.Control
+                            as="textarea"
+                            placeholder="Enter Details"
+                            rows={1}
+                            value={form.businessDetails}
+                            onChange={(e) =>
+                              handleChange(
+                                index,
+                                'businessDetails',
+                                e.target.value,
+                              )
+                            }
+                          /> */}
+
                           <Form.Control
                             as="textarea"
                             placeholder="Enter Details"
@@ -865,7 +1313,11 @@ const ImmovableProperty = () => {
                                 e.target.value,
                               )
                             }
+                            isInvalid={!!errors[index]?.businessDetails}
                           />
+                          <Form.Control.Feedback type="invalid">
+                            {errors[index]?.businessDetails}
+                          </Form.Control.Feedback>
                         </Card.Body>
                       </Card>
                     </Col>
@@ -874,6 +1326,16 @@ const ImmovableProperty = () => {
                   <Card className="mb-2">
                     <Card.Header>Remark</Card.Header>
                     <Card.Body>
+                      {/* <Form.Control
+                        as="textarea"
+                        placeholder="Enter Remark"
+                        rows={3}
+                        value={form.remark}
+                        onChange={(e) =>
+                          handleChange(index, 'remark', e.target.value)
+                        }
+                      /> */}
+
                       <Form.Control
                         as="textarea"
                         placeholder="Enter Remark"
@@ -882,7 +1344,11 @@ const ImmovableProperty = () => {
                         onChange={(e) =>
                           handleChange(index, 'remark', e.target.value)
                         }
+                        isInvalid={!!errors[index]?.remark}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {errors[index]?.remark}
+                      </Form.Control.Feedback>
                     </Card.Body>
                   </Card>
                 </Card.Body>
@@ -925,10 +1391,21 @@ const ImmovableProperty = () => {
             Close
           </Button>
           &nbsp;
-          <Button
+          {/* <Button
             variant="contained"
             className="green-button"
             onClick={sendOtp}
+          >
+            Submit
+          </Button> */}
+          <Button
+            variant="contained"
+            className="green-button"
+            onClick={() => {
+              if (validateForms()) {
+                sendOtp();
+              }
+            }}
           >
             Submit
           </Button>

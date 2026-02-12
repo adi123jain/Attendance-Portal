@@ -21,6 +21,10 @@ import {
   TableHead,
   TableBody,
   Tooltip,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+  Radio,
 } from '@mui/material';
 
 import { Modal, Fade, Box } from '@mui/material';
@@ -234,7 +238,7 @@ function ProNews() {
 
       if (response?.data?.code === '200') {
         alert('Successfully Submitted !!');
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response?.data?.message);
       }
@@ -295,6 +299,14 @@ function ProNews() {
     clearTimeout(hoverTimer.current);
     setOpenRemarkModal(false);
   };
+
+  const [filterStatus, setFilterStatus] = useState('all');
+  const filteredList = employeeList.filter((row) => {
+    if (filterStatus === 'all') return true;
+    if (filterStatus === 'true') return row.isSubmitted === true;
+    if (filterStatus === 'false') return row.isSubmitted === false;
+    return true;
+  });
 
   return (
     <>
@@ -546,6 +558,28 @@ function ProNews() {
           >
             Assigned Records
           </Typography>
+
+          <div style={{ marginBottom: '15px' }}>
+            <FormControl>
+              <RadioGroup
+                row
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+              >
+                <FormControlLabel value="all" control={<Radio />} label="All" />
+                <FormControlLabel
+                  value="true"
+                  control={<Radio />}
+                  label="Submitted"
+                />
+                <FormControlLabel
+                  value="false"
+                  control={<Radio />}
+                  label="Pendings"
+                />
+              </RadioGroup>
+            </FormControl>
+          </div>
         </Card.Header>
 
         <Card.Body>
@@ -567,7 +601,7 @@ function ProNews() {
                 </StyledTableRow>
               </TableHead>
 
-              <TableBody>
+              {/* <TableBody>
                 {employeeList.map((row, index) => (
                   <StyledTableRow key={row.id}>
                     <StyledTableCell>{index + 1}</StyledTableCell>
@@ -586,7 +620,7 @@ function ProNews() {
 
                     <StyledTableCell>
                       <div
-                        onMouseEnter={() =>
+                        onClick={() =>
                           handleOpenRemark('MD Remark', row.mdComment)
                         }
                         style={{
@@ -604,7 +638,7 @@ function ProNews() {
 
                     <StyledTableCell>
                       <div
-                        onMouseEnter={() =>
+                        onClick={() =>
                           handleOpenRemark('Assigned Remark', row.proRemark)
                         }
                         style={{
@@ -637,7 +671,116 @@ function ProNews() {
                     </StyledTableCell>
                     <StyledTableCell>
                       <div
-                        onMouseEnter={() =>
+                        onClick={() =>
+                          handleOpenRemark('Employee Remark', row.empRemark)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {shortText(row.empRemark)}
+                      </div>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      {row.empDoc ? (
+                        <Tooltip
+                          title="Download Emp Document"
+                          arrow
+                          placement="top"
+                        >
+                          <Button
+                            onClick={() => downloadDocument(row.empDoc)}
+                            variant="contained"
+                            color="dark"
+                          >
+                            <CloudDownloadIcon color="success" />
+                          </Button>
+                        </Tooltip>
+                      ) : (
+                        'Not Found'
+                      )}
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody> */}
+
+              <TableBody>
+                {filteredList.map((row, index) => (
+                  <StyledTableRow key={row.id}>
+                    <StyledTableCell>{index + 1}</StyledTableCell>
+                    <StyledTableCell>
+                      {row.empCode || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.empName || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.employeeDetail.postingLocation || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      {row.dateOfNews || 'Not Found'}
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      <div
+                        onClick={() =>
+                          handleOpenRemark('MD Remark', row.mdComment)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {shortText(row.mdComment)}
+                      </div>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      <div
+                        onClick={() =>
+                          handleOpenRemark('Assigned Remark', row.proRemark)
+                        }
+                        style={{
+                          maxWidth: 220,
+                          cursor: 'default',
+                          color: '#333',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                        }}
+                      >
+                        {shortText(row.proRemark)}
+                      </div>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      <Tooltip title="Download" arrow placement="top">
+                        <Button
+                          onClick={() => downloadDocument(row.doc)}
+                          variant="contained"
+                          color="dark"
+                        >
+                          <CloudDownloadIcon color="success" />
+                        </Button>
+                      </Tooltip>
+                    </StyledTableCell>
+
+                    <StyledTableCell>
+                      {row.empUpdatedNo || 'Not Found'}
+                    </StyledTableCell>
+                    <StyledTableCell>
+                      <div
+                        onClick={() =>
                           handleOpenRemark('Employee Remark', row.empRemark)
                         }
                         style={{
