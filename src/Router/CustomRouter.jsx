@@ -87,6 +87,7 @@ import ProNews from '../Components/Regular Employee/Pro_News/Index';
 import ProNewsEmployee from '../Components/Regular Employee/Pro_News_Employee/Index';
 import ProNewsMD from '../Components/Regular Employee/Pro_News_MD/Index';
 import ImmovablePropertyHr from '../Components/HR Pannel/Immovable_Proverty_Hr/Index';
+import ImmovablePropertyInformation from '../Components/HR Pannel/Immovable_Property_Info/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -229,6 +230,10 @@ function CustomRouter() {
             />
 
             <Route path="immovableProperty" element={<ImmovableProperty />} />
+            <Route
+              path="immovablePropertyInfo"
+              element={<ImmovablePropertyInformation />}
+            />
             <Route
               path="immovablePropertyView"
               element={<ImmovablePropertyView />}

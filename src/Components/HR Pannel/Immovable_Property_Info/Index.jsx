@@ -34,7 +34,7 @@ import {
 import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
 import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
-function EmployeeInformation() {
+function ImmovablePropertyInformation() {
   const regionRef = useRef(null);
   const tableRef = useRef(null);
   const empTableRef = useRef(null);
@@ -162,26 +162,18 @@ function EmployeeInformation() {
   return (
     <>
       <Card className="shadow-lg rounded">
-        <Card.Header className="d-flex align-items-center justify-content-between p-3">
-          <div className="flex-grow-1 text-center">
-            <Typography
-              variant="h4"
-              sx={{
-                color: '#0a1f83',
-                mb: 2,
-                fontFamily: 'serif',
-                fontWeight: 'bold',
-              }}
-            >
-              Employee Information
-            </Typography>
-          </div>
-
-          <Link to="/addNewEmployee" className="text-danger">
-            <Tooltip title="Add New Employee" arrow placement="top">
-              <GroupAddIcon fontSize="large" />
-            </Tooltip>
-          </Link>
+        <Card.Header className="text-center p-3">
+          <Typography
+            variant="h4"
+            sx={{
+              color: '#0a1f83',
+              mb: 2,
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+            }}
+          >
+            Immovable Property Return
+          </Typography>
         </Card.Header>
 
         <Card.Body>
@@ -299,10 +291,10 @@ function EmployeeInformation() {
                     <StyledTableCell>Designation</StyledTableCell>
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
-                    <StyledTableCell>Edit Info</StyledTableCell>
-                    <StyledTableCell>Place of Posting</StyledTableCell>
-                    <StyledTableCell>Additional Charges</StyledTableCell>
-                    {/* <StyledTableCell>Immovable Property</StyledTableCell> */}
+                    {/* <StyledTableCell>Edit Info</StyledTableCell> */}
+                    {/* <StyledTableCell>Place of Posting</StyledTableCell> */}
+                    {/* <StyledTableCell>Additional Charges</StyledTableCell> */}
+                    <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -338,7 +330,7 @@ function EmployeeInformation() {
                           <StyledTableCell>{item.designation}</StyledTableCell>
                           <StyledTableCell>{item.department}</StyledTableCell>
                           <StyledTableCell>{item.empType}</StyledTableCell>
-                          <StyledTableCell>
+                          {/* <StyledTableCell>
                             <Tooltip
                               title="Edit Employee Info"
                               arrow
@@ -361,8 +353,8 @@ function EmployeeInformation() {
                                 <EditIcon color="success" />
                               </Button>
                             </Tooltip>
-                          </StyledTableCell>
-                          <StyledTableCell>
+                          </StyledTableCell> */}
+                          {/* <StyledTableCell>
                             <Tooltip
                               title="Place of Posting"
                               arrow
@@ -407,9 +399,9 @@ function EmployeeInformation() {
                                 <AddToPhotosIcon color="success" />
                               </Button>
                             </Tooltip>
-                          </StyledTableCell>
+                          </StyledTableCell> */}
 
-                          {/* <StyledTableCell>
+                          <StyledTableCell>
                             <Tooltip
                               title="Immovable Property"
                               arrow
@@ -431,7 +423,7 @@ function EmployeeInformation() {
                                 <LocationCityIcon color="success" />
                               </Button>
                             </Tooltip>
-                          </StyledTableCell> */}
+                          </StyledTableCell>
                         </StyledTableRow>
                       ))
                   ) : (
@@ -478,10 +470,10 @@ function EmployeeInformation() {
                     <StyledTableCell>Designation</StyledTableCell>
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
-                    <StyledTableCell>Edit Info</StyledTableCell>
+                    {/* <StyledTableCell>Edit Info</StyledTableCell>
                     <StyledTableCell>Place of Posting</StyledTableCell>
-                    <StyledTableCell>Additional Charges</StyledTableCell>
-                    {/* <StyledTableCell>Immovable Property</StyledTableCell> */}
+                    <StyledTableCell>Additional Charges</StyledTableCell> */}
+                    <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
@@ -503,7 +495,7 @@ function EmployeeInformation() {
                       <StyledTableCell>
                         {dataInEmpTable.employementType.name}
                       </StyledTableCell>
-                      <StyledTableCell>
+                      {/* <StyledTableCell>
                         <Tooltip
                           title="Edit Employee Info"
                           arrow
@@ -569,9 +561,9 @@ function EmployeeInformation() {
                             <AddToPhotosIcon color="success" />
                           </Button>
                         </Tooltip>
-                      </StyledTableCell>
+                      </StyledTableCell> */}
 
-                      {/* <StyledTableCell>
+                      <StyledTableCell>
                         <Tooltip
                           title="Immovable Property"
                           arrow
@@ -593,7 +585,7 @@ function EmployeeInformation() {
                             <LocationCityIcon color="success" />
                           </Button>
                         </Tooltip>
-                      </StyledTableCell> */}
+                      </StyledTableCell>
                     </StyledTableRow>
                   ) : (
                     <StyledTableRow>
@@ -620,4 +612,4 @@ function EmployeeInformation() {
   );
 }
 
-export default EmployeeInformation;
+export default ImmovablePropertyInformation;

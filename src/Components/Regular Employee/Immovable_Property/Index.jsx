@@ -313,15 +313,33 @@ const ImmovableProperty = () => {
           <Typography
             variant="h5"
             sx={{
-              mb: 2,
               fontFamily: 'serif',
               fontWeight: 'bold',
               color: '#0a1f83',
             }}
           >
             MADHYA PRADESH MADHYA KSHETRA VIDYUT VITARAN COMPANY LIMITED BHOPAL
-            IMMOVABLE PROPERTY RETURN DETAILS - As on DECEMBER {currentYear}{' '}
-            (Year)
+          </Typography>
+
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
+            }}
+          >
+            IMMOVABLE PROPERTY RETURN DETAILS -
+          </Typography>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: 'serif',
+              fontWeight: 'bold',
+              color: '#0a1f83',
+            }}
+          >
+            As on DECEMBER - {currentYear}
           </Typography>
         </Card.Header>
 
@@ -1062,7 +1080,7 @@ const ImmovableProperty = () => {
                       <Row>
                         <Col>
                           <Card className="mb-2">
-                            <Card.Header>Enter Details</Card.Header>
+                            {/* <Card.Header></Card.Header> */}
                             <Card.Body>
                               {/* <Form.Control
                                 type="text"
@@ -1124,14 +1142,17 @@ const ImmovableProperty = () => {
                   <Card className="mt-2">
                     <Card.Header>
                       How Acquired Whether Owned By Purchase Lease Or Mortgage
-                      Or Gift Parental Or Other Wise With the Date of Acqusition
+                      Or Gift Parental Or Otherwise With the Date of Acqusition
                       & Name With Details Of Person From Whom Acquired
                     </Card.Header>
                     <Card.Body>
                       <Row>
                         <Col md={4}>
                           <Card className="mb-2">
-                            <Card.Header>Acquisition Mode & Source</Card.Header>
+                            <Card.Header>
+                              Acquisition (Whether Owned By Purchase Lease Or
+                              Mortgage Or Gift Parental Or Otherwise)
+                            </Card.Header>
                             <Card.Body>
                               {/* <Form.Control
                                 as="textarea"
@@ -1149,7 +1170,7 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
-                                placeholder="Enter Source"
+                                placeholder="Enter Details"
                                 value={form.acquisitionSource}
                                 onChange={(e) =>
                                   handleChange(
@@ -1220,7 +1241,7 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 as="textarea"
-                                placeholder="Enter..."
+                                placeholder="Enter Details"
                                 rows={1}
                                 value={form.acquisitionPerson}
                                 onChange={(e) =>
@@ -1282,9 +1303,9 @@ const ImmovableProperty = () => {
                     <Col md={8}>
                       <Card className="mb-2">
                         <Card.Header>
-                          Details Of Private Business Related With Employee's By
-                          The Spouse/Family Member Alongwith the Annual Income
-                          There From Also Indicate The Details of Business.
+                          Details Of Private Business Related With Employee's
+                          Spouse/Family Member Alongwith the Annual Income There
+                          From Also Indicate The Details of Business.
                         </Card.Header>
                         <Card.Body>
                           {/* <Form.Control

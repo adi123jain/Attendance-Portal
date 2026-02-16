@@ -71,6 +71,12 @@ function HumanResourceDashboard() {
           to: '/RRACMIS',
           icon: <AssessmentIcon />,
         },
+
+        // {
+        //   name: 'Immovable Property Information',
+        //   to: '/immovablePropertyInfo',
+        //   icon: <InfoIcon />,
+        // },
       ],
     },
     {

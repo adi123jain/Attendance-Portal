@@ -15,6 +15,8 @@ import HomeWorkIcon from '@mui/icons-material/HomeWork';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AssessmentIcon from '@mui/icons-material/Assessment';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import ReplyAllIcon from '@mui/icons-material/ReplyAll';
 
 function EmployeeDashboard() {
   const [empCode, setEmpCode] = useState(null);
@@ -31,88 +33,88 @@ function EmployeeDashboard() {
     {
       label: 'Apply Attendance Correction',
       path: '/attendanceCorrection',
-      icon: <EditCalendarIcon />,
+      icon: <EditCalendarIcon color="action" />,
     },
     { label: 'Pay Slip', path: '/paySlip', icon: <ReceiptLongIcon /> },
     {
       label: 'Employee Form-16',
       path: '/employeeForm16',
-      icon: <DescriptionIcon />,
+      icon: <DescriptionIcon color="primary" />,
     },
     {
       label: 'Informer Scheme',
       path: `https://webapps.mpcz.in/vigilance/informer_hr_dashboard?empID=${empCode}`,
       external: true,
-      icon: <SecurityIcon />,
+      icon: <SecurityIcon color="secondary" />,
     },
     {
       label: 'Revenue Realization & Commercial Activity (MIS)',
       path: '/RRACMIS',
-      icon: <AssessmentIcon />,
+      icon: <AssessmentIcon color="success" />,
     },
     {
       label: 'Medical Reimbursement',
       path: '/medicalReimbursement',
-      icon: <LocalHospitalIcon />,
+      icon: <LocalHospitalIcon color="info" />,
     },
     {
       label: 'Medical Reimbursement View',
       path: '/medicalReimbursementView',
-      icon: <VisibilityIcon />,
+      icon: <VisibilityIcon color="warning" />,
     },
     {
       label: 'MP Power Company Cashless Health Scheme',
       path: '/medicalHealthInsurance',
-      icon: <HealthAndSafetyIcon />,
+      icon: <HealthAndSafetyIcon color="error" />,
     },
     {
       label: 'MP Power Company Cashless Health Scheme View',
       path: '/medicalHealthInsuranceView',
-      icon: <HealthAndSafetyIcon />,
+      icon: <HealthAndSafetyIcon color="primary" />,
     },
-    {
-      label: 'Immovable Property Return',
-      path: '/immovableProperty',
-      icon: <HomeWorkIcon />,
-    },
-    {
-      label: 'Immovable Property Return View',
-      path: '/immovablePropertyView',
-      icon: <VisibilityIcon />,
-    },
+    // {
+    //   label: 'Immovable Property Return',
+    //   path: '/immovableProperty',
+    //   icon: <HomeWorkIcon color="secondary" />,
+    // },
+    // {
+    //   label: 'Immovable Property Return View',
+    //   path: '/immovablePropertyView',
+    //   icon: <VisibilityIcon color="success" />,
+    // },
     {
       label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',
-      icon: <VerifiedUserIcon />,
+      icon: <VerifiedUserIcon color="action" />,
     },
     {
       label: 'Medical Reimbursement AO Approval',
       path: '/medicalApprovalByAo',
-      icon: <AssignmentTurnedInIcon />,
+      icon: <AssignmentTurnedInIcon color="info" />,
     },
 
     {
       label: 'News Entries',
       path: '/proNews',
-      icon: <HomeWorkIcon />,
+      icon: <LibraryAddIcon color="error" />,
     },
 
     {
       label: 'News Reply',
       path: '/proNewsEmployee',
-      icon: <LocalHospitalIcon />,
+      icon: <ReplyAllIcon color="warning" />,
     },
 
     {
       label: 'News Comment (MD)',
       path: '/proNewsMD',
-      icon: <HealthAndSafetyIcon />,
+      icon: <HealthAndSafetyIcon color="secondary" />,
     },
 
     // {
     //   label: 'Higher Pay Scale',
     //   path: '/higherPayScale',
-    //   icon: <AssignmentTurnedInIcon />,
+    //   icon: <AssignmentTurnedInIcon color='primary' />,
     // },
   ];
 

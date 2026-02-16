@@ -854,7 +854,7 @@ function MedicalReimbirsement() {
                   <Col>
                     <Card>
                       <Card.Header>
-                        Upload Form of Essentiality Certificate
+                        Essentiality Cert/Lab Docs/Supporting Docs
                       </Card.Header>
                       <Card.Body>
                         <Form.Control
@@ -868,7 +868,9 @@ function MedicalReimbirsement() {
 
                   <Col>
                     <Card>
-                      <Card.Header>Essentiality Certificate Date</Card.Header>
+                      <Card.Header>
+                        Essentiality Cert/Lab Docs/Supporting Docs Date
+                      </Card.Header>
                       <Card.Body>
                         <Form.Control
                           type="date"

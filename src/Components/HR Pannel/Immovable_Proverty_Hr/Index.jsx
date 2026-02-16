@@ -398,11 +398,7 @@ function ImmovablePropertyHr() {
               {fieldCard('Acquisition Mode', selectedRow.acquisitionMode, 5)}
               {fieldCard('From Whom Acquired', selectedRow.fromWhomAcquired, 6)}
               {fieldCard('Ownership Status', selectedRow.ownershipStatus, 7)}
-              {/* {fieldCard(
-                'Relation With Board',
-                selectedRow.relationWithBoard,
-                8,
-              )} */}
+
               {fieldCard(
                 'Private Business Details',
                 selectedRow.privateBusinessDetails,
