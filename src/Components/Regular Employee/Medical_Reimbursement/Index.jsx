@@ -73,23 +73,24 @@ function MedicalReimbirsement() {
     certificateDate: '',
     totalAmountClaimed: '',
 
-    hospitalName: '',
-    hospitalAddress: '',
-    registrationNo: '',
-    registrationValidity: '',
-    packageClaimed: '',
+    // hospitalName: '',
+    // hospitalAddress: '',
+    // registrationNo: '',
+    // registrationValidity: '',
+    // packageClaimed: '',
     // emoluments: "",
-    testHospital: '',
-    testOnAdvice: '',
-    accommodationFile: '',
-    diet: '',
-    surgery: '',
-    pathologyHospital: '',
-    pathologyCertificate: '',
-    nursing: '',
+    // testHospital: '',
+    // testOnAdvice: '',
+    // accommodationFile: '',
+    // diet: '',
+    // surgery: '',
+    // pathologyHospital: '',
+    // pathologyCertificate: '',
+    // nursing: '',
     // specialNursing: "",
-    otherCharges: '',
-    enclosures: '',
+    // otherCharges: '',
+    // enclosures: '',
+
     essentialityCertificate: '',
     essentialityCertificateNo: '',
     essentialityCertificateDate: '',
@@ -306,31 +307,49 @@ function MedicalReimbirsement() {
       formData.essentialityCertificateDate || '',
     );
 
+    // hospitalName: '',
+    // hospitalAddress: '',
+    // registrationNo: '',
+    // registrationValidity: '',
+    // packageClaimed: '',
+    // emoluments: "",
+    // testHospital: '',
+    // testOnAdvice: '',
+    // accommodationFile: '',
+    // diet: '',
+    // surgery: '',
+    // pathologyHospital: '',
+    // pathologyCertificate: '',
+    // nursing: '',
+    // specialNursing: "",
+    // otherCharges: '',
+    // enclosures: '',
+
     // Hospital & Doctor Info
-    dataToSend.append('hospitalName', formData.hospitalName || '');
-    dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
-    dataToSend.append('registrationNo', formData.registrationNo || '');
-    dataToSend.append(
-      'registrationValidity',
-      formData.registrationValidity || '',
-    );
+    // dataToSend.append('hospitalName', formData.hospitalName || '');
+    // dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
+    // dataToSend.append('registrationNo', formData.registrationNo || '');
+    // dataToSend.append(
+    //   'registrationValidity',
+    //   formData.registrationValidity || '',
+    // );
 
-    dataToSend.append('packageType', formData.packageClaimed || '');
-    dataToSend.append('testingHosLabName', formData.testHospital || '');
-    dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
+    // dataToSend.append('packageType', formData.packageClaimed || '');
+    // dataToSend.append('testingHosLabName', formData.testHospital || '');
+    // dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
 
-    if (formData.accommodationFile)
-      dataToSend.append('accommodationPdf', formData.accommodationFile);
-    dataToSend.append('dietCost', formData.diet);
-    dataToSend.append('surgicalMedicalCharges', formData.surgery);
-    // dataToSend.append("anyTest", formData.anyTest || "");
-    dataToSend.append('testHosLabName', formData.pathologyHospital || '');
-    if (formData.pathologyCertificate)
-      dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
-    dataToSend.append('nursuingDetail', formData.nursing || '');
-    dataToSend.append('anyOther', formData.otherCharges || '');
-    if (formData.enclosures)
-      dataToSend.append('enclosureDoc', formData.enclosures || '');
+    // if (formData.accommodationFile)
+    //   dataToSend.append('accommodationPdf', formData.accommodationFile);
+    // dataToSend.append('dietCost', formData.diet);
+    // dataToSend.append('surgicalMedicalCharges', formData.surgery);
+    // // dataToSend.append("anyTest", formData.anyTest || "");
+    // dataToSend.append('testHosLabName', formData.pathologyHospital || '');
+    // if (formData.pathologyCertificate)
+    //   dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
+    // dataToSend.append('nursuingDetail', formData.nursing || '');
+    // dataToSend.append('anyOther', formData.otherCharges || '');
+    // if (formData.enclosures)
+    //   dataToSend.append('enclosureDoc', formData.enclosures || '');
 
     dataToSend.append('type', formType);
 
@@ -389,7 +408,7 @@ function MedicalReimbirsement() {
     try {
       const response = await submitMedicineDetails(mediPayload);
       if (response.data.code === '200') {
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -850,11 +869,18 @@ function MedicalReimbirsement() {
                   </Col>
                 </Row>
 
-                <Row xs={1} md={4} className="g-3 mt-2">
+                <Typography variant="body2" className="mt-1" color="error">
+                  Note:- Employees possessing a Prolonged Treatment Certificate
+                  issued as per MPCZ Medical Rules vide Order No. 2044 dated
+                  10/08/2023, and claiming reimbursement of OPD bills exceeding
+                  the financial limit of Rs. 20,000/-, are mandatorily required
+                  to upload the said certificate while submitting the claim.
+                </Typography>
+                <Row xs={1} md={4} className="g-3 mt-1">
                   <Col>
                     <Card>
                       <Card.Header>
-                        Essentiality Cert/Lab Docs/Supporting Docs
+                        Prescription & Investigation Details
                       </Card.Header>
                       <Card.Body>
                         <Form.Control
@@ -869,7 +895,7 @@ function MedicalReimbirsement() {
                   <Col>
                     <Card>
                       <Card.Header>
-                        Essentiality Cert/Lab Docs/Supporting Docs Date
+                        Prescription & Investigation Date
                       </Card.Header>
                       <Card.Body>
                         <Form.Control
@@ -885,6 +911,7 @@ function MedicalReimbirsement() {
                   <Col>
                     <Card>
                       <Card.Header>Upload Prolonged Certificate</Card.Header>
+
                       <Card.Body>
                         <Form.Control
                           type="file"
@@ -897,7 +924,7 @@ function MedicalReimbirsement() {
 
                   <Col>
                     <Card>
-                      <Card.Header>Upload Memo (Bill/Memo File)</Card.Header>
+                      <Card.Header>Upload Cash Memo/ Bill details</Card.Header>
                       <Card.Body>
                         <Form.Control
                           type="file"
@@ -1247,7 +1274,7 @@ function MedicalReimbirsement() {
                   color: '#0a1f83',
                 }}
               >
-                Drug Entries
+                Medicine Details
               </Typography>
             </Card.Header>
             <Card.Body>
@@ -1322,7 +1349,7 @@ function MedicalReimbirsement() {
                         style={{ backgroundColor: '#f8f9fa' }}
                       >
                         <div className="d-flex justify-content-between align-items-center mb-2">
-                          <strong>Drug #{dIdx + 1}</strong>
+                          <strong>Medicine #{dIdx + 1}</strong>
                           {entry.drugs.length > 1 && (
                             <Tooltip title="Remove Drug" arrow placement="top">
                               <Button
@@ -1340,7 +1367,7 @@ function MedicalReimbirsement() {
                         <Row className="g-3">
                           <Col md={4}>
                             <Form.Group>
-                              <Form.Label>Drug Name</Form.Label>
+                              <Form.Label>Medicine Name</Form.Label>
                               <Form.Control
                                 type="text"
                                 name="drugName"

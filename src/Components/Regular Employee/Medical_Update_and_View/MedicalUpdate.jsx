@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, Row, Col, Form } from 'react-bootstrap';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {
   Typography,
   Tooltip,
@@ -16,6 +18,8 @@ import {
   FormControlLabel,
   FormControl,
   Box,
+  TableRow,
+  TableCell,
 } from '@mui/material';
 
 import AddIcon from '@mui/icons-material/Add';
@@ -26,6 +30,7 @@ import {
   currentGradePay,
   deteleDrugDetails,
   getDrugDetails,
+  submitMedicineDetails,
   updateMedicalForm,
 } from '../../../Services/Auth';
 import {
@@ -80,23 +85,7 @@ function MedicalFormUpdate() {
     diseaseDuration: '',
     doctorName: '',
     doctorDesignation: '',
-
     totalAmountClaimed: '',
-    hospitalName: '',
-    hospitalAddress: '',
-    registrationNo: '',
-    registrationValidity: '',
-    packageClaimed: '',
-    testHospital: '',
-    testOnAdvice: '',
-    accommodationFile: '',
-    diet: '',
-    surgery: '',
-    pathologyHospital: '',
-    pathologyCertificate: '',
-    nursing: '',
-    otherCharges: '',
-    enclosures: '',
     essentialityCertificate: '',
     essentialityCertificateNo: '',
     essentialityCertificateDate: '',
@@ -153,22 +142,23 @@ function MedicalFormUpdate() {
         essentialityCertificateDate: preItem.essentialityCertificateDate || '',
         totalAmountClaimed: preItem.totalAmount || '',
         placeOfIllness: preItem.placeOfIllness || '',
-        hospitalName: preItem.hospitalName || '',
-        hospitalAddress: preItem.hospitalAddress || '',
-        registrationNo: preItem.registrationNo || '',
-        registrationValidity: preItem.registrationValidity || '',
-        packageClaimed: preItem.packageType || '',
-        testHospital: preItem.testingHosLabName || '',
-        testOnAdvice: preItem.test1AuthorizedByDoctor || '',
-        accommodationFile: '', //  File
-        diet: preItem.dietCost || '',
-        surgery: preItem.surgicalMedicalCharges || '',
-        pathologyHospital: preItem.testHosLabName || '',
-        pathologyCertificate: '', // File
-        nursing: preItem.nursuingDetail || '',
-        otherCharges: preItem.anyOther || '',
-        enclosures: '', // File
         prolongedTreatment: '', // File
+
+        // hospitalName: preItem.hospitalName || '',
+        // hospitalAddress: preItem.hospitalAddress || '',
+        // registrationNo: preItem.registrationNo || '',
+        // registrationValidity: preItem.registrationValidity || '',
+        // packageClaimed: preItem.packageType || '',
+        // testHospital: preItem.testingHosLabName || '',
+        // testOnAdvice: preItem.test1AuthorizedByDoctor || '',
+        // accommodationFile: '', //  File
+        // diet: preItem.dietCost || '',
+        // surgery: preItem.surgicalMedicalCharges || '',
+        // pathologyHospital: preItem.testHosLabName || '',
+        // pathologyCertificate: '', // File
+        // nursing: preItem.nursuingDetail || '',
+        // otherCharges: preItem.anyOther || '',
+        // enclosures: '', // File
       }));
     }
     setSelectedGradePay(preItem.gradePay || '');
@@ -179,10 +169,8 @@ function MedicalFormUpdate() {
       shopName: '',
       cashMemoNo: '',
       cashMemoDate: '',
-      drugName: '',
-      quantity: '',
-      totalValue: '',
-      uploadMemo: null,
+      // uploadMemo: null,
+      drugs: [{ drugName: '', quantity: '', totalValue: '' }],
     },
   ]);
 
@@ -195,20 +183,20 @@ function MedicalFormUpdate() {
   };
 
   // Add new card
-  const handleAdd = () => {
-    setDrugEntries([
-      ...drugEntries,
-      {
-        shopName: '',
-        cashMemoNo: '',
-        cashMemoDate: '',
-        drugName: '',
-        quantity: '',
-        totalValue: '',
-        uploadMemo: null,
-      },
-    ]);
-  };
+  // const handleAdd = () => {
+  //   setDrugEntries([
+  //     ...drugEntries,
+  //     {
+  //       shopName: '',
+  //       cashMemoNo: '',
+  //       cashMemoDate: '',
+  //       drugName: '',
+  //       quantity: '',
+  //       totalValue: '',
+  //       uploadMemo: null,
+  //     },
+  //   ]);
+  // };
 
   // Delete card
   const handleDelete = (index) => {
@@ -272,31 +260,46 @@ function MedicalFormUpdate() {
       formData.essentialityCertificateDate || '',
     );
 
+    // hospitalName: '',
+    // hospitalAddress: '',
+    // registrationNo: '',
+    // registrationValidity: '',
+    // packageClaimed: '',
+    // testHospital: '',
+    // testOnAdvice: '',
+    // accommodationFile: '',
+    // diet: '',
+    // surgery: '',
+    // pathologyHospital: '',
+    // pathologyCertificate: '',
+    // nursing: '',
+    // otherCharges: '',
+    // enclosures: '',
     // Hospital & Doctor Info
-    dataToSend.append('hospitalName', formData.hospitalName || '');
-    dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
-    dataToSend.append('registrationNo', formData.registrationNo || '');
-    dataToSend.append(
-      'registrationValidity',
-      formData.registrationValidity || '',
-    );
+    // dataToSend.append('hospitalName', formData.hospitalName || '');
+    // dataToSend.append('hospitalAddress', formData.hospitalAddress || '');
+    // dataToSend.append('registrationNo', formData.registrationNo || '');
+    // dataToSend.append(
+    //   'registrationValidity',
+    //   formData.registrationValidity || '',
+    // );
 
-    dataToSend.append('packageType', formData.packageClaimed || '');
-    dataToSend.append('testingHosLabName', formData.testHospital || '');
-    dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
+    // dataToSend.append('packageType', formData.packageClaimed || '');
+    // dataToSend.append('testingHosLabName', formData.testHospital || '');
+    // dataToSend.append('test1AuthorizedByDoctor', formData.testOnAdvice || '');
 
-    if (formData.accommodationFile)
-      dataToSend.append('accommodationPdf', formData.accommodationFile);
-    dataToSend.append('dietCost', formData.diet);
-    dataToSend.append('surgicalMedicalCharges', formData.surgery);
-    // dataToSend.append("anyTest", formData.anyTest || "");
-    dataToSend.append('testHosLabName', formData.pathologyHospital || '');
-    if (formData.pathologyCertificate)
-      dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
-    dataToSend.append('nursuingDetail', formData.nursing || '');
-    dataToSend.append('anyOther', formData.otherCharges || '');
-    if (formData.enclosures)
-      dataToSend.append('enclosureDoc', formData.enclosures || '');
+    // if (formData.accommodationFile)
+    //   dataToSend.append('accommodationPdf', formData.accommodationFile);
+    // dataToSend.append('dietCost', formData.diet);
+    // dataToSend.append('surgicalMedicalCharges', formData.surgery);
+    // // dataToSend.append("anyTest", formData.anyTest || "");
+    // dataToSend.append('testHosLabName', formData.pathologyHospital || '');
+    // if (formData.pathologyCertificate)
+    //   dataToSend.append('testPrescriptionDoc', formData.pathologyCertificate);
+    // dataToSend.append('nursuingDetail', formData.nursing || '');
+    // dataToSend.append('anyOther', formData.otherCharges || '');
+    // if (formData.enclosures)
+    //   dataToSend.append('enclosureDoc', formData.enclosures || '');
 
     dataToSend.append('type', formType);
     dataToSend.append('refNo', preItem.refNo);
@@ -307,27 +310,26 @@ function MedicalFormUpdate() {
         formData.prolongedTreatment || '',
       );
 
-    // Add medicines (drug entries)
-    drugEntries.forEach((entry, index) => {
-      dataToSend.append(`medi[${index}].shopName`, entry.shopName || '');
-      dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || '');
-      dataToSend.append(
-        `medi[${index}].cashMemoDate`,
-        entry.cashMemoDate || '',
-      );
-      dataToSend.append(`medi[${index}].drugName`, entry.drugName || '');
-      dataToSend.append(`medi[${index}].quantity`, entry.quantity || '');
-      dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || '');
-      if (entry.uploadMemo)
-        dataToSend.append(`medi[${index}].memoDoc`, entry.uploadMemo);
-    });
+    // // Add medicines (drug entries)
+    // drugEntries.forEach((entry, index) => {
+    //   dataToSend.append(`medi[${index}].shopName`, entry.shopName || '');
+    //   dataToSend.append(`medi[${index}].cashMemoNo`, entry.cashMemoNo || '');
+    //   dataToSend.append(
+    //     `medi[${index}].cashMemoDate`,
+    //     entry.cashMemoDate || '',
+    //   );
+    //   dataToSend.append(`medi[${index}].drugName`, entry.drugName || '');
+    //   dataToSend.append(`medi[${index}].quantity`, entry.quantity || '');
+    //   dataToSend.append(`medi[${index}].totalValue`, entry.totalValue || '');
+    //   if (entry.uploadMemo)
+    //     dataToSend.append(`medi[${index}].memoDoc`, entry.uploadMemo);
+    // });
 
     try {
       const response = await updateMedicalForm(dataToSend);
-      //console.log("Update response", response);
+      console.log('Update response', response);
       if (response.data.code === '200') {
-        alert('Successfully Updated!!');
-        navigate('/medicalReimbursementView');
+        medicineSubmission(response.data.list[0].refNo);
         setOpenBackdrop(false);
       } else {
         alert(response.data.message);
@@ -339,7 +341,44 @@ function MedicalFormUpdate() {
     }
   };
 
-  const deteleRecord = async (id) => {
+  const medicineSubmission = async (refNo) => {
+    const mediPayload = {
+      refNo: refNo,
+      shopName: drugEntries[0]?.shopName || '',
+      cashMemoNo: drugEntries[0]?.cashMemoNo || '',
+      cashMemoDate: drugEntries[0]?.cashMemoDate || '',
+      memoList: [],
+      updatedBy: sessionStorage.getItem('empCode'),
+    };
+
+    // Add memoList from drugEntries
+    drugEntries.forEach((entry) => {
+      entry.drugs.forEach((drug) => {
+        mediPayload.memoList.push({
+          cashMemoNo: entry.cashMemoNo || '',
+          drugName: drug.drugName || '',
+          quantity: drug.quantity || '',
+          totalValue: drug.totalValue || '',
+        });
+      });
+    });
+
+    try {
+      const response = await submitMedicineDetails(mediPayload);
+      if (response.data.code === '200') {
+        alert('Successfully Updated!!');
+        navigate('/medicalReimbursementView');
+        window.location.reload();
+      } else {
+        alert(response.data.message);
+      }
+    } catch (error) {
+      console.log('Error', error);
+      alert('Something went wrong');
+    }
+  };
+
+  const deleteDrugEntries = async (id) => {
     const payload = {
       id: id,
       empCode: sessionStorage.getItem('empCode'),
@@ -348,9 +387,46 @@ function MedicalFormUpdate() {
     const response = await deteleDrugDetails(payload);
     if (response.data.code === '200') {
       alert('Record Delete Successfully !!');
+      window.location.reload();
     } else {
       alert(response.data.message);
     }
+  };
+
+  const deleteDrugFromEntry = (entryIdx, drugIdx) => {
+    const updated = [...drugEntries];
+    if (updated[entryIdx].drugs.length === 1) return;
+    updated[entryIdx].drugs = updated[entryIdx].drugs.filter(
+      (_, i) => i !== drugIdx,
+    );
+    setDrugEntries(updated);
+  };
+
+  const addDrugToEntry = (entryIdx) => {
+    const updated = [...drugEntries];
+    updated[entryIdx].drugs.push({
+      drugName: '',
+      quantity: '',
+      totalValue: '',
+      // uploadMemo: null,
+    });
+    setDrugEntries(updated);
+  };
+
+  const handleNestedDrugChange = (entryIdx, drugIdx, e) => {
+    const { name, value, files } = e.target;
+    const updated = [...drugEntries];
+    const drugList = updated[entryIdx].drugs.map((d, i) =>
+      i === drugIdx ? { ...d, [name]: files ? files[0] : value } : d,
+    );
+    updated[entryIdx].drugs = drugList;
+    setDrugEntries(updated);
+  };
+
+  const [expandedRow, setExpandedRow] = useState(null);
+
+  const handleToggle = (id) => {
+    setExpandedRow(expandedRow === id ? null : id);
   };
 
   return (
@@ -784,13 +860,14 @@ function MedicalFormUpdate() {
                       <StyledTableCell>Shop Name</StyledTableCell>
                       <StyledTableCell>Cash Memo</StyledTableCell>
                       <StyledTableCell>Cash Memo Date</StyledTableCell>
-                      <StyledTableCell>Drug Name</StyledTableCell>
-                      <StyledTableCell>Quantity</StyledTableCell>
-                      <StyledTableCell>Total Value</StyledTableCell>
+                      {/* <StyledTableCell>Drug Name</StyledTableCell> */}
+                      {/* <StyledTableCell>Quantity</StyledTableCell> */}
+                      {/* <StyledTableCell>Total Value</StyledTableCell> */}
+                      <StyledTableCell>View All</StyledTableCell>
                       <StyledTableCell>Delete</StyledTableCell>
                     </StyledTableRow>
                   </TableHead>
-                  <TableBody>
+                  {/* <TableBody>
                     {drugEntry && drugEntry.length > 0 ? (
                       drugEntry.map((item, index) => (
                         <StyledTableRow key={index}>
@@ -820,7 +897,7 @@ function MedicalFormUpdate() {
                               <Button
                                 variant="contained"
                                 color="dark"
-                                onClick={() => deteleRecord(item.id)}
+                                onClick={() => deleteDrugEntries(item.id)}
                               >
                                 <DeleteIcon fontSize="small" color="error" />
                               </Button>
@@ -835,13 +912,118 @@ function MedicalFormUpdate() {
                         </StyledTableCell>
                       </StyledTableRow>
                     )}
+                  </TableBody> */}
+
+                  <TableBody>
+                    {drugEntry && drugEntry.length > 0 ? (
+                      drugEntry.map((item, index) => (
+                        <React.Fragment key={item.id}>
+                          {/* Main Row */}
+                          <StyledTableRow>
+                            <StyledTableCell>{index + 1}</StyledTableCell>
+                            <StyledTableCell>
+                              {item.shopName || '-'}
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              {item.cashMemoNo || '-'}
+                            </StyledTableCell>
+                            <StyledTableCell>
+                              {item.cashMemoDate || '-'}
+                            </StyledTableCell>
+                            {/* <StyledTableCell>
+                              {item.totalValue || '-'}
+                            </StyledTableCell> */}
+
+                            <StyledTableCell>
+                              {/* <Button
+                                variant="contained"
+                                size="small"
+                                onClick={() => handleToggle(item.id)}
+                              >
+                                {expandedRow === item.id ? '−' : '+'}
+                              </Button> */}
+                              <Button
+                                onClick={() => handleToggle(item.id)}
+                                variant="contained"
+                                size="small"
+                                color="dark"
+                              >
+                                {expandedRow === item.id ? (
+                                  <VisibilityOffIcon color="success" />
+                                ) : (
+                                  <VisibilityIcon color="primary" />
+                                )}
+                              </Button>
+                            </StyledTableCell>
+
+                            <StyledTableCell>
+                              <Button
+                                variant="contained"
+                                color="dark"
+                                onClick={() => deleteDrugEntries(item.id)}
+                                // className={canUpdate ? '' : 'button-disabled'}
+                                disabled={!canUpdate}
+                              >
+                                <DeleteIcon fontSize="small" color="error" />
+                              </Button>
+                            </StyledTableCell>
+                          </StyledTableRow>
+
+                          {/* Sub Table Row */}
+                          {expandedRow === item.id && (
+                            <StyledTableRow>
+                              <StyledTableCell colSpan={6}>
+                                <Table size="small">
+                                  <TableHead>
+                                    <TableRow>
+                                      <TableCell>S.No.</TableCell>
+                                      <TableCell>Drug Name</TableCell>
+                                      <TableCell>Quantity</TableCell>
+                                      <TableCell>Total Value</TableCell>
+                                    </TableRow>
+                                  </TableHead>
+
+                                  <TableBody>
+                                    {item.memoList &&
+                                    item.memoList.length > 0 ? (
+                                      item.memoList.map((memo, memoIndex) => (
+                                        <TableRow key={memo.id}>
+                                          <TableCell>{memoIndex + 1}</TableCell>
+                                          <TableCell>{memo.drugName}</TableCell>
+                                          <TableCell>{memo.quantity}</TableCell>
+                                          <TableCell>
+                                            {memo.totalValue}
+                                          </TableCell>
+                                        </TableRow>
+                                      ))
+                                    ) : (
+                                      <TableRow>
+                                        <TableCell colSpan={4}>
+                                          No Memo Records Found
+                                        </TableCell>
+                                      </TableRow>
+                                    )}
+                                  </TableBody>
+                                </Table>
+                              </StyledTableCell>
+                            </StyledTableRow>
+                          )}
+                        </React.Fragment>
+                      ))
+                    ) : (
+                      <StyledTableRow>
+                        <StyledTableCell colSpan={7}>
+                          Data Not Found
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Card.Body>
           </Card>
 
-          <Card className="mt-3">
+          {/* <Card className="mt-3">
             <Card.Header className="text-center p-2">
               <Typography
                 variant="h5"
@@ -985,6 +1167,170 @@ function MedicalFormUpdate() {
                         </Form.Group>
                       </Col>
                     </Row>
+                  </Card.Body>
+                </Card>
+              ))}
+            </Card.Body>
+          </Card> */}
+
+          <Card className="mt-3">
+            <Card.Header className="text-center p-2">
+              <Typography
+                variant="h5"
+                sx={{
+                  mb: 2,
+                  fontFamily: 'serif',
+                  fontWeight: 'bold',
+                  color: '#0a1f83',
+                }}
+              >
+                Medicine Details
+              </Typography>
+            </Card.Header>
+            <Card.Body>
+              {drugEntries.map((entry, eIdx) => (
+                <Card key={eIdx} className="mb-4 shadow-sm">
+                  <Card.Header className="d-flex justify-content-between align-items-center p-3">
+                    <h5>Medical Bill Entry #{eIdx + 1}</h5>
+                    <div className="d-flex gap-1">
+                      {drugEntries.length > 1 && (
+                        <Tooltip title="Delete Entry" arrow placement="top">
+                          <Button
+                            variant="contained"
+                            size="small"
+                            onClick={() => handleDelete(eIdx)}
+                            color="dark"
+                          >
+                            <DeleteIcon fontSize="small" color="error" />
+                          </Button>
+                        </Tooltip>
+                      )}
+                    </div>
+                  </Card.Header>
+
+                  <Card.Body>
+                    <Card
+                      className="mb-3 p-3 border rounded-3"
+                      style={{ backgroundColor: '#f8f9fa' }}
+                    >
+                      <Row className="g-3 mb-3">
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Name of the Shop</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="shopName"
+                              placeholder="Enter Name"
+                              value={entry.shopName}
+                              onChange={(e) => handleDrugChange(eIdx, e)}
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Cash Memo No</Form.Label>
+                            <Form.Control
+                              type="text"
+                              name="cashMemoNo"
+                              placeholder="Enter Number"
+                              value={entry.cashMemoNo}
+                              onChange={(e) => handleDrugChange(eIdx, e)}
+                            />
+                          </Form.Group>
+                        </Col>
+                        <Col>
+                          <Form.Group>
+                            <Form.Label>Cash Memo Date</Form.Label>
+                            <Form.Control
+                              type="date"
+                              name="cashMemoDate"
+                              value={entry.cashMemoDate}
+                              onChange={(e) => handleDrugChange(eIdx, e)}
+                            />
+                          </Form.Group>
+                        </Col>
+                      </Row>
+                    </Card>
+
+                    {entry.drugs.map((drug, dIdx) => (
+                      <Card
+                        key={dIdx}
+                        className="mb-3 p-3 border rounded-3"
+                        style={{ backgroundColor: '#f8f9fa' }}
+                      >
+                        <div className="d-flex justify-content-between align-items-center mb-2">
+                          <strong>Medicine #{dIdx + 1}</strong>
+                          {entry.drugs.length > 1 && (
+                            <Tooltip title="Remove Drug" arrow placement="top">
+                              <Button
+                                variant="contained"
+                                size="small"
+                                onClick={() => deleteDrugFromEntry(eIdx, dIdx)}
+                                color="dark"
+                              >
+                                <DeleteIcon fontSize="small" color="error" />
+                              </Button>
+                            </Tooltip>
+                          )}
+                        </div>
+
+                        <Row className="g-3">
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Medicine Name</Form.Label>
+                              <Form.Control
+                                type="text"
+                                name="drugName"
+                                placeholder="Enter Name"
+                                value={drug.drugName}
+                                onChange={(e) =>
+                                  handleNestedDrugChange(eIdx, dIdx, e)
+                                }
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Quantity</Form.Label>
+                              <Form.Control
+                                type="number"
+                                name="quantity"
+                                placeholder="Enter Quantity"
+                                value={drug.quantity}
+                                onChange={(e) =>
+                                  handleNestedDrugChange(eIdx, dIdx, e)
+                                }
+                              />
+                            </Form.Group>
+                          </Col>
+                          <Col md={4}>
+                            <Form.Group>
+                              <Form.Label>Total Value</Form.Label>
+                              <Form.Control
+                                type="number"
+                                name="totalValue"
+                                placeholder="Enter Value"
+                                value={drug.totalValue}
+                                onChange={(e) =>
+                                  handleNestedDrugChange(eIdx, dIdx, e)
+                                }
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </Card>
+                    ))}
+
+                    <Tooltip title="Add Drug" arrow placement="top">
+                      <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() => addDrugToEntry(eIdx)}
+                        color="dark"
+                      >
+                        <AddIcon fontSize="small" color="secondary" />
+                      </Button>
+                    </Tooltip>
                   </Card.Body>
                 </Card>
               ))}

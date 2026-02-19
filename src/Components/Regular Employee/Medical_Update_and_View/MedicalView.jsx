@@ -73,6 +73,7 @@ function MedicalFormView() {
                   <StyledTableCell>Patient Code</StyledTableCell>
                   <StyledTableCell>Reference No.</StyledTableCell>
                   <StyledTableCell>Submission Date</StyledTableCell>
+                  <StyledTableCell>HR Status</StyledTableCell>
                   <StyledTableCell>Action</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
@@ -87,6 +88,7 @@ function MedicalFormView() {
                       <StyledTableCell>{item.empCode || '-'}</StyledTableCell>
                       <StyledTableCell>{item.refNo || '-'}</StyledTableCell>
                       <StyledTableCell>{item.created || '-'}</StyledTableCell>
+                      <StyledTableCell>{item.hrStatus || '-'}</StyledTableCell>
 
                       <StyledTableCell>
                         <Tooltip title="Preview" arrow>

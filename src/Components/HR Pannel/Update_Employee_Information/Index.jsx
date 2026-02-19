@@ -135,7 +135,7 @@ function UpdateEmployeeInformation({
   const allowedShiftIds = [2, 20, 22, 21, 170];
   const isShiftMatch = allowedShiftIds.includes(shiftId);
   const isValidDesignation =
-    ['23', '99'].includes(designationId) || designationClass <= 2;
+    ['23', '99', '126'].includes(designationId) || designationClass <= 2;
   const isRegionAllowed = regionId !== 1;
   const isValidDepartment = [
     '17',

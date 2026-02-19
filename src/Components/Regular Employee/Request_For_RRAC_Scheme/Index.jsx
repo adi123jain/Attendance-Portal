@@ -53,6 +53,7 @@ function RRAC_Scheme() {
   const [selectedCircle, setSelectedCircle] = useState('');
   const [selectedDivision, setSelectedDivision] = useState('');
   const [selectedSubDivision, setSelectedSubDivision] = useState('');
+  // const [selectedDC, setSelectedDC] = useState('');
   const [selectedDC, setSelectedDC] = useState('');
   const [openBackdrop, setOpenBackdrop] = useState(false);
 
@@ -185,17 +186,33 @@ function RRAC_Scheme() {
 
   // Amount by Designation
   const [monthlyAmount, setMonthlyAmount] = useState([]);
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       const response = await maxAmountByDesignation(designationId, sessionDc);
+  //       //console.log(response);
+  //       setMonthlyAmount(response.data.list || []);
+  //     } catch (error) {
+  //       console.error('Error fetching regions:', error);
+  //     }
+  //   })();
+  // }, []);
+
   useEffect(() => {
+    if (!selectedDC) return;
+
     (async () => {
       try {
-        const response = await maxAmountByDesignation(designationId, sessionDc);
-        //console.log(response);
+        const response = await maxAmountByDesignation(
+          designationId,
+          selectedDC,
+        );
         setMonthlyAmount(response.data.list || []);
       } catch (error) {
         console.error('Error fetching regions:', error);
       }
     })();
-  }, []);
+  }, [selectedDC, designationId]);
 
   // Amount by Designation
   const [totalAmount, setTotalAmount] = useState([]);
