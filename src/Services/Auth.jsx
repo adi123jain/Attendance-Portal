@@ -693,8 +693,8 @@ export const submitLineAuthorization = (payload) => {
 // 110. Get Medical for HR
 export const getMedicalByHr = () => {
   return axios.get(
-    // base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`,
-    base_url + `/medical/getHrPending?hrEmpCode=150045`,
+    base_url + `/medical/getHrPending?hrEmpCode=${sessionEmpCode}`,
+    // base_url + `/medical/getHrPending?hrEmpCode=150045`,
   );
 };
 

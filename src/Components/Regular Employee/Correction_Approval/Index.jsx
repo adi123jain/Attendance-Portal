@@ -470,8 +470,23 @@ function CorrectionApproval() {
                           </StyledTableCell>
                           <StyledTableCell>{item.empCode}</StyledTableCell>
                           <StyledTableCell>{item.punchDate}</StyledTableCell>
-                          <StyledTableCell>{item.inTime}</StyledTableCell>
-                          <StyledTableCell>{item.outTime}</StyledTableCell>
+                          {/* <StyledTableCell>{item.inTime}</StyledTableCell>
+                           */}
+
+                          <StyledTableCell>
+                            {item.inTime
+                              ? item.inTime.split('T')[1]?.split('.')[0]
+                              : ''}
+                          </StyledTableCell>
+
+                          <StyledTableCell>
+                            {item.outTime
+                              ? item.outTime.split('T')[1]?.split('.')[0]
+                              : ''}
+                          </StyledTableCell>
+
+                          {/* <StyledTableCell>{item.outTime}</StyledTableCell> */}
+
                           <StyledTableCell>{item.duration}</StyledTableCell>
                           <StyledTableCell>{item.remark}</StyledTableCell>
                           <StyledTableCell>{item.impressions}</StyledTableCell>

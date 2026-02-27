@@ -42,6 +42,15 @@ function LeaveAllocation() {
   });
 
   const sessionEmpCode = sessionStorage.getItem('empCode');
+  const sessionRegion = sessionStorage.getItem('regionId');
+  const sessionHR = sessionStorage.getItem('isManagerHr');
+
+  const hasFullAccess =
+    (sessionHR && sessionRegion !== '1') ||
+    sessionEmpCode === '12345' ||
+    sessionEmpCode === '160046' ||
+    sessionEmpCode === '150026';
+
   const isDisabled = sessionEmpCode === '89427825';
 
   const [errors, setErrors] = useState({});
@@ -683,11 +692,18 @@ function LeaveAllocation() {
                   ref: inputRefs.lwpLeave,
                 },
               ].map((field, index) => {
-                const isDisabled =
-                  field.name === 'casualLeave' ||
-                  field.name === 'earnLeave' ||
-                  field.name === 'commutedLeave' ||
-                  field.name === 'optionalLeave';
+                // const isDisabled =
+                //   field.name === 'casualLeave' ||
+                //   field.name === 'earnLeave' ||
+                //   field.name === 'commutedLeave' ||
+                //   field.name === 'optionalLeave';
+
+                const isDisabled = hasFullAccess
+                  ? false
+                  : field.name === 'casualLeave' ||
+                    field.name === 'earnLeave' ||
+                    field.name === 'commutedLeave' ||
+                    field.name === 'optionalLeave';
 
                 return (
                   <div className="col-md-6 mb-3" key={index}>
