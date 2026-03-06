@@ -230,7 +230,7 @@ function MedicalHealthInsurance() {
               fontWeight: 'bold',
             }}
           >
-            Medical Health Insurance
+            MP Power Company Cashless Health Scheme
           </Typography>
         </Card.Header>
 

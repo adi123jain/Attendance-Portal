@@ -135,7 +135,7 @@ function ImmovablePropertyView() {
 
   const DownloadDoc = async (item) => {
     const URL = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
-    //const URL = `http://172.16.17.79:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
+    //const URL = `http://172.16.17.34:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
     window.open(URL, '_blank');
   };
 

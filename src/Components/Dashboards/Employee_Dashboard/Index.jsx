@@ -23,6 +23,23 @@ function EmployeeDashboard() {
   const [designationId, setDesignationId] = useState(null);
   const [isManagerHr, setIsManagerHr] = useState(false);
 
+  const token = sessionStorage.getItem('token');
+
+  let showPropertyMenus = false;
+
+  if (token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const decodedData = JSON.parse(atob(base64));
+    const designationClass = decodedData?.designation?.designationClass;
+    // console.log(designationClass);
+
+    // Condition
+    if ([1, 2, 3].includes(Number(designationClass))) {
+      showPropertyMenus = true;
+    }
+  }
+
   useEffect(() => {
     setEmpCode(sessionStorage.getItem('empCode'));
     setDesignationId(Number(sessionStorage.getItem('designationId')));
@@ -72,16 +89,16 @@ function EmployeeDashboard() {
       path: '/medicalHealthInsuranceView',
       icon: <HealthAndSafetyIcon color="primary" />,
     },
-    // {
-    //   label: 'Immovable Property Return',
-    //   path: '/immovableProperty',
-    //   icon: <HomeWorkIcon color="secondary" />,
-    // },
-    // {
-    //   label: 'Immovable Property Return View',
-    //   path: '/immovablePropertyView',
-    //   icon: <VisibilityIcon color="success" />,
-    // },
+    {
+      label: 'Immovable Property Return',
+      path: '/immovableProperty',
+      icon: <HomeWorkIcon color="secondary" />,
+    },
+    {
+      label: 'Immovable Property Return View',
+      path: '/immovablePropertyView',
+      icon: <VisibilityIcon color="success" />,
+    },
     {
       label: 'Medical Reimbursement CMO Approval',
       path: '/medicalApprovalByCmo',
@@ -187,6 +204,13 @@ function EmployeeDashboard() {
           }
 
           if (item.label === 'News Comment (MD)' && !NewsMd) {
+            return null;
+          }
+          if (
+            (item.label === 'Immovable Property Return' ||
+              item.label === 'Immovable Property Return View') &&
+            !showPropertyMenus
+          ) {
             return null;
           }
 

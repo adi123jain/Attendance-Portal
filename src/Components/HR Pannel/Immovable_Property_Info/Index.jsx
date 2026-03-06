@@ -1,11 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
-import { Link } from 'react-router-dom';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { useNavigate } from 'react-router-dom';
-// import RealEstateAgentIcon from '@mui/icons-material/RealEstateAgent';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
-
 import {
   getEmployeeByEmpCode,
   getEmployeeByLevel,
@@ -13,7 +9,6 @@ import {
 import SearchUtils from '../../../Constants/Search_Utils/Index';
 import { PropagateLoader } from 'react-spinners';
 import '../../../Constants/Style/styles.css';
-import EditIcon from '@mui/icons-material/Edit';
 
 import {
   Typography,
@@ -31,8 +26,6 @@ import {
   StyledTableCell,
   StyledTableRow,
 } from '../../../Constants/TableStyles/Index';
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
 
 function ImmovablePropertyInformation() {
   const regionRef = useRef(null);
@@ -261,7 +254,7 @@ function ImmovablePropertyInformation() {
                 color: '#0a1f83',
               }}
             >
-              Employee Records
+              Employee's List
             </Typography>
             <TextField
               label="Search by Code, Name or Designation"
@@ -291,9 +284,6 @@ function ImmovablePropertyInformation() {
                     <StyledTableCell>Designation</StyledTableCell>
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
-                    {/* <StyledTableCell>Edit Info</StyledTableCell> */}
-                    {/* <StyledTableCell>Place of Posting</StyledTableCell> */}
-                    {/* <StyledTableCell>Additional Charges</StyledTableCell> */}
                     <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -330,76 +320,6 @@ function ImmovablePropertyInformation() {
                           <StyledTableCell>{item.designation}</StyledTableCell>
                           <StyledTableCell>{item.department}</StyledTableCell>
                           <StyledTableCell>{item.empType}</StyledTableCell>
-                          {/* <StyledTableCell>
-                            <Tooltip
-                              title="Edit Employee Info"
-                              arrow
-                              placement="top"
-                            >
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="dark"
-                                //className="green-button"
-                                onClick={() =>
-                                  navigate('/updateEmployeeInformation', {
-                                    state: {
-                                      empCode: item.empCode,
-                                      fullName: item.fullName,
-                                    },
-                                  })
-                                }
-                              >
-                                <EditIcon color="success" />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell> */}
-                          {/* <StyledTableCell>
-                            <Tooltip
-                              title="Place of Posting"
-                              arrow
-                              placement="top"
-                            >
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="dark"
-                                onClick={() =>
-                                  navigate('/employeePosting', {
-                                    state: {
-                                      empCode: item.empCode,
-                                      fullName: item.fullName,
-                                    },
-                                  })
-                                }
-                              >
-                                <AddLocationAltIcon color="success" />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell>
-                          <StyledTableCell>
-                            <Tooltip
-                              title="Additional Charges"
-                              arrow
-                              placement="top"
-                            >
-                              <Button
-                                variant="contained"
-                                size="small"
-                                color="dark"
-                                onClick={() =>
-                                  navigate('/additionalCharges', {
-                                    state: {
-                                      empCode: item.empCode,
-                                      fullName: item.fullName,
-                                    },
-                                  })
-                                }
-                              >
-                                <AddToPhotosIcon color="success" />
-                              </Button>
-                            </Tooltip>
-                          </StyledTableCell> */}
 
                           <StyledTableCell>
                             <Tooltip
@@ -455,7 +375,7 @@ function ImmovablePropertyInformation() {
                 color: '#0a1f83',
               }}
             >
-              Employee Records
+              Employee's List
             </Typography>
           </Card.Header>
 
@@ -470,9 +390,6 @@ function ImmovablePropertyInformation() {
                     <StyledTableCell>Designation</StyledTableCell>
                     <StyledTableCell>Department</StyledTableCell>
                     <StyledTableCell>Employee Type</StyledTableCell>
-                    {/* <StyledTableCell>Edit Info</StyledTableCell>
-                    <StyledTableCell>Place of Posting</StyledTableCell>
-                    <StyledTableCell>Additional Charges</StyledTableCell> */}
                     <StyledTableCell>Immovable Property</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -495,73 +412,6 @@ function ImmovablePropertyInformation() {
                       <StyledTableCell>
                         {dataInEmpTable.employementType.name}
                       </StyledTableCell>
-                      {/* <StyledTableCell>
-                        <Tooltip
-                          title="Edit Employee Info"
-                          arrow
-                          placement="top"
-                        >
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="dark"
-                            // className="green-button"
-                            onClick={() =>
-                              navigate('/updateEmployeeInformation', {
-                                state: {
-                                  empCode: dataInEmpTable.empCode,
-                                  fullName: dataInEmpTable.fullName,
-                                },
-                              })
-                            }
-                          >
-                            <EditIcon color="success" />
-                          </Button>
-                        </Tooltip>
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        <Tooltip title="Place of Posting" arrow placement="top">
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="dark"
-                            onClick={() =>
-                              navigate('/employeePosting', {
-                                state: {
-                                  empCode: dataInEmpTable.empCode,
-                                  fullName: dataInEmpTable.fullName,
-                                },
-                              })
-                            }
-                          >
-                            <AddLocationAltIcon color="success" />
-                          </Button>
-                        </Tooltip>
-                      </StyledTableCell>
-
-                      <StyledTableCell>
-                        <Tooltip
-                          title="Additional Charges"
-                          arrow
-                          placement="top"
-                        >
-                          <Button
-                            variant="contained"
-                            size="small"
-                            color="dark"
-                            onClick={() =>
-                              navigate('/additionalCharges', {
-                                state: {
-                                  empCode: dataInEmpTable.empCode,
-                                  fullName: dataInEmpTable.fullName,
-                                },
-                              })
-                            }
-                          >
-                            <AddToPhotosIcon color="success" />
-                          </Button>
-                        </Tooltip>
-                      </StyledTableCell> */}
 
                       <StyledTableCell>
                         <Tooltip

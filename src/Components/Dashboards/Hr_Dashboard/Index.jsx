@@ -72,11 +72,11 @@ function HumanResourceDashboard() {
           icon: <AssessmentIcon />,
         },
 
-        // {
-        //   name: 'Immovable Property Information',
-        //   to: '/immovablePropertyInfo',
-        //   icon: <InfoIcon />,
-        // },
+        {
+          name: 'Immovable Property Information',
+          to: '/immovablePropertyInfo',
+          icon: <InfoIcon />,
+        },
       ],
     },
     {

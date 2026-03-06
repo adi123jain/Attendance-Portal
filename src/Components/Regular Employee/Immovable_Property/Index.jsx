@@ -137,30 +137,25 @@ const ImmovableProperty = () => {
       district: form.district,
       subDistrict: form.subDistrict,
       talukaVillage: form.village,
-
       residentialLocation: form.residentialLocationNo,
-      residentialSizeArea: parseFloat(form.residentialArea) || null,
-      residentialPresentValue: parseFloat(form.residentialValue) || null,
-
+      residentialSizeArea: form.residentialArea,
+      residentialPresentValue: form.residentialValue,
       agriculturalLocation: form.agricultureLocationNo,
-      agriculturalSizeArea: parseFloat(form.agricultureArea) || null,
-      agriculturalPresentValue: parseFloat(form.agricultureValue) || null,
-
+      agriculturalSizeArea: form.agricultureArea,
+      agriculturalPresentValue: form.agricultureValue,
       housingLocation: form.housingLocationNo,
-      housingSizeBuildUpArea: parseFloat(form.housingArea) || null,
-      housingPresentValue: parseFloat(form.housingValue) || null,
-
+      housingSizeBuildUpArea: form.housingArea,
+      housingPresentValue: form.housingValue,
       shopLocation: form.shopLocationNo,
-      shopSizeBuildUpArea: parseFloat(form.shopArea) || null,
-      shopPresentValue: parseFloat(form.shopValue) || null,
-
+      shopSizeBuildUpArea: form.shopArea,
+      shopPresentValue: form.shopValue,
       ownershipStatus: form.ownershipStatus,
       // relationWithBoard: form.employeeRelation,
       relationWithBoard: '',
       acquisitionMode: form.acquisitionSource,
       acquisitionDate: form.acquisitionDate,
       fromWhomAcquired: form.acquisitionPerson,
-      annualIncome: parseFloat(form.annualIncome) || null,
+      annualIncome: form.annualIncome,
       privateBusinessDetails: form.businessDetails,
       remarks: form.remark,
       createdBy: sessionStorage.getItem('empCode'),
@@ -172,11 +167,11 @@ const ImmovableProperty = () => {
 
     try {
       const response = await submitImmovableProperty(payload);
-      // console.log(response);
+      console.log(response);
 
       if (response.data.code === '200') {
         alert('Successfully Submitted');
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -1282,7 +1277,7 @@ const ImmovableProperty = () => {
                           /> */}
 
                           <Form.Control
-                            type="number"
+                            type="text"
                             placeholder="Enter Annual Income"
                             value={form.annualIncome}
                             onChange={(e) =>
