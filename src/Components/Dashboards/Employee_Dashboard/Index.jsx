@@ -128,6 +128,12 @@ function EmployeeDashboard() {
       icon: <HealthAndSafetyIcon color="secondary" />,
     },
 
+    {
+      label: 'CM Helpline',
+      path: '/cmHelplineExp',
+      icon: <HealthAndSafetyIcon color="error" />,
+    },
+
     // {
     //   label: 'Higher Pay Scale',
     //   path: '/higherPayScale',

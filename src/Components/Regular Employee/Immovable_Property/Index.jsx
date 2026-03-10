@@ -95,8 +95,11 @@ const ImmovableProperty = () => {
     remark: '',
   };
 
-  const [forms, setForms] = useState([emptyForm]);
+  // const [forms, setForms] = useState([emptyForm]);
+  // const [errors, setErrors] = useState([]);
 
+  const [forms, setForms] = useState([{ ...emptyForm }]);
+  const [errors, setErrors] = useState([]);
   const currentYear = new Date().getFullYear() - 1;
 
   // Handle field change
@@ -119,15 +122,24 @@ const ImmovableProperty = () => {
   };
 
   // Add new form
+  // const handleAdd = () => {
+  //   setForms([...forms, { ...emptyForm }]);
+  // };
   const handleAdd = () => {
     setForms([...forms, { ...emptyForm }]);
+    setErrors([...errors, {}]);
   };
-
   // Delete form
   const handleDelete = (index) => {
     if (forms.length === 1) return;
+
     setForms(forms.filter((_, i) => i !== index));
+    setErrors(errors.filter((_, i) => i !== index));
   };
+  // const handleDelete = (index) => {
+  //   if (forms.length === 1) return;
+  //   setForms(forms.filter((_, i) => i !== index));
+  // };
 
   // Submit Immovable Property
   const submitImmovableForm = async () => {
@@ -167,11 +179,11 @@ const ImmovableProperty = () => {
 
     try {
       const response = await submitImmovableProperty(payload);
-      console.log(response);
+      //console.log(response);
 
       if (response.data.code === '200') {
         alert('Successfully Submitted');
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response.data.message);
       }
@@ -185,6 +197,82 @@ const ImmovableProperty = () => {
   const [otpError, setOtpError] = useState('');
   const [resendTimer, setResendTimer] = useState(0);
   const [openBackdrop, setOpenBackdrop] = useState(false);
+
+  // const validateForms = () => {
+  //   let isValid = true;
+  //   const newErrors = [];
+
+  //   forms.forEach((form, index) => {
+  //     const formErrors = {};
+
+  //     Object.keys(emptyForm).forEach((field) => {
+  //       if (!form[field] || form[field].toString().trim() === '') {
+  //         formErrors[field] = '*This field is required';
+  //         isValid = false;
+  //       }
+  //     });
+
+  //     newErrors[index] = formErrors;
+  //   });
+
+  //   setErrors(newErrors);
+
+  //   if (!isValid) {
+  //     setTimeout(() => {
+  //       const firstErrorField = document.querySelector('.is-invalid');
+  //       if (firstErrorField) {
+  //         firstErrorField.focus();
+  //       }
+  //     }, 0);
+  //   }
+
+  //   return isValid;
+  // };
+
+  const validateForms = () => {
+    let isValid = true;
+    const newErrors = [];
+
+    let firstError = { index: null, field: null };
+
+    forms.forEach((form, index) => {
+      const formErrors = {};
+
+      Object.keys(emptyForm).forEach((field) => {
+        if (field === 'acquisitionDate') return;
+
+        const value = form[field];
+
+        if (!value || value.toString().trim() === '') {
+          formErrors[field] = '*This field is required';
+          isValid = false;
+
+          if (firstError.index === null) {
+            firstError = { index, field };
+          }
+        }
+      });
+
+      newErrors[index] = formErrors;
+    });
+
+    setErrors(newErrors);
+
+    if (!isValid && firstError.field !== null) {
+      setTimeout(() => {
+        const el = document.querySelector(
+          `[name="${firstError.field}-${firstError.index}"]`,
+        );
+
+        if (el) {
+          el.focus();
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+
+    return isValid;
+  };
 
   // Send OTP API
   const sendOtp = async () => {
@@ -212,6 +300,12 @@ const ImmovableProperty = () => {
     }
   };
 
+  const handleSubmit = () => {
+    const valid = validateForms();
+    if (!valid) return;
+
+    sendOtp();
+  };
   // Timer effect for resend
   useEffect(() => {
     if (!otpModal) {
@@ -267,38 +361,6 @@ const ImmovableProperty = () => {
     setOtp('');
     setOtpError('');
     setResendTimer(0);
-  };
-
-  const [errors, setErrors] = useState([]);
-  const validateForms = () => {
-    let isValid = true;
-    const newErrors = [];
-
-    forms.forEach((form, index) => {
-      const formErrors = {};
-
-      Object.keys(emptyForm).forEach((field) => {
-        if (!form[field] || form[field].toString().trim() === '') {
-          formErrors[field] = '*This field is required';
-          isValid = false;
-        }
-      });
-
-      newErrors[index] = formErrors;
-    });
-
-    setErrors(newErrors);
-
-    if (!isValid) {
-      setTimeout(() => {
-        const firstErrorField = document.querySelector('.is-invalid');
-        if (firstErrorField) {
-          firstErrorField.focus();
-        }
-      }, 0);
-    }
-
-    return isValid;
   };
 
   return (
@@ -422,6 +484,8 @@ const ImmovableProperty = () => {
                           /> */}
 
                           <Form.Control
+                            // name="gpfNumber"
+                            name={`gpfNumber-${index}`}
                             type="text"
                             placeholder="Enter Number"
                             value={form.gpfNumber}
@@ -483,6 +547,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
+                                // name="district"
+                                name={`district-${index}`}
                                 placeholder="Enter Name"
                                 value={form.district}
                                 onChange={(e) =>
@@ -519,6 +585,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
+                                // name="district"
+                                name={`district-${index}`}
                                 placeholder="Enter Name"
                                 value={form.subDistrict}
                                 onChange={(e) =>
@@ -551,6 +619,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
+                                // name="village"
+                                name={`village-${index}`}
                                 placeholder="Enter Name"
                                 value={form.village}
                                 onChange={(e) =>
@@ -597,6 +667,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`residentialLocationNo-${index}`}
+                                    // name="residentialLocationNo"
                                     placeholder="Enter Name"
                                     value={form.residentialLocationNo}
                                     onChange={(e) =>
@@ -637,6 +709,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`residentialArea-${index}`}
+                                    // name="residentialArea"
                                     placeholder="Enter Area"
                                     value={form.residentialArea}
                                     onChange={(e) =>
@@ -675,6 +749,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`residentialValue-${index}`}
+                                    // name="residentialValue"
                                     placeholder="Enter Value"
                                     value={form.residentialValue}
                                     onChange={(e) =>
@@ -717,6 +793,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    // name="agricultureLocationNo"
+                                    name={`agricultureLocationNo-${index}`}
                                     placeholder="Enter Value"
                                     value={form.agricultureLocationNo}
                                     onChange={(e) =>
@@ -757,6 +835,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`agricultureArea-${index}`}
+                                    // name="agricultureArea"
                                     placeholder="Enter Area"
                                     value={form.agricultureArea}
                                     onChange={(e) =>
@@ -795,6 +875,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`agricultureValue-${index}`}
+                                    // name="agricultureValue"
                                     placeholder="Enter Value"
                                     value={form.agricultureValue}
                                     onChange={(e) =>
@@ -844,7 +926,9 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`housingLocationNo-${index}`}
                                     placeholder="Enter Location"
+                                    // name="housingLocationNo"
                                     value={form.housingLocationNo}
                                     onChange={(e) =>
                                       handleChange(
@@ -885,7 +969,9 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`housingArea-${index}`}
                                     placeholder="Enter Area"
+                                    // name="housingArea"
                                     value={form.housingArea}
                                     onChange={(e) =>
                                       handleChange(
@@ -923,7 +1009,9 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`housingValue-${index}`}
                                     placeholder="Enter Value"
+                                    // name="housingValue"
                                     value={form.housingValue}
                                     onChange={(e) =>
                                       handleChange(
@@ -964,6 +1052,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`shopLocationNo-${index}`}
+                                    // name="shopLocationNo"
                                     placeholder="Enter Name"
                                     value={form.shopLocationNo}
                                     onChange={(e) =>
@@ -1003,6 +1093,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`shopArea-${index}`}
+                                    // name="shopArea"
                                     placeholder="Enter Area"
                                     value={form.shopArea}
                                     onChange={(e) =>
@@ -1042,6 +1134,8 @@ const ImmovableProperty = () => {
 
                                   <Form.Control
                                     type="text"
+                                    name={`shopValue-${index}`}
+                                    // name="shopValue"
                                     placeholder="Enter Value"
                                     value={form.shopValue}
                                     onChange={(e) =>
@@ -1092,6 +1186,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
+                                name={`ownershipStatus-${index}`}
+                                // name="ownershipStatus"
                                 placeholder="Enter Details"
                                 value={form.ownershipStatus}
                                 onChange={(e) =>
@@ -1165,6 +1261,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 type="text"
+                                name={`acquisitionSource-${index}`}
+                                // name="acquisitionSource"
                                 placeholder="Enter Details"
                                 value={form.acquisitionSource}
                                 onChange={(e) =>
@@ -1188,6 +1286,8 @@ const ImmovableProperty = () => {
                             <Card.Body>
                               <Form.Control
                                 type="date"
+                                name={`acquisitionDate-${index}`}
+                                // name="acquisitionDate"
                                 value={form.acquisitionDate}
                                 onChange={(e) =>
                                   handleChange(
@@ -1236,6 +1336,8 @@ const ImmovableProperty = () => {
 
                               <Form.Control
                                 as="textarea"
+                                name={`acquisitionPerson-${index}`}
+                                // name="acquisitionPerson"
                                 placeholder="Enter Details"
                                 rows={1}
                                 value={form.acquisitionPerson}
@@ -1278,6 +1380,8 @@ const ImmovableProperty = () => {
 
                           <Form.Control
                             type="text"
+                            name={`annualIncome-${index}`}
+                            // name="annualIncome"
                             placeholder="Enter Annual Income"
                             value={form.annualIncome}
                             onChange={(e) =>
@@ -1319,6 +1423,8 @@ const ImmovableProperty = () => {
 
                           <Form.Control
                             as="textarea"
+                            name={`businessDetails-${index}`}
+                            // name="businessDetails"
                             placeholder="Enter Details"
                             rows={1}
                             value={form.businessDetails}
@@ -1354,6 +1460,8 @@ const ImmovableProperty = () => {
 
                       <Form.Control
                         as="textarea"
+                        name={`remark-${index}`}
+                        // name="remark"
                         placeholder="Enter Remark"
                         rows={3}
                         value={form.remark}
@@ -1417,11 +1525,15 @@ const ImmovableProperty = () => {
           <Button
             variant="contained"
             className="green-button"
-            onClick={() => {
-              if (validateForms()) {
-                sendOtp();
-              }
-            }}
+            onClick={handleSubmit}
+            // onClick={() =>
+
+            //   {
+            //     if (validateForms()) {
+            //       sendOtp();
+            //     }
+            //   }
+            // }
           >
             Submit
           </Button>

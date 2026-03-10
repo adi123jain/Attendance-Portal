@@ -1011,3 +1011,27 @@ export const proNewsSubmitByMD = (payload) => {
 export const getAllProNews = (MonthYear) => {
   return axios.get(base_url + `/pro/getNewsByMonthYear/${MonthYear}`);
 };
+
+// 155. Get Detaild for CM helpline Complaint
+export const getCmHelplineExp = (value) => {
+  return axios.get(base_url + `/exp/getExpDetailApi/130411/${value}`);
+};
+
+// 156. Submit for CM helpline Complaint
+export const submitCmHelplineExp = (payload) => {
+  return axios.post(base_url + `/exp/saveExpReply`, payload);
+};
+
+// 157. Upload Document for CM Helpline from HR
+export const uploadCmExpDocument = (payload) => {
+  return axios.post(base_url + `/exp/expExceluploadApi`, payload);
+};
+
+// 158. Get All CM Helpline Records
+export const getAllCmHelplineHr = (value) => {
+  return axios.get(base_url + `/exp/getExpDetailByLevelApi/${value}`);
+};
+
+// http://localhost:8084/e-Attendance/api/exp/getExpDetailApi/130411/1
+//http://localhost:8084/e-Attendance/api/exp/expExceluploadApi
+// http://localhost:8084/e-Attendance/api/exp/getExpDetailByLevelApi/1

@@ -88,6 +88,8 @@ import ProNewsEmployee from '../Components/Regular Employee/Pro_News_Employee/In
 import ProNewsMD from '../Components/Regular Employee/Pro_News_MD/Index';
 import ImmovablePropertyHr from '../Components/HR Pannel/Immovable_Proverty_Hr/Index';
 import ImmovablePropertyInformation from '../Components/HR Pannel/Immovable_Property_Info/Index';
+import CmHelplineExp from '../Components/Regular Employee/Cm_Compaint_Explaination/Index';
+import CmHelplineExpDocument from '../Components/HR Pannel/Cm_Complaint_Exp_Document/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -266,7 +268,11 @@ function CustomRouter() {
             <Route path="gmLineStaffStatus" element={<GmLineStaffStatus />} />
             <Route path="dgmPtrStatus" element={<DgmPtrStatus />} />
             <Route path="higherPayScale" element={<HigherPayScale />} />
-            {/* <Route path="/" element={<HigherPayScale />} /> */}
+            <Route path="cmHelplineExp" element={<CmHelplineExp />} />
+            <Route
+              path="cmHelplineExpDoc"
+              element={<CmHelplineExpDocument />}
+            />
 
             {/* HR Section */}
             <Route path="editLocation" element={<EditLocation />} />

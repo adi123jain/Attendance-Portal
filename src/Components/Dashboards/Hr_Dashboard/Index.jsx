@@ -77,6 +77,12 @@ function HumanResourceDashboard() {
           to: '/immovablePropertyInfo',
           icon: <InfoIcon />,
         },
+
+        {
+          name: 'CM Helpline',
+          to: '/cmHelplineExpDoc',
+          icon: <EditLocationAltIcon />,
+        },
       ],
     },
     {
