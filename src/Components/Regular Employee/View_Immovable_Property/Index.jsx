@@ -1,7 +1,10 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import { viewImmProperty } from '../../../Services/Auth';
+import {
+  submitImmovableProperty,
+  viewImmProperty,
+} from '../../../Services/Auth';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -24,6 +27,7 @@ import {
   DialogContent,
   DialogActions,
   Grid,
+  TextField,
 } from '@mui/material';
 import {
   StyledTableRow,
@@ -32,47 +36,49 @@ import {
 
 const years = [2025, 2026, 2027, 2028];
 
-const fieldCard = (label, value, index) => (
-  <Grid item xs={12} sm={6} md={3} key={index}>
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.05 }}
-    >
-      <Paper
-        elevation={4}
-        sx={{
-          p: 2,
-          borderRadius: 3,
-          textAlign: 'center',
-          transition: 'all 0.3s ease',
-          background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
-          '&:hover': {
-            transform: 'translateY(-5px)',
-            boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
-          },
-        }}
-      >
-        <Typography
-          variant="body2"
-          sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
-        >
-          {label}
-        </Typography>
-        <Typography variant="body1" sx={{ color: '#333' }}>
-          {value || '—'}
-        </Typography>
-      </Paper>
-    </motion.div>
-  </Grid>
-);
+// const fieldCard = (label, value, index) => (
+//   <Grid item xs={12} sm={6} md={3} key={index}>
+//     <motion.div
+//       initial={{ opacity: 0, scale: 0.9 }}
+//       animate={{ opacity: 1, scale: 1 }}
+//       transition={{ delay: index * 0.05 }}
+//     >
+//       <Paper
+//         elevation={4}
+//         sx={{
+//           p: 2,
+//           borderRadius: 3,
+//           textAlign: 'center',
+//           transition: 'all 0.3s ease',
+//           background: 'linear-gradient(135deg,#f8fbff,#ffffff)',
+//           '&:hover': {
+//             transform: 'translateY(-5px)',
+//             boxShadow: '0px 10px 25px rgba(0,0,0,0.2)',
+//           },
+//         }}
+//       >
+//         <Typography
+//           variant="body2"
+//           sx={{ fontWeight: 'bold', color: '#3949ab', mb: 1 }}
+//         >
+//           {label}
+//         </Typography>
+
+//         <Typography variant="body1" sx={{ color: '#333' }}>
+//           {value || '—'}
+//         </Typography>
+
+//       </Paper>
+//     </motion.div>
+//   </Grid>
+// );
 
 function ImmovablePropertyView() {
   const [immovableData, setImmovableData] = useState([]);
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const currentYear = new Date().getFullYear();
-  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedYear, setSelectedYear] = useState(currentYear - 1);
   const [open, setOpen] = useState(false);
 
   const empCode = sessionStorage.getItem('empCode');
@@ -102,25 +108,6 @@ function ImmovablePropertyView() {
     }
   };
 
-  // const viewImmovable = async () => {
-  //   try {
-  //     setOpenBackdrop(true);
-  //     const response = await viewImmProperty(selectedYear);
-  //     // console.log(response);
-  //     if (response?.data.code == '200') {
-  //       setImmovableData(response.data.list);
-  //       setOpenBackdrop(false);
-  //     } else {
-  //       setImmovableData([]);
-  //       setOpenBackdrop(false);
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //     setImmovableData([]);
-  //     setOpenBackdrop(false);
-  //   }
-  // };
-
   const [selectedRow, setSelectedRow] = useState(null);
 
   const handlePreview = (row) => {
@@ -135,8 +122,216 @@ function ImmovablePropertyView() {
 
   const DownloadDoc = async (item) => {
     const URL = `https://attendance.mpcz.in:8888/E-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
-    //const URL = `http://172.16.17.34:8084/e-Attendance/api/employee/generatePropertyReturnPdfEmp?empCode=${item.empCode}&year=${item.year}`;
     window.open(URL, '_blank');
+  };
+
+  const fieldCard = (label, field, index) => {
+    const isTextarea = [
+      'fromWhomAcquired',
+      'ownershipStatus',
+      'remarks',
+    ].includes(field);
+
+    const isDate = field === 'acquisitionDate';
+
+    // ✅ DISABLED FIELDS
+    const isDisabled = ['empCode', 'empName', 'designation', 'year'].includes(
+      field,
+    );
+
+    return (
+      <Grid item xs={12} sm={6} md={4} key={index}>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.03 }}
+        >
+          <Paper
+            elevation={2}
+            sx={{
+              p: 2,
+              borderRadius: 2,
+              height: '100%',
+              background: '#fff',
+              border: '1px solid #e0e0e0',
+              transition: 'all 0.25s ease',
+              '&:hover': {
+                boxShadow: '0px 6px 18px rgba(0,0,0,0.15)',
+              },
+            }}
+          >
+            {/* Label */}
+            <Typography
+              variant="caption"
+              sx={{
+                color: '#6c757d',
+                fontWeight: 600,
+                letterSpacing: '0.5px',
+              }}
+            >
+              {label}
+            </Typography>
+
+            {/* Value / Editable */}
+            <TextField
+              id={field} // ✅ REQUIRED FOR FOCUS
+              fullWidth
+              variant="standard"
+              type={isDate ? 'date' : 'text'}
+              value={formData?.[field] || ''}
+              onChange={(e) => {
+                handleChange(field, e.target.value);
+
+                // ✅ remove error on typing
+                if (errors[field]) {
+                  setErrors((prev) => ({ ...prev, [field]: '' }));
+                }
+              }}
+              multiline={isTextarea}
+              minRows={isTextarea ? 3 : 1}
+              disabled={isDisabled}
+              error={!!errors[field]} // ✅ ERROR STATE
+              helperText={errors[field] || ''} // ✅ ERROR MESSAGE
+              InputProps={{
+                disableUnderline: true,
+                sx: {
+                  fontSize: '15px',
+                  fontWeight: 500,
+                  color: isDisabled ? '#555' : '#212121',
+                  mt: 0.5,
+                },
+              }}
+              sx={{
+                mt: 1,
+                background: isDisabled ? '#eef1f6' : '#f8f9fa',
+                borderRadius: 1,
+                px: 1,
+                py: 0.5,
+              }}
+            />
+          </Paper>
+        </motion.div>
+      </Grid>
+    );
+  };
+  const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
+
+  const skipFields = ['empCode', 'empName', 'designation', 'year'];
+  // load selected row into editable form
+  useEffect(() => {
+    if (selectedRow) {
+      setFormData(selectedRow);
+    }
+  }, [selectedRow]);
+
+  const handleChange = (field, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
+
+  const requiredFields = [
+    'acquisitionDate',
+    'acquisitionMode',
+    'fromWhomAcquired',
+    'ownershipStatus',
+    'privateBusinessDetails',
+    'remarks',
+    'agriculturalLocation',
+    'agriculturalSizeArea',
+    'agriculturalPresentValue',
+    'housingLocation',
+    'housingSizeBuildUpArea',
+    'housingPresentValue',
+    'residentialLocation',
+    'residentialSizeArea',
+    'residentialPresentValue',
+    'shopLocation',
+    'shopSizeBuildUpArea',
+    'shopPresentValue',
+    'district',
+    'subDistrict',
+    'talukaVillage',
+    'annualIncome',
+    'gpfPranEpfNo',
+  ];
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    requiredFields.forEach((field) => {
+      if (!formData[field] || formData[field].toString().trim() === '') {
+        newErrors[field] = 'This field is required';
+      }
+    });
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      const firstField = Object.keys(newErrors)[0];
+
+      setTimeout(() => {
+        const element = document.getElementById(firstField);
+        if (element) element.focus();
+      }, 100);
+
+      return false;
+    }
+
+    return true;
+  };
+  // 👉 UPDATE API CALL
+  const handleUpdate = async () => {
+    // ✅ ADD THIS LINE (MOST IMPORTANT)
+    if (!validateForm()) return;
+    setOpenBackdrop(true);
+
+    try {
+      const payload = {
+        empCode: sessionStorage.getItem('empCode'),
+        gpfPranEpfNo: formData.gpfPranEpfNo,
+        district: formData.district,
+        subDistrict: formData.subDistrict,
+        talukaVillage: formData.talukaVillage,
+        residentialLocation: formData.residentialLocation,
+        residentialSizeArea: formData.residentialSizeArea,
+        residentialPresentValue: formData.residentialPresentValue,
+        agriculturalLocation: formData.agriculturalLocation,
+        agriculturalSizeArea: formData.agriculturalSizeArea,
+        agriculturalPresentValue: formData.agriculturalPresentValue,
+        housingLocation: formData.housingLocation,
+        housingSizeBuildUpArea: formData.housingSizeBuildUpArea,
+        housingPresentValue: formData.housingPresentValue,
+        shopLocation: formData.shopLocation,
+        shopSizeBuildUpArea: formData.shopSizeBuildUpArea,
+        shopPresentValue: formData.shopPresentValue,
+        ownershipStatus: formData.ownershipStatus,
+        acquisitionMode: formData.acquisitionMode,
+        acquisitionDate: formData.acquisitionDate,
+        fromWhomAcquired: formData.fromWhomAcquired,
+        annualIncome: formData.annualIncome,
+        privateBusinessDetails: formData.privateBusinessDetails,
+        remarks: formData.remarks,
+        createdBy: sessionStorage.getItem('empCode'),
+        year: selectedYear,
+        id: formData.id,
+      };
+
+      const response = await submitImmovableProperty([payload]);
+
+      if (response.data.code === '200') {
+        alert('Successfully Submitted');
+      } else {
+        alert(response.data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Something went wrong');
+    } finally {
+      setOpenBackdrop(false);
+    }
   };
 
   return (
@@ -216,69 +411,6 @@ function ImmovablePropertyView() {
             </Col>
           </Row>
 
-          {/* <TableContainer component={Paper}>
-            <Table ref={tableRef} tabIndex={-1}>
-              <TableHead>
-                <StyledTableRow>
-                  <StyledTableCell>S.No.</StyledTableCell>
-                  <StyledTableCell>Employee Code</StyledTableCell>
-                  <StyledTableCell>Employee Name</StyledTableCell>
-                  <StyledTableCell>Designation</StyledTableCell>
-                  <StyledTableCell>Preview</StyledTableCell>
-                  <StyledTableCell>Download (pdf)</StyledTableCell>
-                </StyledTableRow>
-              </TableHead>
-
-              <TableBody>
-                {immovableData && immovableData.length > 0 ? (
-                  immovableData.map((item, index) => (
-                    <StyledTableRow key={index}>
-                      <StyledTableCell>{index + 1}</StyledTableCell>
-                      <StyledTableCell>{item.empCode}</StyledTableCell>
-                      <StyledTableCell>{item.empName}</StyledTableCell>
-                      <StyledTableCell>{item.designation}</StyledTableCell>
-
-                      <StyledTableCell>
-                        <Tooltip title="Preview" arrow>
-                          <Button
-                            variant="contained"
-                            color="dark"
-                            //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                            onClick={() => handlePreview(item)}
-                          >
-                            <VisibilityIcon fontSize="small" />
-                          </Button>
-                        </Tooltip>
-                      </StyledTableCell>
-
-                      <StyledTableCell>
-                        <Tooltip title="Download" arrow>
-                          <Button
-                            variant="contained"
-                            color="dark"
-                            //sx={{ backgroundColor: "#37474F", color: "#fff" }}
-                            onClick={() => DownloadDoc(item)}
-                          >
-                            <CloudDownloadIcon
-                              fontSize="small"
-                              color="success"
-                            />
-                          </Button>
-                        </Tooltip>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))
-                ) : (
-                  <StyledTableRow>
-                    <StyledTableCell colSpan={8}>
-                      Data Not Found
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer> */}
-
           {apiCalled && (
             <TableContainer component={Paper}>
               <Table ref={tableRef} tabIndex={-1}>
@@ -288,7 +420,7 @@ function ImmovablePropertyView() {
                     <StyledTableCell>Employee Code</StyledTableCell>
                     <StyledTableCell>Employee Name</StyledTableCell>
                     <StyledTableCell>Designation</StyledTableCell>
-                    <StyledTableCell>Preview</StyledTableCell>
+                    <StyledTableCell>Edit</StyledTableCell>
                     <StyledTableCell>Download (pdf)</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
@@ -303,7 +435,7 @@ function ImmovablePropertyView() {
                         <StyledTableCell>{item.designation}</StyledTableCell>
 
                         <StyledTableCell>
-                          <Tooltip title="Preview" arrow>
+                          <Tooltip title="Edit" arrow>
                             <Button
                               variant="contained"
                               color="dark"
@@ -382,14 +514,14 @@ function ImmovablePropertyView() {
         <DialogContent
           dividers
           sx={{
-            backgroundColor: 'rgba(255,255,255,0.95)',
-            backdropFilter: 'blur(10px)',
+            background: '#f4f6fb',
             maxHeight: '80vh',
+            px: { xs: 1, md: 3 },
           }}
         >
           {selectedRow && (
             <Grid container spacing={3}>
-              {fieldCard('Employee Code', selectedRow.empCode, 0)}
+              {/* {fieldCard('Employee Code', selectedRow.empCode, 0)}
               {fieldCard('Employee Name', selectedRow.empName, 1)}
               {fieldCard('Designation', selectedRow.designation, 2)}
               {fieldCard('Year', selectedRow.year, 3)}
@@ -397,11 +529,7 @@ function ImmovablePropertyView() {
               {fieldCard('Acquisition Mode', selectedRow.acquisitionMode, 5)}
               {fieldCard('From Whom Acquired', selectedRow.fromWhomAcquired, 6)}
               {fieldCard('Ownership Status', selectedRow.ownershipStatus, 7)}
-              {/* {fieldCard(
-                'Relation With Board',
-                selectedRow.relationWithBoard,
-                8,
-              )} */}
+               
               {fieldCard(
                 'Private Business Details',
                 selectedRow.privateBusinessDetails,
@@ -464,20 +592,82 @@ function ImmovablePropertyView() {
               {fieldCard('Sub-District', selectedRow.subDistrict, 23)}
               {fieldCard('Taluka/Village', selectedRow.talukaVillage, 24)}
               {fieldCard('Annual Income', selectedRow.annualIncome, 25)}
-              {fieldCard('GPF / PRAN / EPF No', selectedRow.gpfPranEpfNo, 26)}
+              {fieldCard('GPF / PRAN / EPF No', selectedRow.gpfPranEpfNo, 26)} */}
+
+              {fieldCard('Employee Code', 'empCode', 0)}
+              {fieldCard('Employee Name', 'empName', 1)}
+              {fieldCard('Designation', 'designation', 2)}
+              {fieldCard('Year', 'year', 3)}
+              {fieldCard('Acquisition Date', 'acquisitionDate', 4)}
+              {fieldCard('Acquisition Mode', 'acquisitionMode', 5)}
+              {fieldCard('From Whom Acquired', 'fromWhomAcquired', 6)}
+              {fieldCard('Ownership Status', 'ownershipStatus', 7)}
+              {fieldCard(
+                'Private Business Details',
+                'privateBusinessDetails',
+                8,
+              )}
+              {fieldCard('Remarks', 'remarks', 9)}
+              {fieldCard('Agricultural Location', 'agriculturalLocation', 10)}
+              {fieldCard('Agricultural Size Area', 'agriculturalSizeArea', 11)}
+              {fieldCard(
+                'Agricultural Present Value',
+                'agriculturalPresentValue',
+                12,
+              )}
+              {fieldCard('Housing Location', 'housingLocation', 13)}
+              {fieldCard(
+                'Housing Size Build-Up Area',
+                'housingSizeBuildUpArea',
+                14,
+              )}
+              {fieldCard('Housing Present Value', 'housingPresentValue', 15)}
+              {fieldCard('Residential Location', 'residentialLocation', 16)}
+              {fieldCard('Residential Size Area', 'residentialSizeArea', 17)}
+              {fieldCard(
+                'Residential Present Value',
+                'residentialPresentValue',
+                18,
+              )}
+              {fieldCard('Shop Location', 'shopLocation', 19)}
+              {fieldCard('Shop Size Build-Up Area', 'shopSizeBuildUpArea', 20)}
+              {fieldCard('Shop Present Value', 'shopPresentValue', 21)}
+              {fieldCard('District', 'district', 22)}
+              {fieldCard('Sub-District', 'subDistrict', 23)}
+              {fieldCard('Taluka/Village', 'talukaVillage', 24)}
+              {fieldCard('Annual Income', 'annualIncome', 25)}
+              {fieldCard('GPF / PRAN / EPF No', 'gpfPranEpfNo', 26)}
             </Grid>
           )}
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: 'center', p: 2 }}>
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-            <Button
+            {/* <Button
               onClick={handleClose}
               variant="contained"
               className="cancel-button"
             >
               Close
-            </Button>
+            </Button> */}
+
+            <DialogActions sx={{ justifyContent: 'center' }}>
+              <Button
+                onClick={handleClose}
+                variant="outlined"
+                className="cancel-button"
+              >
+                Close
+              </Button>
+
+              <Button
+                onClick={handleUpdate}
+                variant="contained"
+                className="green-button"
+              >
+                Update
+              </Button>
+            </DialogActions>
           </motion.div>
         </DialogActions>
       </Dialog>

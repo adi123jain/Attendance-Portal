@@ -199,7 +199,7 @@ function MedicalHealthInsurance() {
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
-        window.location.reload();
+        // window.location.reload();
       }
     } catch (error) {
       console.log('Error', error);

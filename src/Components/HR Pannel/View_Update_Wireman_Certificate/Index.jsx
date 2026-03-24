@@ -449,7 +449,10 @@ function UpdateWiremanCertificateStatus() {
                           />
                         </StyledTableCell>
 
-                        <StyledTableCell>{item.docPath}</StyledTableCell>
+                        <StyledTableCell>
+                          {/* <Button onClick={item.docPath}>Download</Button> */}
+                          <Button>Download</Button>
+                        </StyledTableCell>
                       </StyledTableRow>
                     );
                   })

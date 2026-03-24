@@ -48,11 +48,9 @@ function CmHelplineExp() {
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const [status, setStatus] = useState('');
   const [tableData, setTableData] = useState([]);
-
   const [selectedId, setSelectedId] = useState(null);
   const [selectedRefNo, setSelectedRefNo] = useState(null);
   const [selectedEmpCode, setSelectedEmpCode] = useState(null);
-
   const [openRemarkModal, setOpenRemarkModal] = useState(false);
   const [remark, setRemark] = useState('');
   const [file, setFile] = useState(null);

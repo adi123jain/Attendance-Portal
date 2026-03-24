@@ -407,19 +407,53 @@ function UpdateVerifyEmployee() {
 
   // Ro Name on Ro Designation Change
   const [roName, setRoName] = useState([]);
+  // useEffect(() => {
+  //   if (roName && roName.length === 1) {
+  //     setSelectedRoName(roName[0].id);
+  //   }
+  // }, [roName]);
+
   useEffect(() => {
-    if (!selectedOfficer) return;
+    // reset selected RO name whenever designation changes
+    setSelectedRoName('');
+
+    if (!selectedOfficer) {
+      setRoName([]);
+      return;
+    }
+
     const fetchOfficerName = async () => {
       try {
         const res = await getRoNameByRoId(selectedOfficer);
-        setRoName(res.data.list || []);
+        const list = res.data.list || [];
+
+        setRoName(list);
+
+        if (list.length === 1) {
+          setSelectedRoName(list[0].id);
+        }
       } catch (err) {
         console.error('Error fetching officer names:', err);
+        setRoName([]);
       }
     };
 
     fetchOfficerName();
   }, [selectedOfficer]);
+
+  // useEffect(() => {
+  //   if (!selectedOfficer) return;
+  //   const fetchOfficerName = async () => {
+  //     try {
+  //       const res = await getRoNameByRoId(selectedOfficer);
+  //       setRoName(res.data.list || []);
+  //     } catch (err) {
+  //       console.error('Error fetching officer names:', err);
+  //     }
+  //   };
+
+  //   fetchOfficerName();
+  // }, [selectedOfficer]);
 
   // HR Manager List
   const [hrManager, setHrManager] = useState([]);
@@ -602,7 +636,7 @@ function UpdateVerifyEmployee() {
       if (response.data.code === '200') {
         alert('Updated Successfully !!');
         setOpenBackdrop(false);
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(response.data.message);
         setOpenBackdrop(false);
@@ -1609,10 +1643,33 @@ function UpdateVerifyEmployee() {
                   <Card>
                     <Card.Header>Reporting Officer Name</Card.Header>
                     <Card.Body>
-                      <Form.Select
+                      {/* <Form.Select
                         id="reportingOfficer"
                         value={selectedRoName}
                         onChange={(e) => setSelectedRoName(e.target.value)}
+                      >
+                        <option disabled value="">
+                          -- select Officer --
+                        </option>
+
+                        {roName && roName.length > 0 ? (
+                          roName.map((item) => (
+                            <option key={item.id} value={item.id}>
+                              {item.name}
+                            </option>
+                          ))
+                        ) : (
+                          <option disabled>No data found</option>
+                        )}
+                      </Form.Select> */}
+
+                      <Form.Select
+                        id="reportingOfficer"
+                        value={selectedRoName || ''}
+                        onChange={(e) =>
+                          setSelectedRoName(Number(e.target.value))
+                        }
+                        disabled={roName?.length === 1}
                       >
                         <option disabled value="">
                           -- select Officer --

@@ -73,7 +73,7 @@ function ImmovablePropertyHr() {
   const tableRef = useRef(null);
   const [openBackdrop, setOpenBackdrop] = useState(false);
   const currentYear = new Date().getFullYear();
-  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedYear, setSelectedYear] = useState(currentYear - 1);
   const [open, setOpen] = useState(false);
 
   const location = useLocation();

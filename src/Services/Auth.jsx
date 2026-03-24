@@ -2,6 +2,7 @@ import axios from 'axios';
 // Base API URL
 const base_url = 'https://attendance.mpcz.in:8888/E-Attendance/api';
 // const base_url = 'http://172.16.17.34:8084/e-Attendance/api';
+const acr_base_url = 'https://acr.mpcz.in:4200/api';
 
 const sessionEmpCode = sessionStorage.getItem('empCode');
 
@@ -585,15 +586,6 @@ export const submitFeederManagement = (payload) => {
 // 94. OPD/IPD Medical Submit
 export const submitMedicalReimbursement = (formData) => {
   return axios.post(base_url + '/medical/saveMRDetail', formData);
-  // return axios.post(
-  //   "http://172.16.17.79:8084/e-Attendance/api/medical/saveMRDetail",
-  //   formData
-  // );
-
-  // return axios.post(
-  //   "http://attendance.mpcz.in:9090/e-Attendance/api/medical/saveMRDetail",
-  //   formData
-  // );
 };
 
 // 94.1 Submit Medicine Details API
@@ -681,7 +673,6 @@ export const getLineStaffAuth = (dcId) => {
 
 // 108. Get Line Staff By DcId
 export const getLineByDcId = (dcId) => {
-  // 302020102
   return axios.get(base_url + `/OnM/getLineByDc?dcId=${dcId}`);
 };
 
@@ -706,21 +697,12 @@ export const getMedicineDetailByRefNo = (refNo) => {
 };
 
 export const getMedicalByRefNo = (refNo) => {
-  // return axios.get(
-  //   `http://172.16.17.79:8084/e-Attendance/api/medical/getMRByRefNo?refNo=${refNo}`,
-  // );
-
   return axios.get(base_url + `/medical/getMRByRefNo?refNo=${refNo}`);
 };
 
 // 112. Submit Medical Hr Status
 export const submitMedicalHrStatus = (payload) => {
   return axios.post(base_url + '/medical/updateHRStatus', payload);
-
-  // return axios.post(
-  //   "http://172.16.17.79:8084/e-Attendance/api/medical/updateHRStatus",
-  //   payload
-  // );
 };
 
 // 113. Get Medical for Cmo
@@ -740,7 +722,6 @@ export const submitMedicalCmoStatus = (payload) => {
 export const getMedicalByAo = () => {
   return axios.get(
     base_url + `/medical/getAoPending?aoEmpCode=${sessionEmpCode}`,
-    // base_url + `/medical/getAoPending?aoEmpCode=12345`,
   );
 };
 
@@ -787,7 +768,6 @@ export const getEmploymentType = () => {
 export const createNewEmployee = (payload) => {
   return axios.post(base_url + '/employee/saveNewEmployee', payload);
 };
-// https://attendance.mpcz.in:8888/E-Attendance/api/employee/saveNewEmployee
 
 // 124. View Employee Information
 export const getEmployeeInfo = (empCode) => {
@@ -986,7 +966,7 @@ export const getOfficerByDesignation = (value, cirId) => {
 
 // 150. Get Pro News Details on Employee Side
 export const getProNewsEmployee = (status) => {
-  // return axios.get(base_url + `/pro/getProNewsByEmpCode/85390317/${status}`);
+  // 9500026
   return axios.get(
     base_url + `/pro/getProNewsByEmpCode/${sessionEmpCode}/${status}`,
   );
@@ -1032,6 +1012,12 @@ export const getAllCmHelplineHr = (value) => {
   return axios.get(base_url + `/exp/getExpDetailByLevelApi/${value}`);
 };
 
-// http://localhost:8084/e-Attendance/api/exp/getExpDetailApi/130411/1
-//http://localhost:8084/e-Attendance/api/exp/expExceluploadApi
-// http://localhost:8084/e-Attendance/api/exp/getExpDetailByLevelApi/1
+// 159.  Get All Emp By Name Empcode Mobilenumber
+export const getEmpByNameMobileEmpCode = (value) => {
+  return axios.get(base_url + `/employee/newEmployeeSearchApi?value=${value}`);
+};
+
+// 160. ACR API By Emp Code
+export const getAcrByEmpCode = (empCode) => {
+  return axios.get(acr_base_url + `/old_acr/?empCode=${empCode}`);
+};

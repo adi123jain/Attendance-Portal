@@ -28,7 +28,6 @@ import {
 } from '@mui/material';
 
 import { Modal, Fade, Box } from '@mui/material';
-
 import { Col, Form, Row } from 'react-bootstrap';
 import {
   StyledTableCell,
@@ -238,7 +237,7 @@ function ProNews() {
 
       if (response?.data?.code === '200') {
         alert('Successfully Submitted !!');
-        // window.location.reload();
+        window.location.reload();
       } else {
         alert(response?.data?.message);
       }

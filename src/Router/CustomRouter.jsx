@@ -1,7 +1,5 @@
-import React from 'react';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Navbar from '../Constants/Navbar/Index';
-
 import Login from '../Components/User/Login';
 // import Signup from '../Components/User/Signup';
 import PrivateRoute from '../Router/PrivateRoute';
@@ -90,6 +88,7 @@ import ImmovablePropertyHr from '../Components/HR Pannel/Immovable_Proverty_Hr/I
 import ImmovablePropertyInformation from '../Components/HR Pannel/Immovable_Property_Info/Index';
 import CmHelplineExp from '../Components/Regular Employee/Cm_Compaint_Explaination/Index';
 import CmHelplineExpDocument from '../Components/HR Pannel/Cm_Complaint_Exp_Document/Index';
+import EmployeeSearch from '../Components/HR Pannel/Employee_Search/Index';
 function CustomRouter() {
   return (
     <AuthProvider>
@@ -217,10 +216,10 @@ function CustomRouter() {
               element={<MedicalFormView />}
             />
 
-            <Route
+            {/* <Route
               path="medicalHealthInsurance"
               element={<MedicalHealthInsurance />}
-            />
+            /> */}
             <Route
               path="medicalHealthInsuranceView"
               element={<MedicalHealthInsuranceView />}
@@ -334,6 +333,8 @@ function CustomRouter() {
               element={<MonthlyAttendannceOfficer />}
             />
             <Route path="MMSKYattendance" element={<MMSKYattendance />} />
+            <Route path="employeeSearch" element={<EmployeeSearch />} />
+
             {/* Outsource Employee */}
             <Route
               path="outsourceEmployeeInfo"

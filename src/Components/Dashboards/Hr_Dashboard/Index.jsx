@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Card,
   CardContent,
@@ -22,6 +21,8 @@ import BlockIcon from '@mui/icons-material/Block';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import SearchIcon from '@mui/icons-material/Search';
+import SavedSearchOutlinedIcon from '@mui/icons-material/SavedSearchOutlined';
 import { motion } from 'framer-motion';
 
 function HumanResourceDashboard() {
@@ -78,11 +79,17 @@ function HumanResourceDashboard() {
           icon: <InfoIcon />,
         },
 
-        {
-          name: 'CM Helpline',
-          to: '/cmHelplineExpDoc',
-          icon: <EditLocationAltIcon />,
-        },
+        // {
+        //   name: 'CM Helpline',
+        //   to: '/cmHelplineExpDoc',
+        //   icon: <EditLocationAltIcon />,
+        // },
+
+        // {
+        //   name: 'Employee Search',
+        //   to: '/employeeSearch',
+        //   icon: <SavedSearchOutlinedIcon />,
+        // },
       ],
     },
     {

@@ -17,6 +17,7 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ReplyAllIcon from '@mui/icons-material/ReplyAll';
+import SavedSearchOutlinedIcon from '@mui/icons-material/SavedSearchOutlined';
 
 function EmployeeDashboard() {
   const [empCode, setEmpCode] = useState(null);
@@ -26,13 +27,16 @@ function EmployeeDashboard() {
   const token = sessionStorage.getItem('token');
 
   let showPropertyMenus = false;
+  let regionId = '';
 
   if (token) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const decodedData = JSON.parse(atob(base64));
     const designationClass = decodedData?.designation?.designationClass;
-    // console.log(designationClass);
+    // console.log(decodedData?.region?.regionId);
+    regionId = decodedData?.region?.regionId;
+    // console.log(isManagerHr);
 
     // Condition
     if ([1, 2, 3].includes(Number(designationClass))) {
@@ -79,11 +83,11 @@ function EmployeeDashboard() {
       path: '/medicalReimbursementView',
       icon: <VisibilityIcon color="warning" />,
     },
-    {
-      label: 'MP Power Company Cashless Health Scheme',
-      path: '/medicalHealthInsurance',
-      icon: <HealthAndSafetyIcon color="error" />,
-    },
+    // {
+    //   label: 'MP Power Company Cashless Health Scheme',
+    //   path: '/medicalHealthInsurance',
+    //   icon: <HealthAndSafetyIcon color="error" />,
+    // },
     {
       label: 'MP Power Company Cashless Health Scheme View',
       path: '/medicalHealthInsuranceView',
@@ -128,10 +132,16 @@ function EmployeeDashboard() {
       icon: <HealthAndSafetyIcon color="secondary" />,
     },
 
+    // {
+    //   label: 'CM Helpline',
+    //   path: '/cmHelplineExp',
+    //   icon: <HealthAndSafetyIcon color="error" />,
+    // },
+
     {
-      label: 'CM Helpline',
-      path: '/cmHelplineExp',
-      icon: <HealthAndSafetyIcon color="error" />,
+      label: 'Employee Search',
+      path: '/employeeSearch',
+      icon: <SavedSearchOutlinedIcon color="info" />,
     },
 
     // {
@@ -153,6 +163,11 @@ function EmployeeDashboard() {
   );
   const NewsMd =
     designationId === 1 || ['12345', '160046'].includes(String(empCode));
+
+  const empSearch =
+    regionId === 1 ||
+    ['12345', '160046'].includes(String(empCode)) ||
+    isManagerHr;
 
   //  Don’t render until session is ready
   if (!empCode || designationId === null) return null;
@@ -217,6 +232,10 @@ function EmployeeDashboard() {
               item.label === 'Immovable Property Return View') &&
             !showPropertyMenus
           ) {
+            return null;
+          }
+
+          if (item.label === 'Employee Search' && !empSearch) {
             return null;
           }
 
